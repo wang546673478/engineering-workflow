@@ -1,0 +1,50 @@
+# Spec / Plan / Task Record
+
+## Spec
+
+Goal and users:
+
+In scope / out of scope:
+
+Requirements and acceptance IDs:
+
+Business rules, permissions, data owners, constraints:
+
+Failure, recovery, compatibility, rollout:
+
+Confirmed decisions and interview log:
+
+## Plan
+
+Milestones and dependency order:
+
+Affected modules/contracts/tables/flows:
+
+Documentation and verification gates:
+
+Approval record (who/when/what version):
+
+## Task: `<ID>`
+
+Objective and deliverables:
+
+Prerequisites and parallel work:
+
+Required reading:
+
+Skill review:
+- Catalog/registry source and scope:
+- Checked at (timestamp/timezone):
+- Scope keywords and deliverables searched:
+- Candidates (repeat per candidate): name/ID; source path or URI; version/release date (or `not provided`); decision (`adopted | not-adopted | unavailable`); fit/conflict or unavailability reason; evidence read:
+- Recheck trigger/result after scope or catalog changes:
+
+Implementation owner and old-path replacement:
+
+Impact analysis:
+
+Acceptance scenarios and exact checks:
+
+Status and evidence:
+
+Handoff/remaining risk:

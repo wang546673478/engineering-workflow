@@ -1,0 +1,4 @@
+{
+  "kind": "database",
+  "items": [{"id": "main.example", "document": "docs/database.md", "fields": ["id", "status"]}]
+}

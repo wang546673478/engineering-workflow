@@ -1,0 +1,15 @@
+{
+  "kind": "database",
+  "provenance": {
+    "type": "manual",
+    "scope": "Only explicitly reviewed tables; not a complete real database extraction",
+    "complete": false,
+    "evidence": "review-source-and-replace-this-description",
+    "source_ref": "optional redacted adapter source identifier",
+    "captured_at": "optional ISO-8601 timestamp",
+    "query_sha256": "optional adapter query hash",
+    "snapshot_sha256": "required for remote metadata adapters",
+    "source_files": []
+  },
+  "items": [{"id": "main.example", "fields": ["id", "status"]}]
+}

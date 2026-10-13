@@ -1,0 +1,15 @@
+#!/bin/sh
+# Copy this file to .git/hooks/pre-commit and set the skill directory below.
+set -eu
+
+project_root="${ENGINEERING_PROJECT_ROOT:-$(git rev-parse --show-toplevel)}"
+manifest="${ENGINEERING_MANIFEST:-engineering-manifest.json}"
+skill_dir="${ENGINEERING_WORKFLOW_SKILL_DIR:?Set ENGINEERING_WORKFLOW_SKILL_DIR to the engineering-workflow skill directory}"
+python_bin="${PYTHON:-python}"
+
+set -- "$python_bin" "$skill_dir/scripts/check_project.py" \
+  --root "$project_root" --manifest "$manifest" --mode commit --run-checks
+if [ -n "${ENGINEERING_TASK_ID:-}" ]; then
+  set -- "$@" --task "$ENGINEERING_TASK_ID"
+fi
+exec "$@"

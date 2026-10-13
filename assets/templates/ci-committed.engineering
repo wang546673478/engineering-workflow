@@ -1,0 +1,15 @@
+#!/bin/sh
+# CI should check out each target commit before invoking this template.
+set -eu
+
+: "${ENGINEERING_COMMIT_SHA:?Set ENGINEERING_COMMIT_SHA to the checked-out commit}"
+: "${ENGINEERING_TASK_ID:?Set ENGINEERING_TASK_ID for the checked-out commit}"
+: "${ENGINEERING_WORKFLOW_SKILL_DIR:?Set ENGINEERING_WORKFLOW_SKILL_DIR}"
+
+project_root="${ENGINEERING_PROJECT_ROOT:-$(git rev-parse --show-toplevel)}"
+manifest="${ENGINEERING_MANIFEST:-engineering-manifest.json}"
+python_bin="${PYTHON:-python}"
+
+exec "$python_bin" "$ENGINEERING_WORKFLOW_SKILL_DIR/scripts/check_project.py" \
+  --root "$project_root" --manifest "$manifest" --mode committed \
+  --commit-ref "$ENGINEERING_COMMIT_SHA" --task "$ENGINEERING_TASK_ID" --run-checks
