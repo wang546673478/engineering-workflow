@@ -12,7 +12,7 @@ on:
       task_id:
         description: Task recorded in the reviewed manifest
         required: true
-        default: TASK-SELF-01
+        default: TASK-ISSUES-01
         type: string
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Check submitted rules before running declared tests
-        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --task TASK-SELF-01 --run-checks
+        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --task TASK-ISSUES-01 --run-checks
 
   reviewed-rules:
     if: github.event_name == 'workflow_dispatch'

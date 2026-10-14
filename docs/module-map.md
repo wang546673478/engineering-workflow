@@ -51,7 +51,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Entrypoints: `engineering-manifest.json`, [the persistence task record](../planning/persistence-task.md) and `.github/workflows/quality.yml`.
 - Consumers: maintainers, the checker and CI runners. Local projects can run the same checks without GitHub.
 - Review: changing the manifest, checker, rules or CI listed in `control_plane.protected_paths` blocks commit validation until a human has reviewed that concrete change.
-- State: The historical approved task and baseline remain intact. `TASK-PERSISTENCE-01` separately tracks the uncommitted persistence change, pending verification and final human review; no approval signal has been supplied.
+- State: The historical approved task and baseline remain intact. `TASK-PERSISTENCE-01` and `TASK-ISSUES-01` are complete and approved for the published change. The workflow selects `TASK-ISSUES-01` for push/PR committed checks so post-publication task records are checked against the active task's documentation gates.
 
 ## Dependency rules
 

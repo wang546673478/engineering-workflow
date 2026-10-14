@@ -141,7 +141,7 @@
       "module-connectivity": {"when_paths": ["scripts/check_project.py", "scripts/extract_sqlite.py", "scripts/extract_database.py", "scripts/init_manifest.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "PERSISTENCE_TASK"]},
       "public-guidance": {"when_paths": ["README.md", "SKILL.md", "AGENTS.md", "agents", "references", "assets/templates", "scripts/install_agents_guidance.py", "VERSION", "CHANGELOG.md", "LICENSE"], "document_ids": ["SPEC", "CONTRACT", "PERSISTENCE_TASK"]},
       "tests": {"when_paths": ["scripts/tests"], "document_ids": ["PERSISTENCE_TASK"]},
-      "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "PERSISTENCE_TASK"]}
+      "control-plane": {"when_paths": ["engineering-manifest.json", ".github"], "document_ids": ["MAP", "PERSISTENCE_TASK"]}
     }
   }],
   "control_plane": {
