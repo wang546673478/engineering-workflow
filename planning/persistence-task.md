@@ -107,7 +107,7 @@ Catalog source: 本会话 Codex Skills catalog。检查时间：`2026-10-14T21:1
 | commit/committed 保护检查 | 未通过本任务批准路径 | 最终批准 pending；不得设置外部批准信号以求通过 |
 | 其他宿主自动加载 | 未验证 | 文件适配不等于实际宿主集成测试 |
 | 最终人类批准 | approved for commit/push | 用户于 2026-10-14 23:11 Asia/Shanghai 指示“提交到github”，批准当前工作树中本任务完整 issue 修复、持久化改造、版本元数据、文档和测试范围 |
-| 提交/推送/远程 CI | 进行中 | 本次 commit gate 和 push 正在执行；远程 CI 结果待 GitHub 返回 |
+| 提交/推送/远程 CI | 已完成提交与推送 | commit `05748f8ad816dd3fe33b984839c22a71773fd767` 已推送到 `origin/main`；`committed` required checks 已通过；GitHub hosted CI 未在本次操作中等待或验证 |
 
 ## Issue implementation verification
 
@@ -130,3 +130,5 @@ Issue replies posted on 2026-10-14:
 ## 交接
 
 本次提交前已完成安装器、模板、checker、适配器、bootstrap、版本元数据及 issue 回复的核对。提交后记录实际 commit SHA、push 结果和远程 CI 状态；本文件不把远程 CI 或真实项目兼容性预先写成已验证。
+
+提交结果：`05748f8ad816dd3fe33b984839c22a71773fd767` 已发布到 `origin/main`。本地 `committed` 复核于提交后通过；远程 GitHub Actions 和用户真实项目兼容性仍待外部测试。
