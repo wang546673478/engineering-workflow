@@ -59,12 +59,12 @@ The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `c
 | task.required_checks | 已声明检查 ID；选定任务的必需检查强制生效，不能由检查自身 required=false 绕过 |
 | task.approval | 需要批准时为 `{status: approved, evidence: 项目内文件路径}`；证据引用用户原话/时间/范围，不能伪造或仅自行写 approved |
 | baseline | status 为 complete/approved，evidence 指已存在的基线验收记录；状态与证据存在不能自动证明业务完整性 |
-| exclude_paths | 明确排除并在报告列出；不能排除项目根，不得用宽泛排除隐藏业务改动 |
+| exclude_paths | 明确排除并在报告列出；可用项目相对的段级 glob（`*`、`?`、字符类和完整段 `**`），不能排除项目根，不得用宽泛排除隐藏业务改动 |
 | control_plane | 可选对象；`protected_paths` 声明额外受保护的控制文件，`approval_env` 为批准环境变量名（默认 `ENGINEERING_CONTROL_PLANE_APPROVED`）。manifest 和 checker 始终受保护；需人工审阅并通过外部批准才能提交变更 |
 
-路径限定在项目根内，不允许符号链接/目录连接旁路。source_paths、排除路径、检查工作目录和文档路径可为项目内绝对路径，匹配 Git 时规范化为项目相对路径。模块目录遍历会在进入排除范围前剪枝，因此 `node_modules` 中 pnpm 生成的链接不会被解析；排除范围外的链接仍会失败。Markdown 的普通项目内相对链接可跨目录；模板中的外部链接不代表代码依赖。未登记的源路径必须补模块归属，不能为了通过而添加全项目排除。
+路径限定在项目根内，不允许符号链接/目录连接旁路。manifest 路径的 `/` 与 `\\` 都按路径分隔符处理；POSIX 上的 Windows 盘符/UNC 路径、越界路径和链接旁路仍拒绝。source_paths、排除路径、检查工作目录和文档路径可为项目内绝对路径，匹配 Git 时规范化为项目相对路径。`exclude_paths` 的 `*`、`?` 和字符类只匹配一个路径段，`**` 匹配零个或多个完整段；命中的目录及其后代会在解析链接前剪枝，因此 `**/node_modules` 可安全跳过 pnpm 链接。根匹配、绝对 glob 和包含 `.`/`..` 段的 glob 被拒绝；排除项不会成为变更白名单，排除范围外的链接仍会失败。Markdown 的普通项目内相对链接可跨目录；模板中的外部链接不代表代码依赖。未登记的源路径必须补模块归属，不能为了通过而添加全项目排除。
 
-`task.documentation_impact` 可声明变更触发器与必须同步的文档：`{ "kind": { "when_paths": ["backend/migrations"], "document_ids": ["DB", "FLOW"] } }`。`when_paths` 只负责触发规则，必须是项目内模块 `source_paths` 或规则所引用文档的路径；它不是任意路径白名单。触发后 `document_ids` 中的每一份文档都必须出现在本次 diff 中，这是 AND 语义；需要“至少一份”时应拆分任务或明确记录例外，不使用未定义的 OR 语义。manifest、planning、影响分析和规则文件属于治理（governance）模块，若它们自身变化，应在任务中声明治理文档和影响记录，不能靠全局排除隐藏。commit/committed 还要求每个受影响的模块源路径命中至少一条规则，漏声明不能通过。只有实现细节变化时，可声明 `implementation-only` 规则，将对应源路径映射到影响分析文档，并在该文档中写明不更新模块/数据库文档的依据；该记录需与代码同一提交。常见类别包括模块/调用链（module map、business flow、contract）和数据库（database dictionary、business flow）。这是声明式门槛，仍不能自动发现未登记的动态依赖或判断语义是否真实。
+`task.documentation_impact` 可声明变更触发器与必须同步的文档：`{ "kind": { "when_paths": ["backend/migrations"], "document_ids": ["DB", "FLOW"] } }`。`when_paths` 保持字面路径；它可以是项目内模块 `source_paths`、规则所引用文档的路径，或一个严格非根的公共父目录，前提是该父目录包含所选任务中至少两个不同模块的 source scope。例如 `packages/api` 与 `packages/web` 可用 `packages` 聚合触发。公共父目录只触发文档门槛，不扩大变更覆盖范围；无关目录、单模块父目录、glob 和项目根仍非法。触发后 `document_ids` 中的每一份文档都必须出现在本次 diff 中，这是 AND 语义；需要“至少一份”时应拆分任务或明确记录例外，不使用未定义的 OR 语义。manifest、planning、影响分析和规则文件属于治理（governance）模块，若它们自身变化，应在任务中声明治理文档和影响记录，不能靠全局排除隐藏。commit/committed 还要求每个受影响的模块源路径命中至少一条规则，漏声明不能通过。只有实现细节变化时，可声明 `implementation-only` 规则，将对应源路径映射到影响分析文档，并在该文档中写明不更新模块/数据库文档的依据；该记录需与代码同一提交。常见类别包括模块/调用链（module map、business flow、contract）和数据库（database dictionary、business flow）。这是声明式门槛，仍不能自动发现未登记的动态依赖或判断语义是否真实。
 
 需求和验收 ID 默认必须出现在 `document` 指向的正文中。原有文档不适合插入机器 ID 时，可在条目增加 `index`，指向 `documents` 中的独立追踪索引；checker 只要求该索引包含 ID，并保留 `document` 作为规范正文归属。需要定位正文章节时可再声明 `anchor`（HTML/Markdown anchor 或标题）；`anchor` 与 `index` 都是 AND 条件。示例使用 `planning/traceability.md` 作为独立索引。
 

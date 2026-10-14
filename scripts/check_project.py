@@ -3,18 +3,20 @@
 from __future__ import annotations
 import argparse
 from datetime import datetime
+from fnmatch import fnmatchcase
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 import subprocess
 import sys
 import time
 from urllib.parse import urlparse
 
-VERSION = "1.3"
+VERSION = (Path(__file__).resolve().parents[1] / "VERSION").read_text(encoding="utf-8-sig").strip()
 STATES = {"pass", "fail", "partial", "unsupported", "skipped", "error"}
+GLOB_CHARS = frozenset("*?[")
 
 class ConfigError(ValueError):
     pass
@@ -36,10 +38,17 @@ def safe_root(raw):
         raise ConfigError("root must be an existing directory")
     return original.resolve()
 
-def safe_path(root, raw, file_only=True):
+def normalize_manifest_path(raw):
     if not isinstance(raw, str) or not raw.strip() or "\x00" in raw:
         raise ConfigError("invalid path")
-    given = Path(raw)
+    normalized = raw.replace("\\", "/")
+    if os.name != "nt" and PureWindowsPath(normalized).drive:
+        raise ConfigError("foreign absolute path: " + raw)
+    return normalized
+
+def safe_path(root, raw, file_only=True):
+    normalized = normalize_manifest_path(raw)
+    given = Path(normalized)
     candidate = given if given.is_absolute() else root / given
     try:
         relative = candidate.absolute().relative_to(root)
@@ -65,6 +74,74 @@ def safe_path(root, raw, file_only=True):
     if resolved.exists() and file_only and not resolved.is_file():
         raise ConfigError("expected file: " + raw)
     return resolved
+
+def has_glob_magic(raw):
+    return any(char in raw for char in GLOB_CHARS)
+
+def glob_segments_match(path, pattern):
+    """Match slash-separated paths; ``**`` is the only multi-segment token."""
+    path_parts = tuple(part for part in path.replace("\\", "/").split("/") if part)
+    pattern_parts = tuple(pattern) if not isinstance(pattern, str) else tuple(pattern.replace("\\", "/").split("/"))
+    if os.name == "nt":
+        path_parts = tuple(part.casefold() for part in path_parts)
+        pattern_parts = tuple(part.casefold() for part in pattern_parts)
+    memo = {}
+    def match(path_index, pattern_index):
+        key = (path_index, pattern_index)
+        if key in memo:
+            return memo[key]
+        if pattern_index == len(pattern_parts):
+            result = path_index == len(path_parts)
+        elif pattern_parts[pattern_index] == "**":
+            result = match(path_index, pattern_index + 1) or (
+                path_index < len(path_parts) and match(path_index + 1, pattern_index)
+            )
+        else:
+            result = path_index < len(path_parts) and fnmatchcase(path_parts[path_index], pattern_parts[pattern_index]) and match(path_index + 1, pattern_index + 1)
+        memo[key] = result
+        return result
+    return match(0, 0)
+
+def build_exclude_specs(root, values):
+    specs = []
+    for raw in array(values, "exclude_paths"):
+        normalized = normalize_manifest_path(raw)
+        if has_glob_magic(normalized):
+            parts = normalized.split("/")
+            if normalized.startswith("/") or PureWindowsPath(normalized).drive:
+                raise ConfigError("exclude glob must be project-relative: " + raw)
+            if any(not part or part in (".", "..") for part in parts):
+                raise ConfigError("exclude glob contains an unsafe path segment: " + raw)
+            pattern = tuple(parts)
+            if glob_segments_match("", pattern):
+                raise ConfigError("exclude glob cannot exclude project root: " + raw)
+            specs.append(("glob", pattern))
+            continue
+        path = safe_path(root, normalized, file_only=False)
+        if path == root:
+            raise ConfigError("exclude_paths cannot exclude project root")
+        specs.append(("literal", lexical_path(root, normalized)))
+    return specs
+
+def lexical_relative(root, path):
+    return Path(path).absolute().relative_to(root).as_posix()
+
+def excluded_path(root, path, specs):
+    if isinstance(path, Path):
+        relative = lexical_relative(root, path)
+    else:
+        relative = normalize_manifest_path(path).lstrip("./")
+    relative_parts = tuple(part for part in relative.split("/") if part)
+    for kind, value in specs:
+        if kind == "literal":
+            candidate = root / Path(relative)
+            if is_under(candidate, value):
+                return True
+        else:
+            for index in range(1, len(relative_parts) + 1):
+                if glob_segments_match("/".join(relative_parts[:index]), value):
+                    return True
+    return False
 
 def read_json(path):
     try:
@@ -195,7 +272,7 @@ def relative_scope(root, raw):
 
 def lexical_path(root, raw):
     """Return an absolute path without resolving links for traversal pruning."""
-    given = Path(raw)
+    given = Path(normalize_manifest_path(raw))
     return Path(os.path.normpath(str((given if given.is_absolute() else root / given).absolute())))
 
 def is_under(path, scope):
@@ -216,14 +293,14 @@ def iter_module_paths(root, source, excluded):
     stack = [source]
     while stack:
         current = stack.pop()
-        if any(is_under(current, scope) for scope in excluded):
+        if excluded_path(root, current, excluded):
             continue
         try:
             children = list(current.iterdir())
         except OSError:
             raise
         for child in children:
-            if any(is_under(child, scope) for scope in excluded):
+            if excluded_path(root, child, excluded):
                 continue
             safe_path(root, str(child), file_only=False)
             yield child
@@ -366,12 +443,7 @@ def validate(root, manifest, mode, task_id):
             raise ConfigError("workflow.active_task must be a non-empty task ID")
         if active_task not in tasks:
             faults.append("workflow.active_task references unknown task: " + active_task)
-    excluded = []
-    for raw in array(manifest["exclude_paths"], "exclude_paths"):
-        path = safe_path(root, raw, file_only=False)
-        if path == root:
-            raise ConfigError("exclude_paths cannot exclude project root")
-        excluded.append(lexical_path(root, raw))
+    excluded = build_exclude_specs(root, manifest["exclude_paths"])
     def fault(msg):
         faults.append(msg)
     for ident, doc in docs.items():
@@ -477,8 +549,17 @@ def validate(root, manifest, mode, task_id):
             legal_trigger_scopes.extend(docs[doc_id]["path"] for doc_id in document_ids)
             legal_trigger_scopes = [relative_scope(root, raw) for raw in legal_trigger_scopes]
             for raw in when_paths:
+                if has_glob_magic(normalize_manifest_path(raw)):
+                    raise ConfigError("documentation_impact.when_paths must be literal paths: " + raw)
                 normalized = relative_scope(root, raw)
-                if not any(covered(normalized, allowed) for allowed in legal_trigger_scopes):
+                common_parent = bool(normalized) and sum(
+                    any(scope != normalized and covered(scope, normalized)
+                        for scope in (relative_scope(root, source) for source in modules[module_id]["source_paths"]))
+                    for module_id in task["module_ids"] if module_id in modules
+                ) >= 2
+                if not normalized:
+                    fault("documentation_impact.when_paths cannot target project root: " + raw)
+                elif not any(covered(normalized, allowed) for allowed in legal_trigger_scopes) and not common_parent:
                     fault("documentation_impact.when_paths is outside module/document scopes: " + raw)
         boolean(task.get("approval_required"), "task.approval_required")
         if task.get("status") not in ("planned", "in_progress", "blocked", "complete"):
@@ -738,6 +819,7 @@ def committed_git_paths(root, commit):
     return sorted(paths)
 
 def covered(path, raw):
+    path = path.replace("\\", "/").rstrip("/")
     normalized = raw.replace("\\", "/").rstrip("/")
     if normalized in ("", "."):
         return True
@@ -749,7 +831,8 @@ def change_check(root, manifest, docs, modules, tasks, task_id, base=None, paths
     if paths is None:
         paths = git_paths(root, base)
     selected = tasks[task_id]
-    allowed = list(manifest["exclude_paths"])
+    exclude_specs = build_exclude_specs(root, manifest["exclude_paths"])
+    allowed = []
     for ident in selected["module_ids"]:
         if ident in modules:
             allowed.extend(modules[ident]["source_paths"])
@@ -773,11 +856,10 @@ def change_check(root, manifest, docs, modules, tasks, task_id, base=None, paths
                 raise ConfigError("documentation_impact references unknown document: " + str(doc_id))
             allowed.append(docs[doc_id]["path"])
     allowed = [relative_scope(root, raw) for raw in allowed]
-    uncovered = [p for p in paths if not any(covered(p, raw) for raw in allowed)]
-    exclude_scopes = [relative_scope(root, raw) for raw in manifest["exclude_paths"]]
-    excluded = [p for p in paths if any(covered(p, raw) for raw in exclude_scopes)]
+    uncovered = [p for p in paths if not excluded_path(root, p, exclude_specs) and not any(covered(p, raw) for raw in allowed)]
+    excluded = [p for p in paths if excluded_path(root, p, exclude_specs)]
     documentation_gaps = []
-    changed = [p for p in paths if not any(covered(p, raw) for raw in exclude_scopes)]
+    changed = [p for p in paths if not excluded_path(root, p, exclude_specs)]
     document_scopes = {doc_id: relative_scope(root, doc["path"]) for doc_id, doc in docs.items()}
     changed_docs = {scope for scope in document_scopes.values() if any(covered(p, scope) for p in changed)}
     for kind, rule in (impact or {}).items():

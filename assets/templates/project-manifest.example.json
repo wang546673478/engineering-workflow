@@ -46,5 +46,5 @@
     }
   }],
   "baseline": {"status": "planned", "evidence": "planning/baseline-review.md"},
-  "exclude_paths": [".git", "build"]
+  "exclude_paths": [".git", "build", "**/node_modules"]
 }

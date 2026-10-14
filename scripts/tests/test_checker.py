@@ -75,6 +75,22 @@ class CheckerTests(unittest.TestCase):
         proc,result=self.cli("--mode","baseline","--run-checks")
         self.assertEqual(proc.returncode,1)
         self.assertIn("workflow.active_task", json.dumps(result))
+
+    def test_report_uses_repository_version_file(self):
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+        self.assertEqual(result["tool_version"], (SCRIPTS.parent / "VERSION").read_text(encoding="utf-8").strip())
+
+    def test_manifest_backslash_paths_are_portable(self):
+        self.manifest["documents"][0]["path"] = "docs\\spec.md"
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+
+    def test_foreign_drive_and_unc_paths_are_rejected(self):
+        for raw in ("C:/outside/spec.md", "//server/share/spec.md"):
+            with self.subTest(raw=raw):
+                with self.assertRaises(checker.ConfigError):
+                    checker.safe_path(self.root, raw)
     def test_check_runs_from_declared_working_directory(self):
         self.manifest["checks"][0]["working_directory"] = "src"
         self.manifest["checks"][0]["command"] = [
@@ -229,6 +245,75 @@ class CheckerTests(unittest.TestCase):
         with mock.patch.object(Path, "is_symlink", autospec=True, side_effect=lambda path: path == link):
             proc,result=self.cli("--mode","baseline","--run-checks")
         self.assertEqual(proc.returncode,0, result)
+
+    def test_glob_exclusion_prunes_nested_dependency_links(self):
+        excluded = self.root / "src/packages/a/node_modules"
+        excluded.mkdir(parents=True)
+        link = excluded / "workspace-package"
+        link.write_text("placeholder")
+        self.manifest["exclude_paths"].append("**/node_modules")
+        with mock.patch.object(Path, "is_symlink", autospec=True, side_effect=lambda path: path == link):
+            proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+
+    def test_glob_root_exclusion_is_rejected(self):
+        self.manifest["exclude_paths"].append("**")
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("project root", json.dumps(result))
+
+    def test_glob_segments_do_not_cross_directories(self):
+        self.assertTrue(checker.glob_segments_match("src/a/node_modules", ("src", "*", "node_modules")))
+        self.assertFalse(checker.glob_segments_match("src/a/b/node_modules", ("src", "*", "node_modules")))
+        self.assertTrue(checker.glob_segments_match("src/a/b/node_modules", ("**", "node_modules")))
+
+    def test_common_parent_for_two_modules_is_valid_trigger_scope(self):
+        for path in ("packages/api/api.py", "packages/web/web.py"):
+            target = self.root / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("content", encoding="utf-8")
+        self.manifest["modules"][0]["source_paths"] = ["packages/api"]
+        self.manifest["modules"].append({"id": "web", "source_paths": ["packages/web"], "document": "module", "depends_on": [], "allowed_dependencies": []})
+        self.manifest["tasks"][0]["module_ids"] = ["core", "web"]
+        self.manifest["tasks"][0]["documentation_impact"] = {"module-connectivity": {"when_paths": ["packages"], "document_ids": ["impact"]}}
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+
+    def test_common_parent_for_one_module_is_rejected(self):
+        self.manifest["modules"][0]["source_paths"] = ["packages/api"]
+        (self.root / "packages/api").mkdir(parents=True, exist_ok=True)
+        self.manifest["tasks"][0]["documentation_impact"] = {"module-connectivity": {"when_paths": ["packages"], "document_ids": ["impact"]}}
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("outside module/document scopes", json.dumps(result))
+
+    def test_documentation_trigger_glob_and_project_root_are_rejected(self):
+        for when_path in ("src/*", "."):
+            with self.subTest(when_path=when_path):
+                self.manifest["tasks"][0]["documentation_impact"] = {"module-connectivity": {"when_paths": [when_path], "document_ids": ["impact"]}}
+                proc, result = self.cli("--mode", "baseline", "--run-checks")
+                self.assertIn(proc.returncode, (1, 2))
+                self.assertIn("when_paths", json.dumps(result))
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_common_parent_trigger_does_not_expand_change_coverage(self):
+        for path in ("packages/api/api.py", "packages/web/web.py"):
+            target = self.root / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("content", encoding="utf-8")
+        self.manifest["modules"][0]["source_paths"] = ["packages/api"]
+        self.manifest["modules"].append({"id": "web", "source_paths": ["packages/web"], "document": "module", "depends_on": [], "allowed_dependencies": []})
+        self.manifest["tasks"][0]["module_ids"] = ["core", "web"]
+        self.manifest["tasks"][0]["documentation_impact"] = {"module-connectivity": {"when_paths": ["packages"], "document_ids": ["impact"]}}
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "two module baseline")
+        (self.root / "packages/other").mkdir(parents=True, exist_ok=True)
+        (self.root / "packages/other/other.py").write_text("changed", encoding="utf-8")
+        proc, result = self.cli("--mode", "change", "--task", "TASK-1", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        scope = next(item for item in result["checks"] if item["rule_id"] == "change-scope")
+        self.assertIn("packages/other/other.py", scope["evidence"]["uncovered"])
     def test_module_walk_rejects_unexcluded_link(self):
         link = self.root / "src/workspace-package"
         link.write_text("placeholder")

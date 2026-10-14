@@ -1,6 +1,6 @@
 # Engineering Workflow Module Map
 
-Status: `current baseline with persistence change pending verification`
+Status: `current with TASK-ISSUES-02 implementation in progress`
 Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 ## Module: instructions
@@ -21,8 +21,8 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Callers: Project hooks, CI, and maintainers.
 - Direct dependencies and reason: Python standard library, manifest documents, and adapter metadata validators.
 - Dependents: Project-specific hook and CI templates.
-- Current state: `implemented`
-- Evidence: `scripts/check_project.py`, `scripts/tests/test_checker.py`.
+- Current state: `implemented`; #11 version reporting, #12 portable path normalization and #13 exclusion/impact-scope rules are being verified in `TASK-ISSUES-02`.
+- Evidence: `scripts/check_project.py`, `scripts/tests/test_checker.py`, `references/checker.md`, `docs/contracts.md`.
 - Protected-rule checks: commit modes read the previous manifest from Git and combine previous and proposed protected scopes. Approval comes from outside the submitted manifest; these checks do not authenticate a human or replace protected branch settings.
 
 ## Module: adapters
@@ -42,7 +42,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Callers: Maintainers and CI.
 - Direct dependencies and reason: Checker, adapter and installer public entrypoints.
 - Dependents: None at runtime.
-- Current state: Existing coverage is implemented; persistence regression results are pending in the active task.
+- Current state: Existing coverage is implemented; issue #11-#13 regression results are recorded in the active task as they run.
 - Evidence: `scripts/tests/test_checker.py`, `scripts/tests/test_guidance.py`.
 
 ## Module: governance
@@ -51,7 +51,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Entrypoints: `engineering-manifest.json` (`workflow.active_task`), [the persistence task record](../planning/persistence-task.md) and `.github/workflows/quality.yml`.
 - Consumers: maintainers, the checker and CI runners. Local projects can run the same checks without GitHub.
 - Review: changing the manifest, checker, rules or CI listed in `control_plane.protected_paths` blocks commit validation until a human has reviewed that concrete change.
-- State: The historical approved task and baseline remain intact. `TASK-PERSISTENCE-01` and `TASK-ISSUES-01` are complete and approved for the published change. `workflow.active_task` selects `TASK-ISSUES-01`; push/PR committed checks consume that manifest pointer instead of copying a historical task ID into workflow code. Reviewed CI retries a failed TEST check through the diagnostic path only after all other required gates pass.
+- State: The historical approved tasks remain intact. `TASK-ISSUES-02` is the active in-progress task for the new protected checker and manifest changes; its approval is pending. CI consumes the manifest pointer instead of copying a historical task ID into workflow code.
 
 ## Dependency rules
 

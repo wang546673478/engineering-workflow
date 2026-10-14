@@ -100,6 +100,10 @@ python scripts/check_project.py \
 
 具体文档门禁由项目清单中的 `task.documentation_impact` 声明。检查器不会自动发现所有动态依赖，模块关联和字段语义仍需要人工复核。
 
+清单路径支持 `/` 和 `\\` 两种分隔符。`exclude_paths` 可使用项目相对的段级 glob：`*`、`?`、字符类只匹配单个目录段，`**` 匹配零个或多个目录段；例如 `**/node_modules` 会在解析链接前剪枝任意层依赖目录。根匹配、绝对 glob 和 `..` 段会被拒绝，排除项不会扩大变更覆盖范围。
+
+`documentation_impact.when_paths` 仍是字面路径。除了模块或文档自身范围，还可以使用包含至少两个不同所选模块 source scope 的严格公共父目录，例如 `packages/api` 与 `packages/web` 共用 `packages`。公共父目录只触发配置的文档更新门槛，不会让该目录下的其他路径自动通过覆盖检查。
+
 ## 数据库元数据适配器
 
 入口：`scripts/extract_database.py`

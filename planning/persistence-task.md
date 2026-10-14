@@ -1,6 +1,6 @@
 # TASK-PERSISTENCE-01: 项目持久化指引与 GitHub issue 审计
 
-Updated: `2026-10-14` Asia/Shanghai
+Updated: `2026-10-15` Asia/Shanghai
 Status: `complete` — 持久化与 issue 修复已验证，用户已批准提交与推送
 Base commit: `1aae5ed`
 Requirements: `REQ-PERSIST-01`–`REQ-PERSIST-03`
@@ -136,3 +136,20 @@ Issue replies posted on 2026-10-14:
 Actions 运行 `38596234931` 已通过环境审核：control-plane 与 committed-scope 通过，首次 `TEST` 调用返回 1；同一 job 的诊断重跑显示 79 项测试全部通过。现有 workflow 的失败传播逻辑会让诊断成功后 job 仍保持失败。本次修复让验证步骤允许进入诊断，由诊断结果决定最终状态，同时继续要求除 TEST 外所有必需检查通过。
 
 后续 Actions 修复：提交 `5e0a44f` 的 Linux/Windows Quality 运行在测试前失败，原因是 workflow 仍选择旧任务 `TASK-SELF-01`，而该提交只改变了本任务状态文件，触发旧任务的历史 `baseline-docs` 门槛。修复改为由 manifest 的 `workflow.active_task` 指向 `TASK-ISSUES-01`，push/PR workflow 不再复制任务 ID，并把 `.github` 纳入本任务的控制面影响规则；修复后的 Actions 结果待 GitHub 新运行返回。旧 `TASK-SELF-01` 作为历史任务保留，不再作为当前 CI 默认任务。
+
+## Follow-up GitHub issue audit (2026-10-15)
+
+本次用户请求是查看上一轮之后新增的 issue；本节只记录远程只读审计，不把旧任务的批准或完成状态延伸到新代码变更。审计使用 GitHub 公共 API 读取仓库 `wang546673478/engineering-workflow` 的 issue 列表、正文和仓库元数据；本机未安装 `gh`，没有使用或保存用户在聊天中提供的凭据。当前未关闭 issue 只有 #11、#12、#13，未发现 #14 及以后；#2–#10 已关闭。
+
+| Issue | 判断 | 证据与建议 | 当前状态 |
+| --- | --- | --- | --- |
+| [#11：`check_project.py` 版本常量仍为 1.3](https://github.com/wang546673478/engineering-workflow/issues/11) | 高优先级、小范围 bug | 远程复测记录 `main @ 5b8babf`；本地 `scripts/check_project.py:16` 仍为 `VERSION = "1.3"`，而 `VERSION` 与 `CHANGELOG.md` 为 1.4.0。应统一版本来源或同步常量，并增加报告 `tool_version` 回归测试。 | open，未修改 |
+| [#12：反斜杠 manifest 路径在 Linux 上失败](https://github.com/wang546673478/engineering-workflow/issues/12) | 中高优先级、真实可用性 bug | `safe_path()` 直接构造 `Path(raw)`，而 `covered()` 另行归一化分隔符；远程复测确认 Windows 风格文档路径在 Linux 上被当作错误文件名。应在安全路径入口统一归一化，同时保留盘符、UNC、越界和链接安全测试。 | open，未修改 |
+| [#13：`exclude_paths` 无 glob、`when_paths` 不支持公共父目录](https://github.com/wang546673478/engineering-workflow/issues/13) | 中优先级、需要产品/规则决定的增强 | 当前 `exclude_paths` 和 `when_paths` 使用词法前缀匹配；任意层 `node_modules`、多模块公共父目录的语义尚未定义。需要先决定 glob 语法、排除目录剪枝和公共父目录是否仅作为触发器，随后再改 schema、文档和测试。 | open，未修改 |
+
+### Follow-up scope and verification
+
+- 审计阶段没有创建新的 manifest task，也没有修改源代码、issue 状态或 GitHub 内容；随后用户授权实施 #11-#13，已在独立的 [TASK-ISSUES-02](issues-11-13-task.md) 中记录新的范围、决定、影响分析、skill review 和验证计划。旧的 `TASK-ISSUES-01`/`TASK-PERSISTENCE-01` 仍只代表已经发布的上一轮范围。
+- 范围复核：2026-10-15 重新读取本仓库 `SKILL.md`（metadata 版本 1.4.0）及 `references/checker.md`、`references/project-agents-clauses.md`、`references/implementation-workflow.md`；`engineering-workflow` 继续采用。`skill-creator` 未采用（没有修改 skill 包结构），`tdd` 未采用（没有实现或新增测试）。本次只读审计的影响限于本记录和远程 issue 证据，不触发代码模块、契约或数据库文档门槛。
+- 新任务已明确 #13 的 glob 和公共父目录语义；其保护性实现不能复用旧批准，最终状态以 `TASK-ISSUES-02` 为准。
+- 本轮本地证据：`python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline` 的报告仍显示 `tool_version: "1.3"`；源码、版本文件和远程 issue 正文相互印证。未运行新修复测试，因为本轮是审计而非实现。

@@ -12,7 +12,6 @@ on:
       task_id:
         description: Task recorded in the reviewed manifest
         required: true
-        default: TASK-ISSUES-01
         type: string
 
 permissions:
