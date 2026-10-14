@@ -54,6 +54,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - State: The historical approved tasks remain intact. `TASK-ISSUES-02` is complete and published; `TASK-ISSUES-03` owns the automatic PR-review-linked workflow change. CI consumes the manifest pointer instead of copying a historical task ID into workflow code.
 - The governance workflow also owns automatic PR-review-linked protected checks: ordinary jobs receive no approval value, the fixed environment gates exact commits, and the aggregate `quality` check is intended for branch protection.
 - Reviewed workflow diagnostics are owned by governance and are constrained to rule-valid, TEST-only failures; they do not change checker or test ownership.
+- Diagnostic recovery is part of the governance workflow contract: a passing verbose rerun may recover a transient TEST result after rule validation, while checker failures remain blocking.
 
 ## Dependency rules
 

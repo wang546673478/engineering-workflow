@@ -139,7 +139,9 @@ jobs:
           python -c "import os,re,subprocess; value=os.environ['REVIEWED_SHA'];
           assert re.fullmatch(r'[a-fA-F0-9]{40}|[a-fA-F0-9]{64}',value), 'Use a full commit SHA';
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip().lower()==value.lower(), 'Checkout differs from detected commit'"
-      - name: Check approved protected tree and run declared tests
+      - id: reviewed_check
+        name: Check approved protected tree and run declared tests
+        continue-on-error: true
         env:
           ENGINEERING_TASK_ID: ${{ needs.detect.outputs.task_id }}
           ENGINEERING_CONTROL_PLANE_APPROVED: ${{ vars.ENGINEERING_CONTROL_PLANE_APPROVED }}
@@ -151,12 +153,24 @@ jobs:
           name: reviewed-${{ matrix.os }}
           path: work/ci-review.json
           if-no-files-found: ignore
-      - name: Diagnose test failure after successful rule validation
-        if: failure()
+      - id: reviewed_diagnose
+        name: Diagnose test failure after successful rule validation
+        if: steps.reviewed_check.outcome == 'failure'
         shell: bash
         run: |
           python -c "import json; data=json.load(open('work/ci-review.json', encoding='utf-8')); checks={c['rule_id']:c for c in data['checks']}; assert not data['errors'] and checks.get('control-plane',{}).get('status')=='pass' and checks.get('committed-scope',{}).get('status')=='pass'; assert all(c['status']=='pass' for c in data['checks'] if c['required'] and c['rule_id'] != 'TEST'); assert checks.get('TEST',{}).get('status')=='fail'"
           python -m unittest discover -s scripts/tests -v
+      - name: Finalize reviewed result
+        if: always()
+        env:
+          CHECK_OUTCOME: ${{ steps.reviewed_check.outcome }}
+          DIAGNOSE_OUTCOME: ${{ steps.reviewed_diagnose.outcome }}
+        shell: bash
+        run: |
+          if [[ "$CHECK_OUTCOME" != "success" && "$DIAGNOSE_OUTCOME" != "success" ]]; then
+            echo "Protected checker failed and diagnostic recovery did not pass" >&2
+            exit 1
+          fi
 
   manual_reviewed:
     name: manual reviewed (${{ matrix.os }})
@@ -185,7 +199,9 @@ jobs:
           python -c "import os,re,subprocess; value=os.environ['REVIEWED_SHA'];
           assert re.fullmatch(r'[a-fA-F0-9]{40}|[a-fA-F0-9]{64}',value), 'Use a full commit SHA';
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip().lower()==value.lower(), 'Checkout differs from reviewed commit'"
-      - name: Check manually reviewed protected tree and run declared tests
+      - id: manual_check
+        name: Check manually reviewed protected tree and run declared tests
+        continue-on-error: true
         env:
           ENGINEERING_TASK_ID: ${{ inputs.task_id }}
           ENGINEERING_CONTROL_PLANE_APPROVED: ${{ vars.ENGINEERING_CONTROL_PLANE_APPROVED }}
@@ -197,12 +213,24 @@ jobs:
           name: manual-reviewed-${{ matrix.os }}
           path: work/ci-review.json
           if-no-files-found: ignore
-      - name: Diagnose manual test failure after successful rule validation
-        if: failure()
+      - id: manual_diagnose
+        name: Diagnose manual test failure after successful rule validation
+        if: steps.manual_check.outcome == 'failure'
         shell: bash
         run: |
           python -c "import json; data=json.load(open('work/ci-review.json', encoding='utf-8')); checks={c['rule_id']:c for c in data['checks']}; assert not data['errors'] and checks.get('control-plane',{}).get('status')=='pass' and checks.get('committed-scope',{}).get('status')=='pass'; assert all(c['status']=='pass' for c in data['checks'] if c['required'] and c['rule_id'] != 'TEST'); assert checks.get('TEST',{}).get('status')=='fail'"
           python -m unittest discover -s scripts/tests -v
+      - name: Finalize manual reviewed result
+        if: always()
+        env:
+          CHECK_OUTCOME: ${{ steps.manual_check.outcome }}
+          DIAGNOSE_OUTCOME: ${{ steps.manual_diagnose.outcome }}
+        shell: bash
+        run: |
+          if [[ "$CHECK_OUTCOME" != "success" && "$DIAGNOSE_OUTCOME" != "success" ]]; then
+            echo "Protected checker failed and diagnostic recovery did not pass" >&2
+            exit 1
+          fi
 
   quality:
     name: quality
