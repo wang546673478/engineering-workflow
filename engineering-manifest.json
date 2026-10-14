@@ -192,7 +192,7 @@
     "acceptance_ids": ["AT-ISSUES-08"],
     "module_ids": ["instructions", "governance"],
     "depends_on": ["TASK-ISSUES-02"],
-    "status": "in_progress",
+    "status": "complete",
     "impact_document": "AUTO_REVIEW_TASK",
     "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
     "approval_required": true,

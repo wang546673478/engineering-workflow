@@ -1,7 +1,7 @@
 # TASK-ISSUES-03: Automatic protected-path CI review
 
 Updated: `2026-10-15` Asia/Shanghai
-Status: `in_progress`
+Status: `complete`
 Base commit: `47d688b`
 Requirements: `REQ-ISSUES-08`
 Acceptance: `AT-ISSUES-08`
@@ -51,7 +51,7 @@ Recheck: scope expanded from issue implementation to workflow orchestration and 
 
 ## Verification and handoff
 
-- Human approval: on 2026-10-15 the user answered “批准提交并推送” for the complete TASK-ISSUES-03 workflow, CODEOWNERS, manifest, documentation and audit artifact scope. This authorizes commit and push for this scope only; it does not authorize unrelated changes or issue state changes.
+- Human approval: on 2026-10-15 the user answered “批准提交并推送” for the complete TASK-ISSUES-03 workflow, CODEOWNERS, manifest, documentation and audit artifact scope. Later the user chose “保留直接推送，只让 Actions 自动审批和检查”, so main branch protection was intentionally not enabled. This authorizes commit and push for this scope only; it does not authorize unrelated changes or issue state changes.
 
 - Local checks must include JSON/workflow parsing, `git diff --check`, manifest baseline, and the declared TEST/COMPILE/GUIDANCE-COMPILE checks.
 - Hosted checks must cover an ordinary push/PR, a protected-path push/PR waiting for and passing environment review on Ubuntu/Windows, and the manual exact-SHA fallback. A denied environment remains a required failure.
@@ -59,5 +59,8 @@ Recheck: scope expanded from issue implementation to workflow orchestration and 
 - The reviewed/manual jobs also print verbose tests only after the saved report proves control-plane and committed-scope success and TEST is the sole failed required check. A passing rerun recovers a transient TEST failure; rule/scope failures cannot be recovered.
 - Local validation: workflow YAML parsed with the task-local PyYAML; manifest JSON parsed; Python compilation passed; `python -m unittest discover -s scripts/tests -q` passed with 89 tests; baseline checker passed. Change-scope against `47d688b` passed with no uncovered paths or documentation gaps. The expected task-gate remains pending until the approved commit gate runs.
 - Hosted validation remains pending until the protected workflow change is committed and GitHub runs ordinary PR, approved same-repository review, push, and manual fallback paths. No issue states or unrelated files will change.
-- Hosted run [38630819562](https://github.com/wang546673478/engineering-workflow/actions/runs/38630819562) passed after commit `e0e80b8` on both Ubuntu and Windows; detect and aggregate `quality` passed, ordinary jobs were skipped as expected for protected paths. Initial TEST returned 1 on both platforms, but guarded verbose reruns passed all 89 tests; the finalized workflow recovered that transient TEST-only failure. The exact protected-rule checker, scope, compilation and environment gates passed. Normal PR review, fork PR and manual fallback events have not yet been separately exercised.
-- Current implementation was published in `4b47a3a` and refined in `74eb1f8` and `e0e80b8`, all pushed to `origin/main`. The working tree was clean before recording the branch settings decision. Task completion remains pending ordinary-path hosted verification and final manifest status update.
+- Protected push run [38630819562](https://github.com/wang546673478/engineering-workflow/actions/runs/38630819562) passed detect, environment-reviewed checks on Ubuntu and Windows, and aggregate `quality`. The initial TEST invocation failed transiently on both platforms; rule gates and compilation passed, and the guarded verbose reruns passed all 89 tests, so the workflow recovered the TEST-only failure.
+- Ordinary push run [38634353735](https://github.com/wang546673478/engineering-workflow/actions/runs/38634353735) passed detect, ordinary Ubuntu/Windows checks and aggregate `quality`, with reviewed jobs skipped as intended.
+- Repository settings were read-only checked using the updated token: `main` is not protected and no repository rulesets exist; `engineering-control-review` has the owner as a required reviewer and allows self-review. The user chose to keep direct pushes, so no branch protection was changed. Consequence: protected push review happens after the commit is already on `main`; this is a post-push verification gate, not a merge-prevention control.
+- Same-repository `pull_request_review` matching, fork PR behavior and manual `workflow_dispatch` fallback were not separately exercised. The published primary push path and ordinary path were both verified. These secondary paths remain a follow-up verification gap.
+- Implementation commits `4b47a3a`, `74eb1f8`, `e0e80b8`, `2fd386d` and `3628e11` are pushed to `origin/main`; the working tree is clean. The manifest task status is updated to `complete` after the verified push paths and the user's direct-push decision.
