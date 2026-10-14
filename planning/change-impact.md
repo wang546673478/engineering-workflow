@@ -47,3 +47,5 @@ The user stated on 2026-10-14: “是需要用户看一遍的，并且和用户�
 ## Publication follow-up
 
 The approved change was published as `147531c`. The protected review environment was configured with the repository owner as reviewer and admin bypass disabled. The exact-SHA reviewed run passed on Ubuntu; Windows passed all rule and scope checks but its test command exited 1. Add visible fixture-test diagnostics only after all required prechecks have passed, so the platform-specific failure can be corrected without weakening the rule gate. This is a routine validation follow-up within the user's request to publish the completed working change.
+
+The diagnostic run identified one fixture using an unnormalized temporary root (`RUNNER~1`) while the resolved path used `runneradmin`. The CLI already normalizes roots through `safe_root`. The remote-inventory fixture now uses that same public root preparation, retaining all assertions and path containment checks. This fixes Windows test setup only; production checker, adapters and approval policy are unchanged.

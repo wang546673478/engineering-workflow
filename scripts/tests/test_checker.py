@@ -683,7 +683,8 @@ class DatabaseAdapterTests(unittest.TestCase):
             "items": items,
         }
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+            # Match the CLI's canonical root: Windows TEMP may use an 8.3 alias.
+            root = checker.safe_root(tmp)
             (root / "inventory.json").write_text(json.dumps(source), encoding="utf-8")
             (root / "mapping.json").write_text(json.dumps({"kind": "database", "items": [{"id": "db0", "document": "db.md", "fields": ["keys"]}]}), encoding="utf-8")
             (root / "db.md").write_text("db0 keys", encoding="utf-8")
