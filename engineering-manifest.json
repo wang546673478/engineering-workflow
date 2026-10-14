@@ -8,27 +8,40 @@
     {"id": "FLOW", "path": "docs/business-flow.md", "kind": "business-flow", "required": true},
     {"id": "IMPACT", "path": "planning/change-impact.md", "kind": "impact", "required": true},
     {"id": "BASELINE", "path": "planning/baseline-review.md", "kind": "baseline", "required": true},
-    {"id": "SKILL_REVIEW", "path": "planning/skill-review.md", "kind": "skill-review", "required": true}
+    {"id": "SKILL_REVIEW", "path": "planning/skill-review.md", "kind": "skill-review", "required": true},
+    {"id": "PERSISTENCE_TASK", "path": "planning/persistence-task.md", "kind": "task", "required": true}
   ],
   "requirements": [
     {"id": "REQ-SELF-01", "document": "SPEC"},
     {"id": "REQ-SELF-02", "document": "SPEC"},
     {"id": "REQ-SELF-03", "document": "SPEC"},
     {"id": "REQ-SELF-04", "document": "SPEC"},
-    {"id": "REQ-SELF-05", "document": "SPEC"}
+    {"id": "REQ-SELF-05", "document": "SPEC"},
+    {"id": "REQ-PERSIST-01", "document": "SPEC"},
+    {"id": "REQ-PERSIST-02", "document": "SPEC"},
+    {"id": "REQ-PERSIST-03", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-01", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-02", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-03", "document": "SPEC"}
   ],
   "acceptance": [
     {"id": "AT-SELF-01", "document": "SPEC"},
     {"id": "AT-SELF-02", "document": "SPEC"},
     {"id": "AT-SELF-03", "document": "SPEC"},
     {"id": "AT-SELF-04", "document": "SPEC"},
-    {"id": "AT-SELF-05", "document": "SPEC"}
+    {"id": "AT-SELF-05", "document": "SPEC"},
+    {"id": "AT-PERSIST-01", "document": "SPEC"},
+    {"id": "AT-PERSIST-02", "document": "SPEC"},
+    {"id": "AT-PERSIST-03", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-01", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-02", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-03", "document": "SPEC"}
   ],
   "modules": [
-    {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
+    {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "AGENTS.md", "VERSION", "CHANGELOG.md", "LICENSE", "scripts/install_agents_guidance.py", "scripts/init_manifest.py", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
     {"id": "checker", "source_paths": ["scripts/check_project.py"], "document": "MAP", "depends_on": ["adapters"], "allowed_dependencies": ["adapters"]},
     {"id": "adapters", "source_paths": ["scripts/extract_database.py", "scripts/extract_sqlite.py"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
-    {"id": "tests", "source_paths": ["scripts/tests"], "document": "MAP", "depends_on": ["checker", "adapters"], "allowed_dependencies": ["checker", "adapters"]},
+    {"id": "tests", "source_paths": ["scripts/tests"], "document": "MAP", "depends_on": ["checker", "adapters", "instructions"], "allowed_dependencies": ["checker", "adapters", "instructions"]},
     {"id": "governance", "source_paths": ["engineering-manifest.json", ".gitignore", "docs", "planning", ".github"], "document": "MAP", "depends_on": ["instructions"], "allowed_dependencies": ["instructions"]}
   ],
   "inventories": [
@@ -37,7 +50,8 @@
   ],
   "checks": [
     {"id": "TEST", "command": ["python", "-m", "unittest", "discover", "-s", "scripts/tests", "-q"], "required": true, "timeout_seconds": 120},
-    {"id": "COMPILE", "command": ["python", "-m", "py_compile", "scripts/check_project.py", "scripts/extract_database.py", "scripts/extract_sqlite.py"], "required": true, "timeout_seconds": 30}
+    {"id": "COMPILE", "command": ["python", "-m", "py_compile", "scripts/check_project.py", "scripts/extract_database.py", "scripts/extract_sqlite.py"], "required": true, "timeout_seconds": 30},
+    {"id": "GUIDANCE-COMPILE", "command": ["python", "-m", "py_compile", "scripts/install_agents_guidance.py", "scripts/init_manifest.py"], "required": true, "timeout_seconds": 30}
   ],
   "tasks": [{
     "id": "TASK-SELF-01",
@@ -69,6 +83,65 @@
       "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "IMPACT", "BASELINE"]},
       "baseline-docs": {"when_paths": ["docs", "planning"], "document_ids": ["IMPACT"]},
       "governance": {"when_paths": [".github", ".gitignore"], "document_ids": ["SPEC", "IMPACT"]}
+    }
+  }, {
+    "id": "TASK-PERSISTENCE-01",
+    "requirement_ids": ["REQ-PERSIST-01", "REQ-PERSIST-02", "REQ-PERSIST-03"],
+    "acceptance_ids": ["AT-PERSIST-01", "AT-PERSIST-02", "AT-PERSIST-03"],
+    "module_ids": ["instructions", "tests", "governance"],
+    "depends_on": [],
+    "status": "complete",
+    "impact_document": "PERSISTENCE_TASK",
+    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
+    "approval_required": true,
+    "approval": {"status": "approved", "evidence": "planning/persistence-task.md"},
+    "skill_review": {
+      "catalog_source": "Codex session skills catalog on 2026-10-14 (Asia/Shanghai)",
+      "scope": "GitHub issue audit, persistent project instructions, cross-agent references, installer and maintenance records",
+      "checked_at": "2026-10-14T21:16:01+08:00",
+      "candidates": [
+        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "not provided; repository base commit 1aae5ed", "decision": "adopted", "reason": "Explicitly requested by the user; governs impact, state recovery, documentation and review", "evidence": ["SKILL.md", "references/project-agents-clauses.md", "references/implementation-workflow.md", "references/checker.md"]},
+        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Read for the scope and validation of an existing skill update", "evidence": ["C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md"]},
+        {"id": "planning-with-files", "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The existing manifest and this canonical task record already hold plan, decisions, progress and evidence; avoid a second state system", "evidence": ["Session skills catalog description", "engineering-manifest.json", "planning/persistence-task.md"]},
+        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No test-first workflow was requested; verify the installer using the existing unittest suite", "evidence": ["Session skills catalog description"]},
+        {"id": "setup-pre-commit", "source": "C:/Users/54667/.agents/skills/setup-pre-commit/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No Husky or hook installation is part of this change", "evidence": ["Session skills catalog description"]}
+      ],
+      "recheck": "2026-10-14: scope includes the guidance installer and thin agent adapters; engineering-workflow and skill-creator remain applicable. Recheck if any audited issue is implemented."
+    },
+    "documentation_impact": {
+      "module-connectivity": {"when_paths": ["SKILL.md", "references/implementation-workflow.md", "references/project-agents-clauses.md", "scripts/install_agents_guidance.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "PERSISTENCE_TASK"]},
+      "public-guidance": {"when_paths": ["README.md", "AGENTS.md", "assets/templates/AGENTS.engineering.md"], "document_ids": ["SPEC", "CONTRACT", "PERSISTENCE_TASK"]},
+      "tests": {"when_paths": ["scripts/tests/test_guidance.py"], "document_ids": ["PERSISTENCE_TASK"]},
+      "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "PERSISTENCE_TASK"]},
+      "task-records": {"when_paths": ["docs", "planning/persistence-task.md"], "document_ids": ["PERSISTENCE_TASK"]}
+    }
+  }, {
+    "id": "TASK-ISSUES-01",
+    "requirement_ids": ["REQ-ISSUES-01", "REQ-ISSUES-02", "REQ-ISSUES-03"],
+    "acceptance_ids": ["AT-ISSUES-01", "AT-ISSUES-02", "AT-ISSUES-03"],
+    "module_ids": ["instructions", "checker", "adapters", "tests", "governance"],
+    "depends_on": ["TASK-PERSISTENCE-01"],
+    "status": "complete",
+    "impact_document": "PERSISTENCE_TASK",
+    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
+    "approval_required": true,
+    "approval": {"status": "approved", "evidence": "planning/persistence-task.md"},
+    "skill_review": {
+      "catalog_source": "Codex session skills catalog on 2026-10-14 (Asia/Shanghai)",
+      "scope": "GitHub issue #2-#10 implementation, checker, adapter, bootstrap and documentation changes",
+      "checked_at": "2026-10-14T21:16:01+08:00",
+      "candidates": [
+        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "1.4.0 working tree; base 1aae5ed", "decision": "adopted", "reason": "User explicitly requested issue fixes under this workflow", "evidence": ["SKILL.md", "references/checker.md"]},
+        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "The maintained skill package and metadata are being updated", "evidence": ["SKILL.md"]},
+        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The change extends the existing regression suite rather than adopting a separate test-first workflow", "evidence": ["Session skills catalog description"]}
+      ],
+      "recheck": "Scope expanded from persistence audit to issue implementation; checker, adapter and bootstrap paths were re-reviewed."
+    },
+    "documentation_impact": {
+      "module-connectivity": {"when_paths": ["scripts/check_project.py", "scripts/extract_sqlite.py", "scripts/extract_database.py", "scripts/init_manifest.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "PERSISTENCE_TASK"]},
+      "public-guidance": {"when_paths": ["README.md", "SKILL.md", "AGENTS.md", "agents", "references", "assets/templates", "scripts/install_agents_guidance.py", "VERSION", "CHANGELOG.md", "LICENSE"], "document_ids": ["SPEC", "CONTRACT", "PERSISTENCE_TASK"]},
+      "tests": {"when_paths": ["scripts/tests"], "document_ids": ["PERSISTENCE_TASK"]},
+      "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "PERSISTENCE_TASK"]}
     }
   }],
   "control_plane": {

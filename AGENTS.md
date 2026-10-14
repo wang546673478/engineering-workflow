@@ -1,0 +1,19 @@
+<!-- engineering-workflow:start -->
+## Engineering Workflow
+
+本项目已启用 `engineering-workflow`。它适用于重大、跨层、影响范围不明确的工程任务；小修复按实际影响执行最小必要步骤。
+
+- Skill 来源：本仓库 SKILL.md；来源与本次基准版本见 planning/persistence-task.md。首次接入时在项目状态中记录实际路径或 URI、可见版本或 commit；不要写死其他机器的用户目录。
+- 权威入口是项目现有规则、`engineering-manifest.json` 以及清单指向的 Spec、Plan、Task、进度、决策、影响分析和验证文件。不要只依赖聊天记录。
+- 开始、恢复中断任务、接手、上下文压缩或不完整、切换 agent、任务范围变化时，按记录的来源重新读取该 skill 的 `SKILL.md` 正文和本任务适用引用；同时读取项目规则、当前任务、近期进度或交接及受影响文档，并核对工作树后继续。
+- 将计划、决定、影响分析、进度、验证结果和下一步写入 `planning` 或项目已有权威状态文件；明确当前任务的文件路径。范围变化时重新做 skill review 和影响分析。
+- 验证命令以项目规则为准，不得为通过门禁将测试换成更弱的检查；门禁通过只证明已声明检查的结果。
+- 项目既有规则和用户决定优先于本流程。没有适用 skill、skill 不可读取或检查不支持时，记录 `unavailable` 或未验证及其证据，不把缺失当成通过。
+- 其他 agent 的原生规则入口只引用本文件及权威状态文件。按宿主实际规则配置加载范围，不假定所有工具会自动读取 `AGENTS.md`。
+
+本段由 `engineering-workflow` 接入工具维护；保留本段之外的项目规则。
+<!-- engineering-workflow:end -->
+
+## 本仓库任务入口
+
+当前任务：[持久化接入与 issue 审计](planning/persistence-task.md)。该文件记录计划、skill review、决策、进度和验证；旧任务的批准只适用于原有范围。Skill 正文见 [SKILL.md](SKILL.md)，工程清单见 [engineering-manifest.json](engineering-manifest.json)。

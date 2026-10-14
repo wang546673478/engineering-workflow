@@ -26,7 +26,7 @@ Reopen only the newly changed product decision when the user changes confirmed s
 
 ## Recovery and handoff
 
-On resume, inspect the working tree, current task status, prior test evidence, and unfinished documentation before making edits. Do not repeat completed work or discard unrelated changes. A handoff must name the current state, next action, blockers, changed files, and exact verification still required.
+On start, resume, handoff, incomplete context or agent change, reread the project rules, manifest, active task, recent progress or handoff, adopted skill source/revision and the unfinished documentation before making edits. Inspect the working tree and current task status, then continue from the recorded state. Do not repeat completed work or discard unrelated changes. A handoff must name the current state, next action, blockers, changed files and exact verification still required. A scope, deliverable or technology change requires a fresh `skill_review` and impact analysis.
 
 Bind test evidence to the source version/worktree and relevant environment. Old reports become historical when affected source changes; do not claim a fresh pass. When a test expectation conflicts with implementation, reconcile both with confirmed requirements before updating it; never weaken an assertion only to get green results.
 

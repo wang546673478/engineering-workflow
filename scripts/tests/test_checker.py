@@ -64,6 +64,30 @@ class CheckerTests(unittest.TestCase):
         self.assertEqual(proc.returncode,0, result)
         self.assertTrue(result["required_checks_satisfied"])
         self.assertNotIn("ok", json.dumps(result))
+    def test_check_runs_from_declared_working_directory(self):
+        self.manifest["checks"][0]["working_directory"] = "src"
+        self.manifest["checks"][0]["command"] = [
+            sys.executable, "-c", "from pathlib import Path; Path('cwd-marker').write_text('ok')"
+        ]
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,0, result)
+        self.assertEqual((self.root / "src/cwd-marker").read_text(), "ok")
+        check = next(item for item in result["checks"] if item["rule_id"] == "unit")
+        self.assertEqual(check["evidence"]["working_directory"], "src")
+    def test_check_working_directory_must_stay_in_project(self):
+        self.manifest["checks"][0]["working_directory"] = "../outside"
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,2)
+        self.assertFalse(result["required_checks_satisfied"])
+        self.assertIn("path escapes project root", json.dumps(result))
+    def test_check_working_directory_rejects_link(self):
+        link = self.root / "work-link"
+        link.mkdir()
+        self.manifest["checks"][0]["working_directory"] = "work-link"
+        self.write()
+        with mock.patch.object(Path, "is_symlink", autospec=True, side_effect=lambda path: path == link):
+            with self.assertRaises(checker.ConfigError):
+                checker.validate(self.root, self.manifest, "baseline", None)
     def test_skipped_required_command_blocks(self):
         proc,result=self.cli("--mode","handoff","--task","TASK-1")
         self.assertEqual(proc.returncode,1)
@@ -88,6 +112,21 @@ class CheckerTests(unittest.TestCase):
         (self.root/"docs/spec.md").write_text("different",encoding="utf-8")
         proc,result=self.cli("--mode","baseline","--run-checks")
         self.assertEqual(proc.returncode,1)
+
+    def test_requirement_and_acceptance_can_use_independent_traceability_index(self):
+        self.manifest["documents"].append({"id": "trace", "path": "docs/traceability.md", "kind": "traceability-index", "required": True})
+        (self.root / "docs/traceability.md").write_text("REQ-1 -> AT-1\n", encoding="utf-8")
+        self.manifest["requirements"][0]["index"] = "trace"
+        self.manifest["acceptance"][0]["index"] = "trace"
+        (self.root / "docs/spec.md").write_text("User requirements and acceptance narrative", encoding="utf-8")
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+
+    def test_traceability_anchor_is_checked_when_declared(self):
+        self.manifest["requirements"][0]["anchor"] = "Requirements"
+        (self.root / "docs/spec.md").write_text("# Requirements\nREQ-1\nAT-1", encoding="utf-8")
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
     def test_lost_field(self):
         self.mapping["items"][0]["fields"]=["id"]
         proc,result=self.cli("--mode","baseline","--run-checks")
@@ -170,6 +209,22 @@ class CheckerTests(unittest.TestCase):
             self.manifest["documents"][0]["path"]="link.md"
             proc,result=self.cli("--mode","baseline")
             self.assertEqual(proc.returncode,2)
+    def test_module_walk_prunes_excluded_pnpm_links(self):
+        excluded = self.root / "src/node_modules"
+        excluded.mkdir(parents=True)
+        link = excluded / "workspace-package"
+        link.write_text("placeholder")
+        self.manifest["exclude_paths"].append("src/node_modules")
+        with mock.patch.object(Path, "is_symlink", autospec=True, side_effect=lambda path: path == link):
+            proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,0, result)
+    def test_module_walk_rejects_unexcluded_link(self):
+        link = self.root / "src/workspace-package"
+        link.write_text("placeholder")
+        self.write()
+        with mock.patch.object(Path, "is_symlink", autospec=True, side_effect=lambda path: path == link):
+            with self.assertRaises(checker.ConfigError):
+                checker.validate(self.root, self.manifest, "baseline", None)
     def test_change_requires_git_and_task(self):
         if (self.root / ".git").exists():
             (self.root / ".git").rename(self.root / ".git-offline")
@@ -270,6 +325,14 @@ class CheckerTests(unittest.TestCase):
         flow.write_text("updated flow", encoding="utf-8")
         proc,result=self.cli("--mode","change","--task","TASK-1","--base","HEAD","--run-checks")
         self.assertEqual(proc.returncode,0,result)
+
+    def test_documentation_impact_trigger_must_be_inside_module_or_document_scope(self):
+        self.manifest["tasks"][0]["documentation_impact"] = {
+            "module-connectivity": {"when_paths": ["unrelated"], "document_ids": ["module"]}
+        }
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        self.assertIn("outside module/document scopes", json.dumps(result))
 
     @unittest.skipUnless(shutil.which("git"), "Git unavailable")
     def test_commit_gate_requires_document_in_same_staged_index(self):
@@ -595,6 +658,33 @@ class SQLiteTests(unittest.TestCase):
             before=db.read_bytes()
             proc=subprocess.run([sys.executable,str(SCRIPTS/"extract_sqlite.py"),str(db),"--output",str(db)],capture_output=True,text=True)
             self.assertEqual(proc.returncode,2);self.assertEqual(db.read_bytes(),before)
+
+    def test_extractor_update_requires_generated_snapshot_and_replaces_atomically(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            db=Path(tmp)/"a.sqlite";target=Path(tmp)/"inventory.json"
+            with closing(sqlite3.connect(db)) as con:
+                con.execute("CREATE TABLE t(id INTEGER)")
+                con.commit()
+            first=subprocess.run([sys.executable,str(SCRIPTS/"extract_sqlite.py"),str(db),"--output",str(target)],capture_output=True,text=True)
+            self.assertEqual(first.returncode, 0, first.stderr)
+            original=json.loads(target.read_text())
+            updated=subprocess.run([sys.executable,str(SCRIPTS/"extract_sqlite.py"),str(db),"--output",str(target),"--update"],capture_output=True,text=True)
+            self.assertEqual(updated.returncode, 0, updated.stderr)
+            self.assertEqual(json.loads(target.read_text())["tool_version"], extractor.TOOL_VERSION)
+            target.write_text(json.dumps({"kind":"database","items":[]}), encoding="utf-8")
+            rejected=subprocess.run([sys.executable,str(SCRIPTS/"extract_sqlite.py"),str(db),"--output",str(target),"--update"],capture_output=True,text=True)
+            self.assertEqual(rejected.returncode, 2)
+            self.assertEqual(json.loads(target.read_text())["items"], [])
+
+    def test_unified_database_extractor_update_rejects_handwritten_target(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            db=Path(tmp)/"a.sqlite";target=Path(tmp)/"inventory.json"
+            with closing(sqlite3.connect(db)) as con:
+                con.execute("CREATE TABLE t(id INTEGER)")
+                con.commit()
+            target.write_text(json.dumps({"kind":"database","items":[]}), encoding="utf-8")
+            proc=subprocess.run([sys.executable,str(SCRIPTS/"extract_database.py"),"sqlite","--database",str(db),"--output",str(target),"--update"],capture_output=True,text=True)
+            self.assertEqual(proc.returncode,2)
     def test_wal_rejected_without_side_effects(self):
         with tempfile.TemporaryDirectory() as tmp:
             db=Path(tmp)/"a.sqlite"
@@ -608,6 +698,30 @@ class SQLiteTests(unittest.TestCase):
             with closing(sqlite3.connect(db)) as con:con.execute("CREATE TABLE t(id INTEGER)")
             proc=subprocess.run([sys.executable,str(SCRIPTS/"extract_sqlite.py"),str(db),"--output",str(target)],capture_output=True,text=True)
             self.assertEqual(proc.returncode,2);self.assertEqual(target.read_text(),"keep")
+
+    def test_update_replaces_only_generated_snapshot(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); db = root / "a.sqlite"; target = root / "inventory.json"
+            with closing(sqlite3.connect(db)) as con:
+                con.execute("CREATE TABLE t(id INTEGER)"); con.commit()
+            first = subprocess.run([sys.executable, str(SCRIPTS / "extract_sqlite.py"), str(db), "--output", str(target)], capture_output=True, text=True)
+            self.assertEqual(first.returncode, 0, first.stderr)
+            original = target.read_text()
+            with closing(sqlite3.connect(db)) as con:
+                con.execute("ALTER TABLE t ADD COLUMN name TEXT"); con.commit()
+            updated = subprocess.run([sys.executable, str(SCRIPTS / "extract_sqlite.py"), str(db), "--output", str(target), "--update"], capture_output=True, text=True)
+            self.assertEqual(updated.returncode, 0, updated.stderr)
+            self.assertNotEqual(target.read_text(), original)
+            self.assertEqual(json.loads(target.read_text())["tool_version"], extractor.TOOL_VERSION)
+
+    def test_update_rejects_non_generated_snapshot(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); db = root / "a.sqlite"; target = root / "notes.json"
+            with closing(sqlite3.connect(db)) as con: con.execute("CREATE TABLE t(id INTEGER)")
+            target.write_text(json.dumps({"kind": "database", "tool_version": "other"}))
+            proc = subprocess.run([sys.executable, str(SCRIPTS / "extract_sqlite.py"), str(db), "--output", str(target), "--update"], capture_output=True, text=True)
+            self.assertEqual(proc.returncode, 2)
+            self.assertIn("not generated", proc.stderr)
 
 class DatabaseAdapterTests(unittest.TestCase):
     class Cursor:

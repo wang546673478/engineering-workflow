@@ -11,6 +11,12 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - REQ-SELF-03: Database adapters remain metadata-only, explicit, and safe to run without exposing credentials or business values.
 - REQ-SELF-04: Explain review decisions in plain language, separate automated results from human approval, and allow local-only checks for projects without GitHub.
 - REQ-SELF-05: Changing validation rules requires a separate human decision; deleting protected-path declarations or renaming approval variables in the same change must not silently allow it.
+- REQ-PERSIST-01: Projects that adopt the workflow retain a stable, managed instruction block in repository-root `AGENTS.md`, with links or paths to authoritative task state and recovery guidance. The installer preserves project-authored text outside its own markers.
+- REQ-PERSIST-02: Other agents use thin native-entry references to that same `AGENTS.md` and project state. Host loading behavior is explicitly verified per project; writing an instruction file alone does not prove the host loads it.
+- REQ-PERSIST-03: The GitHub issue audit and this persistence change have a separate task, plan, impact, skill review, decisions, progress and verification record. Prior-task approval does not authorize the new protected changes.
+- REQ-ISSUES-01: The checker handles excluded dependency trees and project-relative check working directories without weakening root and link safety.
+- REQ-ISSUES-02: Requirement/acceptance traceability, inventory refreshes and first adoption provide explicit, reviewable workflows with backward-compatible defaults.
+- REQ-ISSUES-03: Public guidance records the declaration-based verification boundary, package version/license/change history and a reviewable full/lite manifest bootstrap.
 
 ## Acceptance
 
@@ -19,6 +25,16 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - AT-SELF-03: A self-maintenance change records skill applicability, affected modules, documentation gates, tests, and manual-review status.
 - AT-SELF-04: Guidance accepts an empty business-database inventory when genuinely not applicable; CI remains optional for other projects.
 - AT-SELF-05: CLI regression tests reject unapproved rule changes and exercise the approved path only in disposable fixture repositories.
+- AT-PERSIST-01: Installer verification covers initial creation, repeat invocation, updating only its managed block, preservation of surrounding project rules, invalid markers and out-of-project targets.
+- AT-PERSIST-02: The canonical block states when to reload project/skill/task files and where to record plans, decisions, progress and verification. Optional native agent files reference the canonical instructions, with no claim of universal automatic discovery.
+- AT-PERSIST-03: [The persistence task](../planning/persistence-task.md) records issue #2–10 recommendations without claiming those issues are fixed; its manifest task remains separate from the historical approved task and records current verification and review status.
+- AT-ISSUES-01: Checker regression tests cover excluded symlink trees, working directories, trace anchors/indexes and first-adoption diagnostics.
+- AT-ISSUES-02: Extractors refuse unsafe overwrites by default and atomically update only their own versioned snapshots when explicitly requested.
+- AT-ISSUES-03: Documentation and bootstrap templates explain `documentation_impact` semantics, verification limits, version metadata and the reviewable `lite`/`full` initialization path.
+
+## Persistence change status
+
+The working tree contains the guidance and installer change for `TASK-PERSISTENCE-01`. Its current source verification and final protected-change review are pending; see [the active record](../planning/persistence-task.md). The historical [baseline review](../planning/baseline-review.md) applies to the earlier maintenance scope. This change has not been committed or pushed.
 
 ## Publishing diagnostics
 
@@ -26,7 +42,7 @@ If an approved hosted verification fails its TEST check, the reviewed workflow m
 
 ## Scope and ownership
 
-The skill instructions own the workflow rules. The checker owns mechanical manifest, impact, inventory, and Git gate validation. The adapter scripts own metadata extraction. Tests are the executable behavior evidence. User decisions and repository-specific rules remain higher priority than this skill.
+The skill instructions own the workflow rules and managed guidance template. The guidance installer updates the instruction block and optional thin references; project files own the live task state. The checker owns mechanical manifest, impact, inventory, and Git gate validation. The adapter scripts own metadata extraction. Tests are the executable behavior evidence. User decisions and repository-specific rules remain higher priority than this skill.
 
 ## Non-goals
 

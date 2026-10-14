@@ -6,19 +6,21 @@
     {"id": "DB", "path": "docs/database.md", "kind": "database-dictionary", "required": true},
     {"id": "CONTRACT", "path": "docs/contracts.md", "kind": "contract", "required": true},
     {"id": "FLOW", "path": "docs/business-flow.md", "kind": "business-flow", "required": true},
-    {"id": "IMPACT", "path": "planning/change-impact.md", "kind": "impact", "required": true}
+    {"id": "IMPACT", "path": "planning/change-impact.md", "kind": "impact", "required": true},
+    {"id": "TRACE", "path": "planning/traceability.md", "kind": "traceability-index", "required": true}
   ],
-  "requirements": [{"id": "REQ-01", "document": "SPEC"}],
-  "acceptance": [{"id": "AT-01", "document": "SPEC"}],
+  "requirements": [{"id": "REQ-01", "document": "SPEC", "index": "TRACE"}],
+  "acceptance": [{"id": "AT-01", "document": "SPEC", "index": "TRACE"}],
   "modules": [
     {"id": "backend", "source_paths": ["backend"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
-    {"id": "frontend", "source_paths": ["frontend"], "document": "MAP", "depends_on": ["backend"], "allowed_dependencies": ["backend"]}
+    {"id": "frontend", "source_paths": ["frontend"], "document": "MAP", "depends_on": ["backend"], "allowed_dependencies": ["backend"]},
+    {"id": "governance", "source_paths": ["engineering-manifest.json", "planning"], "document": "IMPACT", "depends_on": [], "allowed_dependencies": []}
   ],
   "inventories": [
     {"id": "schema", "kind": "database", "path": "planning/database-inventory.json", "documentation": "planning/database-doc-mapping.json", "required": true},
     {"id": "routes", "kind": "contract", "path": "planning/contract-inventory.json", "documentation": "planning/contract-doc-mapping.json", "required": true}
   ],
-  "checks": [{"id": "TEST", "command": ["python", "-m", "unittest", "discover"], "required": true, "timeout_seconds": 120}],
+  "checks": [{"id": "TEST", "command": ["python", "-m", "unittest", "discover"], "required": true, "timeout_seconds": 120, "working_directory": "."}],
   "tasks": [{
     "id": "TASK-01", "requirement_ids": ["REQ-01"], "acceptance_ids": ["AT-01"],
     "module_ids": ["frontend", "backend"], "depends_on": [], "status": "planned",

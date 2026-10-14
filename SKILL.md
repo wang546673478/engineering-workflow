@@ -1,11 +1,19 @@
 ---
 name: engineering-workflow
 description: Guide software project startup, unfamiliar codebase takeover, major features, cross-layer changes, and unclear-impact defects through requirements, architecture, data documentation, plans, implementation, and verification. Use when engineering work needs this workflow; routine questions do not require it.
+metadata:
+  version: 1.4.0
 ---
 
 # 代码工程工作流
 
 适用于项目启动、接管陌生代码、重大功能、跨层契约变化和影响不明确的缺陷。先读项目 `AGENTS.md` 与权威资料；用户已确认决定和项目规则优先于本技能默认。业务领域、语言、框架、财务数值均取自项目。
+
+## 持久化接入与多 agent
+
+在项目中启用本流程时，把[接入模板](assets/templates/AGENTS.engineering.md)合并到项目根部的 `AGENTS.md`；已启用但缺少入口的项目，在下次使用时补齐。保留现有规则，已有无标记同名段落时先人工合并，避免重复。可运行 `scripts/install_agents_guidance.py` 幂等更新管理区；它始终写 `AGENTS.md`，显式指定 `--file CLAUDE.md`、`--file GEMINI.md` 或其他原生规则文件时，仅增加指向它的薄引用。核对宿主实际文件格式和加载范围；不能只凭文件存在声称宿主已加载。
+
+`AGENTS.md` 保存稳定入口；项目已有清单和状态文件保存当前 Spec、Plan、Task、决定、进度、影响分析、验证及交接，允许合并记录，避免重复建档。接入时填写实际 skill 来源和版本或 commit、当前任务与状态文件路径；安装器只维护规则入口，不替项目编造状态或完成证据。开始、恢复、接手、上下文压缩或不完整、切换 agent、范围变化时，按来源重新读取 skill 正文及本任务适用引用，同时重读任务状态并核对工作树。范围、交付物或技术类别变化时重新完成 `skill_review` 和影响分析。
 
 ## 选择工作流程
 
@@ -54,7 +62,7 @@ description: Guide software project startup, unfamiliar codebase takeover, major
 
 ## 完成门槛
 
-每个修改任务开始前必读全局总览、计划与近期进度，再读受影响的契约、字典和上下游规则；范围、源码或会话上下文变化后重新核对，不要求每次输入都通读无关字段。资料与代码冲突时先查证。
+每个修改任务开始前必读全局总览、计划与近期进度，再读受影响的契约、字典和上下游规则；范围、源码、宿主 agent 或会话上下文变化后重新核对，不要求每次输入都通读无关字段。已经启用本流程的项目必须在根部 `AGENTS.md` 中有持久化接入段，其他原生入口按需引用，并能从项目文件定位当前任务和近期状态。资料与代码冲突时先查证。
 
 每个任务的 `skill_review` 必须在实现前完成并可追溯：至少记录检查清单的来源和时间、候选 skill 的路径/URI 与版本或发布日期（若宿主提供）、逐项采用/不采用决定及理由。未找到适用 skill 不算失败，但必须记录检查范围和“无适用候选”；只记录 skill 名称而没有来源、版本/日期或决定理由不能作为完成证据。任务范围扩大到新的技术、产物或工具类别时，先补做 skill 检查再继续。
 

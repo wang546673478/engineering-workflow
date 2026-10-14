@@ -98,6 +98,77 @@ def indexed(value, name):
         out[ident] = item
     return out
 
+def document_reference(docs, value):
+    """Resolve a document ID, with a path fallback for older manifests."""
+    if isinstance(value, str) and value in docs:
+        return docs[value]
+    if isinstance(value, str):
+        for document in docs.values():
+            if document.get("path") == value:
+                return document
+    return None
+
+def anchor_present(text, anchor):
+    """Recognize explicit HTML/Markdown anchors and heading slugs."""
+    token = anchor.strip()
+    if token.startswith("#"):
+        token = token[1:]
+    if not token:
+        return False
+    escaped = re.escape(token)
+    if re.search(r"(?:id|name)=[\"']" + escaped + r"[\"']", text, re.IGNORECASE):
+        return True
+    if re.search(r"\{#" + escaped + r"\}", text, re.IGNORECASE):
+        return True
+    for line in text.splitlines():
+        match = re.match(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$", line)
+        if not match:
+            continue
+        heading = match.group(1).strip()
+        if heading.casefold() == token.casefold():
+            return True
+        slug = re.sub(r"[^\w\s-]", "", heading, flags=re.UNICODE)
+        slug = re.sub(r"[-\s]+", "-", slug).strip("-").casefold()
+        if slug == token.casefold():
+            return True
+    return False
+
+def validate_trace_reference(root, docs, ident, entry, kind, faults):
+    """Validate a requirement/acceptance document and optional index/anchor."""
+    document = document_reference(docs, entry.get("document"))
+    if document is None:
+        faults.append(kind + " " + ident + " has unknown document")
+        return
+    path = safe_path(root, document["path"])
+    if not path.is_file():
+        faults.append(kind + " references a missing document: " + ident)
+        return
+    index_ref = entry.get("index")
+    index_document = None
+    if index_ref is not None:
+        if not isinstance(index_ref, str) or not index_ref.strip():
+            raise ConfigError(kind + ".index must be a non-empty document ID or path")
+        index_document = document_reference(docs, index_ref)
+        if index_document is None:
+            faults.append(kind + " " + ident + " has unknown index document")
+        else:
+            index_path = safe_path(root, index_document["path"])
+            if not index_path.is_file():
+                faults.append(kind + " index references a missing document: " + ident)
+            elif not re.search(r"(?<![A-Za-z0-9_.-])" + re.escape(ident) + r"(?![A-Za-z0-9_.-])",
+                               index_path.read_text(encoding="utf-8-sig")):
+                faults.append(kind + " ID absent from index document: " + ident)
+    anchor = entry.get("anchor")
+    if anchor is not None:
+        if not isinstance(anchor, str) or not anchor.strip():
+            raise ConfigError(kind + ".anchor must be a non-empty anchor or heading")
+        if not anchor_present(path.read_text(encoding="utf-8-sig"), anchor):
+            faults.append(kind + " anchor absent from document: " + ident)
+    elif index_document is None:
+        if not re.search(r"(?<![A-Za-z0-9_.-])" + re.escape(ident) + r"(?![A-Za-z0-9_.-])",
+                         path.read_text(encoding="utf-8-sig")):
+            faults.append(kind + " ID absent from document: " + ident)
+
 def cycle(graph):
     visiting, visited = set(), set()
     def visit(node):
@@ -121,6 +192,43 @@ def relative_scope(root, raw):
     """Normalize a manifest path so it can be compared with Git paths."""
     path = safe_path(root, raw, file_only=False).relative_to(root).as_posix()
     return "" if path == "." else path
+
+def lexical_path(root, raw):
+    """Return an absolute path without resolving links for traversal pruning."""
+    given = Path(raw)
+    return Path(os.path.normpath(str((given if given.is_absolute() else root / given).absolute())))
+
+def is_under(path, scope):
+    """Whether path is scope itself or a descendant, without resolving links."""
+    try:
+        path.relative_to(scope)
+        return True
+    except ValueError:
+        return False
+
+def iter_module_paths(root, source, excluded):
+    """Walk a module tree while pruning declared excluded subtrees.
+
+    A lexical exclusion check must happen before ``safe_path`` so a pnpm link
+    inside an excluded ``node_modules`` tree is never resolved or rejected.
+    Links outside an exclusion remain subject to the normal root safety check.
+    """
+    stack = [source]
+    while stack:
+        current = stack.pop()
+        if any(is_under(current, scope) for scope in excluded):
+            continue
+        try:
+            children = list(current.iterdir())
+        except OSError:
+            raise
+        for child in children:
+            if any(is_under(child, scope) for scope in excluded):
+                continue
+            safe_path(root, str(child), file_only=False)
+            yield child
+            if child.is_dir():
+                stack.append(child)
 
 def control_plane_paths(root, manifest, manifest_path):
     """Return the current manifest's protected control-plane scopes."""
@@ -218,12 +326,15 @@ def control_plane_check(root, manifest, manifest_path, mode, changed_paths, comm
     externally_approved = os.environ.get(env_name) == "1"
     approved = bool(changed) and allow and externally_approved
     gaps = []
+    bootstrap = not isinstance(baseline, dict) and any(path == relative_scope(root, manifest_path) for path in changed_paths)
+    if bootstrap:
+        gaps.append("first adoption: new manifest/control-plane files require one-time manual review; inspect the generated baseline and rerun with --allow-control-plane-change plus the external approval variable")
     if changed and not approved:
         if not allow:
             gaps.append("control-plane files changed; rerun with --allow-control-plane-change after manual review")
         else:
             gaps.append("--allow-control-plane-change requires external approval variable " + env_name + "=1")
-    evidence = {"protected_paths": sorted(protected), "changed_paths": changed,
+    evidence = {"protected_paths": sorted(protected), "changed_paths": changed, "first_adoption": bootstrap,
                 "approval_variable": env_name, "external_approval_present": externally_approved}
     return output_check("control-plane", "fail" if gaps else "pass",
                         "baseline control-plane paths and submitted tree", evidence if not gaps else {**evidence, "gaps": gaps},
@@ -246,6 +357,12 @@ def validate(root, manifest, mode, task_id):
     if not docs or not modules or not requirements or not acceptance or not tasks:
         raise ConfigError("documents, modules, requirements, acceptance and tasks cannot be empty")
     results, faults = [], []
+    excluded = []
+    for raw in array(manifest["exclude_paths"], "exclude_paths"):
+        path = safe_path(root, raw, file_only=False)
+        if path == root:
+            raise ConfigError("exclude_paths cannot exclude project root")
+        excluded.append(lexical_path(root, raw))
     def fault(msg):
         faults.append(msg)
     for ident, doc in docs.items():
@@ -268,14 +385,7 @@ def validate(root, manifest, mode, task_id):
                     fault("broken local document reference: " + doc["path"] + " -> " + target)
     for name, entries in (("requirement", requirements), ("acceptance", acceptance)):
         for ident, item in entries.items():
-            if item.get("document") not in docs:
-                fault(name + " " + ident + " has unknown document")
-            else:
-                path = safe_path(root, docs[item["document"]]["path"])
-                if not path.is_file():
-                    fault(name + " references a missing document: " + ident)
-                if path.is_file() and not re.search(r"(?<![A-Za-z0-9_.-])" + re.escape(ident) + r"(?![A-Za-z0-9_.-])", path.read_text(encoding="utf-8-sig")):
-                    fault(name + " ID absent from document: " + ident)
+            validate_trace_reference(root, docs, ident, item, name, faults)
     graph = {}
     for ident, module in modules.items():
         paths = array(module.get("source_paths"), "module.source_paths")
@@ -286,8 +396,10 @@ def validate(root, manifest, mode, task_id):
             if not path.exists():
                 fault("source missing: " + raw)
             if path.is_dir():
-                for child in path.rglob("*"):
-                    safe_path(root, str(child), file_only=False)
+                for child in iter_module_paths(root, path, excluded):
+                    # iter_module_paths performs the safety check before
+                    # yielding, including for nested directories.
+                    del child
         if module.get("document") not in docs:
             fault("module has unknown document: " + ident)
         elif not safe_path(root, docs[module["document"]]["path"]).is_file():
@@ -307,6 +419,12 @@ def validate(root, manifest, mode, task_id):
         argv = item.get("command")
         if not isinstance(argv, list) or not argv or not all(isinstance(x, str) and x for x in argv):
             raise ConfigError("check command must be a non-empty argv array: " + ident)
+        working_directory = item.get("working_directory", ".")
+        if not isinstance(working_directory, str) or not working_directory.strip():
+            raise ConfigError("check working_directory must be a non-empty path: " + ident)
+        cwd = safe_path(root, working_directory, file_only=False)
+        if not cwd.exists() or not cwd.is_dir():
+            raise ConfigError("check working_directory must be an existing directory: " + ident)
         timeout = item.get("timeout_seconds")
         if type(timeout) not in (int, float) or not 0 < timeout <= 86400:
             raise ConfigError("invalid check timeout: " + ident)
@@ -339,14 +457,20 @@ def validate(root, manifest, mode, task_id):
             when_paths = rule.get("when_paths")
             if not isinstance(when_paths, list) or not when_paths or not all(isinstance(x, str) and x for x in when_paths):
                 raise ConfigError("documentation_impact.when_paths must be a non-empty path array")
-            for raw in when_paths:
-                relative_scope(root, raw)
             document_ids = rule.get("document_ids")
             if not isinstance(document_ids, list) or not document_ids or not all(isinstance(x, str) and x for x in document_ids):
                 raise ConfigError("documentation_impact.document_ids must be a non-empty array")
             for doc_id in document_ids:
                 if doc_id not in docs:
                     raise ConfigError("documentation_impact references unknown document: " + doc_id)
+            legal_trigger_scopes = [raw for module_id in task["module_ids"] if module_id in modules
+                                    for raw in modules[module_id]["source_paths"]]
+            legal_trigger_scopes.extend(docs[doc_id]["path"] for doc_id in document_ids)
+            legal_trigger_scopes = [relative_scope(root, raw) for raw in legal_trigger_scopes]
+            for raw in when_paths:
+                normalized = relative_scope(root, raw)
+                if not any(covered(normalized, allowed) for allowed in legal_trigger_scopes):
+                    fault("documentation_impact.when_paths is outside module/document scopes: " + raw)
         boolean(task.get("approval_required"), "task.approval_required")
         if task.get("status") not in ("planned", "in_progress", "blocked", "complete"):
             raise ConfigError("invalid task status: " + ident)
@@ -360,10 +484,6 @@ def validate(root, manifest, mode, task_id):
     evidence = safe_path(root, baseline.get("evidence"))
     if not evidence.is_file():
         fault("baseline evidence missing")
-    for raw in array(manifest["exclude_paths"], "exclude_paths"):
-        path = safe_path(root, raw, file_only=False)
-        if path == root:
-            raise ConfigError("exclude_paths cannot exclude project root")
     results.append(output_check("manifest", "fail" if faults else "pass", "declared IDs, references, graph and baseline", faults or ["manifest validated"],
                                 limitations=["Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."]))
     for ident, entry in inventories.items():
@@ -682,9 +802,14 @@ def run_checks(root, checks, enabled, forced, blocked_reason=None):
             continue
         start = time.monotonic()
         try:
-            proc = subprocess.run(check["command"], cwd=root, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            cwd = safe_path(root, check.get("working_directory", "."), file_only=False)
+            if not cwd.exists() or not cwd.is_dir():
+                raise ConfigError("check working_directory must be an existing directory")
+            proc = subprocess.run(check["command"], cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                   timeout=check["timeout_seconds"], shell=False)
-            evidence = {"command_sha256": hashlib.sha256(json.dumps(check["command"]).encode()).hexdigest(), "returncode": proc.returncode, "duration_seconds": round(time.monotonic()-start, 3),
+            evidence = {"command_sha256": hashlib.sha256(json.dumps(check["command"]).encode()).hexdigest(),
+                        "working_directory": check.get("working_directory", "."),
+                        "returncode": proc.returncode, "duration_seconds": round(time.monotonic()-start, 3),
                         "output_bytes": len(proc.stdout), "output_sha256": hashlib.sha256(proc.stdout).hexdigest()}
             status = "pass" if proc.returncode == 0 else "fail"
             if status == "pass" and re.search(rb"(?im)(?:skipped[=:]\s*[1-9]\d*|[1-9]\d*\s+skipped\b|#\s*SKIP\b)", proc.stdout):
@@ -694,7 +819,7 @@ def run_checks(root, checks, enabled, forced, blocked_reason=None):
                                         ["Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."]))
         except subprocess.TimeoutExpired:
             results.append(output_check(ident, "fail", "fresh invocation", {"timeout_seconds": check["timeout_seconds"]}, required))
-        except OSError:
+        except (ConfigError, OSError):
             results.append(output_check(ident, "unsupported", "fresh invocation", "declared executable unavailable", required))
     return results
 

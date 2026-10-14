@@ -1,6 +1,13 @@
 # Project AGENTS Clauses
 
-Adapt these clauses into each project's `AGENTS.md`; do not copy them blindly over existing project rules.
+Adapt these clauses into each project's `AGENTS.md`; do not copy them blindly over existing project rules. Use the managed block in [AGENTS.engineering.md](../assets/templates/AGENTS.engineering.md) so later skill updates can replace only their own section.
+
+## Persistent adoption
+
+- Adoption is a one-time project change: merge the managed block into the repository-root `AGENTS.md`, then record the skill source and fixed revision in the project manifest or canonical workflow state. Keep the active task, progress, decisions, impact analysis, verification and handoff in files under the manifest-declared state directory (normally `planning/`).
+- Keep shared guidance in `AGENTS.md`. If the active agent uses another native instruction entry, add only a thin pointer with a correct relative link. Check that host's actual file format, loading scope and any required frontmatter; a generic Markdown file does not establish automatic loading. Specify a file, not a rules directory. Use portable recovery triggers: start, resume, handoff, incomplete context and scope change.
+- On start, resume, handoff, context compression/incomplete context or scope change, locate and reread the adopted skill's actual `SKILL.md` and applicable references using the recorded source/revision, together with project rules, the manifest, active task, recent progress/handoff and affected documents. If no source is recorded, locate it through the host catalog and record it; if unavailable, record that limitation. A scope or deliverable change requires a fresh `skill_review` and impact analysis.
+- Keep the adoption change reviewable and idempotent. Preserve user-written rules outside the managed markers, do not create agent-specific permissions, and do not treat the presence of the block as approval to send messages, deploy, change global settings or bypass project rules.
 
 ## Required process
 

@@ -1,6 +1,17 @@
 # Engineering Workflow Maintenance Flow
 
-Status: `current`
+Status: `current baseline with persistence change pending verification`
+
+## Persistent project adoption and recovery
+
+1. The project chooses to adopt engineering-workflow. The agent reads existing project rules and selects the project's existing manifest, task and state locations.
+2. Merge the managed block into repository-root `AGENTS.md`, preserving rules outside its markers. The installer can repeat this update. Record the skill source/revision and canonical state locations in project files.
+3. For a project's selected agent, add a thin reference from its native instruction entry to `AGENTS.md` only when needed. Check the host's loading behavior; do not assume that every agent discovers every filename.
+4. At task start, resume, handoff, incomplete context, agent change or scope change, reload project rules, the adopted skill source/revision, manifest, active task and recent progress/handoff before editing. Reconcile those records with the working tree; scope changes refresh skill review and impact analysis.
+5. Keep plans, decisions, impact, progress, verification and handoff in the project's authoritative files. `AGENTS.md` remains the stable entry, rather than accumulating every task's history.
+6. Review and verify the concrete adoption change. New protected-rule changes require their own final approval; a past task's approval cannot be reused. Missing skill access or unverified host integration is recorded explicitly.
+
+This repository's current adoption work is [TASK-PERSISTENCE-01](../planning/persistence-task.md). Installer validation, final approval and publication remain pending in that record. The GitHub issue review in the same record is an audit only.
 
 ## Skill change path
 
@@ -22,9 +33,12 @@ Status: `current`
 | Shallow or incomplete Git history | Submission check cannot establish prior rules; commands are not run | Obtain the missing history and rerun the check |
 | Required test fails or is skipped | Handoff remains incomplete | Fix the failure or document a user-approved scope change |
 | Remote adapter lacks driver/credentials | Adapter reports unsupported | Install the optional driver or use an offline snapshot |
+| Managed guidance markers are malformed or a target leaves the project root | Installer rejects the target | Correct the selected target or conflicting block; preserve project-authored rules |
+| Native instruction entry is not loaded by the selected host | Automatic persistence is unverified | Use the host's supported project-rule entry and verify that it follows the canonical file |
+| Skill or task state cannot be read after resumption | Missing context remains explicit | Record the missing source and recover the authoritative project files before dependent work |
 
 ## Ownership
 
-The repository maintainer owns semantic review. The checker owns mechanical evidence. The skill-creator validator owns skill package structure. The user performs final review before any push or release.
+The repository maintainer owns semantic review. The installer owns only the marked guidance blocks and thin references. Project task files own current state. The checker owns mechanical evidence. The skill-creator validator owns skill package structure. The user performs final review before any push or release.
 
-This repository's ordinary Actions path runs the submission gate before declared project checks. Protected-rule updates use a separate manual run for an exact reviewed SHA, after the repository owner configures a protected environment and required reviewers. That hosted configuration has not been applied during this local task. Other projects can keep the entire review and verification flow local.
+This repository's ordinary Actions path runs the submission gate before declared project checks. Protected-rule updates use a separate manual run for an exact reviewed SHA, after the repository owner configures a protected environment and required reviewers. The earlier setup and publication evidence is recorded in [the historical impact record](../planning/change-impact.md); that evidence does not verify this working tree or approve this task. Other projects can keep the entire review and verification flow local.

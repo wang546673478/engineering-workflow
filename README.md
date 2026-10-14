@@ -1,5 +1,7 @@
 # Engineering Workflow
 
+Version: `1.4.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+
 一个面向复杂软件工程任务的 Codex skill。它帮助 Agent 在修改代码前后维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
 ## 适用场景
@@ -27,6 +29,26 @@ git clone https://github.com/wang546673478/engineering-workflow.git `
 ```
 
 安装后，使用 `$engineering-workflow` 或让 Codex 根据任务自动选择该 skill。
+
+## 项目接入与持久化
+
+项目决定采用本流程时，先把持久化入口写入项目根部的 `AGENTS.md`。保留项目已有规则，只加入带 `engineering-workflow:start/end` 标记的管理区：
+
+```powershell
+python <skill-dir>/scripts/install_agents_guidance.py --root <project>
+```
+
+`AGENTS.md` 保存共享规则；项目现有清单和状态文件保存当前任务、计划、决定、进度、影响分析、验证及交接。安装器始终更新 `AGENTS.md`；显式追加 `--file CLAUDE.md` 或 `--file .github/copilot-instructions.md` 时，只写指向它的相对链接。其他 agent 按实际规则文件格式和加载范围接入；Cursor 等宿主可能需要专有文件扩展名或前言，普通 Markdown 引用不代表自动加载。不要把规则目录作为 `--file` 传入。
+
+安装器只处理规则入口；接入 agent 还需在项目现有状态中记录 skill 来源/版本和当前任务路径，可用 `--skill` 指定可定位的来源描述、`--manifest` 与 `--state-dir` 指向实际位置。开始、恢复、接手、上下文压缩或不完整、切换 agent、范围变化时，重新读取 skill 正文、适用引用与状态文件，并核对工作树；范围变化还要重新做 `skill_review` 和影响分析。小修复复用现有记录，避免重复建档。
+
+首次接入可以先生成可审阅的清单骨架：
+
+```powershell
+python <skill-dir>/scripts/init_manifest.py --root <project> --profile lite
+```
+
+`lite` 只生成最小文档门槛，`full` 会额外生成数据库/契约清单占位和跨层影响门槛。生成结果仍处于 `planned`，必须补齐实际路径、权威验证命令、skill review、基线和批准记录后才能作为完成证据；默认不会覆盖已有清单。
 
 ## 工作流内容
 
@@ -106,8 +128,11 @@ python scripts/extract_database.py redis --url-env ENGINEERING_DATABASE_URL --ou
 SKILL.md                         Agent 入口规则
 agents/openai.yaml               Codex 界面元数据
 assets/templates/                项目清单、文档和 hook 模板
+assets/templates/AGENTS.engineering.md  跨 agent 持久化接入片段
 references/                      分阶段工作流说明
 scripts/check_project.py         项目清单与提交门禁检查器
+scripts/install_agents_guidance.py  幂等更新 AGENTS.md 管理区
+scripts/init_manifest.py             生成 full/lite 清单骨架
 scripts/extract_database.py      MySQL、PostgreSQL、Redis 元数据适配器
 scripts/extract_sqlite.py        SQLite 元数据提取器
 scripts/tests/                   检查器和适配器测试

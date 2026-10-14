@@ -18,3 +18,19 @@
 - Output: database metadata inventory with provenance and snapshot hashes.
 - Safety: no credentials, business rows, Redis keys, or Redis values in output.
 - Unsupported behavior: unavailable optional driver, credentials, connection, or unsupported metadata scope is reported as unsupported.
+
+## Persistent agent guidance installer
+
+- Entrypoint: [install_agents_guidance.py](../scripts/install_agents_guidance.py). The maintained canonical block is [AGENTS.engineering.md](../assets/templates/AGENTS.engineering.md).
+- Input: a project root, canonical manifest/state locations and optional agent instruction-file paths; the canonical project entry is `AGENTS.md`. Consult the CLI help for its current options.
+- Behavior contract: create or replace the marked `engineering-workflow:start/end` section while preserving project-authored content outside it. Repeating an unchanged invocation is idempotent.
+- Cross-agent contract: optional native instruction files contain thin references to canonical `AGENTS.md` and project state, rather than a second full workflow. The selected host determines native-entry discovery and loading; creating a file does not prove host integration.
+- State contract: the stable block locates authoritative project files and names start/resume/handoff/incomplete-context/agent-change/scope-change recovery triggers. The installer does not infer completed tasks, approve work or reconstruct missing project state from chat.
+- Safety contract: selected targets remain inside the project root; invalid or duplicate markers are rejected. The installer must not confer permissions or replace unrelated project instructions.
+
+## Manifest bootstrap helper
+
+- Entrypoint: `scripts/init_manifest.py`.
+- Input: project root, output path, and `full` or `lite` profile.
+- Behavior: discovers common source directories and writes a planned manifest skeleton without overwriting an existing output unless `--force` is explicit. The skeleton is not completion evidence until paths, requirements, skill review, baseline, approval and checks are reviewed.
+- Current status: the new installer and these contracts require verification against the final working tree. Results, exact limitations and pending review are recorded in [TASK-PERSISTENCE-01](../planning/persistence-task.md); no success is implied by this documentation.

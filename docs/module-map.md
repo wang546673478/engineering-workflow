@@ -1,18 +1,18 @@
 # Engineering Workflow Module Map
 
-Status: `current`  
-Last verified: `2026-10-14`
+Status: `current baseline with persistence change pending verification`
+Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 ## Module: instructions
 
-- Responsibility and owner: Agent workflow instructions, references, templates, and public usage guide; owned by this repository.
-- Entrypoints/public interfaces: `SKILL.md`, `README.md`, `agents/openai.yaml`, referenced Markdown files, JSON templates, hook templates.
-- Callers: Codex skill selection and engineering tasks using the skill.
-- Direct dependencies and reason: The instructions route to references and templates.
-- Dependents: `checker` uses manifest and task conventions defined here.
-- Tables/fields read or written: None; database-adapter metadata is documented, not stored here.
-- Current state: `implemented`
-- Evidence: `SKILL.md`, references, templates, README.
+- Responsibility and owner: Agent workflow instructions, references, templates, public usage guide and managed project-guidance installation; owned by this repository.
+- Entrypoints/public interfaces: `SKILL.md`, `README.md`, `AGENTS.md`, `VERSION`, `CHANGELOG.md`, `LICENSE`, `agents/openai.yaml`, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, referenced Markdown files, JSON templates, hook templates.
+- Callers: Skill selection and engineering tasks using the skill; maintainers explicitly invoke the installer for a project. Other agents can follow a thin native-entry reference to `AGENTS.md` when the host loads that entry.
+- Direct dependencies and reason: The instructions route to references and templates; the installer renders the managed template and uses the Python standard library.
+- Dependents: `checker` uses manifest and task conventions defined here; `tests` verifies the installer.
+- Files read or written: The installer reads its template and project instruction files, then updates only its managed section in `AGENTS.md` and any explicitly selected thin adapter files. Plans and task state are maintained separately in project files. No database access.
+- Current state: Existing skill guidance is implemented; the new persistence installer and its exact behavior await the verification recorded in the active task.
+- Evidence: `SKILL.md`, `AGENTS.md`, references, templates, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, README.
 
 ## Module: checker
 
@@ -37,26 +37,28 @@ Last verified: `2026-10-14`
 
 ## Module: tests
 
-- Responsibility and owner: Public behavior regression tests for the checker and metadata adapters.
-- Entrypoints/public interfaces: `scripts/tests/test_checker.py` through the declared unittest command.
+- Responsibility and owner: Public behavior regression tests for the checker, metadata adapters and managed-guidance installer.
+- Entrypoints/public interfaces: `scripts/tests/test_checker.py` and `scripts/tests/test_guidance.py` through the declared unittest command.
 - Callers: Maintainers and CI.
-- Direct dependencies and reason: Checker and adapter public entrypoints.
+- Direct dependencies and reason: Checker, adapter and installer public entrypoints.
 - Dependents: None at runtime.
-- Current state: `implemented`
-- Evidence: `scripts/tests/test_checker.py`.
+- Current state: Existing coverage is implemented; persistence regression results are pending in the active task.
+- Evidence: `scripts/tests/test_checker.py`, `scripts/tests/test_guidance.py`.
 
 ## Module: governance
 
 - Responsibility: the self-maintenance manifest, review records, docs, ignore rules and optional GitHub workflow.
-- Entrypoints: `engineering-manifest.json` and `.github/workflows/quality.yml`.
+- Entrypoints: `engineering-manifest.json`, [the persistence task record](../planning/persistence-task.md) and `.github/workflows/quality.yml`.
 - Consumers: maintainers, the checker and CI runners. Local projects can run the same checks without GitHub.
 - Review: changing the manifest, checker, rules or CI listed in `control_plane.protected_paths` blocks commit validation until a human has reviewed that concrete change.
-- State: local implementation, awaiting final human review and remote CI execution.
+- State: The historical approved task and baseline remain intact. `TASK-PERSISTENCE-01` separately tracks the uncommitted persistence change, pending verification and final human review; no approval signal has been supplied.
 
 ## Dependency rules
 
-Allowed direction: `checker -> adapters`; tests may exercise checker and adapters. Instructions define contracts and governance documents describe the system; neither is a runtime dependency.
+Allowed direction: `checker -> adapters`; tests may exercise checker, adapters and the installer in `instructions`. The installer reads the maintained guidance template. Project-specific state stays in the project, while governance documents describe this repository.
 
 Forbidden or risky dependencies: adapters must not read business rows; checker must not silently connect to remote databases; instructions must not override project rules.
+
+Other-agent references do not duplicate the canonical workflow. Their presence does not guarantee automatic loading by a host; the project's selected agent and rule-file configuration determine that behavior.
 
 Intentionally isolated modules: test fixtures and templates are maintained separately from runtime checker code.
