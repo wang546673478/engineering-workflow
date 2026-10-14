@@ -53,6 +53,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Review: changing the manifest, checker, rules or CI listed in `control_plane.protected_paths` blocks commit validation until a human has reviewed that concrete change.
 - State: The historical approved tasks remain intact. `TASK-ISSUES-02` is complete and published; `TASK-ISSUES-03` owns the automatic PR-review-linked workflow change. CI consumes the manifest pointer instead of copying a historical task ID into workflow code.
 - The governance workflow also owns automatic PR-review-linked protected checks: ordinary jobs receive no approval value, the fixed environment gates exact commits, and the aggregate `quality` check is intended for branch protection.
+- Reviewed workflow diagnostics are owned by governance and are constrained to rule-valid, TEST-only failures; they do not change checker or test ownership.
 
 ## Dependency rules
 

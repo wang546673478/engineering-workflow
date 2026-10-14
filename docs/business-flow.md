@@ -25,6 +25,7 @@ Status: `current with TASK-ISSUES-03 implementation in progress`
 2. If a control-plane path changes, CODEOWNERS and branch protection require maintainer review. A submitted approval triggers the workflow again only when its `commit_id` equals the current PR head.
 3. The reviewed job enters the fixed `engineering-control-review` environment, checks out that exact commit, and runs the committed checker on Ubuntu and Windows. The environment value is never exposed to ordinary or fork jobs.
 4. The reviewed job is limited to same-repository PR heads; fork PRs never receive the environment value. The aggregate `quality` result is the branch-protection target. Review records, environment approval and checker reports form the audit trail. Pushes to `main` provide final verification; `workflow_dispatch` remains a manual fallback.
+5. If a reviewed checker report proves all rule/scope gates pass and only TEST fails, the workflow prints verbose fixture-test diagnostics; this diagnostic does not replace the required checker result.
 
 This repository's current adoption work is [TASK-PERSISTENCE-01](../planning/persistence-task.md). Installer validation, final approval and publication remain pending in that record. The GitHub issue review in the same record is an audit only.
 

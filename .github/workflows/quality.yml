@@ -151,6 +151,12 @@ jobs:
           name: reviewed-${{ matrix.os }}
           path: work/ci-review.json
           if-no-files-found: ignore
+      - name: Diagnose test failure after successful rule validation
+        if: failure()
+        shell: bash
+        run: |
+          python -c "import json; data=json.load(open('work/ci-review.json', encoding='utf-8')); checks={c['rule_id']:c for c in data['checks']}; assert not data['errors'] and checks.get('control-plane',{}).get('status')=='pass' and checks.get('committed-scope',{}).get('status')=='pass'; assert all(c['status']=='pass' for c in data['checks'] if c['required'] and c['rule_id'] != 'TEST'); assert checks.get('TEST',{}).get('status')=='fail'"
+          python -m unittest discover -s scripts/tests -v
 
   manual_reviewed:
     name: manual reviewed (${{ matrix.os }})
@@ -191,6 +197,12 @@ jobs:
           name: manual-reviewed-${{ matrix.os }}
           path: work/ci-review.json
           if-no-files-found: ignore
+      - name: Diagnose manual test failure after successful rule validation
+        if: failure()
+        shell: bash
+        run: |
+          python -c "import json; data=json.load(open('work/ci-review.json', encoding='utf-8')); checks={c['rule_id']:c for c in data['checks']}; assert not data['errors'] and checks.get('control-plane',{}).get('status')=='pass' and checks.get('committed-scope',{}).get('status')=='pass'; assert all(c['status']=='pass' for c in data['checks'] if c['required'] and c['rule_id'] != 'TEST'); assert checks.get('TEST',{}).get('status')=='fail'"
+          python -m unittest discover -s scripts/tests -v
 
   quality:
     name: quality
