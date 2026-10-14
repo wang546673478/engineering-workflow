@@ -51,7 +51,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Entrypoints: `engineering-manifest.json` (`workflow.active_task`), [the persistence task record](../planning/persistence-task.md) and `.github/workflows/quality.yml`.
 - Consumers: maintainers, the checker and CI runners. Local projects can run the same checks without GitHub.
 - Review: changing the manifest, checker, rules or CI listed in `control_plane.protected_paths` blocks commit validation until a human has reviewed that concrete change.
-- State: The historical approved tasks remain intact. `TASK-ISSUES-02` is the active in-progress task for the new protected checker and manifest changes; its approval is pending. CI consumes the manifest pointer instead of copying a historical task ID into workflow code.
+- State: The historical approved tasks remain intact. `TASK-ISSUES-02` is complete and published after human approval and local commit/committed checks. CI consumes the manifest pointer instead of copying a historical task ID into workflow code.
 
 ## Dependency rules
 

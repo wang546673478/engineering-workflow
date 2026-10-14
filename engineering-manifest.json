@@ -159,7 +159,7 @@
     "acceptance_ids": ["AT-ISSUES-05", "AT-ISSUES-06", "AT-ISSUES-07"],
     "module_ids": ["instructions", "checker", "tests", "governance"],
     "depends_on": ["TASK-ISSUES-01"],
-    "status": "in_progress",
+    "status": "complete",
     "impact_document": "ISSUES_TASK",
     "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
     "approval_required": true,

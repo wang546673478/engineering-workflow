@@ -1,9 +1,9 @@
 # TASK-ISSUES-02: GitHub issues #11-#13
 
 Updated: `2026-10-15` Asia/Shanghai  
-Status: `in_progress`  
-Base commit: `5b8babf`  
-Requirements: `REQ-ISSUES-05`-`REQ-ISSUES-07`  
+Status: `complete`
+Base commit: `5b8babf`
+Requirements: `REQ-ISSUES-05`-`REQ-ISSUES-07`
 Acceptance: `AT-ISSUES-05`-`AT-ISSUES-07`
 
 This is the active task record for implementing the three open GitHub issues audited in [the prior issue record](persistence-task.md). The prior task and its approvals remain historical and do not authorize this protected checker/manifest change.
@@ -61,4 +61,7 @@ Required checks: `TEST`, `COMPILE`. Also run `GUIDANCE-COMPILE` as declared repo
 - Regression coverage: focused tests pass, then full `python -m unittest discover -s scripts/tests -q` passes with 89 tests. The checker baseline run passes with `tool_version: "1.4.0"`; required TEST, COMPILE and GUIDANCE-COMPILE checks pass, with optional database/contracts inventories remaining partial by design. `python scripts/check_project.py --root . --manifest engineering-manifest.json --mode change --base 5b8babf --task TASK-ISSUES-02 --run-checks` reports TEST, COMPILE, GUIDANCE-COMPILE and change-scope pass; only the expected task-gate fails because approval is pending. These are local working-tree results, not committed-tree or hosted-CI evidence.
 - Release follow-up: removed the stale `TASK-ISSUES-01` default from the manual reviewed-rules workflow; the task ID must now be supplied explicitly, while push/PR checks continue to consume `workflow.active_task`.
 - Human approval: on 2026-10-15 the user answered “批准提交、推送并回复 #11–#13” for the exact TASK-ISSUES-02 scope described above. This approves commit, push and factual replies only; it does not authorize closing issues or altering unrelated files.
-- Remaining: stage the reviewed tree, run the approved protected commit gate, commit, run the committed-tree gate, push `main`, then post issue replies and record the resulting commit/URLs. The task remains `in_progress` until those actions and verifications finish.
+- Protected `commit` gate passed with the human-approved one-time external signal. TEST (89 tests), COMPILE, GUIDANCE-COMPILE, control-plane and commit-scope passed; optional database/contracts inventories remain partial by design.
+- Commit `1a84e077fdb2a4382d5dd0302267f5ca0d82674f` passed the `committed` gate with TEST (89 tests), COMPILE, GUIDANCE-COMPILE, control-plane and committed-scope all passing.
+- Commit `1a84e077fdb2a4382d5dd0302267f5ca0d82674f` was pushed to `origin/main`; local branch is synchronized and the working tree is clean.
+- Factual replies were posted: [#11](https://github.com/wang546673478/engineering-workflow/issues/11#issuecomment-6175179344), [#12](https://github.com/wang546673478/engineering-workflow/issues/12#issuecomment-6175179696), [#13](https://github.com/wang546673478/engineering-workflow/issues/13#issuecomment-6175180140). Issue states were not changed. GitHub-hosted Actions result was not awaited or verified in this task.
