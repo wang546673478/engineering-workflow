@@ -133,4 +133,4 @@ Issue replies posted on 2026-10-14:
 
 提交结果：`05748f8ad816dd3fe33b984839c22a71773fd767` 已发布到 `origin/main`。本地 `committed` 复核于提交后通过；远程 GitHub Actions 和用户真实项目兼容性仍待外部测试。
 
-后续 Actions 修复：提交 `5e0a44f` 的 Linux/Windows Quality 运行在测试前失败，原因是 workflow 仍选择旧任务 `TASK-SELF-01`，而该提交只改变了本任务状态文件，触发旧任务的历史 `baseline-docs` 门槛。修复将 push/PR 和 workflow_dispatch 默认任务切换为 `TASK-ISSUES-01`，并把 `.github` 纳入本任务的控制面影响规则；修复后的 Actions 结果待 GitHub 新运行返回。
+后续 Actions 修复：提交 `5e0a44f` 的 Linux/Windows Quality 运行在测试前失败，原因是 workflow 仍选择旧任务 `TASK-SELF-01`，而该提交只改变了本任务状态文件，触发旧任务的历史 `baseline-docs` 门槛。修复改为由 manifest 的 `workflow.active_task` 指向 `TASK-ISSUES-01`，push/PR workflow 不再复制任务 ID，并把 `.github` 纳入本任务的控制面影响规则；修复后的 Actions 结果待 GitHub 新运行返回。旧 `TASK-SELF-01` 作为历史任务保留，不再作为当前 CI 默认任务。

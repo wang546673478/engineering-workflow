@@ -7,9 +7,10 @@ Status: `current baseline with persistence change pending verification`
 1. The project chooses to adopt engineering-workflow. The agent reads existing project rules and selects the project's existing manifest, task and state locations.
 2. Merge the managed block into repository-root `AGENTS.md`, preserving rules outside its markers. The installer can repeat this update. Record the skill source/revision and canonical state locations in project files.
 3. For a project's selected agent, add a thin reference from its native instruction entry to `AGENTS.md` only when needed. Check the host's loading behavior; do not assume that every agent discovers every filename.
-4. At task start, resume, handoff, incomplete context, agent change or scope change, reload project rules, the adopted skill source/revision, manifest, active task and recent progress/handoff before editing. Reconcile those records with the working tree; scope changes refresh skill review and impact analysis.
+4. At task start, resume, handoff, incomplete context, agent change or scope change, reload project rules, the adopted skill source/revision, manifest, `workflow.active_task` (unless an explicit task ID is supplied), and recent progress/handoff before editing. Reconcile those records with the working tree; scope changes refresh skill review and impact analysis.
 5. Keep plans, decisions, impact, progress, verification and handoff in the project's authoritative files. `AGENTS.md` remains the stable entry, rather than accumulating every task's history.
 6. Review and verify the concrete adoption change. New protected-rule changes require their own final approval; a past task's approval cannot be reused. Missing skill access or unverified host integration is recorded explicitly.
+7. CI consumes the manifest's active task pointer instead of copying a historical task ID into workflow files. Changing the active task is a governed manifest/state change and must be reviewed with its documentation impact.
 
 This repository's current adoption work is [TASK-PERSISTENCE-01](../planning/persistence-task.md). Installer validation, final approval and publication remain pending in that record. The GitHub issue review in the same record is an audit only.
 

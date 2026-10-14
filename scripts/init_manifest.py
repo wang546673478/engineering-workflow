@@ -51,6 +51,7 @@ def manifest(root: Path, profile: str) -> dict:
         impact = {"module-connectivity": {"when_paths": sources, "document_ids": ["MAP", "FLOW", "CONTRACT"]}, "database": {"when_paths": ["migrations", "backend/db"], "document_ids": ["DB", "FLOW"]}}
     return {
         "schema_version": 1,
+        "workflow": {"active_task": "TASK-01"},
         "documents": documents,
         "requirements": [{"id": "REQ-BOOTSTRAP-01", "document": "SPEC"}],
         "acceptance": [{"id": "AT-BOOTSTRAP-01", "document": "SPEC"}],

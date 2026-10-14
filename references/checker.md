@@ -52,7 +52,8 @@ The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `c
 | modules | id、source_paths、document、depends_on、allowed_dependencies；文档为 ID，实际依赖必须属于允许依赖且无循环；此图仅为声明图 |
 | inventories | id、kind、path、documentation、required；path 指源清单 JSON，documentation 指文档映射 JSON，不是文档 ID |
 | checks | id、command、required、timeout_seconds、working_directory；command 是参数数组，超时为有限正数；working_directory 默认为项目根，必须是项目内已存在且不经过符号链接/目录连接的目录；无隐式 shell |
-| tasks | id、requirement_ids、acceptance_ids、module_ids、depends_on、status、impact_document、required_checks、approval_required、approval、documentation_impact；commit 门禁通过 `--task` 或 `ENGINEERING_TASK_ID` 选择任务 |
+| workflow | 可选对象；`active_task` 指向当前 CI/提交任务。没有显式 `--task` 或 `ENGINEERING_TASK_ID` 时，commit/committed/handoff 使用它；切换任务只需更新此字段及任务记录，不要在 workflow 文件复制历史任务 ID |
+| tasks | id、requirement_ids、acceptance_ids、module_ids、depends_on、status、impact_document、required_checks、approval_required、approval、documentation_impact；commit 门禁通过 `--task`、`ENGINEERING_TASK_ID` 或 `workflow.active_task` 选择任务 |
 | task.status | planned、in_progress、blocked、complete；handoff 要求 complete，但状态不证明人已审查 |
 | task.impact_document | 已声明的文档 ID；对应修改前影响记录 |
 | task.required_checks | 已声明检查 ID；选定任务的必需检查强制生效，不能由检查自身 required=false 绕过 |

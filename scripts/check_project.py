@@ -357,6 +357,15 @@ def validate(root, manifest, mode, task_id):
     if not docs or not modules or not requirements or not acceptance or not tasks:
         raise ConfigError("documents, modules, requirements, acceptance and tasks cannot be empty")
     results, faults = [], []
+    workflow = manifest.get("workflow")
+    if workflow is not None:
+        if not isinstance(workflow, dict):
+            raise ConfigError("workflow must be an object")
+        active_task = workflow.get("active_task")
+        if not isinstance(active_task, str) or not active_task.strip():
+            raise ConfigError("workflow.active_task must be a non-empty task ID")
+        if active_task not in tasks:
+            faults.append("workflow.active_task references unknown task: " + active_task)
     excluded = []
     for raw in array(manifest["exclude_paths"], "exclude_paths"):
         path = safe_path(root, raw, file_only=False)
@@ -844,6 +853,8 @@ def main(argv=None):
     try:
         root = safe_root(args.root)
         manifest = read_json(safe_path(root, args.manifest))
+        if task_id is None and isinstance(manifest.get("workflow"), dict):
+            task_id = manifest["workflow"].get("active_task")
         results, docs, modules, tasks, declared = validate(root, manifest, args.mode, task_id)
         report["checks"].extend(results)
         if args.mode in ("change", "handoff"):

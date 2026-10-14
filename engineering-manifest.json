@@ -1,5 +1,6 @@
 {
   "schema_version": 1,
+  "workflow": {"active_task": "TASK-ISSUES-01"},
   "documents": [
     {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
     {"id": "MAP", "path": "docs/module-map.md", "kind": "module-map", "required": true},
@@ -23,6 +24,7 @@
     ,{"id": "REQ-ISSUES-01", "document": "SPEC"}
     ,{"id": "REQ-ISSUES-02", "document": "SPEC"}
     ,{"id": "REQ-ISSUES-03", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-04", "document": "SPEC"}
   ],
   "acceptance": [
     {"id": "AT-SELF-01", "document": "SPEC"},
@@ -36,6 +38,7 @@
     ,{"id": "AT-ISSUES-01", "document": "SPEC"}
     ,{"id": "AT-ISSUES-02", "document": "SPEC"}
     ,{"id": "AT-ISSUES-03", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-04", "document": "SPEC"}
   ],
   "modules": [
     {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "AGENTS.md", "VERSION", "CHANGELOG.md", "LICENSE", "scripts/install_agents_guidance.py", "scripts/init_manifest.py", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
@@ -117,8 +120,8 @@
     }
   }, {
     "id": "TASK-ISSUES-01",
-    "requirement_ids": ["REQ-ISSUES-01", "REQ-ISSUES-02", "REQ-ISSUES-03"],
-    "acceptance_ids": ["AT-ISSUES-01", "AT-ISSUES-02", "AT-ISSUES-03"],
+    "requirement_ids": ["REQ-ISSUES-01", "REQ-ISSUES-02", "REQ-ISSUES-03", "REQ-ISSUES-04"],
+    "acceptance_ids": ["AT-ISSUES-01", "AT-ISSUES-02", "AT-ISSUES-03", "AT-ISSUES-04"],
     "module_ids": ["instructions", "checker", "adapters", "tests", "governance"],
     "depends_on": ["TASK-PERSISTENCE-01"],
     "status": "complete",

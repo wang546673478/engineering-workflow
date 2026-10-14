@@ -64,6 +64,17 @@ class CheckerTests(unittest.TestCase):
         self.assertEqual(proc.returncode,0, result)
         self.assertTrue(result["required_checks_satisfied"])
         self.assertNotIn("ok", json.dumps(result))
+    def test_manifest_active_task_is_used_when_cli_task_is_omitted(self):
+        self.manifest["workflow"] = {"active_task": "TASK-1"}
+        proc,result=self.cli("--mode","handoff","--run-checks")
+        self.assertEqual(proc.returncode,0, result)
+        self.assertTrue(result["required_checks_satisfied"])
+
+    def test_unknown_manifest_active_task_blocks_baseline(self):
+        self.manifest["workflow"] = {"active_task": "TASK-MISSING"}
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,1)
+        self.assertIn("workflow.active_task", json.dumps(result))
     def test_check_runs_from_declared_working_directory(self):
         self.manifest["checks"][0]["working_directory"] = "src"
         self.manifest["checks"][0]["command"] = [

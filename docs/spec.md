@@ -17,6 +17,7 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - REQ-ISSUES-01: The checker handles excluded dependency trees and project-relative check working directories without weakening root and link safety.
 - REQ-ISSUES-02: Requirement/acceptance traceability, inventory refreshes and first adoption provide explicit, reviewable workflows with backward-compatible defaults.
 - REQ-ISSUES-03: Public guidance records the declaration-based verification boundary, package version/license/change history and a reviewable full/lite manifest bootstrap.
+- REQ-ISSUES-04: CI task selection comes from the manifest active-task pointer or an explicit runtime input, never from a historical task ID copied into workflow code.
 
 ## Acceptance
 
@@ -31,6 +32,7 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - AT-ISSUES-01: Checker regression tests cover excluded symlink trees, working directories, trace anchors/indexes and first-adoption diagnostics.
 - AT-ISSUES-02: Extractors refuse unsafe overwrites by default and atomically update only their own versioned snapshots when explicitly requested.
 - AT-ISSUES-03: Documentation and bootstrap templates explain `documentation_impact` semantics, verification limits, version metadata and the reviewable `lite`/`full` initialization path.
+- AT-ISSUES-04: Checker tests cover manifest active-task fallback and reject an unknown active task; the repository workflow invokes the checker without a copied historical task ID.
 
 ## Persistence change status
 

@@ -1,5 +1,6 @@
 {
   "schema_version": 1,
+  "workflow": {"active_task": "TASK-01"},
   "documents": [
     {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
     {"id": "MAP", "path": "docs/module-map.md", "kind": "module-map", "required": true},

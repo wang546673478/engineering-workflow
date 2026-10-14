@@ -30,6 +30,7 @@ Adapt these clauses into each project's `AGENTS.md`; do not copy them blindly ov
 - Record current implementation separately from target design, and never claim unverified behavior.
 - Run meaningful project checks and record results, including skips and residual risk.
 - Maintain a project manifest with document/module/contract/schema inventories, active task and required checks; invoke the skill checker in baseline, change and handoff modes as applicable. Report unsatisfied required checks as incomplete, not passed. Keep unknowns open until reviewed; unsupported tooling does not establish full coverage.
+- Keep the active task in the manifest's `workflow.active_task` (or an equivalent project state pointer). CI and reusable templates should consume that pointer or an explicit runtime task ID; they must not hard-code a historical task ID.
 
 ## Design and safety
 
