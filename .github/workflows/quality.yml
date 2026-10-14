@@ -66,4 +66,16 @@ jobs:
         env:
           ENGINEERING_TASK_ID: ${{ inputs.task_id }}
           ENGINEERING_CONTROL_PLANE_APPROVED: ${{ vars.ENGINEERING_CONTROL_PLANE_APPROVED }}
-        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --allow-control-plane-change --run-checks
+        run: >-
+          python -c "import pathlib,subprocess,sys; pathlib.Path('work').mkdir(exist_ok=True);
+          sys.exit(subprocess.call([sys.executable,'scripts/check_project.py','--root','.','--manifest','engineering-manifest.json','--mode','committed','--commit-ref','HEAD','--allow-control-plane-change','--run-checks','--report','work/ci-review.json']))"
+      - name: Diagnose a test failure after successful rule validation
+        if: failure()
+        run: >-
+          python -c "import json,pathlib,subprocess,sys;
+          data=json.loads(pathlib.Path('work/ci-review.json').read_text(encoding='utf-8'));
+          checks={c['rule_id']:c for c in data['checks']};
+          assert not data['errors'] and checks.get('control-plane',{}).get('status')=='pass' and checks.get('committed-scope',{}).get('status')=='pass', 'Rule validation did not pass; diagnostic commands will not run';
+          assert all(c['status']=='pass' for c in data['checks'] if c['required'] and c['rule_id'] not in ('TEST','COMPILE')), 'A required gate did not pass';
+          assert checks.get('TEST',{}).get('status')=='fail', 'No executed test failure to diagnose';
+          sys.exit(subprocess.call([sys.executable,'-m','unittest','discover','-s','scripts/tests','-v']))"

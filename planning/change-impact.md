@@ -43,3 +43,7 @@ The user stated on 2026-10-14: “是需要用户看一遍的，并且和用户�
 - Independent skill-creator quick validation: passed with locally installed PyYAML 6.0.3 and UTF-8 enabled. Workflow YAML parsed successfully.
 - Before human approval, the live submission gate correctly blocked the rule change and skipped declared commands. Following approval, a short-lived external signal may be supplied to verify this reviewed change only.
 - Hosted Actions, environment reviewers and branch protections have not been configured or executed during this local task. Their activation is a separate publication step.
+
+## Publication follow-up
+
+The approved change was published as `147531c`. The protected review environment was configured with the repository owner as reviewer and admin bypass disabled. The exact-SHA reviewed run passed on Ubuntu; Windows passed all rule and scope checks but its test command exited 1. Add visible fixture-test diagnostics only after all required prechecks have passed, so the platform-specific failure can be corrected without weakening the rule gate. This is a routine validation follow-up within the user's request to publish the completed working change.

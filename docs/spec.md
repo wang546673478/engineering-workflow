@@ -20,6 +20,10 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - AT-SELF-04: Guidance accepts an empty business-database inventory when genuinely not applicable; CI remains optional for other projects.
 - AT-SELF-05: CLI regression tests reject unapproved rule changes and exercise the approved path only in disposable fixture repositories.
 
+## Publishing diagnostics
+
+If an approved hosted verification fails its TEST check, the reviewed workflow may rerun this repository's fixture-only tests with visible diagnostics. It first verifies the saved report's control-plane, committed-scope and all other required prechecks. A rejected rule change never enables this diagnostic path.
+
 ## Scope and ownership
 
 The skill instructions own the workflow rules. The checker owns mechanical manifest, impact, inventory, and Git gate validation. The adapter scripts own metadata extraction. Tests are the executable behavior evidence. User decisions and repository-specific rules remain higher priority than this skill.
