@@ -8,6 +8,7 @@ python <skill-dir>/scripts/check_project.py --root <project> --manifest engineer
 python <skill-dir>/scripts/check_project.py --root <project> --manifest engineering-manifest.json --mode handoff --base <commit> --task TASK-01 --run-checks --report new-handoff-report.json
 ENGINEERING_TASK_ID=TASK-01 python <skill-dir>/scripts/check_project.py --root <project> --manifest engineering-manifest.json --mode commit
 ENGINEERING_TASK_ID=TASK-01 python <skill-dir>/scripts/check_project.py --root <project> --manifest engineering-manifest.json --mode committed --commit-ref <commit-sha> --run-checks
+ENGINEERING_CONTROL_PLANE_APPROVED=1 python <skill-dir>/scripts/check_project.py --root <project> --manifest engineering-manifest.json --mode committed --commit-ref <commit-sha> --task TASK-01 --allow-control-plane-change --run-checks
 python <skill-dir>/scripts/extract_sqlite.py <checkpointed-project.sqlite> --output new-database-inventory.json
 python <skill-dir>/scripts/extract_database.py mysql --url-env ENGINEERING_DATABASE_URL --schema app --output new-database-inventory.json
 python <skill-dir>/scripts/extract_database.py postgresql --url-env ENGINEERING_DATABASE_URL --schema public --output new-database-inventory.json
@@ -19,6 +20,20 @@ baseline 核对声明结构和资料；change/handoff 必须提供 Git base 和�
 `commit` 是本地提交门禁：只读取当前 Git index 中已暂存的路径，拒绝空暂存区和任何未暂存的工作树差异，防止从工作区读取到与提交内容不一致的文档或清单。它会将源代码路径与 `task.documentation_impact` 中的触发路径关联，源代码变更未声明门槛也会失败；遗漏任一文档时退出失败。初始提交使用空树比较，删除和重命名同时检查旧路径与新路径。任务 ID 可用 `--task` 指定，也可通过 `ENGINEERING_TASK_ID` 提供；命令行参数优先。
 
 `committed` 用于 CI/受保护分支复核已生成的提交：checkout 必须位于 `--commit-ref`，按该 commit 与父提交（根提交则用空树）比较，并拒绝工作树/index 偏离提交树。CI 应对待合并的每个提交运行该模式；本地 hook 可被跳过，不能作为唯一门禁。复制 [POSIX 模板](../assets/templates/pre-commit.engineering) 或 [PowerShell 模板](../assets/templates/pre-commit.engineering.ps1) 作为本地 hook；CI checkout 每个待检 commit 后可调用 [POSIX CI 模板](../assets/templates/ci-committed.engineering) 或 [PowerShell CI 模板](../assets/templates/ci-committed.engineering.ps1)。两个 CI 模板都要求显式指定 commit SHA 和该提交的任务 ID。
+
+### 保护检查规则和清单
+
+`commit` 和 `committed` 还会保护控制文件，默认包括传入的 manifest 和 `scripts/check_project.py`；manifest 可通过 `control_plane.protected_paths` 增加项目自己的规则文件、hook 和 CI 配置。门禁会读取提交父版本的 manifest 来确定原有保护范围和批准变量名，因此本次提交不能靠删除保护配置或换一个批准变量来绕过检查。控制文件变更默认失败；人工检查变更后，需要在本地显式传入 `--allow-control-plane-change`，并在当前进程环境中设置父版本 manifest 声明的批准变量为 `1`。批准变量不能写在仓库文件或提交脚本里。
+
+CI 不得在仓库可修改的 workflow 中把批准变量写成常量 `1`，也不得把可用于不受信任 PR 的 secret 传给该检查。若 CI 要接受控制文件更新，批准值必须由仓库外的受保护配置提供，并要求独立人工批准；GitHub 项目应另外用仓库设置保护检查器、manifest、workflow 等文件的审阅流程。任何同仓库代码都不能单独证明自己可信：若有人能同时改检查器和 CI，最终保护仍依赖仓库托管平台的分支规则、受保护的 reviewer/owner 审批和独立审阅。控制文件变更应单独解释、审阅并运行完整测试，不能把自我批准当成安全证明。
+
+如果控制面检查失败，`commit`/`committed` 会跳过当前提交 manifest 声明的命令，避免执行未经审阅的命令；报告仍会明确显示检查未通过。`committed` 还要求完整 Git 历史，浅克隆无法证明父提交时必须先补齐历史。
+
+本仓库的自动工作流先运行提交门禁；规则改动在没有批准时应失败。人工复核后的远程运行使用 `workflow_dispatch`，输入审阅过的完整提交 SHA 和任务 ID。启用该入口前，仓库所有者必须在 GitHub 设置中为 `engineering-control-review` environment 配置 required reviewers，并仅在该 environment 中设置 `ENGINEERING_CONTROL_PLANE_APPROVED=1`。不要在 repository/organization 级别设置这个变量，也不要在普通 push/PR job 中提供它。文件中的 environment 名称并不会自动创建人工审阅保护；未完成托管平台设置时不要声称远程批准已启用。选择可信工作流版本发起操作，reviewer 核对该 SHA 后才放行。分支规则需由所有者按这两个检查路径配置；普通规则检查失败不能自动等同于人工批准。
+
+这仍然是普通误改和绕过的防护，不是对同仓库恶意检查器的沙箱。最终检查器/workflow 的可信版本、受保护的审批设置由维护者控制。没有 GitHub 的项目可在本地审阅同一份差异，再在单次命令环境中传递批准；不需要上传源码。
+
+GitHub Actions 是可选的托管检查方式，不是每个使用本 skill 的项目都必须拥有 GitHub 仓库或启用 Actions。项目可以只使用本地 hook，也可以接入 GitLab CI、Jenkins 等其他 CI；只要在合并或发布前运行等价的 `committed` 检查即可。只有选择 GitHub Actions 的项目才需要复制或启用对应 workflow；没有远程 CI 时，仍应在本地运行 `commit` 门禁并保留验证记录。本 skill 不要求上传项目源码，也不会因为没有 GitHub Actions 就把项目判为失败。
 
 The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, and `errors`. Exit code 0 means every required check passed; 1 means a required validation failed; 2 means malformed configuration, unavailable environment, or an unsupported required check. `pass`, `fail`, `partial`, `unsupported`, `skipped`, and `error` are reported separately. Partial, skipped, or unsupported required checks cannot satisfy completion.
 
@@ -41,6 +56,7 @@ The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `c
 | task.approval | 需要批准时为 `{status: approved, evidence: 项目内文件路径}`；证据引用用户原话/时间/范围，不能伪造或仅自行写 approved |
 | baseline | status 为 complete/approved，evidence 指已存在的基线验收记录；状态与证据存在不能自动证明业务完整性 |
 | exclude_paths | 明确排除并在报告列出；不能排除项目根，不得用宽泛排除隐藏业务改动 |
+| control_plane | 可选对象；`protected_paths` 声明额外受保护的控制文件，`approval_env` 为批准环境变量名（默认 `ENGINEERING_CONTROL_PLANE_APPROVED`）。manifest 和 checker 始终受保护；需人工审阅并通过外部批准才能提交变更 |
 
 路径限定在项目根内，不允许符号链接/目录连接旁路。source_paths、排除路径和文档路径可为项目内绝对路径，匹配 Git 时规范化为项目相对路径。Markdown 的普通项目内相对链接可跨目录；模板中的外部链接不代表代码依赖。未登记的源路径必须补模块归属，不能为了通过而添加全项目排除。
 

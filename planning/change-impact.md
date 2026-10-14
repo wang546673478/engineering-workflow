@@ -1,19 +1,19 @@
 # Self-Maintenance Change Impact
 
-Change: Establish the engineering-workflow repository's own maintenance baseline  
-Requirements/acceptance: `REQ-SELF-01`–`REQ-SELF-03`, `AT-SELF-01`–`AT-SELF-03`  
-Status: `reviewed`
+Change: Protect self-maintenance rules and explain user decisions plainly
+Requirements/acceptance: `REQ-SELF-01`–`REQ-SELF-05`, `AT-SELF-01`–`AT-SELF-05`
+Status: `approved for publication`
 
 ## Skill review
 
-The active task records `skill-creator`, `tdd`, and `setup-pre-commit` decisions in `engineering-manifest.json`. The user will perform the final manual review.
+The active task records `skill-creator`, `tdd`, and `setup-pre-commit` decisions in `engineering-manifest.json`. The user completed final review and authorized publication; the approval evidence is in `planning/baseline-review.md`.
 
 ## Impact map
 
-- Modules: instructions, checker, adapters.
-- Contracts: checker CLI modes and adapter snapshot format.
-- Database: no application database; metadata-only adapter boundary documented.
-- Tests: existing checker and adapter tests plus baseline/compile checks.
+- Modules: instructions, checker, tests and governance.
+- Contracts: protected-file check and explicit external acknowledgement for commit/committed modes.
+- Database: no application database; user accepted an empty inventory. Adapter code and snapshot formats are unchanged.
+- Tests: existing checker/adapter tests plus rule-removal, approval-variable substitution and protected-file review regression tests.
 - Documentation: module map, contract, business flow, database boundary, baseline, and skill review.
 
 ## Gate decisions
@@ -29,3 +29,17 @@ The active task records `skill-creator`, `tdd`, and `setup-pre-commit` decisions
 - The checker is declaration-based and cannot prove all dynamic dependencies.
 - The manifest and gate rules are control-plane inputs and require human review.
 - Remote adapters are not live database truth and must remain explicit and metadata-only.
+- Local/CI approval signals must not be hardcoded into repository-controlled files. The agent will not set the live repository's approval variable to make this change pass before the user reviews it.
+- This repository chooses GitHub Actions; other projects may use local checks or another CI. Hosted approval and branch settings are not changed as part of this local edit.
+
+## Confirmed decisions
+
+The user stated on 2026-10-14: “是需要用户看一遍的，并且和用户沟通需要通俗易懂的告诉用户”; accepted an empty inventory when there is no business database; allowed Actions for this repository but noted not all projects use GitHub; requested “现在就加强保护”; and authorized installing PyYAML and running the check. The final response “符合我的意思,是不是都已经改好了,改好了就上传github吧” approves this completed scope and uploading it to the existing repository.
+
+## Local verification
+
+- Full unittest suite: 56 tests passed, exit 0. Coverage includes rule removal, renamed approval variables, true shallow clones, missing parent objects, unstaged manifest changes and prevention of command side effects after failed checks.
+- Python compilation: passed. Self-manifest structure: passed; the existing optional manual inventories remain partial.
+- Independent skill-creator quick validation: passed with locally installed PyYAML 6.0.3 and UTF-8 enabled. Workflow YAML parsed successfully.
+- Before human approval, the live submission gate correctly blocked the rule change and skipped declared commands. Following approval, a short-lived external signal may be supplied to verify this reviewed change only.
+- Hosted Actions, environment reviewers and branch protections have not been configured or executed during this local task. Their activation is a separate publication step.

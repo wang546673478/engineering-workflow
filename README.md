@@ -38,6 +38,10 @@ Skill 会引导 Agent：
 4. 在实现后同步模块地图、业务流程、接口契约和数据库文档。
 5. 运行项目检查，并记录通过、失败、跳过、未支持和未验证状态。
 
+## 和用户确认
+
+需要用户决定的事情会先用通俗语言说明：发现了什么、为什么要决定、有哪些选项，以及每个选项的影响。技术名词、文件路径和检查结果会作为补充说明，不会直接替代解释。用户看不懂时，Agent 应换一种更简单的说法；用户确认后，Agent 会复述确认范围，并记录在任务或决定记录中。
+
 ## Git 提交门禁
 
 检查器位于 `scripts/check_project.py`。
@@ -122,7 +126,11 @@ python -m py_compile scripts/check_project.py scripts/extract_database.py script
 python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline --run-checks
 ```
 
-GitHub Actions 会在 Linux 和 Windows 上运行测试、编译检查和自身基线检查。提交门禁仍需由使用该 skill 的项目复制模板后接入。
+本仓库自带的 GitHub Actions 示例会在 Linux 和 Windows 上运行测试、编译检查和自身基线检查。GitHub Actions 对使用该 skill 的项目是可选能力：项目可以只用本地 hook，或接入其他 CI 服务；选择 GitHub Actions 的项目再复制模板并启用 workflow。无论是否使用远程 CI，提交前都应运行本地 `commit` 门禁，并在采用的 CI 中复核已生成的提交。
+
+检查规则本身被修改时，自动提交检查会暂停，等待人工审阅。检查器会同时参考修改前后的保护范围，不能靠在本次提交中删除保护名单或更换批准变量来直接放行。获批后才能通过专用参数和单次外部批准信号继续；规则检查失败、历史缺失或工作区与提交内容不一致时，不执行该提交声明的项目命令。
+
+本仓库另提供人工运行的 Actions 入口，要求指定审阅过的完整提交 SHA，并配置受保护的 GitHub environment。具体接入条件见 [检查器说明](references/checker.md)。这些配置不会自动安装到其他项目，也不代表 GitHub 仓库设置已经启用保护。
 
 ## 安全边界
 

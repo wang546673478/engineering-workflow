@@ -3,23 +3,67 @@ name: Quality
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: Full commit SHA whose protected-rule changes were reviewed
+        required: true
+        type: string
+      task_id:
+        description: Task recorded in the reviewed manifest
+        required: true
+        default: TASK-SELF-01
+        type: string
+
+permissions:
+  contents: read
 
 jobs:
   test:
+    if: github.event_name != 'workflow_dispatch'
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run tests
-        run: python -m unittest discover -s scripts/tests -q
-      - name: Compile scripts
-        run: python -m py_compile scripts/check_project.py scripts/extract_database.py scripts/extract_sqlite.py
-      - name: Validate self baseline
-        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline --run-checks
-      - name: Validate committed tree
-        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref "${{ github.sha }}" --task TASK-SELF-01 --run-checks
+      - name: Check submitted rules before running declared tests
+        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --task TASK-SELF-01 --run-checks
+
+  reviewed-rules:
+    if: github.event_name == 'workflow_dispatch'
+    environment: engineering-control-review
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Require the exact reviewed commit
+        env:
+          REVIEWED_SHA: ${{ inputs.commit_sha }}
+        run: >-
+          python -c "import os,re,subprocess; value=os.environ['REVIEWED_SHA'];
+          assert re.fullmatch(r'[a-fA-F0-9]{40}|[a-fA-F0-9]{64}',value), 'Use a full commit SHA';
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip().lower()==value.lower(), 'Checkout differs from reviewed commit'"
+      - name: Verify human-reviewed rules and run checks
+        env:
+          ENGINEERING_TASK_ID: ${{ inputs.task_id }}
+          ENGINEERING_CONTROL_PLANE_APPROVED: ${{ vars.ENGINEERING_CONTROL_PLANE_APPROVED }}
+        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --allow-control-plane-change --run-checks

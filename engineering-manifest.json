@@ -13,12 +13,16 @@
   "requirements": [
     {"id": "REQ-SELF-01", "document": "SPEC"},
     {"id": "REQ-SELF-02", "document": "SPEC"},
-    {"id": "REQ-SELF-03", "document": "SPEC"}
+    {"id": "REQ-SELF-03", "document": "SPEC"},
+    {"id": "REQ-SELF-04", "document": "SPEC"},
+    {"id": "REQ-SELF-05", "document": "SPEC"}
   ],
   "acceptance": [
     {"id": "AT-SELF-01", "document": "SPEC"},
     {"id": "AT-SELF-02", "document": "SPEC"},
-    {"id": "AT-SELF-03", "document": "SPEC"}
+    {"id": "AT-SELF-03", "document": "SPEC"},
+    {"id": "AT-SELF-04", "document": "SPEC"},
+    {"id": "AT-SELF-05", "document": "SPEC"}
   ],
   "modules": [
     {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
@@ -37,14 +41,15 @@
   ],
   "tasks": [{
     "id": "TASK-SELF-01",
-    "requirement_ids": ["REQ-SELF-01", "REQ-SELF-02", "REQ-SELF-03"],
-    "acceptance_ids": ["AT-SELF-01", "AT-SELF-02", "AT-SELF-03"],
+    "requirement_ids": ["REQ-SELF-01", "REQ-SELF-02", "REQ-SELF-03", "REQ-SELF-04", "REQ-SELF-05"],
+    "acceptance_ids": ["AT-SELF-01", "AT-SELF-02", "AT-SELF-03", "AT-SELF-04", "AT-SELF-05"],
     "module_ids": ["instructions", "checker", "adapters", "tests", "governance"],
     "depends_on": [],
-    "status": "in_progress",
+    "status": "complete",
     "impact_document": "IMPACT",
     "required_checks": ["TEST", "COMPILE"],
-    "approval_required": false,
+    "approval_required": true,
+    "approval": {"status": "approved", "evidence": "planning/baseline-review.md"},
     "skill_review": {
       "catalog_source": "Codex skills catalog available in the maintenance session",
       "scope": "skill structure, checker behavior, repository documentation, and test changes",
@@ -54,7 +59,7 @@
         {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Applies to checker behavior changes and regression tests", "evidence": ["SKILL.md"]},
         {"id": "setup-pre-commit", "source": "C:/Users/54667/.agents/skills/setup-pre-commit/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The repository already ships its own generic hook templates and is not adding Husky", "evidence": ["SKILL.md"]}
       ],
-      "recheck": "none; final manual review remains required"
+      "recheck": "2026-10-14: protected-rule verification, plain-language review and local-only checks; same skill choices; skill-creator validation passed with local PyYAML; user approved the completed change and publication"
     },
     "documentation_impact": {
       "module-connectivity": {"when_paths": ["SKILL.md", "references", "scripts/check_project.py", "scripts/extract_database.py", "scripts/extract_sqlite.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "IMPACT"]},
@@ -66,6 +71,19 @@
       "governance": {"when_paths": [".github", ".gitignore"], "document_ids": ["SPEC", "IMPACT"]}
     }
   }],
-  "baseline": {"status": "complete", "evidence": "planning/baseline-review.md"},
+  "control_plane": {
+    "protected_paths": [
+      "SKILL.md",
+      "references/checker.md",
+      "scripts/check_project.py",
+      "assets/templates/pre-commit.engineering",
+      "assets/templates/pre-commit.engineering.ps1",
+      "assets/templates/ci-committed.engineering",
+      "assets/templates/ci-committed.engineering.ps1",
+      ".github/workflows/quality.yml"
+    ],
+    "approval_env": "ENGINEERING_CONTROL_PLANE_APPROVED"
+  },
+  "baseline": {"status": "approved", "evidence": "planning/baseline-review.md"},
   "exclude_paths": [".git", "work", "__pycache__"]
 }

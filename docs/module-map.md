@@ -23,6 +23,7 @@ Last verified: `2026-10-14`
 - Dependents: Project-specific hook and CI templates.
 - Current state: `implemented`
 - Evidence: `scripts/check_project.py`, `scripts/tests/test_checker.py`.
+- Protected-rule checks: commit modes read the previous manifest from Git and combine previous and proposed protected scopes. Approval comes from outside the submitted manifest; these checks do not authenticate a human or replace protected branch settings.
 
 ## Module: adapters
 
@@ -43,6 +44,14 @@ Last verified: `2026-10-14`
 - Dependents: None at runtime.
 - Current state: `implemented`
 - Evidence: `scripts/tests/test_checker.py`.
+
+## Module: governance
+
+- Responsibility: the self-maintenance manifest, review records, docs, ignore rules and optional GitHub workflow.
+- Entrypoints: `engineering-manifest.json` and `.github/workflows/quality.yml`.
+- Consumers: maintainers, the checker and CI runners. Local projects can run the same checks without GitHub.
+- Review: changing the manifest, checker, rules or CI listed in `control_plane.protected_paths` blocks commit validation until a human has reviewed that concrete change.
+- State: local implementation, awaiting final human review and remote CI execution.
 
 ## Dependency rules
 

@@ -13,7 +13,7 @@ import sys
 import time
 from urllib.parse import urlparse
 
-VERSION = "1.2"
+VERSION = "1.3"
 STATES = {"pass", "fail", "partial", "unsupported", "skipped", "error"}
 
 class ConfigError(ValueError):
@@ -121,6 +121,114 @@ def relative_scope(root, raw):
     """Normalize a manifest path so it can be compared with Git paths."""
     path = safe_path(root, raw, file_only=False).relative_to(root).as_posix()
     return "" if path == "." else path
+
+def control_plane_paths(root, manifest, manifest_path):
+    """Return the current manifest's protected control-plane scopes."""
+    paths = [manifest_path, "scripts/check_project.py"]
+    control = manifest.get("control_plane", {})
+    if control is not None:
+        if not isinstance(control, dict):
+            raise ConfigError("control_plane must be an object")
+        declared = control.get("protected_paths", [])
+        if not isinstance(declared, list) or not all(isinstance(item, str) and item.strip() for item in declared):
+            raise ConfigError("control_plane.protected_paths must be an array of non-empty paths")
+        paths.extend(declared)
+        approval_env = control.get("approval_env", "ENGINEERING_CONTROL_PLANE_APPROVED")
+        if not isinstance(approval_env, str) or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", approval_env):
+            raise ConfigError("control_plane.approval_env must be a valid environment variable name")
+    return sorted({relative_scope(root, path) for path in paths})
+
+def git_revision(root, ref):
+    if not isinstance(ref, str) or not ref or ref.startswith("-"):
+        return None
+    prefix = ["git", "-c", "safe.directory=" + str(root)]
+    proc = subprocess.run(prefix + ["rev-parse", "--verify", "--end-of-options", ref + "^{commit}"],
+                          cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          stdin=subprocess.DEVNULL, timeout=30)
+    if proc.returncode:
+        return None
+    oid = proc.stdout.decode("ascii", "replace").strip()
+    return oid if re.fullmatch(r"[a-fA-F0-9]{40}|[a-fA-F0-9]{64}", oid) else None
+
+def git_parent(root, ref):
+    oid = git_revision(root, ref)
+    if not oid:
+        raise ConfigError("Git commit is unavailable while inspecting its parent")
+    prefix = ["git", "-c", "safe.directory=" + str(root)]
+    # Read the raw commit: rev-parse HEAD^ treats shallow boundaries and
+    # missing parent objects like roots, which is unsafe for policy history.
+    proc = subprocess.run(prefix + ["cat-file", "-p", oid],
+                          cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          stdin=subprocess.DEVNULL, timeout=30)
+    if proc.returncode:
+        raise ConfigError("Git commit metadata is unavailable")
+    headers = proc.stdout.split(b"\n\n", 1)[0].splitlines()
+    parents = [line[7:].decode("ascii", "replace") for line in headers if line.startswith(b"parent ")]
+    if not parents:
+        return None
+    if any(not re.fullmatch(r"[a-fA-F0-9]{40}|[a-fA-F0-9]{64}", parent)
+           or git_revision(root, parent) is None for parent in parents):
+        raise ConfigError("Git parent object is unavailable; restore complete history before validation")
+    return parents[0]
+
+def git_is_shallow(root):
+    prefix = ["git", "-c", "safe.directory=" + str(root)]
+    proc = subprocess.run(prefix + ["rev-parse", "--is-shallow-repository"], cwd=root,
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          stdin=subprocess.DEVNULL, timeout=30)
+    if proc.returncode:
+        raise ConfigError("Git cannot determine whether this checkout is shallow")
+    return proc.stdout.decode("ascii", "replace").strip().lower() == "true"
+
+def manifest_from_git(root, revision, manifest_path):
+    """Read a baseline manifest without trusting the working tree copy."""
+    oid = git_revision(root, revision)
+    if not oid:
+        return None
+    relative = relative_scope(root, manifest_path)
+    prefix = ["git", "-c", "safe.directory=" + str(root)]
+    proc = subprocess.run(prefix + ["show", "--no-ext-diff", "--format=", oid + ":" + relative],
+                          cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          stdin=subprocess.DEVNULL, timeout=30)
+    if proc.returncode:
+        return None
+    try:
+        return json.loads(proc.stdout.decode("utf-8-sig"))
+    except (UnicodeError, json.JSONDecodeError):
+        return None
+
+def control_plane_check(root, manifest, manifest_path, mode, changed_paths, commit_ref=None, allow=False):
+    """Block control-plane edits unless explicitly approved outside the repository."""
+    if git_is_shallow(root):
+        raise ConfigError("commit validation requires full Git history; shallow checkout is not supported")
+    if mode == "commit" and git_revision(root, "HEAD"):
+        git_parent(root, "HEAD")
+    protected = set(control_plane_paths(root, manifest, manifest_path))
+    baseline_ref = "HEAD" if mode == "commit" else git_parent(root, commit_ref) if commit_ref else None
+    baseline = manifest_from_git(root, baseline_ref, manifest_path) if baseline_ref else None
+    if isinstance(baseline, dict):
+        protected.update(control_plane_paths(root, baseline, manifest_path))
+    changed = sorted(path for path in changed_paths if any(covered(path, scope) for scope in protected))
+    env_name = "ENGINEERING_CONTROL_PLANE_APPROVED"
+    # The baseline setting is authoritative: a submitted manifest must not be
+    # able to rename the approval variable to one already present in its runner.
+    control = baseline.get("control_plane") if isinstance(baseline, dict) else None
+    if isinstance(control, dict) and isinstance(control.get("approval_env"), str) and control["approval_env"].strip():
+        env_name = control["approval_env"].strip()
+    externally_approved = os.environ.get(env_name) == "1"
+    approved = bool(changed) and allow and externally_approved
+    gaps = []
+    if changed and not approved:
+        if not allow:
+            gaps.append("control-plane files changed; rerun with --allow-control-plane-change after manual review")
+        else:
+            gaps.append("--allow-control-plane-change requires external approval variable " + env_name + "=1")
+    evidence = {"protected_paths": sorted(protected), "changed_paths": changed,
+                "approval_variable": env_name, "external_approval_present": externally_approved}
+    return output_check("control-plane", "fail" if gaps else "pass",
+                        "baseline control-plane paths and submitted tree", evidence if not gaps else {**evidence, "gaps": gaps},
+                        required=True,
+                        limitations=["Control-plane approval is intentionally supplied outside the repository; review the manifest and checker changes separately."])
 
 def validate(root, manifest, mode, task_id):
     if not isinstance(manifest, dict) or type(manifest.get("schema_version")) is not int or manifest["schema_version"] != 1:
@@ -478,6 +586,8 @@ def unstaged_git_paths(root):
 
 def committed_git_paths(root, commit):
     """Return paths changed by a committed tree versus its first parent."""
+    if git_is_shallow(root):
+        raise ConfigError("committed mode requires a full Git history; shallow checkout cannot prove the parent")
     if not isinstance(commit, str) or not commit or commit.startswith("-"):
         raise ConfigError("Git commit must be a commit reference, not an option")
     prefix = ["git", "-c", "safe.directory=" + str(root)]
@@ -485,8 +595,7 @@ def committed_git_paths(root, commit):
     oid = revision.stdout.decode("ascii", "replace").strip()
     if revision.returncode or not re.fullmatch(r"[a-fA-F0-9]{40}|[a-fA-F0-9]{64}", oid):
         raise ConfigError("Git commit cannot be resolved")
-    parent = subprocess.run(prefix + ["rev-parse", "--verify", "--end-of-options", oid + "^"], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.DEVNULL, timeout=30)
-    base = parent.stdout.decode("ascii", "replace").strip() if parent.returncode == 0 else None
+    base = git_parent(root, oid)
     if base is None:
         args = ["diff-tree", "--root", "--no-commit-id", "-r", "--no-ext-diff", "--no-textconv", "--no-renames", "--name-only", "-z", oid, "--"]
     else:
@@ -564,12 +673,12 @@ def change_check(root, manifest, docs, modules, tasks, task_id, base=None, paths
     return paths, output_check(rule_id, status, scope, details,
                                limitations=["Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."])
 
-def run_checks(root, checks, enabled, forced):
+def run_checks(root, checks, enabled, forced, blocked_reason=None):
     results = []
     for ident, check in checks.items():
         required = check["required"] or ident in forced
         if not enabled:
-            results.append(output_check(ident, "skipped", "declared command", "not run; use --run-checks", required))
+            results.append(output_check(ident, "skipped", "declared command", blocked_reason or "not run; use --run-checks", required))
             continue
         start = time.monotonic()
         try:
@@ -598,10 +707,15 @@ def main(argv=None):
     parser.add_argument("--commit-ref")
     parser.add_argument("--task")
     parser.add_argument("--run-checks", action="store_true")
+    parser.add_argument("--allow-control-plane-change", action="store_true",
+                        help="allow protected manifest/checker changes only with external approval")
     parser.add_argument("--report")
     args = parser.parse_args(argv)
     task_id = args.task or os.environ.get("ENGINEERING_TASK_ID")
     report = {"tool_version": VERSION, "mode": args.mode, "required_checks_satisfied": False, "checks": [], "summary": "", "changed_paths": [], "errors": []}
+    # These modes must positively prove the submitted tree is safe to run;
+    # exceptions and incomplete history leave command execution disabled.
+    commands_allowed = args.mode not in ("commit", "committed")
     try:
         root = safe_root(args.root)
         manifest = read_json(safe_path(root, args.manifest))
@@ -619,6 +733,9 @@ def main(argv=None):
             try:
                 report["changed_paths"], check = change_check(root, manifest, docs, modules, tasks, task_id,
                                                                paths=staged_git_paths(root), rule_id="commit-scope")
+                control_check = control_plane_check(root, manifest, args.manifest, args.mode,
+                                                    report["changed_paths"], allow=args.allow_control_plane_change)
+                report["checks"].append(control_check)
                 unstaged = unstaged_git_paths(root)
                 if unstaged:
                     check["status"] = "fail"
@@ -629,8 +746,9 @@ def main(argv=None):
                     check["evidence"]["staged_paths"] = []
                     check["evidence"]["documentation_gaps"].append("no staged changes found")
                 report["checks"].append(check)
-            except (ConfigError, OSError, subprocess.TimeoutExpired):
-                report["checks"].append(output_check("commit-scope", "unsupported", "Git staged index discovery", "Git or staged index unavailable"))
+                commands_allowed = all(item["status"] == "pass" for item in report["checks"] if item["required"])
+            except (ConfigError, OSError, subprocess.TimeoutExpired) as exc:
+                report["checks"].append(output_check("commit-scope", "unsupported", "Git staged index discovery", str(exc)))
         elif args.mode == "committed":
             try:
                 if not args.commit_ref:
@@ -643,6 +761,10 @@ def main(argv=None):
                 report["changed_paths"], check = change_check(root, manifest, docs, modules, tasks, task_id,
                                                                paths=committed_git_paths(root, args.commit_ref), rule_id="committed-scope",
                                                                scope_label="checked-out commit tree versus first parent")
+                control_check = control_plane_check(root, manifest, args.manifest, args.mode,
+                                                    report["changed_paths"], commit_ref=args.commit_ref,
+                                                    allow=args.allow_control_plane_change)
+                report["checks"].append(control_check)
                 unstaged = unstaged_git_paths(root)
                 staged = staged_git_paths(root)
                 if unstaged or staged:
@@ -654,10 +776,12 @@ def main(argv=None):
                     check["status"] = "fail"
                     check["evidence"]["documentation_gaps"].append("commit has no changed paths")
                 report["checks"].append(check)
+                commands_allowed = all(item["status"] == "pass" for item in report["checks"] if item["required"])
             except (ConfigError, OSError, subprocess.TimeoutExpired) as exc:
                 report["checks"].append(output_check("committed-scope", "unsupported", "committed tree discovery", str(exc)))
         forced = set(tasks[task_id]["required_checks"]) if task_id and task_id in tasks else set()
-        report["checks"].extend(run_checks(root, declared, args.run_checks, forced))
+        reason = None if commands_allowed else "not run; submitted-tree validation did not pass"
+        report["checks"].extend(run_checks(root, declared, args.run_checks and commands_allowed, forced, reason))
     except (ConfigError, OSError, UnicodeError, TypeError, KeyError) as exc:
         report["errors"].append(str(exc))
     required = [x for x in report["checks"] if x["required"]]

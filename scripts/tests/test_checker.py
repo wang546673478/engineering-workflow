@@ -347,6 +347,198 @@ class CheckerTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, result)
 
     @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_control_plane_changes_require_external_approval(self):
+        self.manifest["control_plane"] = {
+            "protected_paths": ["manifest.json"],
+            "approval_env": "TEST_CONTROL_PLANE_APPROVED",
+        }
+        self.manifest["tasks"][0]["documentation_impact"] = {
+            "implementation-only": {"when_paths": ["src"], "document_ids": ["impact"]}
+        }
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "control baseline")
+
+        self.manifest["control_plane"]["protected_paths"].append("docs/approval.md")
+        self.write()
+        self.git("add", "manifest.json")
+        proc, result = self.cli("--mode", "commit", "--task", "TASK-1", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        control = next(check for check in result["checks"] if check["rule_id"] == "control-plane")
+        self.assertEqual(control["status"], "fail")
+        self.assertIn("manifest.json", control["evidence"]["changed_paths"])
+
+        with mock.patch.dict(os.environ, {"TEST_CONTROL_PLANE_APPROVED": "1"}, clear=False):
+            proc, result = self.cli("--mode", "commit", "--task", "TASK-1",
+                                    "--allow-control-plane-change", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+        control = next(check for check in result["checks"] if check["rule_id"] == "control-plane")
+        self.assertEqual(control["status"], "pass")
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_control_plane_committed_mode_uses_parent_manifest(self):
+        self.manifest["control_plane"] = {
+            "protected_paths": ["manifest.json"],
+            "approval_env": "TEST_CONTROL_PLANE_APPROVED",
+        }
+        self.manifest["tasks"][0]["documentation_impact"] = {
+            "implementation-only": {"when_paths": ["src"], "document_ids": ["impact"]}
+        }
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "control baseline")
+        self.manifest.pop("control_plane")
+        self.write()
+        self.git("add", "manifest.json")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "control change")
+
+        proc, result = self.cli("--mode", "committed", "--commit-ref", "HEAD", "--task", "TASK-1", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        control = next(check for check in result["checks"] if check["rule_id"] == "control-plane")
+        self.assertEqual(control["status"], "fail")
+        self.assertIn("manifest.json", control["evidence"]["changed_paths"])
+
+        with mock.patch.dict(os.environ, {"TEST_CONTROL_PLANE_APPROVED": "1"}, clear=False):
+            proc, result = self.cli("--mode", "committed", "--commit-ref", "HEAD", "--task", "TASK-1",
+                                    "--allow-control-plane-change", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_control_plane_approval_variable_cannot_be_changed_in_same_commit(self):
+        self.manifest["control_plane"] = {
+            "protected_paths": ["manifest.json"],
+            "approval_env": "TEST_CONTROL_PLANE_APPROVED",
+        }
+        self.manifest["tasks"][0]["documentation_impact"] = {
+            "implementation-only": {"when_paths": ["src"], "document_ids": ["impact"]}
+        }
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "control baseline")
+        self.manifest["control_plane"]["approval_env"] = "ATTACKER_CHOSEN_APPROVAL"
+        self.write()
+        self.git("add", "manifest.json")
+        with mock.patch.dict(os.environ, {
+            "TEST_CONTROL_PLANE_APPROVED": "0",
+            "ATTACKER_CHOSEN_APPROVAL": "1",
+        }, clear=False):
+            proc, result = self.cli("--mode", "commit", "--task", "TASK-1",
+                                    "--allow-control-plane-change", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        control = next(check for check in result["checks"] if check["rule_id"] == "control-plane")
+        self.assertEqual(control["evidence"]["approval_variable"], "TEST_CONTROL_PLANE_APPROVED")
+        self.assertFalse(control["evidence"]["external_approval_present"])
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_control_plane_failure_does_not_execute_declared_commands(self):
+        marker = self.root / "command-ran.txt"
+        self.manifest["control_plane"] = {"protected_paths": ["manifest.json"], "approval_env": "TEST_CONTROL_PLANE_APPROVED"}
+        self.manifest["tasks"][0]["documentation_impact"] = {"implementation-only": {"when_paths": ["src"], "document_ids": ["impact"]}}
+        self.manifest["checks"][0]["command"] = [sys.executable, "-c", "open('command-ran.txt','w').write('ran')"]
+        self.write(); self.git("add", "."); self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "safe command baseline")
+        self.manifest["control_plane"]["protected_paths"].append("docs/approval.md")
+        self.write(); self.git("add", "manifest.json")
+        proc, result = self.cli("--mode", "commit", "--task", "TASK-1", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        self.assertFalse(marker.exists())
+
+    def prepare_command_marker(self):
+        self.manifest["tasks"][0]["documentation_impact"] = {
+            "implementation-only": {"when_paths": ["src"], "document_ids": ["impact"]}
+        }
+        self.manifest["checks"][0]["command"] = [sys.executable, "-c", "open('command-ran.txt','w').write('ran')"]
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "marker baseline")
+
+    def clone_shallow_fixture(self, destination):
+        proc = subprocess.run(["git", "clone", "--depth", "1", self.root.as_uri(), str(destination)],
+                              capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertTrue(checker.git_is_shallow(destination))
+
+    def fixture_cli(self, root, mode, *extra):
+        args = [sys.executable, str(SCRIPTS / "check_project.py"), "--root", str(root),
+                "--manifest", "manifest.json", "--mode", mode, "--task", "TASK-1", "--run-checks"]
+        if mode == "committed":
+            args.extend(["--commit-ref", "HEAD"])
+        proc = subprocess.run(args + list(extra), capture_output=True, text=True)
+        return proc, json.loads(proc.stdout)
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_scope_failure_blocks_declared_commands_in_both_commit_modes(self):
+        self.prepare_command_marker()
+        (self.root / "src/app.py").write_text("changed without documentation", encoding="utf-8")
+        self.git("add", "src/app.py")
+        proc, result = self.cli("--mode", "commit", "--task", "TASK-1", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        self.assertFalse((self.root / "command-ran.txt").exists(), result)
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "missing documentation")
+        proc, result = self.fixture_cli(self.root, "committed")
+        self.assertEqual(proc.returncode, 1, result)
+        self.assertFalse((self.root / "command-ran.txt").exists(), result)
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_commit_discovery_error_does_not_execute_declared_commands(self):
+        self.prepare_command_marker()
+        proc, result = self.fixture_cli(self.root, "committed", "--commit-ref", "missing-reference")
+        self.assertEqual(proc.returncode, 2, result)
+        self.assertFalse((self.root / "command-ran.txt").exists(), result)
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_unstaged_manifest_command_never_executes_in_both_commit_modes(self):
+        self.manifest["tasks"][0]["documentation_impact"] = {
+            "implementation-only": {"when_paths": ["src"], "document_ids": ["impact"]}
+        }
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "gate baseline")
+        (self.root / "src/app.py").write_text("documented change", encoding="utf-8")
+        (self.root / "docs/impact.md").write_text("reviewed change", encoding="utf-8")
+        self.git("add", "src/app.py", "docs/impact.md")
+        self.manifest["checks"][0]["command"] = [sys.executable, "-c", "open('command-ran.txt','w').write('ran')"]
+        self.write()
+        proc, result = self.fixture_cli(self.root, "commit")
+        self.assertEqual(proc.returncode, 1, result)
+        self.assertFalse((self.root / "command-ran.txt").exists(), result)
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "documented change")
+        proc, result = self.fixture_cli(self.root, "committed")
+        self.assertEqual(proc.returncode, 1, result)
+        self.assertFalse((self.root / "command-ran.txt").exists(), result)
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_shallow_clone_refuses_both_modes_without_running_commands(self):
+        self.prepare_command_marker()
+        with tempfile.TemporaryDirectory() as tmp:
+            clone = Path(tmp).resolve() / "shallow"
+            self.clone_shallow_fixture(clone)
+            for mode in ("committed", "commit"):
+                with self.subTest(mode=mode):
+                    proc, result = self.fixture_cli(clone, mode)
+                    self.assertEqual(proc.returncode, 2, result)
+                    self.assertIn("shallow", json.dumps(result).lower())
+                    self.assertFalse((clone / "command-ran.txt").exists(), result)
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_missing_parent_object_is_not_treated_as_root_and_cannot_run_commands(self):
+        self.assertIsNone(checker.git_parent(self.root, "HEAD"))
+        self.prepare_command_marker()
+        with tempfile.TemporaryDirectory() as tmp:
+            clone = Path(tmp).resolve() / "missing-parent"
+            self.clone_shallow_fixture(clone)
+            # Remove only the fixture's shallow marker; the raw commit still
+            # declares a parent object that this clone does not possess.
+            (clone / ".git" / "shallow").unlink()
+            self.assertFalse(checker.git_is_shallow(clone))
+            with self.assertRaisesRegex(checker.ConfigError, "parent.*unavailable|missing.*parent"):
+                checker.git_parent(clone, "HEAD")
+            for mode in ("committed", "commit"):
+                with self.subTest(mode=mode):
+                    proc, result = self.fixture_cli(clone, mode)
+                    self.assertEqual(proc.returncode, 2, result)
+                    self.assertFalse((clone / "command-ran.txt").exists(), result)
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
     def test_commit_rejects_undeclared_source_change(self):
         (self.root / "src/app.py").write_text("changed", encoding="utf-8")
         self.git("add", "src/app.py")

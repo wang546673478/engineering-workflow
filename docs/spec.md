@@ -9,12 +9,16 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - REQ-SELF-01: The repository maintains a traceable baseline for its own instructions, modules, contracts, business flow, database-adapter boundary, and verification checks.
 - REQ-SELF-02: Changes to the skill are reviewed with applicable skills, tests, documentation-impact analysis, and Git commit evidence.
 - REQ-SELF-03: Database adapters remain metadata-only, explicit, and safe to run without exposing credentials or business values.
+- REQ-SELF-04: Explain review decisions in plain language, separate automated results from human approval, and allow local-only checks for projects without GitHub.
+- REQ-SELF-05: Changing validation rules requires a separate human decision; deleting protected-path declarations or renaming approval variables in the same change must not silently allow it.
 
 ## Acceptance
 
 - AT-SELF-01: The active manifest and baseline documents pass the checker in baseline mode.
 - AT-SELF-02: The test suite and Python compilation checks pass for the current source tree.
 - AT-SELF-03: A self-maintenance change records skill applicability, affected modules, documentation gates, tests, and manual-review status.
+- AT-SELF-04: Guidance accepts an empty business-database inventory when genuinely not applicable; CI remains optional for other projects.
+- AT-SELF-05: CLI regression tests reject unapproved rule changes and exercise the approved path only in disposable fixture repositories.
 
 ## Scope and ownership
 

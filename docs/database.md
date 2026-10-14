@@ -5,6 +5,8 @@ Last verified: `2026-10-14`
 
 This skill repository has no application database. Its database-facing module is the metadata adapter boundary.
 
+The user accepted an empty business-database inventory on 2026-10-14. It is optional because no business schema exists here, not because adapter limitations have been waived. The adapter description below remains maintained. This change does not connect to or modify any database.
+
 ## Adapter inventory
 
 | Adapter | Reads | Does not read | Completeness |
