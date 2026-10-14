@@ -1,0 +1,11 @@
+{
+  "kind": "contract",
+  "provenance": {
+    "type": "manual",
+    "scope": "Checker CLI and metadata snapshot contracts documented manually",
+    "complete": false,
+    "evidence": "docs/contracts.md",
+    "source_files": []
+  },
+  "items": []
+}

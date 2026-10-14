@@ -1,0 +1,25 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run tests
+        run: python -m unittest discover -s scripts/tests -q
+      - name: Compile scripts
+        run: python -m py_compile scripts/check_project.py scripts/extract_database.py scripts/extract_sqlite.py
+      - name: Validate self baseline
+        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline --run-checks
+      - name: Validate committed tree
+        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref "${{ github.sha }}" --task TASK-SELF-01 --run-checks

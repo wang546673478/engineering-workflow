@@ -1,0 +1,11 @@
+{
+  "kind": "database",
+  "provenance": {
+    "type": "manual",
+    "scope": "No application database; adapter metadata boundary only",
+    "complete": false,
+    "evidence": "docs/database.md",
+    "source_files": []
+  },
+  "items": []
+}

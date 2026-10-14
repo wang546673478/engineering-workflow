@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "documents": [
+    {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
+    {"id": "MAP", "path": "docs/module-map.md", "kind": "module-map", "required": true},
+    {"id": "DB", "path": "docs/database.md", "kind": "database-dictionary", "required": true},
+    {"id": "CONTRACT", "path": "docs/contracts.md", "kind": "contract", "required": true},
+    {"id": "FLOW", "path": "docs/business-flow.md", "kind": "business-flow", "required": true},
+    {"id": "IMPACT", "path": "planning/change-impact.md", "kind": "impact", "required": true},
+    {"id": "BASELINE", "path": "planning/baseline-review.md", "kind": "baseline", "required": true},
+    {"id": "SKILL_REVIEW", "path": "planning/skill-review.md", "kind": "skill-review", "required": true}
+  ],
+  "requirements": [
+    {"id": "REQ-SELF-01", "document": "SPEC"},
+    {"id": "REQ-SELF-02", "document": "SPEC"},
+    {"id": "REQ-SELF-03", "document": "SPEC"}
+  ],
+  "acceptance": [
+    {"id": "AT-SELF-01", "document": "SPEC"},
+    {"id": "AT-SELF-02", "document": "SPEC"},
+    {"id": "AT-SELF-03", "document": "SPEC"}
+  ],
+  "modules": [
+    {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
+    {"id": "checker", "source_paths": ["scripts/check_project.py"], "document": "MAP", "depends_on": ["adapters"], "allowed_dependencies": ["adapters"]},
+    {"id": "adapters", "source_paths": ["scripts/extract_database.py", "scripts/extract_sqlite.py"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
+    {"id": "tests", "source_paths": ["scripts/tests"], "document": "MAP", "depends_on": ["checker", "adapters"], "allowed_dependencies": ["checker", "adapters"]},
+    {"id": "governance", "source_paths": ["engineering-manifest.json", ".gitignore", "docs", "planning", ".github"], "document": "MAP", "depends_on": ["instructions"], "allowed_dependencies": ["instructions"]}
+  ],
+  "inventories": [
+    {"id": "database", "kind": "database", "path": "planning/database-inventory.json", "documentation": "planning/database-doc-mapping.json", "required": false},
+    {"id": "contracts", "kind": "contract", "path": "planning/contract-inventory.json", "documentation": "planning/contract-doc-mapping.json", "required": false}
+  ],
+  "checks": [
+    {"id": "TEST", "command": ["python", "-m", "unittest", "discover", "-s", "scripts/tests", "-q"], "required": true, "timeout_seconds": 120},
+    {"id": "COMPILE", "command": ["python", "-m", "py_compile", "scripts/check_project.py", "scripts/extract_database.py", "scripts/extract_sqlite.py"], "required": true, "timeout_seconds": 30}
+  ],
+  "tasks": [{
+    "id": "TASK-SELF-01",
+    "requirement_ids": ["REQ-SELF-01", "REQ-SELF-02", "REQ-SELF-03"],
+    "acceptance_ids": ["AT-SELF-01", "AT-SELF-02", "AT-SELF-03"],
+    "module_ids": ["instructions", "checker", "adapters", "tests", "governance"],
+    "depends_on": [],
+    "status": "in_progress",
+    "impact_document": "IMPACT",
+    "required_checks": ["TEST", "COMPILE"],
+    "approval_required": false,
+    "skill_review": {
+      "catalog_source": "Codex skills catalog available in the maintenance session",
+      "scope": "skill structure, checker behavior, repository documentation, and test changes",
+      "checked_at": "2026-10-14T00:00:00+08:00",
+      "candidates": [
+        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Defines skill structure and validation for updating this skill", "evidence": ["SKILL.md"]},
+        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Applies to checker behavior changes and regression tests", "evidence": ["SKILL.md"]},
+        {"id": "setup-pre-commit", "source": "C:/Users/54667/.agents/skills/setup-pre-commit/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The repository already ships its own generic hook templates and is not adding Husky", "evidence": ["SKILL.md"]}
+      ],
+      "recheck": "none; final manual review remains required"
+    },
+    "documentation_impact": {
+      "module-connectivity": {"when_paths": ["SKILL.md", "references", "scripts/check_project.py", "scripts/extract_database.py", "scripts/extract_sqlite.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "IMPACT"]},
+      "tests": {"when_paths": ["scripts/tests"], "document_ids": ["IMPACT"]},
+      "public-guidance": {"when_paths": ["README.md", "agents", "assets/templates"], "document_ids": ["CONTRACT", "IMPACT"]},
+      "database": {"when_paths": ["scripts/extract_database.py", "scripts/extract_sqlite.py"], "document_ids": ["DB", "FLOW", "IMPACT"]},
+      "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "IMPACT", "BASELINE"]},
+      "baseline-docs": {"when_paths": ["docs", "planning"], "document_ids": ["IMPACT"]},
+      "governance": {"when_paths": [".github", ".gitignore"], "document_ids": ["SPEC", "IMPACT"]}
+    }
+  }],
+  "baseline": {"status": "complete", "evidence": "planning/baseline-review.md"},
+  "exclude_paths": [".git", "work", "__pycache__"]
+}

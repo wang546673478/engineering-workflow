@@ -116,6 +116,14 @@ python -m unittest discover -s scripts/tests -q
 python -m py_compile scripts/check_project.py scripts/extract_database.py scripts/extract_sqlite.py
 ```
 
+本仓库也维护自己的工程清单。可在仓库根目录运行：
+
+```text
+python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline --run-checks
+```
+
+GitHub Actions 会在 Linux 和 Windows 上运行测试、编译检查和自身基线检查。提交门禁仍需由使用该 skill 的项目复制模板后接入。
+
 ## 安全边界
 
 - 不把密码、Token 或完整连接串写入计划、清单或快照。
