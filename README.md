@@ -159,6 +159,10 @@ python scripts/check_project.py --root . --manifest engineering-manifest.json --
 
 检查规则本身被修改时，自动提交检查会暂停，等待人工审阅。检查器会同时参考修改前后的保护范围，不能靠在本次提交中删除保护名单或更换批准变量来直接放行。获批后才能通过专用参数和单次外部批准信号继续；规则检查失败、历史缺失或工作区与提交内容不一致时，不执行该提交声明的项目命令。
 
+本仓库的 Actions 将普通 PR 检查、控制面 PR 审阅和最终 push 复核分开。控制面 PR 需要 CODEOWNERS/分支保护批准；批准当前同仓库 PR head 后，工作流自动进入 `engineering-control-review` 环境并运行精确 commit 的受保护检查。批准值只存在于环境范围，普通或 fork PR 不会拿到它。PR review、环境批准和检查报告共同留下审计记录；`workflow_dispatch` 仍可用于历史提交的 exact-SHA 补救验证。
+
+本仓库的 Actions 将普通 PR 检查、控制面 PR 审阅和最终 push 复核分开。控制面 PR 需要 CODEOWNERS/分支保护批准；批准当前 PR head 后，工作流自动进入 `engineering-control-review` 环境并运行精确 commit 的受保护检查。批准值只存在于环境范围，普通或 fork PR 不会拿到它。PR review、环境批准和检查报告共同留下审计记录；`workflow_dispatch` 仍可用于历史提交的 exact-SHA 补救验证。
+
 本仓库另提供人工运行的 Actions 入口，要求指定审阅过的完整提交 SHA，并配置受保护的 GitHub environment。具体接入条件见 [检查器说明](references/checker.md)。这些配置不会自动安装到其他项目，也不代表 GitHub 仓库设置已经启用保护。
 
 ## 安全边界

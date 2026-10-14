@@ -21,6 +21,7 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - REQ-ISSUES-05: Checker reports derive `tool_version` from the repository's canonical `VERSION` file.
 - REQ-ISSUES-06: Manifest paths using either slash style behave consistently across hosts, while absolute paths from another platform, root escapes and links remain rejected.
 - REQ-ISSUES-07: `exclude_paths` supports documented segment-aware glob patterns; `documentation_impact.when_paths` may use the strict common ancestor of source scopes from at least two selected modules without expanding changed-path coverage.
+- REQ-ISSUES-08: The repository workflow routes protected-path changes through the fixed `engineering-control-review` environment automatically, runs ordinary checks for other changes, and exposes one aggregate quality result while retaining an exact-SHA manual fallback.
 
 ## Acceptance
 
@@ -39,6 +40,7 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - AT-ISSUES-05: Checker CLI reports the value in `VERSION`, including `1.4.0` for this release.
 - AT-ISSUES-06: A POSIX host resolves a manifest path such as `docs\\spec.md` to `docs/spec.md`, while Windows drive/UNC paths on POSIX and project-root escapes still fail.
 - AT-ISSUES-07: Exclusion globs support `*`, `?`, character classes and complete-segment `**`, prune matching directory trees before link resolution, and never become change allowlists; a non-root `when_paths` ancestor covering source scopes from two or more selected modules is accepted and triggers the normal AND documentation gate.
+- AT-ISSUES-08: A push or pull request first detects protected paths from the trusted base manifest plus fixed checker/manifest/workflow paths; protected changes wait for the fixed review environment before committed checks, unprotected changes run the normal matrix, and the aggregate quality job fails when the selected path is not successful. Manual exact-SHA review remains available.
 
 ## Persistence change status
 

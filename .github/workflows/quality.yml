@@ -3,6 +3,8 @@ name: Quality
 on:
   push:
   pull_request:
+  pull_request_review:
+    types: [submitted]
   workflow_dispatch:
     inputs:
       commit_sha:
@@ -16,10 +18,68 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
-  test:
+  detect:
+    name: detect protected paths
     if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      protected: ${{ steps.scope.outputs.protected }}
+      sha: ${{ steps.scope.outputs.sha }}
+      task_id: ${{ steps.scope.outputs.task_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - id: scope
+        name: Compare event tree with trusted base scopes
+        env:
+          TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          fixed_paths=("engineering-manifest.json" "scripts/check_project.py" ".github/workflows/quality.yml" ".github/CODEOWNERS")
+          protected_paths=("${fixed_paths[@]}")
+          if [[ "$BASE_SHA" != "0000000000000000000000000000000000000000" ]] && git cat-file -e "$BASE_SHA:engineering-manifest.json" 2>/dev/null; then
+            while IFS= read -r path; do
+              [[ -n "$path" ]] && protected_paths+=("$path")
+            done < <(git show "$BASE_SHA:engineering-manifest.json" | jq -r '.control_plane.protected_paths[]?')
+          fi
+
+          if [[ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            mapfile -t changed_paths < <(git ls-tree -r --name-only "$TARGET_SHA")
+          else
+            mapfile -t changed_paths < <(git diff --name-only --no-renames "$BASE_SHA" "$TARGET_SHA" --)
+          fi
+
+          protected=false
+          for changed in "${changed_paths[@]}"; do
+            for protected_path in "${protected_paths[@]}"; do
+              protected_path="${protected_path//\\//}"
+              if [[ "$changed" == "$protected_path" || "$changed" == "$protected_path"/* ]]; then
+                protected=true
+              fi
+            done
+          done
+
+          target_manifest="$(git show "$TARGET_SHA:engineering-manifest.json")"
+          task_id="$(jq -r '.workflow.active_task // empty' <<<"$target_manifest")"
+          [[ -n "$task_id" ]] || { echo 'target manifest has no workflow.active_task' >&2; exit 1; }
+          {
+            echo "protected=$protected"
+            echo "sha=$TARGET_SHA"
+            echo "task_id=$task_id"
+          } >> "$GITHUB_OUTPUT"
+
+  ordinary:
+    name: ordinary (${{ matrix.os }})
+    needs: detect
+    if: needs.detect.result == 'success' && needs.detect.outputs.protected != 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -30,14 +90,70 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ needs.detect.outputs.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Check submitted rules before running declared tests
-        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --run-checks
+      - name: Prepare report directory
+        run: python -c "from pathlib import Path; Path('work').mkdir(exist_ok=True)"
+      - name: Check submitted tree and run declared tests
+        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --run-checks --report work/ci-review.json
+      - name: Upload checker report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-${{ matrix.os }}
+          path: work/ci-review.json
+          if-no-files-found: ignore
 
-  reviewed-rules:
+  reviewed:
+    name: reviewed (${{ matrix.os }})
+    needs: detect
+    if: >-
+      needs.detect.result == 'success' && needs.detect.outputs.protected == 'true' &&
+      (github.event_name == 'push' ||
+      (github.event_name == 'pull_request_review' && github.event.review.state == 'approved' &&
+      github.event.review.commit_id == needs.detect.outputs.sha &&
+      github.event.pull_request.head.repo.full_name == github.repository))
+    environment: engineering-control-review
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ needs.detect.outputs.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare report directory
+        run: python -c "from pathlib import Path; Path('work').mkdir(exist_ok=True)"
+      - name: Require the exact detected commit
+        env:
+          REVIEWED_SHA: ${{ needs.detect.outputs.sha }}
+        run: >-
+          python -c "import os,re,subprocess; value=os.environ['REVIEWED_SHA'];
+          assert re.fullmatch(r'[a-fA-F0-9]{40}|[a-fA-F0-9]{64}',value), 'Use a full commit SHA';
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip().lower()==value.lower(), 'Checkout differs from detected commit'"
+      - name: Check approved protected tree and run declared tests
+        env:
+          ENGINEERING_TASK_ID: ${{ needs.detect.outputs.task_id }}
+          ENGINEERING_CONTROL_PLANE_APPROVED: ${{ vars.ENGINEERING_CONTROL_PLANE_APPROVED }}
+        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --allow-control-plane-change --run-checks --report work/ci-review.json
+      - name: Upload reviewed checker report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-${{ matrix.os }}
+          path: work/ci-review.json
+          if-no-files-found: ignore
+
+  manual_reviewed:
+    name: manual reviewed (${{ matrix.os }})
     if: github.event_name == 'workflow_dispatch'
     environment: engineering-control-review
     strategy:
@@ -48,34 +164,61 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.commit_sha }}
           fetch-depth: 0
           persist-credentials: false
+          ref: ${{ inputs.commit_sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Require the exact reviewed commit
+      - name: Prepare report directory
+        run: python -c "from pathlib import Path; Path('work').mkdir(exist_ok=True)"
+      - name: Require the exact manually reviewed commit
         env:
           REVIEWED_SHA: ${{ inputs.commit_sha }}
         run: >-
           python -c "import os,re,subprocess; value=os.environ['REVIEWED_SHA'];
           assert re.fullmatch(r'[a-fA-F0-9]{40}|[a-fA-F0-9]{64}',value), 'Use a full commit SHA';
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip().lower()==value.lower(), 'Checkout differs from reviewed commit'"
-      - name: Verify human-reviewed rules and run checks
-        continue-on-error: true
+      - name: Check manually reviewed protected tree and run declared tests
         env:
           ENGINEERING_TASK_ID: ${{ inputs.task_id }}
           ENGINEERING_CONTROL_PLANE_APPROVED: ${{ vars.ENGINEERING_CONTROL_PLANE_APPROVED }}
-        run: >-
-          python -c "import pathlib,subprocess,sys; pathlib.Path('work').mkdir(exist_ok=True);
-          sys.exit(subprocess.call([sys.executable,'scripts/check_project.py','--root','.','--manifest','engineering-manifest.json','--mode','committed','--commit-ref','HEAD','--allow-control-plane-change','--run-checks','--report','work/ci-review.json']))"
-      - name: Diagnose a test failure after successful rule validation
-        if: failure()
-        run: >-
-          python -c "import json,pathlib,subprocess,sys;
-          data=json.loads(pathlib.Path('work/ci-review.json').read_text(encoding='utf-8'));
-          checks={c['rule_id']:c for c in data['checks']};
-          assert not data['errors'] and checks.get('control-plane',{}).get('status')=='pass' and checks.get('committed-scope',{}).get('status')=='pass', 'Rule validation did not pass; diagnostic commands will not run';
-          assert all(c['status']=='pass' for c in data['checks'] if c['required'] and c['rule_id'] != 'TEST'), 'A required gate did not pass';
-          assert checks.get('TEST',{}).get('status')=='fail', 'No executed test failure to diagnose';
-          sys.exit(subprocess.call([sys.executable,'-m','unittest','discover','-s','scripts/tests','-v']))"
+        run: python scripts/check_project.py --root . --manifest engineering-manifest.json --mode committed --commit-ref HEAD --allow-control-plane-change --run-checks --report work/ci-review.json
+      - name: Upload manual checker report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-reviewed-${{ matrix.os }}
+          path: work/ci-review.json
+          if-no-files-found: ignore
+
+  quality:
+    name: quality
+    if: always()
+    needs: [detect, ordinary, reviewed, manual_reviewed]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require the selected quality path to pass
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REVIEW_STATE: ${{ github.event.review.state || '' }}
+          DETECT_RESULT: ${{ needs.detect.result }}
+          PROTECTED: ${{ needs.detect.outputs.protected || '' }}
+          ORDINARY_RESULT: ${{ needs.ordinary.result }}
+          REVIEWED_RESULT: ${{ needs.reviewed.result }}
+          MANUAL_RESULT: ${{ needs.manual_reviewed.result }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            [[ "$MANUAL_RESULT" == "success" ]] || { echo "manual reviewed quality failed: $MANUAL_RESULT" >&2; exit 1; }
+            exit 0
+          fi
+          [[ "$DETECT_RESULT" == "success" ]] || { echo "protected-path detection failed" >&2; exit 1; }
+          if [[ "$EVENT_NAME" == "pull_request_review" && "$PROTECTED" == "true" ]]; then
+            [[ "$REVIEW_STATE" == "approved" && "$REVIEWED_RESULT" == "success" ]] || { echo "approved review did not produce a passing reviewed check" >&2; exit 1; }
+          elif [[ "$PROTECTED" == "true" ]]; then
+            [[ "$REVIEWED_RESULT" == "success" ]] || { echo "protected changes require environment review; reviewed job result: $REVIEWED_RESULT" >&2; exit 1; }
+          else
+            [[ "$ORDINARY_RESULT" == "success" ]] || { echo "ordinary quality failed: $ORDINARY_RESULT" >&2; exit 1; }
+          fi

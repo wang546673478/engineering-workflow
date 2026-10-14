@@ -12,6 +12,7 @@
 - Protected scopes: union of old and new `control_plane.protected_paths`, plus the selected manifest and the conventional checker path. The proposed manifest cannot rename the approval variable to authorize itself.
 - Approval boundary: a process variable is an operator acknowledgement, not proof of identity or a digital signature. Keep its lifetime to one verification run. A hosted repository still needs trusted reviewer/branch settings to resist modification of the checker itself.
 - Hosting: GitHub Actions is optional. The same CLI can be run locally or by another CI system.
+- Hosted review: ordinary PR/fork jobs never receive the control-plane approval value. A protected environment may run the committed check only after a reviewer-approved same-repository PR review is tied to the current exact commit; fork PRs remain subject to branch protection and a maintainer-controlled fallback. Manual exact-SHA dispatch remains a fallback. A single aggregate quality result should be the required branch-protection check.
 
 ### Manifest path rules
 

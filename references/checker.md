@@ -32,7 +32,7 @@ CI 不得在仓库可修改的 workflow 中把批准变量写成常量 `1`，也
 
 如果控制面检查失败，`commit`/`committed` 会跳过当前提交 manifest 声明的命令，避免执行未经审阅的命令；报告仍会明确显示检查未通过。`committed` 还要求完整 Git 历史，浅克隆无法证明父提交时必须先补齐历史。
 
-本仓库的自动工作流先运行提交门禁；规则改动在没有批准时应失败。人工复核后的远程运行使用 `workflow_dispatch`，输入审阅过的完整提交 SHA 和任务 ID。启用该入口前，仓库所有者必须在 GitHub 设置中为 `engineering-control-review` environment 配置 required reviewers，并仅在该 environment 中设置 `ENGINEERING_CONTROL_PLANE_APPROVED=1`。不要在 repository/organization 级别设置这个变量，也不要在普通 push/PR job 中提供它。文件中的 environment 名称并不会自动创建人工审阅保护；未完成托管平台设置时不要声称远程批准已启用。选择可信工作流版本发起操作，reviewer 核对该 SHA 后才放行。分支规则需由所有者按这两个检查路径配置；普通规则检查失败不能自动等同于人工批准。
+本仓库的工作流先运行普通检查；控制面变更由 `pull_request_review` 在 reviewer 批准当前同仓库 PR head 后自动触发固定的 `engineering-control-review` environment，再运行受保护的 committed 检查。普通 push/PR、fork PR 和 review 事件本身都不得接收 `ENGINEERING_CONTROL_PLANE_APPROVED`；fork PR 不会进入执行受保护值的 reviewed job。该变量只能来自 environment-scoped 配置，不能写入 repository/organization 常量或 workflow。工作流必须确认 review 的 `commit_id` 等于当前 PR head，防止复用旧批准。`workflow_dispatch` 仍保留为历史提交或异常情况的 exact-SHA fallback；输入完整 commit SHA 和任务 ID。仓库所有者必须为 `engineering-control-review` 配置 required reviewers，并用 CODEOWNERS/分支保护保护 workflow、checker、manifest 和 CODEOWNERS。本环境审批记录 reviewer/时间，PR review 记录批准 commit，Actions artifact/日志记录实际检查，三者共同构成审计链。环境审批不替代对仓库控制文件的独立审阅，也不使不受信任 PR 代码获得批准值。
 
 这仍然是普通误改和绕过的防护，不是对同仓库恶意检查器的沙箱。最终检查器/workflow 的可信版本、受保护的审批设置由维护者控制。没有 GitHub 的项目可在本地审阅同一份差异，再在单次命令环境中传递批准；不需要上传源码。
 

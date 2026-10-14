@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "workflow": {"active_task": "TASK-ISSUES-02"},
+  "workflow": {"active_task": "TASK-ISSUES-03"},
   "documents": [
     {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
     {"id": "MAP", "path": "docs/module-map.md", "kind": "module-map", "required": true},
@@ -11,7 +11,8 @@
     {"id": "BASELINE", "path": "planning/baseline-review.md", "kind": "baseline", "required": true},
     {"id": "SKILL_REVIEW", "path": "planning/skill-review.md", "kind": "skill-review", "required": true},
     {"id": "PERSISTENCE_TASK", "path": "planning/persistence-task.md", "kind": "task", "required": true},
-    {"id": "ISSUES_TASK", "path": "planning/issues-11-13-task.md", "kind": "task", "required": true}
+    {"id": "ISSUES_TASK", "path": "planning/issues-11-13-task.md", "kind": "task", "required": true},
+    {"id": "AUTO_REVIEW_TASK", "path": "planning/issues-14-auto-review-task.md", "kind": "task", "required": true}
   ],
   "requirements": [
     {"id": "REQ-SELF-01", "document": "SPEC"},
@@ -29,6 +30,7 @@
     ,{"id": "REQ-ISSUES-05", "document": "SPEC"}
     ,{"id": "REQ-ISSUES-06", "document": "SPEC"}
     ,{"id": "REQ-ISSUES-07", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-08", "document": "SPEC"}
   ],
   "acceptance": [
     {"id": "AT-SELF-01", "document": "SPEC"},
@@ -46,6 +48,7 @@
     ,{"id": "AT-ISSUES-05", "document": "SPEC"}
     ,{"id": "AT-ISSUES-06", "document": "SPEC"}
     ,{"id": "AT-ISSUES-07", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-08", "document": "SPEC"}
   ],
   "modules": [
     {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "AGENTS.md", "VERSION", "CHANGELOG.md", "LICENSE", "scripts/install_agents_guidance.py", "scripts/init_manifest.py", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
@@ -183,6 +186,34 @@
       "control-plane": {"when_paths": ["engineering-manifest.json", ".github"], "document_ids": ["MAP", "ISSUES_TASK"]},
       "task-records": {"when_paths": ["planning/issues-11-13-task.md", "planning/persistence-task.md"], "document_ids": ["ISSUES_TASK"]}
     }
+  }, {
+    "id": "TASK-ISSUES-03",
+    "requirement_ids": ["REQ-ISSUES-08"],
+    "acceptance_ids": ["AT-ISSUES-08"],
+    "module_ids": ["instructions", "governance"],
+    "depends_on": ["TASK-ISSUES-02"],
+    "status": "in_progress",
+    "impact_document": "AUTO_REVIEW_TASK",
+    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
+    "approval_required": true,
+    "approval": {"status": "approved", "evidence": "planning/issues-14-auto-review-task.md"},
+    "skill_review": {
+      "catalog_source": "Codex Skills catalog available in this session",
+      "scope": "Automatic protected-path review, PR review linkage, environment approval and aggregate Actions result",
+      "checked_at": "2026-10-15T02:00:00+08:00",
+      "candidates": [
+        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "1.4.0", "decision": "adopted", "reason": "User selected automatic environment review; protected workflow and task-state rules apply", "evidence": ["SKILL.md", "references/checker.md", "references/implementation-workflow.md"]},
+        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No checker behavior change; workflow orchestration is verified with parsing and hosted runs", "evidence": ["Session skills catalog"]},
+        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No skill package structure change", "evidence": ["Session skills catalog"]}
+      ],
+      "recheck": "2026-10-15: refined from automatic push environment review to PR-review-linked exact-commit review; ordinary/fork jobs receive no approval value."
+    },
+    "documentation_impact": {
+      "module-connectivity": {"when_paths": [".github/workflows/quality.yml"], "document_ids": ["MAP", "FLOW", "CONTRACT", "AUTO_REVIEW_TASK"]},
+      "public-guidance": {"when_paths": ["README.md", "references", ".github/CODEOWNERS"], "document_ids": ["SPEC", "CONTRACT", "AUTO_REVIEW_TASK"]},
+      "control-plane": {"when_paths": [".github", "engineering-manifest.json"], "document_ids": ["MAP", "AUTO_REVIEW_TASK"]},
+      "task-records": {"when_paths": ["planning/issues-14-auto-review-task.md"], "document_ids": ["AUTO_REVIEW_TASK"]}
+    }
   }],
   "control_plane": {
     "protected_paths": [
@@ -193,7 +224,8 @@
       "assets/templates/pre-commit.engineering.ps1",
       "assets/templates/ci-committed.engineering",
       "assets/templates/ci-committed.engineering.ps1",
-      ".github/workflows/quality.yml"
+      ".github/workflows/quality.yml",
+      ".github/CODEOWNERS"
     ],
     "approval_env": "ENGINEERING_CONTROL_PLANE_APPROVED"
   },
