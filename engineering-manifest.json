@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "workflow": {"active_task": "TASK-ISSUES-03"},
+  "workflow": {"active_task": "TASK-ISSUES-04"},
   "documents": [
     {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
     {"id": "MAP", "path": "docs/module-map.md", "kind": "module-map", "required": true},
@@ -12,7 +12,8 @@
     {"id": "SKILL_REVIEW", "path": "planning/skill-review.md", "kind": "skill-review", "required": true},
     {"id": "PERSISTENCE_TASK", "path": "planning/persistence-task.md", "kind": "task", "required": true},
     {"id": "ISSUES_TASK", "path": "planning/issues-11-13-task.md", "kind": "task", "required": true},
-    {"id": "AUTO_REVIEW_TASK", "path": "planning/issues-14-auto-review-task.md", "kind": "task", "required": true}
+    {"id": "AUTO_REVIEW_TASK", "path": "planning/issues-14-auto-review-task.md", "kind": "task", "required": true},
+    {"id": "ISSUES_SECURITY_TASK", "path": "planning/issues-14-16-task.md", "kind": "task", "required": true}
   ],
   "requirements": [
     {"id": "REQ-SELF-01", "document": "SPEC"},
@@ -31,6 +32,9 @@
     ,{"id": "REQ-ISSUES-06", "document": "SPEC"}
     ,{"id": "REQ-ISSUES-07", "document": "SPEC"}
     ,{"id": "REQ-ISSUES-08", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-09", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-10", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-11", "document": "SPEC"}
   ],
   "acceptance": [
     {"id": "AT-SELF-01", "document": "SPEC"},
@@ -49,6 +53,9 @@
     ,{"id": "AT-ISSUES-06", "document": "SPEC"}
     ,{"id": "AT-ISSUES-07", "document": "SPEC"}
     ,{"id": "AT-ISSUES-08", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-09", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-10", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-11", "document": "SPEC"}
   ],
   "modules": [
     {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "AGENTS.md", "VERSION", "CHANGELOG.md", "LICENSE", "scripts/install_agents_guidance.py", "scripts/init_manifest.py", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
@@ -214,6 +221,36 @@
       "control-plane": {"when_paths": [".github", "engineering-manifest.json"], "document_ids": ["MAP", "AUTO_REVIEW_TASK"]},
       "task-records": {"when_paths": ["planning/issues-14-auto-review-task.md"], "document_ids": ["AUTO_REVIEW_TASK"]}
     }
+  }, {
+    "id": "TASK-ISSUES-04",
+    "requirement_ids": ["REQ-ISSUES-09", "REQ-ISSUES-10", "REQ-ISSUES-11"],
+    "acceptance_ids": ["AT-ISSUES-09", "AT-ISSUES-10", "AT-ISSUES-11"],
+    "module_ids": ["checker", "instructions", "tests", "governance"],
+    "depends_on": ["TASK-ISSUES-03"],
+    "status": "complete",
+    "impact_document": "ISSUES_SECURITY_TASK",
+    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
+    "approval_required": true,
+    "approval": {"status": "approved", "evidence": "planning/issues-14-16-task.md"},
+    "skill_review": {
+      "catalog_source": "Codex Skills catalog available in this session",
+      "scope": "GitHub issues #14-#16, checker process safety, bounded command output, release metadata protection, tests and documentation",
+      "checked_at": "2026-10-15T00:00:00+08:00",
+      "candidates": [
+        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "1.4.0", "decision": "adopted", "reason": "User explicitly requested issue investigation under this workflow; it governs protected changes, impact records and verification", "evidence": ["SKILL.md", "references/checker.md", "references/implementation-workflow.md", "references/project-documentation.md"]},
+        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Checker process behavior needs public CLI regression tests", "evidence": ["SKILL.md", "tests.md", "mocking.md"]},
+        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "This task does not change skill package structure or metadata", "evidence": ["Session skills catalog"]},
+        {"id": "planning-with-files", "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The existing manifest and task record are the canonical state system", "evidence": ["Session skills catalog", "engineering-manifest.json"]}
+      ],
+      "recheck": "Scope includes #14-#16 and a protected manifest update; recheck before commit and after any output-limit or control-plane design change."
+    },
+    "documentation_impact": {
+      "module-connectivity": {"when_paths": ["scripts/check_project.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "ISSUES_SECURITY_TASK"]},
+      "public-guidance": {"when_paths": ["README.md", "references"], "document_ids": ["SPEC", "CONTRACT", "ISSUES_SECURITY_TASK"]},
+      "tests": {"when_paths": ["scripts/tests"], "document_ids": ["ISSUES_SECURITY_TASK"]},
+      "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "ISSUES_SECURITY_TASK"]},
+      "task-records": {"when_paths": ["planning/issues-14-16-task.md", "planning/persistence-task.md"], "document_ids": ["ISSUES_SECURITY_TASK"]}
+    }
   }],
   "control_plane": {
     "protected_paths": [
@@ -225,7 +262,9 @@
       "assets/templates/ci-committed.engineering",
       "assets/templates/ci-committed.engineering.ps1",
       ".github/workflows/quality.yml",
-      ".github/CODEOWNERS"
+      ".github/CODEOWNERS",
+      "VERSION",
+      "CHANGELOG.md"
     ],
     "approval_env": "ENGINEERING_CONTROL_PLANE_APPROVED"
   },

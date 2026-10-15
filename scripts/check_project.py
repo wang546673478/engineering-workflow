@@ -8,13 +8,18 @@ import hashlib
 import json
 import os
 from pathlib import Path, PureWindowsPath
+import queue
 import re
+import signal
 import subprocess
 import sys
+import threading
 import time
 from urllib.parse import urlparse
 
 VERSION = (Path(__file__).resolve().parents[1] / "VERSION").read_text(encoding="utf-8-sig").strip()
+MAX_CHECK_OUTPUT_BYTES = 8 * 1024 * 1024
+OUTPUT_READ_CHUNK_BYTES = 64 * 1024
 STATES = {"pass", "fail", "partial", "unsupported", "skipped", "error"}
 GLOB_CHARS = frozenset("*?[")
 
@@ -500,6 +505,8 @@ def validate(root, manifest, mode, task_id):
         argv = item.get("command")
         if not isinstance(argv, list) or not argv or not all(isinstance(x, str) and x for x in argv):
             raise ConfigError("check command must be a non-empty argv array: " + ident)
+        if any("\x00" in arg for arg in argv):
+            raise ConfigError("check command contains NUL byte: " + ident)
         working_directory = item.get("working_directory", ".")
         if not isinstance(working_directory, str) or not working_directory.strip():
             raise ConfigError("check working_directory must be a non-empty path: " + ident)
@@ -884,6 +891,103 @@ def change_check(root, manifest, docs, modules, tasks, task_id, base=None, paths
     return paths, output_check(rule_id, status, scope, details,
                                limitations=["Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."])
 
+def run_declared_command(command, cwd, timeout_seconds):
+    """Run one declared command while keeping combined output bounded."""
+    launch_options = {}
+    if os.name == "nt":
+        launch_options["creationflags"] = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
+    else:
+        launch_options["start_new_session"] = True
+    process = subprocess.Popen(command, cwd=cwd, stdin=subprocess.DEVNULL,
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               shell=False, **launch_options)
+    chunks = queue.Queue(maxsize=8)
+    stop_reader = threading.Event()
+    reader_finished = threading.Event()
+    reader_failed = threading.Event()
+
+    def read_output():
+        try:
+            while not stop_reader.is_set():
+                chunk = process.stdout.read(OUTPUT_READ_CHUNK_BYTES)
+                if not chunk:
+                    break
+                while not stop_reader.is_set():
+                    try:
+                        chunks.put(chunk, timeout=0.1)
+                        break
+                    except queue.Full:
+                        continue
+        except Exception:
+            reader_failed.set()
+        finally:
+            reader_finished.set()
+
+    reader = threading.Thread(target=read_output, name="engineering-check-output", daemon=True)
+    reader.start()
+    start = time.monotonic()
+    total_bytes = 0
+    digest = hashlib.sha256()
+    captured = bytearray()
+    timed_out = False
+    limit_exceeded = False
+    cleanup_timed_out = False
+
+    def stop_process():
+        stop_reader.set()
+        try:
+            if os.name != "nt":
+                os.killpg(process.pid, signal.SIGKILL)
+            else:
+                process.kill()
+        except (OSError, ProcessLookupError):
+            pass
+
+    while not reader_finished.is_set() or not chunks.empty():
+        remaining = timeout_seconds - (time.monotonic() - start)
+        if remaining <= 0:
+            timed_out = True
+            stop_process()
+            break
+        try:
+            chunk = chunks.get(timeout=min(remaining, 0.1))
+        except queue.Empty:
+            continue
+        total_bytes += len(chunk)
+        digest.update(chunk)
+        if len(captured) < MAX_CHECK_OUTPUT_BYTES:
+            captured.extend(chunk[:MAX_CHECK_OUTPUT_BYTES - len(captured)])
+        if total_bytes > MAX_CHECK_OUTPUT_BYTES:
+            limit_exceeded = True
+            stop_process()
+            break
+
+    if timed_out or limit_exceeded:
+        stop_process()
+    try:
+        returncode = process.wait(timeout=2)
+    except subprocess.TimeoutExpired:
+        stop_process()
+        try:
+            returncode = process.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            cleanup_timed_out = True
+            returncode = None
+    reader.join(timeout=2)
+    reader_stalled = reader.is_alive()
+    return {
+        "returncode": returncode,
+        "output": bytes(captured),
+        "output_bytes": total_bytes,
+        "output_sha256": digest.hexdigest(),
+        "timed_out": timed_out,
+        "output_limit_exceeded": limit_exceeded,
+        "reader_failed": reader_failed.is_set(),
+        "reader_stalled": reader_stalled,
+        "cleanup_timed_out": cleanup_timed_out,
+    }
+
+
 def run_checks(root, checks, enabled, forced, blocked_reason=None):
     results = []
     for ident, check in checks.items():
@@ -896,21 +1000,27 @@ def run_checks(root, checks, enabled, forced, blocked_reason=None):
             cwd = safe_path(root, check.get("working_directory", "."), file_only=False)
             if not cwd.exists() or not cwd.is_dir():
                 raise ConfigError("check working_directory must be an existing directory")
-            proc = subprocess.run(check["command"], cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                  timeout=check["timeout_seconds"], shell=False)
+            result = run_declared_command(check["command"], cwd, check["timeout_seconds"])
             evidence = {"command_sha256": hashlib.sha256(json.dumps(check["command"]).encode()).hexdigest(),
                         "working_directory": check.get("working_directory", "."),
-                        "returncode": proc.returncode, "duration_seconds": round(time.monotonic()-start, 3),
-                        "output_bytes": len(proc.stdout), "output_sha256": hashlib.sha256(proc.stdout).hexdigest()}
-            status = "pass" if proc.returncode == 0 else "fail"
-            if status == "pass" and re.search(rb"(?im)(?:skipped[=:]\s*[1-9]\d*|[1-9]\d*\s+skipped\b|#\s*SKIP\b)", proc.stdout):
+                        "returncode": result["returncode"], "duration_seconds": round(time.monotonic()-start, 3),
+                        "output_bytes": result["output_bytes"], "output_sha256": result["output_sha256"],
+                        "output_limit_bytes": MAX_CHECK_OUTPUT_BYTES,
+                        "output_limit_exceeded": result["output_limit_exceeded"],
+                        "timed_out": result["timed_out"],
+                        "reader_failed": result["reader_failed"],
+                        "reader_stalled": result["reader_stalled"],
+                        "output_complete": not (result["timed_out"] or result["output_limit_exceeded"] or result["reader_failed"] or result["reader_stalled"]),
+                        "cleanup_timed_out": result["cleanup_timed_out"]}
+            status = "pass" if result["returncode"] == 0 and not result["timed_out"] and not result["output_limit_exceeded"] and not result["reader_failed"] and not result["reader_stalled"] and not result["cleanup_timed_out"] else "fail"
+            if status == "pass" and re.search(rb"(?im)(?:skipped[=:]\s*[1-9]\d*|[1-9]\d*\s+skipped\b|#\s*SKIP\b)", result["output"]):
                 status = "partial"
                 evidence["skip_marker_detected"] = True
             results.append(output_check(ident, status, "fresh invocation", evidence, required,
                                         ["Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."]))
         except subprocess.TimeoutExpired:
             results.append(output_check(ident, "fail", "fresh invocation", {"timeout_seconds": check["timeout_seconds"]}, required))
-        except (ConfigError, OSError):
+        except (ConfigError, OSError, ValueError):
             results.append(output_check(ident, "unsupported", "fresh invocation", "declared executable unavailable", required))
     return results
 

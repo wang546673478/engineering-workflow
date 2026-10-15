@@ -22,6 +22,9 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - REQ-ISSUES-06: Manifest paths using either slash style behave consistently across hosts, while absolute paths from another platform, root escapes and links remain rejected.
 - REQ-ISSUES-07: `exclude_paths` supports documented segment-aware glob patterns; `documentation_impact.when_paths` may use the strict common ancestor of source scopes from at least two selected modules without expanding changed-path coverage.
 - REQ-ISSUES-08: The repository workflow routes protected-path changes through the fixed `engineering-control-review` environment automatically, runs ordinary checks for other changes, and exposes one aggregate quality result while retaining an exact-SHA manual fallback.
+- REQ-ISSUES-09: The checker rejects NUL-containing declared command arguments as structured configuration errors before starting a subprocess.
+- REQ-ISSUES-10: Declared checks capture output incrementally within a bounded per-check limit and fail safely when a command exceeds that limit.
+- REQ-ISSUES-11: Release metadata used by the checker is included in the repository control-plane review scope.
 
 ## Acceptance
 
@@ -41,6 +44,9 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - AT-ISSUES-06: A POSIX host resolves a manifest path such as `docs\\spec.md` to `docs/spec.md`, while Windows drive/UNC paths on POSIX and project-root escapes still fail.
 - AT-ISSUES-07: Exclusion globs support `*`, `?`, character classes and complete-segment `**`, prune matching directory trees before link resolution, and never become change allowlists; a non-root `when_paths` ancestor covering source scopes from two or more selected modules is accepted and triggers the normal AND documentation gate.
 - AT-ISSUES-08: A push or pull request first detects protected paths from the trusted base manifest plus fixed checker/manifest/workflow paths; protected changes wait for the fixed review environment before committed checks, unprotected changes run the normal matrix, and the aggregate quality job fails when the selected path is not successful. Manual exact-SHA review remains available.
+- AT-ISSUES-09: A manifest command containing a NUL byte returns JSON configuration errors without a traceback or command side effect.
+- AT-ISSUES-10: A check that emits more than its fixed output limit is terminated, reports a failed check with bounded evidence, and does not expose raw output.
+- AT-ISSUES-11: `VERSION` and `CHANGELOG.md` are protected control-plane paths and a change to either requires external approval in commit/committed modes.
 
 ## Persistence change status
 

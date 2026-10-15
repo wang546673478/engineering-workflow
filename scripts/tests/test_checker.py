@@ -125,11 +125,67 @@ class CheckerTests(unittest.TestCase):
         proc,result=self.cli("--mode","handoff","--task","TASK-1","--run-checks")
         self.assertEqual(proc.returncode,1)
         self.assertNotIn("secret-value",json.dumps(result))
+
+    def test_nul_in_declared_command_is_structured_configuration_error(self):
+        self.manifest["checks"][0]["command"] = [
+            sys.executable, "-c", "open('nul-marker.txt','w').write('ran')", "bad\x00arg"
+        ]
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 2, result)
+        self.assertEqual(proc.stderr, "")
+        self.assertIn("NUL", json.dumps(result))
+        self.assertNotIn("Traceback", proc.stdout)
+        self.assertFalse((self.root / "nul-marker.txt").exists())
+
+    def test_check_output_over_limit_is_terminated_without_raw_output(self):
+        limit = checker.MAX_CHECK_OUTPUT_BYTES
+        self.manifest["checks"][0]["command"] = [
+            sys.executable, "-c",
+            "import sys; chunk='x'*65536; [sys.stdout.write(chunk) or sys.stdout.flush() for _ in iter(int, 1)]"
+        ]
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        check = next(item for item in result["checks"] if item["rule_id"] == "unit")
+        self.assertEqual(check["status"], "fail")
+        self.assertTrue(check["evidence"]["output_limit_exceeded"])
+        self.assertEqual(check["evidence"]["output_limit_bytes"], limit)
+        self.assertGreater(check["evidence"]["output_bytes"], limit)
+        self.assertNotIn("xxxxxxxx", json.dumps(result))
+
+    def test_stderr_is_bounded_with_stdout_capture(self):
+        limit = checker.MAX_CHECK_OUTPUT_BYTES
+        self.manifest["checks"][0]["command"] = [
+            sys.executable, "-c",
+            "import sys; chunk='e'*65536; [sys.stderr.write(chunk) or sys.stderr.flush() for _ in iter(int, 1)]"
+        ]
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        check = next(item for item in result["checks"] if item["rule_id"] == "unit")
+        self.assertEqual(check["status"], "fail")
+        self.assertTrue(check["evidence"]["output_limit_exceeded"])
+        self.assertGreater(check["evidence"]["output_bytes"], limit)
+        self.assertNotIn("eeeeeeee", json.dumps(result))
+
+    def test_check_timeout_is_structured_and_does_not_traceback(self):
+        self.manifest["checks"][0]["timeout_seconds"] = 0.2
+        self.manifest["checks"][0]["command"] = [sys.executable, "-c", "import time; time.sleep(2)"]
+        proc, result = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        check = next(item for item in result["checks"] if item["rule_id"] == "unit")
+        self.assertEqual(check["status"], "fail")
+        self.assertTrue(check["evidence"]["timed_out"])
+        self.assertNotIn("Traceback", proc.stdout)
     def test_test_skip_summary_is_partial(self):
         self.manifest["checks"][0]["command"]=[sys.executable,"-c","print('OK (skipped=1)')"]
         proc,result=self.cli("--mode","handoff","--task","TASK-1","--run-checks")
         self.assertEqual(proc.returncode,1)
         self.assertIn("partial",[x["status"] for x in result["checks"]])
+
+    def test_repository_manifest_protects_release_metadata(self):
+        manifest = json.loads((SCRIPTS.parent / "engineering-manifest.json").read_text(encoding="utf-8"))
+        protected = manifest["control_plane"]["protected_paths"]
+        self.assertIn("VERSION", protected)
+        self.assertIn("CHANGELOG.md", protected)
     def test_invalid_reference(self):
         self.manifest["tasks"][0]["module_ids"]=["ghost"]
         proc,result=self.cli("--mode","baseline","--run-checks")
@@ -533,6 +589,39 @@ class CheckerTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, result)
         control = next(check for check in result["checks"] if check["rule_id"] == "control-plane")
         self.assertEqual(control["status"], "pass")
+
+    @unittest.skipUnless(shutil.which("git"), "Git unavailable")
+    def test_release_metadata_control_plane_paths_require_approval(self):
+        self.manifest["control_plane"] = {
+            "protected_paths": ["manifest.json", "VERSION", "CHANGELOG.md"],
+            "approval_env": "TEST_CONTROL_PLANE_APPROVED",
+        }
+        self.manifest["tasks"][0]["documentation_impact"] = {
+            "implementation-only": {"when_paths": ["src"], "document_ids": ["impact"]},
+            "release-metadata": {"when_paths": ["VERSION", "CHANGELOG.md"], "document_ids": ["impact"]},
+        }
+        self.manifest["modules"][0]["source_paths"].extend(["VERSION", "CHANGELOG.md"])
+        (self.root / "VERSION").write_text("1.0.0\n", encoding="utf-8")
+        (self.root / "CHANGELOG.md").write_text("initial\n", encoding="utf-8")
+        self.manifest["checks"][0]["command"] = [sys.executable, "-c", "open('command-ran.txt','w').write('ran')"]
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "release baseline")
+
+        (self.root / "VERSION").write_text("1.1.0\n", encoding="utf-8")
+        (self.root / "docs/impact.md").write_text("release metadata reviewed\n", encoding="utf-8")
+        self.git("add", "VERSION", "docs/impact.md")
+        proc, result = self.cli("--mode", "commit", "--task", "TASK-1", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        control = next(check for check in result["checks"] if check["rule_id"] == "control-plane")
+        self.assertEqual(control["status"], "fail")
+        self.assertIn("VERSION", control["evidence"]["changed_paths"])
+        self.assertFalse((self.root / "command-ran.txt").exists())
+
+        with mock.patch.dict(os.environ, {"TEST_CONTROL_PLANE_APPROVED": "1"}, clear=False):
+            proc, result = self.cli("--mode", "commit", "--task", "TASK-1",
+                                    "--allow-control-plane-change", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
 
     @unittest.skipUnless(shutil.which("git"), "Git unavailable")
     def test_control_plane_committed_mode_uses_parent_manifest(self):

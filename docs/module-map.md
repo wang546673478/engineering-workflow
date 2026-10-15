@@ -21,7 +21,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Callers: Project hooks, CI, and maintainers.
 - Direct dependencies and reason: Python standard library, manifest documents, and adapter metadata validators.
 - Dependents: Project-specific hook and CI templates.
-- Current state: `implemented`; #11 version reporting, #12 portable path normalization and #13 exclusion/impact-scope rules are being verified in `TASK-ISSUES-02`.
+- Current state: `implemented`; #11-#13 path/version rules and #14-#16 process-safety/release-protection rules are tracked in `TASK-ISSUES-04`.
 - Evidence: `scripts/check_project.py`, `scripts/tests/test_checker.py`, `references/checker.md`, `docs/contracts.md`.
 - Protected-rule checks: commit modes read the previous manifest from Git and combine previous and proposed protected scopes. Approval comes from outside the submitted manifest; these checks do not authenticate a human or replace protected branch settings.
 
@@ -47,7 +47,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 ## Module: governance
 
-- Responsibility: the self-maintenance manifest, review records, docs, ignore rules and optional GitHub workflow.
+- Responsibility: the self-maintenance manifest, review records, docs, ignore rules, release metadata protection and optional GitHub workflow.
 - Entrypoints: `engineering-manifest.json` (`workflow.active_task`), [the persistence task record](../planning/persistence-task.md) and `.github/workflows/quality.yml`.
 - Consumers: maintainers, the checker and CI runners. Local projects can run the same checks without GitHub.
 - Review: changing the manifest, checker, rules or CI listed in `control_plane.protected_paths` blocks commit validation until a human has reviewed that concrete change.
@@ -55,6 +55,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - The governance workflow also owns automatic PR-review-linked protected checks: ordinary jobs receive no approval value, the fixed environment gates exact commits, and the aggregate `quality` check is intended for branch protection.
 - Reviewed workflow diagnostics are owned by governance and are constrained to rule-valid, TEST-only failures; they do not change checker or test ownership.
 - Diagnostic recovery is part of the governance workflow contract: a passing verbose rerun may recover a transient TEST result after rule validation, while checker failures remain blocking.
+- Release metadata (`VERSION` and `CHANGELOG.md`) is within the protected review scope so a checker report cannot be re-labeled silently.
 
 ## Dependency rules
 

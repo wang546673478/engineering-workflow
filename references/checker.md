@@ -24,7 +24,7 @@ baseline 核对声明结构和资料；change/handoff 必须提供 Git base 和�
 
 ### 保护检查规则和清单
 
-`commit` 和 `committed` 还会保护控制文件，默认包括传入的 manifest 和 `scripts/check_project.py`；manifest 可通过 `control_plane.protected_paths` 增加项目自己的规则文件、hook 和 CI 配置。门禁会读取提交父版本的 manifest 来确定原有保护范围和批准变量名，因此本次提交不能靠删除保护配置或换一个批准变量来绕过检查。控制文件变更默认失败；人工检查变更后，需要在本地显式传入 `--allow-control-plane-change`，并在当前进程环境中设置父版本 manifest 声明的批准变量为 `1`。批准变量不能写在仓库文件或提交脚本里。
+`commit` 和 `committed` 还会保护控制文件，默认包括传入的 manifest 和 `scripts/check_project.py`；manifest 可通过 `control_plane.protected_paths` 增加项目自己的规则文件、hook 和 CI 配置。版本文件和变更记录也属于本仓库的受保护范围。门禁会读取提交父版本的 manifest 来确定原有保护范围和批准变量名，因此本次提交不能靠删除保护配置或换一个批准变量来绕过检查。控制文件变更默认失败；人工检查变更后，需要在本地显式传入 `--allow-control-plane-change`，并在当前进程环境中设置父版本 manifest 声明的批准变量为 `1`。批准变量不能写在仓库文件或提交脚本里。
 
 首次采用时，基线中没有 manifest 是预期的 bootstrap 情况，不是普通测试失败。检查器会在 `control-plane` 证据中标记 `first_adoption: true` 并给出一次性人工审阅提示。审阅 manifest、项目规则、文档清单和检查命令后，才在单次本地命令中提供 `--allow-control-plane-change` 及外部批准变量；这不会批准后续规则变更，也不会把批准写入仓库。
 
@@ -38,7 +38,7 @@ CI 不得在仓库可修改的 workflow 中把批准变量写成常量 `1`，也
 
 GitHub Actions 是可选的托管检查方式，不是每个使用本 skill 的项目都必须拥有 GitHub 仓库或启用 Actions。项目可以只使用本地 hook，也可以接入 GitLab CI、Jenkins 等其他 CI；只要在合并或发布前运行等价的 `committed` 检查即可。只有选择 GitHub Actions 的项目才需要复制或启用对应 workflow；没有远程 CI 时，仍应在本地运行 `commit` 门禁并保留验证记录。本 skill 不要求上传项目源码，也不会因为没有 GitHub Actions 就把项目判为失败。
 
-The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, and `errors`. Exit code 0 means every required check passed; 1 means a required validation failed; 2 means malformed configuration, unavailable environment, or an unsupported required check. `pass`, `fail`, `partial`, `unsupported`, `skipped`, and `error` are reported separately. Partial, skipped, or unsupported required checks cannot satisfy completion.
+The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, and `errors`. Exit code 0 means every required check passed; 1 means a declared check or validation requirement failed, including an output-limit failure; 2 means malformed configuration, unavailable environment, or an unsupported capability before a check can run. `pass`, `fail`, `partial`, `unsupported`, `skipped`, and `error` are reported separately. Partial, skipped, or unsupported required checks cannot satisfy completion.
 
 ## 项目清单字段
 
@@ -51,7 +51,7 @@ The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `c
 | requirements / acceptance | id、document；document 指规范正文文档 ID。默认编号必须出现在正文；也可用 `index` 指向独立追踪索引，或用 `anchor` 指向正文标题/HTML/Markdown 锚点。`index` 与 `anchor` 同时声明时都必须满足 |
 | modules | id、source_paths、document、depends_on、allowed_dependencies；文档为 ID，实际依赖必须属于允许依赖且无循环；此图仅为声明图 |
 | inventories | id、kind、path、documentation、required；path 指源清单 JSON，documentation 指文档映射 JSON，不是文档 ID |
-| checks | id、command、required、timeout_seconds、working_directory；command 是参数数组，超时为有限正数；working_directory 默认为项目根，必须是项目内已存在且不经过符号链接/目录连接的目录；无隐式 shell |
+| checks | id、command、required、timeout_seconds、working_directory；command 是参数数组且不能含 NUL，超时为有限正数，合并输出固定限制为 8 MiB；working_directory 默认为项目根，必须是项目内已存在且不经过符号链接/目录连接的目录；无隐式 shell |
 | workflow | 可选对象；`active_task` 指向当前 CI/提交任务。没有显式 `--task` 或 `ENGINEERING_TASK_ID` 时，commit/committed/handoff 使用它；切换任务只需更新此字段及任务记录，不要在 workflow 文件复制历史任务 ID |
 | tasks | id、requirement_ids、acceptance_ids、module_ids、depends_on、status、impact_document、required_checks、approval_required、approval、documentation_impact；commit 门禁通过 `--task`、`ENGINEERING_TASK_ID` 或 `workflow.active_task` 选择任务 |
 | task.status | planned、in_progress、blocked、complete；handoff 要求 complete，但状态不证明人已审查 |

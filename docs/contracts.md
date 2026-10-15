@@ -6,10 +6,11 @@
 - Modes: `baseline`, `change`, `handoff`, `commit`, `committed`.
 - Output: JSON containing `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, and `errors`.
 - `tool_version` is read from the repository-root `VERSION` file beside the checker package.
-- Exit codes: `0` required checks passed; `1` required validation failed; `2` configuration, environment, or unsupported capability error.
-- Safety: no shell command composition; declared checks are opt-in through `--run-checks`.
+- Exit codes: `0` required checks passed; `1` a declared check or validation requirement failed (including an output limit); `2` malformed configuration, unavailable environment, or unsupported capability before a check can run.
+- Safety: no shell command composition; declared checks are opt-in through `--run-checks`; command arguments containing NUL are rejected before process creation.
+- Output limits: each check has a fixed 8 MiB output bound. Output is read incrementally, over-limit commands are terminated, and reports contain only observed byte counts, hashes and limit status; interrupted output is marked incomplete.
 - Protected-rule changes: `commit` and `committed` add a required `control-plane` result. Without human approval this check fails even if ordinary tests pass. The approved path requires both `--allow-control-plane-change` and the previous manifest's approval environment variable set to `1`; if not configured previously, the fixed default is `ENGINEERING_CONTROL_PLANE_APPROVED`.
-- Protected scopes: union of old and new `control_plane.protected_paths`, plus the selected manifest and the conventional checker path. The proposed manifest cannot rename the approval variable to authorize itself.
+- Protected scopes: union of old and new `control_plane.protected_paths`, plus the selected manifest and the conventional checker path. This repository also protects `VERSION` and `CHANGELOG.md`; the proposed manifest cannot rename the approval variable to authorize itself.
 - Approval boundary: a process variable is an operator acknowledgement, not proof of identity or a digital signature. Keep its lifetime to one verification run. A hosted repository still needs trusted reviewer/branch settings to resist modification of the checker itself.
 - Hosting: GitHub Actions is optional. The same CLI can be run locally or by another CI system.
 - Hosted review: ordinary PR/fork jobs never receive the control-plane approval value. A protected environment may run the committed check only after a reviewer-approved same-repository PR review is tied to the current exact commit; fork PRs remain subject to branch protection and a maintainer-controlled fallback. Manual exact-SHA dispatch remains a fallback. A single aggregate quality result should be the required branch-protection check.

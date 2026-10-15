@@ -1,13 +1,14 @@
 # Engineering Workflow Maintenance Flow
 
-Status: `current with TASK-ISSUES-03 implementation in progress`
+Status: `current with TASK-ISSUES-04 implementation in progress`
 
 ## Checker path and documentation flow
 
 1. The checker reads manifest paths and normalizes `/` and `\\` separators at the safety boundary; foreign drive/UNC paths on POSIX, root escapes and link traversal fail before validation continues.
 2. Baseline validation resolves literal documents and modules. Exclusion globs are validated as project-relative segment patterns, and matching directory subtrees are pruned before child links are inspected.
 3. Change/commit validation compares Git paths against literal module/document coverage. Excluded paths are reported separately and are not coverage. A `when_paths` common parent shared by source scopes from at least two selected modules triggers all configured documentation updates, but does not make unrelated descendants covered.
-4. The checker emits a JSON report whose `tool_version` comes from the package `VERSION` file; declared tests run only after manifest and scope checks pass.
+4. The checker validates command arguments before execution, runs each declared check with an incremental output limit, and emits a JSON report whose `tool_version` comes from the package `VERSION` file; declared tests run only after manifest and scope checks pass.
+5. A command that emits beyond its output limit is terminated and recorded as a failed check with byte-count/hash evidence. `VERSION` and `CHANGELOG.md` changes enter the protected control-plane review path.
 
 ## Persistent project adoption and recovery
 
