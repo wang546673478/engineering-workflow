@@ -1,13 +1,13 @@
 # TASK-VERSION-01：版本与 CHANGELOG 交付规则
 
 日期：2026-10-15（Asia/Shanghai）；基准：`38e12360aee302529ad9c4fe17ccf934f707e281`，skill 1.4.1。开始时工作树干净。
-状态：in_progress — 本地实现、规则审阅和测试已完成；用户已授权本次提交与上传，正在执行最终提交/发布检查。当前任务文件为本文件。适用路径：已有基线上的小范围规则补漏，复用 docs 中现有总览、模块、契约和业务流，不重新开展项目接管。
+状态：complete — 1.4.2 主提交已通过提交前后检查并上传，发布日期及完成记录随收尾提交同步。当前任务文件为本文件。适用路径：已有基线上的小范围规则补漏，复用 docs 中现有总览、模块、契约和业务流，不重新开展项目接管。
 
 ## 决定与范围
 
 用户先询问版本号/CHANGELOG 的更新规则，随后明确要求：“根据更新版本号的规则是不是应该进行更新skill”。本次落实已解释的交付规则：一批实质变更统一升版，按兼容性决定幅度，同步版本文件和 CHANGELOG。更改 skill 指令本身也纳入版本影响。
 
-本次候选版本：1.4.1 → 1.4.2，补齐遗漏的既定交付说明，未新增运行功能或修改公共 CLI/数据格式。CHANGELOG 使用 Unreleased，未冒称已发布。此前 1.4.1 已发布任务保持历史完成状态，旧提交/推送批准不扩展为本次新规则的最终提交批准。
+实施阶段版本决策：1.4.1 → 1.4.2，补齐遗漏的既定交付说明，未新增运行功能或修改公共 CLI/数据格式。当时 CHANGELOG 使用 Unreleased；主提交实际上传后才填写发布日期。此前 1.4.1 已发布任务保持历史完成状态，本次新规则使用用户本轮明确批准。
 
 本轮批准：用户于 2026-10-15（Asia/Shanghai，记录时间约 19:30）明确要求“提交GitHub吧”。该授权覆盖已经展示的版本/CHANGELOG 规则、引用、模板、权威文档和清单、1.4.2 元数据，以及必要的提交、推送和发布回执。此次收紧交付前升版与变更记录要求，保留项目既有策略；没有改变检查器、检查命令、保护路径或批准变量。批准只用于本批差异，不延伸至其他项目、issue 操作、GitHub 设置、标签/托管 Release 或部署。
 
@@ -38,12 +38,12 @@
 
 - 需要升版：是；类型 PATCH，理由为交付规范补漏、公共工具接口未变。
 - 版本来源：本仓库 VERSION；同步位置 SKILL.md metadata、README、agents/openai.yaml，历史任务版本不改写。
-- from/to：1.4.1 → 1.4.2；CHANGELOG：1.4.2 / Unreleased，日期待实际发布。
-- 验证、提交和发布状态：本地结构、版本一致性及既有测试通过；本轮提交/上传已获授权，正在准备最终门禁。此前没有使用批准信号的报告保留为历史，当前只在本次检查进程中传入本轮批准。
+- from/to：1.4.1 → 1.4.2；CHANGELOG：1.4.2 / 2026-10-15，主提交实际上传后补记日期。
+- 验证、提交和发布状态：本地结构、版本一致性及既有测试通过；主提交已通过 commit/committed 并上传，证据见下文。此前没有使用批准信号的报告保留为历史，本轮批准只用于相应检查进程。
 
 ## 进度与下一步
 
-已完成规则恢复、skill review、计划、改前分析及说明和元数据同步。独立审阅指出目标版本可提前注明、免升版条件须保留项目既有规则，两处措辞均已修正；同时去除文档中把历史阶段记录称为“当前任务”的过期标签。用户现已批准提交/上传，下一步按以下发布计划执行。
+已完成规则恢复、skill review、计划、改前分析、说明和元数据同步、提交前后检查与主提交上传。独立审阅的两处措辞问题已修正，历史记录标签已澄清。下一步只完成真实发布日期与回执的收尾提交；新规则变化需另立任务，不沿用此次批准。
 
 ## 发布计划与范围复核
 
@@ -60,3 +60,12 @@
 - `change` 模式对 `38e1236`：manifest 与 change-scope pass，errors 为空；完整报告 exit 1，因为本次最终批准 pending，该次未运行的 TEST/COMPILE/GUIDANCE-COMPILE 为 skipped。实际测试通过证据来自上述 baseline，不冒称完整 change/commit/committed/handoff 通过。报告：work/version-policy-change.json。
 - 场景复核：同一交付批次多次编辑只升一次；兼容纠错/新增兼容能力/不兼容分别选 PATCH/MINOR/MAJOR；项目政策和无手工版本/多包机制优先；收尾回执不循环升版；未发布目标版本不伪填发布日期；升版不授权远程写入。
 - 最终措辞修正仅涉及 Markdown；测试代码、VERSION 和可执行脚本在测试运行后未改变。仅补此验证回执不再次升版，符合本批次规则；收尾技能结构、版本一致性、Markdown 本地链接与差异空白检查已通过。
+
+## 1.4.2 提交与发布证据
+
+- 主提交：`c08a783232762b0be556c4e3cfcb6a9c53ca9847`（Define version and changelog delivery policy for 1.4.2）。
+- commit 检查通过，报告 work/version-policy-release-commit.json：task-gate、control-plane、commit-scope、TEST、COMPILE、GUIDANCE-COMPILE 全部 pass，required_checks_satisfied=true。
+- 对上述实际主提交的 committed 检查通过，报告 work/version-policy-release-committed.json：task-gate、control-plane、committed-scope、TEST、COMPILE、GUIDANCE-COMPILE 全部 pass，tool_version=1.4.2，required_checks_satisfied=true。
+- 主提交于 2026-10-15（Asia/Shanghai，约 19:34）通过 git push origin main 上传；随后远程 refs/heads/main 核对为该完整 SHA，当时工作树干净。CHANGELOG 据此从 Unreleased 改为 2026-10-15。
+- 此收尾仅补真实日期、状态和回执，未改变交付行为，因此版本保持 1.4.2；文档发布检查点同步后，收尾提交执行同等 commit/committed 检查再上传。最终收尾 SHA 与远程状态存于本地 work/version-policy-release-final-receipt.json，避免在提交中填写尚不存在的自身 SHA。
+- GitHub hosted CI 未验证，不把上传成功或本地通过当作远程 CI 通过；无新会话行为实测或其他项目集成测试。

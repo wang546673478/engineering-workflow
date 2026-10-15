@@ -372,7 +372,7 @@
   "depends_on": [
     "TASK-STAGES-01"
   ],
-  "status": "in_progress",
+  "status": "complete",
   "impact_document": "VERSION_TASK",
   "required_checks": [
     "TEST",
@@ -392,7 +392,7 @@
       {
         "id": "engineering-workflow",
         "source": "SKILL.md",
-        "version_or_release_date": "1.4.1 baseline; 1.4.2 candidate",
+        "version_or_release_date": "1.4.1 baseline; 1.4.2 published source batch",
         "decision": "adopted",
         "reason": "User requested version-policy update; preserve task state and verification",
         "evidence": [

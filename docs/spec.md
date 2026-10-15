@@ -73,3 +73,5 @@ REQ-STAGES-01 / AT-STAGES-01: First takeover without a valid global baseline com
 REQ-VERSION-01 / AT-VERSION-01: Each substantive delivery batch follows the project's existing version policy, records authoritative sources and impact classification, and synchronizes applicable version consumers before delivery. The default three-part scheme distinguishes compatible fixes, compatible new capabilities and incompatible changes.
 
 REQ-VERSION-02 / AT-VERSION-02: The Task records release impact and meaningful CHANGELOG/equivalent notes, separates unreleased content from actual publication, and documents any no-bump decision for progress/evidence-only changes. No automatic inference or new publication authority is implied. See [TASK-VERSION-01](../planning/version-policy-task.md).
+
+Publication checkpoint: the 1.4.2 source batch was uploaded on 2026-10-15 after local commit/committed checks. Its changelog date is now based on that event; hosted CI and real-agent behavior remain unverified.

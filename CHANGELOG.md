@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.4.2 - Unreleased
+## 1.4.2 - 2026-10-15
 
 - Clarify version-bump timing and PATCH/MINOR/MAJOR defaults for each substantive delivery batch, including skill instruction changes.
 - Require version/changelog impact, synchronization paths and actual publication status in task records; preserve project-specific, generated and multi-package versioning.

@@ -67,3 +67,5 @@ Project rules and skill review → global discovery → reviewable current-syste
 ## Version and changelog delivery flow
 
 Project policy and batch diff → release-impact classification and version source → target version and synchronization of actual consumers → Unreleased change notes → version/content/status verification → authorized delivery/publication → actual publication date and evidence. Evidence-only receipts can document a no-bump decision without restarting this cycle. Existing project conventions and package release boundaries remain authoritative; checker protection of metadata is distinct from deciding that a release is appropriate.
+
+The 1.4.2 batch has reached source publication on 2026-10-15. Its follow-up records the actual date and check/push evidence without changing behavior or bumping the version again.

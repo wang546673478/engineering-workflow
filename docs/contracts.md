@@ -58,3 +58,5 @@ Before detailed feature interviewing, first takeover without a valid baseline re
 ## Version and changelog process contract
 
 Tasks record release impact: project policy and version source, bump/exemption reason, old/target version and classification, affected packages/synchronization paths, change notes, checks and actual publication status. Version and changelog checks are human/agent workflow obligations; the manifest schema and checker do not gain new automatic release validation. This repository uses a candidate-version / Unreleased heading before publication, then the actual date. The metadata update grants no commit/tag/push/Release/deployment authority.
+
+For 1.4.2, the source push occurred on 2026-10-15 and is recorded in TASK-VERSION-01; the dated changelog is a publication receipt, with version and CLI contracts unchanged.
