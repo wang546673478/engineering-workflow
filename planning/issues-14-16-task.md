@@ -67,7 +67,7 @@ Acceptance requires: structured no-traceback rejection for NUL argv; bounded out
 - Direct Python compilation and `git diff --check` pass. Change-scope against `24c0d7f` passes with the approved task gate.
 - Human approval: on 2026-10-15 the user stated “我已经审阅了文档的变更,同意这样做”, approving the exact #14-#16 implementation, tests, documentation and release-metadata protection described in this file. This authorizes the local commit gate and commit; it does not authorize pushing, issue replies or issue closure.
 - Approval status: approved for local commit; push and issue communication remain pending separate authorization.
-- Local commit `1ba0b21` passed the protected `commit` gate with external approval. Its exact tree passed `committed` verification with TEST (95 tests), COMPILE and GUIDANCE-COMPILE; optional database/contracts inventories remain partial by design.
+- Code commit `c431989` passed the protected `commit` gate with external approval. Its exact tree passed `committed` verification with TEST (95 tests), COMPILE and GUIDANCE-COMPILE; optional database/contracts inventories remain partial by design.
 
 ## Handoff
 
