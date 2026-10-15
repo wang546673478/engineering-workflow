@@ -1,9 +1,9 @@
 # TASK-ISSUES-04: Checker process safety and release metadata protection
 
-Updated: `2026-10-15` Asia/Shanghai  
-Status: `in_progress`  
-Base commit: `24c0d7f`  
-Requirements: `REQ-ISSUES-09`-`REQ-ISSUES-11`  
+Updated: `2026-10-15` Asia/Shanghai
+Status: `complete`
+Base commit: `24c0d7f`
+Requirements: `REQ-ISSUES-09`-`REQ-ISSUES-11`
 Acceptance: `AT-ISSUES-09`-`AT-ISSUES-11`
 
 This is the current task record for the three new open GitHub issues. Earlier task approvals remain historical and do not authorize this protected checker and manifest change.
@@ -71,4 +71,4 @@ Acceptance requires: structured no-traceback rejection for NUL argv; bounded out
 
 ## Handoff
 
-Current checkout is `24c0d7f`, clean before this task. After implementation, record focused/full test results, baseline/change/commit gate results, the reviewed diff, and the user's separate approval before any commit or publication.
+Code commit `c431989` and the follow-up verification record are complete and locally verified. The branch is two commits ahead of `origin/main`; publication and issue communication remain pending separate authorization.
