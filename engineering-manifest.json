@@ -267,7 +267,7 @@
     "governance"
   ],
   "depends_on": [],
-  "status": "in_progress",
+  "status": "complete",
   "impact_document": "STAGES_TASK",
   "required_checks": [
     "TEST",

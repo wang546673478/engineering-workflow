@@ -1,11 +1,11 @@
 # TASK-STAGES-01：明确首次接管阶段
 
 日期：2026-10-15（Asia/Shanghai）；基准：`bcbdcf6`，skill 1.4.0。
-状态：规则与入口修正已完成；用户已授权更新版本、提交并上传，正在准备 1.4.1 发布与最终检查，任务保持 in_progress。当前任务文件为本文件；前轮审计位于 persistence-task.md。
+状态：complete — 1.4.1 规则、入口和元数据修改已通过本地检查并推送主提交；本次完成记录随收尾提交上传。当前任务文件为本文件；前轮审计位于 persistence-task.md。
 
 ## 适用路径与当前阶段
 
-本次属于已有 skill 的小范围流程说明修改，复用本仓库 docs/spec.md、docs/module-map.md、docs/contracts.md、docs/business-flow.md 及既有基线，不重新做陌生项目接管访谈。用户“那就按照你的建议把流程明确了”授权实施该具体顺序；随后明确要求更新版本并上传。当前阶段为发布验证；下一步更新 1.4.1 元数据、执行 commit/committed 检查后推送。
+本次属于已有 skill 的小范围流程说明修改，复用本仓库 docs/spec.md、docs/module-map.md、docs/contracts.md、docs/business-flow.md 及既有基线，不重新做陌生项目接管访谈。用户“那就按照你的建议把流程明确了”授权实施该具体顺序；随后明确要求更新版本并上传。当前阶段为交付收尾；主提交已验证并发布，后续功能扩展需新任务，不复用本次批准。
 
 ## 决定与范围
 
@@ -60,3 +60,12 @@
 - 控制面影响：此次收紧首次接管进入深入访谈的条件，修正当前任务指向；版本变更也在既有保护范围内。保护路径、批准变量、检查命令、checker 实现均不改变。用户本轮上传指令覆盖这些已说明的具体修改，仅在检查进程中传递本次批准信号。
 - 计划：独立差异审阅与技能结构验证 → 暂存完整变更 → commit 模式运行既有 TEST/COMPILE/GUIDANCE-COMPILE → 提交 → committed 复核 → 推送并核对远程 SHA。测试和推送结果分别记录，不预先宣称远程 CI 通过。
 - 发布前审阅：独立只读审阅未发现阶段、例外或入口冲突；1.4.1 五处版本信息一致；skill-creator quick_validate 与 git diff --check 通过。此前 pending 报告保留为历史，本轮批准已由用户上传指令提供，最终门禁待运行。
+
+## 1.4.1 完成证据
+
+- 主提交：`c37fc3b3822c843ab9bb8f6c049b6c6d6cbff074`（Clarify takeover workflow stages and release 1.4.1）。
+- `commit` 检查通过（work/stages-release-commit.json）：task-gate、control-plane、commit-scope、TEST、COMPILE、GUIDANCE-COMPILE 均 pass，required_checks_satisfied=true。
+- 同一主提交的 `committed` 检查通过（work/stages-release-committed.json）：control-plane、committed-scope、TEST、COMPILE、GUIDANCE-COMPILE 均 pass，required_checks_satisfied=true。检查报告 tool_version 为 1.4.1，未更改检查器或降低测试要求。
+- 主提交已通过 `git push origin main` 上传；随后查询远程 refs/heads/main，确认等于上述完整 SHA。当时工作树干净。
+- 本次收尾只将上述真实结果写入任务并标记 complete，沿用本轮明确授权；收尾提交再次执行相同 commit/committed 门槛，最终远程状态以 Git 及本地 release-final 报告为准，避免在提交中填写其自身尚不存在的 SHA。
+- 无新会话行为实测、无真实外部项目集成测试；机械检查不保证所有 agent 会遵守流程。GitHub hosted CI 不在本地通过证据中，不能因已推送而称远程 CI 已通过。
