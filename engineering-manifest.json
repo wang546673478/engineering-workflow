@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
-  "workflow": {"active_task": "TASK-VERSION-01"},
+  "workflow": {"active_task": "TASK-CONTINUITY-01"},
   "documents": [
+    {"id": "CONTINUITY_TASK", "path": "planning/continuous-requirements-task.md", "kind": "task", "required": true},
     {"id": "VERSION_TASK", "path": "planning/version-policy-task.md", "kind": "task", "required": true},
     {"id": "STAGES_TASK", "path": "planning/takeover-stages-task.md", "kind": "task", "required": true},
     {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
@@ -18,6 +19,10 @@
     {"id": "ISSUES_SECURITY_TASK", "path": "planning/issues-14-16-task.md", "kind": "task", "required": true}
   ],
   "requirements": [
+    {"id": "REQ-CONTINUITY-01", "document": "CONTINUITY_TASK"},
+    {"id": "REQ-CONTINUITY-02", "document": "CONTINUITY_TASK"},
+    {"id": "REQ-CONTINUITY-03", "document": "CONTINUITY_TASK"},
+    {"id": "REQ-CONTINUITY-04", "document": "CONTINUITY_TASK"},
     {"id": "REQ-VERSION-01", "document": "VERSION_TASK"},
     {"id": "REQ-VERSION-02", "document": "VERSION_TASK"},
     {"id": "REQ-STAGES-01", "document": "STAGES_TASK"},
@@ -42,6 +47,10 @@
     ,{"id": "REQ-ISSUES-11", "document": "SPEC"}
   ],
   "acceptance": [
+    {"id": "AT-CONTINUITY-01", "document": "CONTINUITY_TASK"},
+    {"id": "AT-CONTINUITY-02", "document": "CONTINUITY_TASK"},
+    {"id": "AT-CONTINUITY-03", "document": "CONTINUITY_TASK"},
+    {"id": "AT-CONTINUITY-04", "document": "CONTINUITY_TASK"},
     {"id": "AT-VERSION-01", "document": "VERSION_TASK"},
     {"id": "AT-VERSION-02", "document": "VERSION_TASK"},
     {"id": "AT-STAGES-01", "document": "STAGES_TASK"},
@@ -81,7 +90,133 @@
     {"id": "COMPILE", "command": ["python", "-m", "py_compile", "scripts/check_project.py", "scripts/extract_database.py", "scripts/extract_sqlite.py"], "required": true, "timeout_seconds": 30},
     {"id": "GUIDANCE-COMPILE", "command": ["python", "-m", "py_compile", "scripts/install_agents_guidance.py", "scripts/init_manifest.py"], "required": true, "timeout_seconds": 30}
   ],
-  "tasks": [{
+  "tasks": [
+{
+  "id": "TASK-CONTINUITY-01",
+  "requirement_ids": [
+    "REQ-CONTINUITY-01",
+    "REQ-CONTINUITY-02",
+    "REQ-CONTINUITY-03",
+    "REQ-CONTINUITY-04"
+  ],
+  "acceptance_ids": [
+    "AT-CONTINUITY-01",
+    "AT-CONTINUITY-02",
+    "AT-CONTINUITY-03",
+    "AT-CONTINUITY-04"
+  ],
+  "module_ids": [
+    "instructions",
+    "governance"
+  ],
+  "depends_on": [
+    "TASK-VERSION-01"
+  ],
+  "status": "complete",
+  "impact_document": "CONTINUITY_TASK",
+  "required_checks": [
+    "TEST",
+    "COMPILE",
+    "GUIDANCE-COMPILE"
+  ],
+  "approval_required": true,
+  "approval": {
+    "status": "approved",
+    "evidence": "planning/continuous-requirements-task.md"
+  },
+  "skill_review": {
+    "catalog_source": "Current session Skills catalog and tool registry",
+    "scope": "Continuous feature requirement recording, deferred topics, module review, separate requirement/implementation state, instruction/template/docs and 1.4.3 metadata",
+    "checked_at": "2026-10-16T01:34:00+08:00",
+    "candidates": [
+      {
+        "id": "engineering-workflow",
+        "source": "SKILL.md",
+        "version_or_release_date": "1.4.2 baseline; 1.4.3 candidate",
+        "decision": "adopted",
+        "reason": "User explicitly authorized implementing the recorded workflow decisions",
+        "evidence": [
+          "SKILL.md",
+          "references/implementation-workflow.md",
+          "references/requirements-interview.md",
+          "planning/continuous-requirements-task.md"
+        ]
+      },
+      {
+        "id": "skill-creator",
+        "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+        "version_or_release_date": "not provided",
+        "decision": "adopted",
+        "reason": "Skill trigger/instruction update, structure and isolated behavior validation",
+        "evidence": [
+          "planning/continuous-requirements-task.md"
+        ]
+      },
+      {
+        "id": "openai-docs",
+        "source": "C:/Users/54667/.codex/skills/.system/openai-docs/SKILL.md",
+        "version_or_release_date": "not provided",
+        "decision": "adopted",
+        "reason": "Use already fetched official skills/AGENTS guidance for discovery boundary",
+        "evidence": [
+          "planning/backend-map-diagnosis.md"
+        ]
+      },
+      {
+        "id": "planning-with-files",
+        "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+        "version_or_release_date": "not provided",
+        "decision": "not-adopted",
+        "reason": "Existing manifest and Task remain the canonical state",
+        "evidence": [
+          "planning/continuous-requirements-task.md"
+        ]
+      },
+      {
+        "id": "tdd",
+        "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+        "version_or_release_date": "not provided",
+        "decision": "not-adopted",
+        "reason": "No executable behavior change; existing tests and independent scenario validation apply",
+        "evidence": [
+          "planning/continuous-requirements-task.md"
+        ]
+      }
+    ],
+    "recheck": "Recheck before expanding into checker/runtime changes, other projects, CI or external publication."
+  },
+  "documentation_impact": {
+    "workflow-guidance": {
+      "when_paths": [
+        "SKILL.md",
+        "README.md",
+        "AGENTS.md",
+        "references",
+        "assets/templates",
+        "agents",
+        "VERSION",
+        "CHANGELOG.md"
+      ],
+      "document_ids": [
+        "SPEC",
+        "MAP",
+        "CONTRACT",
+        "FLOW",
+        "CONTINUITY_TASK"
+      ]
+    },
+    "governance": {
+      "when_paths": [
+        "engineering-manifest.json",
+        "planning",
+        "docs"
+      ],
+      "document_ids": [
+        "CONTINUITY_TASK"
+      ]
+    }
+  }
+},{
     "id": "TASK-SELF-01",
     "requirement_ids": ["REQ-SELF-01", "REQ-SELF-02", "REQ-SELF-03", "REQ-SELF-04", "REQ-SELF-05"],
     "acceptance_ids": ["AT-SELF-01", "AT-SELF-02", "AT-SELF-03", "AT-SELF-04", "AT-SELF-05"],

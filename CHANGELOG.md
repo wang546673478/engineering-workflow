@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.3 - Unreleased
+
+- Apply the workflow to discussions of any feature/module change and continue active requirements without another explicit skill mention.
+- Keep requirement decisions and deferred topics in authoritative documents throughout discussion; refresh current state and record dependencies and conditions for revisiting postponed work.
+- Combine completeness checks and user review when each functional module's discussion finishes, while preserving continuous recording and existing baseline/proposal approval gates.
+- Track requirement status separately from implementation status; synchronize persistent guidance, references and templates without changing checker or manifest APIs.
+
 ## 1.4.2 - 2026-10-15
 
 - Clarify version-bump timing and PATCH/MINOR/MAJOR defaults for each substantive delivery batch, including skill instruction changes.

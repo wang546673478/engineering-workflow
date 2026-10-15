@@ -64,6 +64,17 @@ This repository's ordinary Actions path runs the submission gate before declared
 
 Project rules and skill review → global discovery → reviewable current-system baseline → user baseline confirmation → detailed feature interview → complete proposal approval → implementation and verification. Basic goal clarification returns to discovery. Restore stage evidence on resumption; apply the small-fix, valid-baseline and no-existing-code exceptions from SKILL.md. This is an agent instruction, not an automated checker state machine.
 
+## Continuous feature discussion flow
+
+1. Restore the active task and latest authoritative requirements. In an adopted project, interpret follow-up answers within that task even when the user does not name the skill again. Source facts without new change information reuse existing records.
+2. Identify feature changes and update the same requirement/decision record during discussion. Distinguish facts, candidates, confirmations and deferrals; refresh the current summary, phase, next action and dependencies rather than only appending history. Keep requirement and implementation states separate.
+3. Preserve each deferred topic's module, existing conclusion, question, impact/dependencies and resumption condition. Before dependent design or implementation, reopen the relevant topic; an unresolved high-impact dependency remains subject to existing readiness rules.
+4. Briefly tell the user where material updates were saved and what remains open, then continue with the next material question. Report write failures accurately. This ongoing recording does not require a new per-turn approval or concentrated review gate.
+5. When the module discussion converges, consolidate its requirements, recent changes, open/deferred topics and connected impacts. Present that concrete result for user review and record the user's wording, scope and document version. Adjust the module if needed; later changes reopen only affected parts.
+6. Carry reviewed requirements into the complete implementation proposal under the existing approval rules. Module requirement review does not replace first-takeover baseline confirmation or authorize implementation by itself. Continue implementation and documentation verification only within the approved scope.
+
+The agent owns recording and state recovery; the user owns semantic module review. The checker verifies supplied files and mechanical evidence without reading conversation messages. These instructions do not provide a host execution hook or guarantee compliance. Current changes and scenario evidence belong to [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md).
+
 ## Version and changelog delivery flow
 
 Project policy and batch diff → release-impact classification and version source → target version and synchronization of actual consumers → Unreleased change notes → version/content/status verification → authorized delivery/publication → actual publication date and evidence. Evidence-only receipts can document a no-bump decision without restarting this cycle. Existing project conventions and package release boundaries remain authoritative; checker protection of metadata is distinct from deciding that a release is appropriate.

@@ -55,6 +55,14 @@
 
 Before detailed feature interviewing, first takeover without a valid baseline requires global discovery and user baseline confirmation. Project Tasks record the stage, baseline paths/source revision, coverage, gaps, transition evidence and next action. Baseline confirmation is distinct from proposal approval. Existing valid evidence and explicit scope exceptions are reusable. No manifest schema or CLI behavior changes.
 
+## Continuous requirement process contract
+
+- Scope: feature-change discussions and their follow-up answers in the active task of an adopted project. Material new information updates the existing authoritative requirement and Task records during discussion; repeated facts need no duplicate entry or explicit skill invocation.
+- State: facts, candidate ideas, confirmed decisions and deferred topics remain distinguishable. Requirement status and implementation status are separate process records, not new checker schema fields. Refresh the current phase, scope, next action and dependencies when they change; retain historical statements as history.
+- Deferred topics: preserve the module, existing conclusion, unanswered question, impact/dependencies and resumption condition. Revisit before dependent design or implementation; deferral neither cancels the topic nor resolves a blocking uncertainty.
+- Review: when a module discussion converges, consolidate its requirements, changes, unresolved/deferred items and linked impacts for user review. Save the user's wording, scope and document version. Save discussion continuously beforehand; do not introduce per-turn concentrated gates or repeated approval. Requirement confirmation does not itself authorize implementation, and existing baseline/full-proposal approval rules remain in force.
+- Evidence boundary: briefly identify updated records and remaining unknowns; a failed write cannot be reported as saved. The checker has no conversation-message input or new semantic checks. Installer output and instruction text do not guarantee host loading, model compliance or completeness. Current scope and validation are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md).
+
 ## Version and changelog process contract
 
 Tasks record release impact: project policy and version source, bump/exemption reason, old/target version and classification, affected packages/synchronization paths, change notes, checks and actual publication status. Version and changelog checks are human/agent workflow obligations; the manifest schema and checker do not gain new automatic release validation. This repository uses a candidate-version / Unreleased heading before publication, then the actual date. The metadata update grants no commit/tag/push/Release/deployment authority.

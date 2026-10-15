@@ -8,11 +8,17 @@ In scope / out of scope:
 
 Requirements and acceptance IDs:
 
+Current requirement entries (facts / candidates / confirmed decisions / deferred discussion; sources and requirement state using project vocabulary; link existing entries):
+
 Business rules, permissions, data owners, constraints:
 
 Failure, recovery, compatibility, rollout:
 
 Confirmed decisions and interview log:
+
+Deferred items (module/requirement; existing conclusions; remaining questions; effects/dependencies; resumption condition):
+
+Module review when the functional topic concludes (requirements/changes/open or deferred items/related effects; user's statement, date, scope and reviewed version):
 
 ## Plan
 
@@ -22,7 +28,7 @@ Affected modules/contracts/tables/flows:
 
 Documentation and verification gates:
 
-Approval record (who/when/what version):
+Implementation approval record (who/when/scope/what version; requirement confirmation and module review are separate):
 
 ## Task: `<ID>`
 
@@ -55,6 +61,8 @@ Acceptance scenarios and exact checks:
 
 Release impact (policy/source; bump required or exemption and reason; old/target version; PATCH/MINOR/MAJOR or project equivalent; affected packages and synchronization paths; CHANGELOG/equivalent notes; Unreleased/published status; checks and publication evidence):
 
-Status and evidence:
+Current requirement state / implementation state and evidence (use project vocabulary; neither recording nor confirmation authorizes implementation):
+
+Current open/deferred items and next action (refresh when decisions change; retain superseded history separately):
 
 Handoff/remaining risk:

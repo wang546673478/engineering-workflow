@@ -2,7 +2,7 @@
 
 Status: `current`
 
-This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, cross-layer changes, documentation impact gates, and verification work.
+This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, continuous feature discussions, cross-layer changes, documentation impact gates, and verification work. Current batch scope and verification are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md); 1.4.3 is a local, unreleased candidate.
 
 ## Requirements
 
@@ -25,6 +25,10 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - REQ-ISSUES-09: The checker rejects NUL-containing declared command arguments as structured configuration errors before starting a subprocess.
 - REQ-ISSUES-10: Declared checks capture output incrementally within a bounded per-check limit and fail safely when a command exceeds that limit.
 - REQ-ISSUES-11: Release metadata used by the checker is included in the repository control-plane review scope.
+- REQ-CONTINUITY-01: Record discussions of any feature addition, modification, deletion or behavior, permission, billing or data-relationship change. Follow-up answers in an adopted project's active task continue the same workflow without requiring another explicit skill invocation.
+- REQ-CONTINUITY-02: Maintain one authoritative requirement record and current summary during discussion. Separate facts, candidates, confirmations and deferred topics; preserve deferred dependencies and recovery conditions, and keep requirement status distinct from implementation status.
+- REQ-CONTINUITY-03: At module discussion completion, consolidate the module's requirements, changes, open/deferred items and connected impacts for user review. This does not add per-turn approval or replace first-takeover baseline review and complete implementation-proposal approval.
+- REQ-CONTINUITY-04: Instructions, persistent entrypoints, templates and public documentation describe the same process and limits. The checker remains declaration-based, receives no conversation messages and cannot guarantee instruction execution or discover wholly unrecorded requirements.
 
 ## Acceptance
 
@@ -47,6 +51,10 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - AT-ISSUES-09: A manifest command containing a NUL byte returns JSON configuration errors without a traceback or command side effect.
 - AT-ISSUES-10: A check that emits more than its fixed output limit is terminated, reports a failed check with bounded evidence, and does not expose raw output.
 - AT-ISSUES-11: `VERSION` and `CHANGELOG.md` are protected control-plane paths and a change to either requires external approval in commit/committed modes.
+- AT-CONTINUITY-01: A follow-up feature answer without a skill mention updates the existing requirement/task record when it adds material information; a factual answer with no new change information does not create duplicate requirements.
+- AT-CONTINUITY-02: Deferred topics retain their module, known conclusions, remaining question, impacts/dependencies and resumption condition. A confirmed requirement can remain unimplemented; a phase change refreshes current state while retaining its history.
+- AT-CONTINUITY-03: A module review presents a concrete summary and records user wording, scope and document version. Discussion is saved continuously before that review, and only affected portions reopen after a later change.
+- AT-CONTINUITY-04: Existing CLI/check commands and protection semantics remain intact; isolated conversation scenarios and manual review supplement structural checks without claiming host discovery or production reliability is proven.
 
 ## Persistence change status
 
@@ -58,11 +66,11 @@ If an approved hosted verification fails its TEST check, the reviewed workflow m
 
 ## Scope and ownership
 
-The skill instructions own the workflow rules and managed guidance template. The guidance installer updates the instruction block and optional thin references; project files own the live task state. The checker owns mechanical manifest, impact, inventory, and Git gate validation. The adapter scripts own metadata extraction. Tests are the executable behavior evidence. User decisions and repository-specific rules remain higher priority than this skill.
+The skill instructions own the workflow rules and managed guidance template. The guidance installer updates the instruction block and optional thin references; the agent maintains requirements, current state and review evidence in the project's existing authoritative files. The checker owns mechanical manifest, impact, inventory, and Git gate validation. The adapter scripts own metadata extraction. Tests are the executable behavior evidence. User decisions and repository-specific rules remain higher priority than this skill.
 
 ## Non-goals
 
-This baseline does not claim that the checker discovers every dynamic dependency, proves database business semantics, or replaces human review of its own design.
+This baseline does not claim that the checker discovers every dynamic dependency, proves database business semantics, or replaces human review of its own design. Workflow text does not guarantee model compliance or host loading. Recording a requirement is not its confirmation, and requirement confirmation is not automatic implementation authorization.
 
 ## First-takeover stage requirement
 

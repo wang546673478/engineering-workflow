@@ -10,6 +10,8 @@ At the start of every task, inspect the host's available skills catalog, plugin/
 
 Read global architecture, module-map summary, active plan/task and recent progress at the start of each edit task. Load only relevant detailed contracts, dictionary sections and upstream rules after that. If no baseline exists on first takeover, document and review it before feature work. Small approved changes do not repeat the full interview. Record documents and versions reviewed as an audit trail, not proof that a script can verify comprehension.
 
+Follow the continuous records and module review in [requirements-interview.md](requirements-interview.md) for functional change discussions, including short follow-up answers in an enabled task. Before dependent design or implementation, revisit deferred items and resolve blocking questions, check the requirement state and the separate implementation authorization, and update affected Spec/Plan/Task and impact records. A recorded or confirmed requirement is not evidence that code exists or that implementation was authorized.
+
 ## During editing
 
 Keep each capability in one cohesive owner. Depend on stable interfaces instead of internal details; avoid circular dependencies and duplicate validation, pricing, authorization, or persistence rules. Preserve transaction boundaries and exact-once identities where side effects matter. Add a new abstraction only when its boundary removes real coupling and its owner is explicit.
@@ -24,11 +26,13 @@ Before editing, set `task.documentation_impact` for every task that can change m
 
 Do not treat a skill recommendation as approval to change scope or bypass project rules. User decisions, repository instructions, security constraints, and required review gates remain authoritative. An adopted skill supplies process or tooling guidance only; record conflicts and the final resolution in `skill_review`.
 
-Reopen only the newly changed product decision when the user changes confirmed scope or acceptance. Present an updated complete proposal for a major change. Ordinary implementation choices inside an approved task proceed without another permission question. Approval records cite the user's statement and exact scope; never fabricate a human approval.
+Reopen only the newly changed product decision and its affected dependencies when the user changes confirmed scope or acceptance. Keep the complete proposal current for a major change, while reusing valid approvals for unaffected parts. Ordinary implementation choices inside an approved task proceed without another permission question. Approval records cite the user's statement, reviewed version and exact scope; never fabricate a human approval.
 
 ## Recovery and handoff
 
 On start, resume, handoff, incomplete context or agent change, reread the project rules, manifest, active task, recent progress or handoff, adopted skill source/revision and the unfinished documentation before making edits. Inspect the working tree and current task status, then continue from the recorded state. Do not repeat completed work or discard unrelated changes. A handoff must name the current state, next action, blockers, changed files and exact verification still required. A scope, deliverable or technology change requires a fresh `skill_review` and impact analysis.
+
+Refresh the current stage, requirement state, implementation state, open/deferred items and next action when progress or decisions change; a historical append alone must not leave stale instructions current. Preserve the decision history and prior review scope. Recover deferred conclusions, dependencies and resumption conditions before continuing related work, without asking the user to restate recorded answers.
 
 Bind test evidence to the source version/worktree and relevant environment. Old reports become historical when affected source changes; do not claim a fresh pass. When a test expectation conflicts with implementation, reconcile both with confirmed requirements before updating it; never weaken an assertion only to get green results.
 

@@ -1,5 +1,5 @@
 interface:
   display_name: "Engineering Workflow"
-  short_description: "Plan and verify cross-project software changes"
-  default_prompt: "Use $engineering-workflow to inspect this project's rules, clarify requirements one question at a time when needed, and guide Spec, Plan, Task, implementation and verification."
-  version: "1.4.2"
+  short_description: "Record feature changes, review modules and verify delivery"
+  default_prompt: "Use $engineering-workflow to continue this project's feature requirements, record decisions and deferred topics, review each discussed module with the user, and guide approved implementation and verification."
+  version: "1.4.3"
