@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide software project startup, unfamiliar codebase takeover, major features, cross-layer changes, and unclear-impact defects through requirements, architecture, data documentation, plans, implementation, and verification. Use when engineering work needs this workflow; routine questions do not require it.
 metadata:
-  version: 1.4.1
+  version: 1.4.2
 ---
 
 # 代码工程工作流
@@ -63,6 +63,14 @@ metadata:
 检查规则、清单、hook 或 CI 等控制文件发生变化时，应单独向用户解释会放宽或收紧哪些限制。按[检查器说明](references/checker.md)核对历史保护范围；只有已有的人类批准明确覆盖该次具体修改，才能传入外部批准信号。Agent 不得因测试通过、用户同意开展工作或急于提交而自行填写“已批准”。本地批准只用于相应一次检查，不写入仓库或永久环境配置。
 
 没有业务数据库的项目可以保留空数据库清单，必须说明不适用的原因；如果项目提供数据库适配器，继续保留其能力边界说明。SQLite、MySQL、PostgreSQL 和 Redis 适配器只生成受控元数据快照，不把业务行、Redis key/value 或凭据写入清单。
+
+## 版本与变更记录
+
+每批含实质变更的对外交付，须在交付前按项目既有版本和发布约定更新版本与 CHANGELOG（或项目指定的等价变更记录）。同一批开发编辑与内部提交可合并升版；仅补进度、验证证据或发布回执且未改变交付内容时，记录无需再升版的理由。Skill 的行为指令、脚本或模板变化同样需要评估版本影响。
+
+没有项目约定且采用三段版本号时，默认修复/兼容的规则澄清升 PATCH，新增兼容能力升 MINOR，不兼容变更升 MAJOR；记录旧版、目标版本及分类依据。先定位权威版本来源，再同步项目实际使用的元数据、生成文件和对外说明；不要给其他项目硬套本仓库 VERSION 文件或五处元数据清单。多包、自动生成版本和无手工版本项目沿用各自机制，记录适用性和证据。
+
+CHANGELOG 说明本批新增、修复、行为变化及适用的兼容/迁移影响；未发布内容标为 Unreleased，可注明目标版本，实际发布后确认版本并填写真实日期，不覆盖历史发布条目。将 release impact、同步清单、验证及发布状态写入 Task，交付前核对版本一致、条目覆盖实际变更且状态真实；缺失时不能把交付检查记为完成。执行细则见 [implementation-workflow.md](references/implementation-workflow.md)。版本更新本身不授权提交、打标签、推送、创建 Release 或部署。
 
 ## 按阶段读取
 

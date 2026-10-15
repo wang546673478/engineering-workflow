@@ -53,6 +53,8 @@ Impact analysis:
 
 Acceptance scenarios and exact checks:
 
+Release impact (policy/source; bump required or exemption and reason; old/target version; PATCH/MINOR/MAJOR or project equivalent; affected packages and synchronization paths; CHANGELOG/equivalent notes; Unreleased/published status; checks and publication evidence):
+
 Status and evidence:
 
 Handoff/remaining risk:

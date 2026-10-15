@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.4.1` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.4.2` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向复杂软件工程任务的 Codex skill。它帮助 Agent 在修改代码前后维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -59,6 +59,10 @@ Skill 会引导 Agent：
 3. 分析页面、接口、业务逻辑、数据库、事件和消费者之间的影响链。
 4. 在实现后同步模块地图、业务流程、接口契约和数据库文档。
 5. 运行项目检查，并记录通过、失败、跳过、未支持和未验证状态。
+
+## 版本与 CHANGELOG
+
+每批有实质变化的交付按项目已有规则更新版本及 CHANGELOG；同一批内部编辑可合并升版。默认三段版本号按修复、兼容新增和不兼容变化选择 PATCH、MINOR、MAJOR。任务记录升版依据、权威来源、同步位置及验证/发布状态；仅进度或验证回执可说明无需再升版。未发布条目标为 Unreleased，实际发布才填写日期；版本更新不等于批准提交、推送或部署。细则见 [实施流程](references/implementation-workflow.md)。
 
 ## 和用户确认
 

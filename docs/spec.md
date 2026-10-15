@@ -66,4 +66,10 @@ This baseline does not claim that the checker discovers every dynamic dependency
 
 ## First-takeover stage requirement
 
-REQ-STAGES-01 / AT-STAGES-01: First takeover without a valid global baseline completes discovery and user baseline review before detailed feature interviewing. Basic goal clarification is permitted; existing valid evidence, small fixes and projects without existing code retain their explicit exceptions. See [the current task](../planning/takeover-stages-task.md).
+REQ-STAGES-01 / AT-STAGES-01: First takeover without a valid global baseline completes discovery and user baseline review before detailed feature interviewing. Basic goal clarification is permitted; existing valid evidence, small fixes and projects without existing code retain their explicit exceptions. See [the stage-change record](../planning/takeover-stages-task.md).
+
+## Version and changelog delivery requirements
+
+REQ-VERSION-01 / AT-VERSION-01: Each substantive delivery batch follows the project's existing version policy, records authoritative sources and impact classification, and synchronizes applicable version consumers before delivery. The default three-part scheme distinguishes compatible fixes, compatible new capabilities and incompatible changes.
+
+REQ-VERSION-02 / AT-VERSION-02: The Task records release impact and meaningful CHANGELOG/equivalent notes, separates unreleased content from actual publication, and documents any no-bump decision for progress/evidence-only changes. No automatic inference or new publication authority is implied. See [TASK-VERSION-01](../planning/version-policy-task.md).

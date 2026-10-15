@@ -63,3 +63,7 @@ This repository's ordinary Actions path runs the submission gate before declared
 ## First-takeover stage flow
 
 Project rules and skill review → global discovery → reviewable current-system baseline → user baseline confirmation → detailed feature interview → complete proposal approval → implementation and verification. Basic goal clarification returns to discovery. Restore stage evidence on resumption; apply the small-fix, valid-baseline and no-existing-code exceptions from SKILL.md. This is an agent instruction, not an automated checker state machine.
+
+## Version and changelog delivery flow
+
+Project policy and batch diff → release-impact classification and version source → target version and synchronization of actual consumers → Unreleased change notes → version/content/status verification → authorized delivery/publication → actual publication date and evidence. Evidence-only receipts can document a no-bump decision without restarting this cycle. Existing project conventions and package release boundaries remain authoritative; checker protection of metadata is distinct from deciding that a release is appropriate.

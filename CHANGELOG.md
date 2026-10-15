@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.2 - Unreleased
+
+- Clarify version-bump timing and PATCH/MINOR/MAJOR defaults for each substantive delivery batch, including skill instruction changes.
+- Require version/changelog impact, synchronization paths and actual publication status in task records; preserve project-specific, generated and multi-package versioning.
+- Keep unreleased notes distinct from published history and avoid repeated bumps for progress, verification or publication receipts that do not change delivered content.
+
 ## 1.4.1 - 2026-10-15
 
 - Require global discovery and user baseline review before detailed feature interviews on first takeover of existing code without a valid baseline.

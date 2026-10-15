@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
-  "workflow": {"active_task": "TASK-STAGES-01"},
+  "workflow": {"active_task": "TASK-VERSION-01"},
   "documents": [
+    {"id": "VERSION_TASK", "path": "planning/version-policy-task.md", "kind": "task", "required": true},
     {"id": "STAGES_TASK", "path": "planning/takeover-stages-task.md", "kind": "task", "required": true},
     {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
     {"id": "MAP", "path": "docs/module-map.md", "kind": "module-map", "required": true},
@@ -17,6 +18,8 @@
     {"id": "ISSUES_SECURITY_TASK", "path": "planning/issues-14-16-task.md", "kind": "task", "required": true}
   ],
   "requirements": [
+    {"id": "REQ-VERSION-01", "document": "VERSION_TASK"},
+    {"id": "REQ-VERSION-02", "document": "VERSION_TASK"},
     {"id": "REQ-STAGES-01", "document": "STAGES_TASK"},
     {"id": "REQ-SELF-01", "document": "SPEC"},
     {"id": "REQ-SELF-02", "document": "SPEC"},
@@ -39,6 +42,8 @@
     ,{"id": "REQ-ISSUES-11", "document": "SPEC"}
   ],
   "acceptance": [
+    {"id": "AT-VERSION-01", "document": "VERSION_TASK"},
+    {"id": "AT-VERSION-02", "document": "VERSION_TASK"},
     {"id": "AT-STAGES-01", "document": "STAGES_TASK"},
     {"id": "AT-SELF-01", "document": "SPEC"},
     {"id": "AT-SELF-02", "document": "SPEC"},
@@ -346,6 +351,97 @@
         "FLOW",
         "CONTRACT",
         "STAGES_TASK"
+      ]
+    }
+  }
+},
+{
+  "id": "TASK-VERSION-01",
+  "requirement_ids": [
+    "REQ-VERSION-01",
+    "REQ-VERSION-02"
+  ],
+  "acceptance_ids": [
+    "AT-VERSION-01",
+    "AT-VERSION-02"
+  ],
+  "module_ids": [
+    "instructions",
+    "governance"
+  ],
+  "depends_on": [
+    "TASK-STAGES-01"
+  ],
+  "status": "in_progress",
+  "impact_document": "VERSION_TASK",
+  "required_checks": [
+    "TEST",
+    "COMPILE",
+    "GUIDANCE-COMPILE"
+  ],
+  "approval_required": true,
+  "approval": {
+    "status": "approved",
+    "evidence": "planning/version-policy-task.md"
+  },
+  "skill_review": {
+    "catalog_source": "Current session Skills catalog",
+    "scope": "Version/changelog delivery policy, instructions, task template and 1.4.2 candidate metadata",
+    "checked_at": "2026-10-15T19:30:42+08:00",
+    "candidates": [
+      {
+        "id": "engineering-workflow",
+        "source": "SKILL.md",
+        "version_or_release_date": "1.4.1 baseline; 1.4.2 candidate",
+        "decision": "adopted",
+        "reason": "User requested version-policy update; preserve task state and verification",
+        "evidence": [
+          "SKILL.md",
+          "references/implementation-workflow.md",
+          "references/project-agents-clauses.md",
+          "references/checker.md"
+        ]
+      },
+      {
+        "id": "skill-creator",
+        "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+        "version_or_release_date": "not provided",
+        "decision": "adopted",
+        "reason": "Narrow skill update and metadata validation",
+        "evidence": [
+          "planning/version-policy-task.md"
+        ]
+      }
+    ],
+    "recheck": "2026-10-15: user explicitly authorized committing/pushing this 1.4.2 batch; scope and unchanged checks/protections reviewed, see task approval and publication plan."
+  },
+  "documentation_impact": {
+    "version-guidance": {
+      "when_paths": [
+        "SKILL.md",
+        "references",
+        "assets/templates",
+        "README.md",
+        "agents",
+        "VERSION",
+        "CHANGELOG.md"
+      ],
+      "document_ids": [
+        "SPEC",
+        "MAP",
+        "FLOW",
+        "CONTRACT",
+        "VERSION_TASK"
+      ]
+    },
+    "governance": {
+      "when_paths": [
+        "engineering-manifest.json",
+        "planning",
+        "docs"
+      ],
+      "document_ids": [
+        "VERSION_TASK"
       ]
     }
   }

@@ -70,3 +70,7 @@ Intentionally isolated modules: test fixtures and templates are maintained separ
 ## First-takeover stage ownership
 
 SKILL.md owns the stage sequence; requirements-interview and project-documentation define the interview/baseline boundary; implementation-workflow restores the stage; project-agents-clauses and the Spec/Plan/Task template carry state and evidence into projects. The checker does not infer semantic completeness or enforce conversational transitions. See [TASK-STAGES-01](../planning/takeover-stages-task.md).
+
+## Version policy ownership
+
+SKILL.md owns the delivery obligation; implementation-workflow defines batch, compatibility, source synchronization and changelog rules; the Task template and project clauses persist release impact. VERSION remains this repository's canonical version, reflected in skill metadata, README and existing agent metadata. The checker reads VERSION and protects release files but does not infer a version bump or changelog completeness. See [TASK-VERSION-01](../planning/version-policy-task.md).
