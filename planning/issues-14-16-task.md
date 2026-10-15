@@ -65,10 +65,11 @@ Acceptance requires: structured no-traceback rejection for NUL argv; bounded out
 - Focused checks for #14-#16 pass, and the full suite passes: `python -m unittest discover -s scripts/tests -q` (95 tests).
 - Baseline with declared checks passes: `python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline --run-checks`; TEST, COMPILE and GUIDANCE-COMPILE pass. Optional database/contracts inventories remain partial by design.
 - Direct Python compilation and `git diff --check` pass. Change-scope against `24c0d7f` passes with the approved task gate.
-- Human approval: on 2026-10-15 the user stated “我已经审阅了文档的变更,同意这样做”, approving the exact #14-#16 implementation, tests, documentation and release-metadata protection described in this file. This authorizes the local commit gate and commit; it does not authorize pushing, issue replies or issue closure.
-- Approval status: approved for local commit; push and issue communication remain pending separate authorization.
+- Human approval: on 2026-10-15 the user stated “我已经审阅了文档的变更,同意这样做”, approving the exact #14-#16 implementation, tests, documentation and release-metadata protection described in this file. This authorizes the local commit gate and commit; the later push instruction authorizes publication of these commits. Issue replies and closure remain out of scope.
+- Approval status: approved for local commit and push; issue communication and issue closure remain out of scope.
 - Code commit `c431989` passed the protected `commit` gate with external approval. Its exact tree passed `committed` verification with TEST (95 tests), COMPILE and GUIDANCE-COMPILE; optional database/contracts inventories remain partial by design.
+- The user authorized pushing on 2026-10-15. Commits `c431989`, `f521ae5` and `6a749dd` were pushed to `origin/main`; remote `refs/heads/main` resolves to `6a749dda74c231adadf2f875cd39c534827ba62c`. No issue comments or state changes were made.
 
 ## Handoff
 
-Code commit `c431989` and the follow-up verification record are complete and locally verified. The branch is two commits ahead of `origin/main`; publication and issue communication remain pending separate authorization.
+Code commit `c431989` and the follow-up verification record are complete and locally verified. The push is complete; issue communication remains out of scope.
