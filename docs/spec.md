@@ -40,7 +40,7 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - AT-ISSUES-02: Extractors refuse unsafe overwrites by default and atomically update only their own versioned snapshots when explicitly requested.
 - AT-ISSUES-03: Documentation and bootstrap templates explain `documentation_impact` semantics, verification limits, version metadata and the reviewable `lite`/`full` initialization path.
 - AT-ISSUES-04: Checker tests cover manifest active-task fallback and reject an unknown active task; the repository workflow invokes the checker without a copied historical task ID.
-- AT-ISSUES-05: Checker CLI reports the value in `VERSION`, including `1.4.0` for this release.
+- AT-ISSUES-05: Checker CLI reports the current value in `VERSION`; release metadata must agree with that canonical value.
 - AT-ISSUES-06: A POSIX host resolves a manifest path such as `docs\\spec.md` to `docs/spec.md`, while Windows drive/UNC paths on POSIX and project-root escapes still fail.
 - AT-ISSUES-07: Exclusion globs support `*`, `?`, character classes and complete-segment `**`, prune matching directory trees before link resolution, and never become change allowlists; a non-root `when_paths` ancestor covering source scopes from two or more selected modules is accepted and triggers the normal AND documentation gate.
 - AT-ISSUES-08: A push or pull request first detects protected paths from the trusted base manifest plus fixed checker/manifest/workflow paths; protected changes wait for the fixed review environment before committed checks, unprotected changes run the normal matrix, and the aggregate quality job fails when the selected path is not successful. Manual exact-SHA review remains available.
@@ -50,7 +50,7 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 
 ## Persistence change status
 
-The working tree contains the guidance and installer change for `TASK-PERSISTENCE-01`. Its current source verification and final protected-change review are pending; see [the active record](../planning/persistence-task.md). The historical [baseline review](../planning/baseline-review.md) applies to the earlier maintenance scope. This change has not been committed or pushed.
+The persistence implementation was verified and published as recorded in [TASK-PERSISTENCE-01](../planning/persistence-task.md). Current work is selected by `workflow.active_task` in the manifest; its task record owns current verification and review status. Historical approval applies only to its recorded scope.
 
 ## Publishing diagnostics
 
@@ -63,3 +63,7 @@ The skill instructions own the workflow rules and managed guidance template. The
 ## Non-goals
 
 This baseline does not claim that the checker discovers every dynamic dependency, proves database business semantics, or replaces human review of its own design.
+
+## First-takeover stage requirement
+
+REQ-STAGES-01 / AT-STAGES-01: First takeover without a valid global baseline completes discovery and user baseline review before detailed feature interviewing. Basic goal clarification is permitted; existing valid evidence, small fixes and projects without existing code retain their explicit exceptions. See [the current task](../planning/takeover-stages-task.md).

@@ -1,5 +1,17 @@
 # TASK-PERSISTENCE-01: 项目持久化指引与 GitHub issue 审计
 
+## 2026-10-15 会话执行顺序审计（独立只读范围）
+
+后续：用户已要求落实建议，当前实施任务为 [TASK-STAGES-01](takeover-stages-task.md)，流程修改与验证以该记录为准。
+
+- 请求：调查新会话使用本 skill 后未先完成整体接管的原因；当前记录即本次审计入口，旧任务完成/批准不覆盖新规则修改。
+- 基准：skill 1.4.0，仓库 HEAD `bcbdcf6`；审计开始工作树干净。已重读正文、requirements-interview、project-documentation、implementation-workflow，以及项目任务和近期进度。
+- Skill review：来源为本会话 Skills catalog，检查日期 2026-10-15（Asia/Shanghai）。采用 `engineering-workflow`（本仓库 `SKILL.md`，1.4.0），用于核对流程；未采用 `skill-creator`（catalog 来源 `.system/skill-creator/SKILL.md`，未提供版本），因为本轮不修改技能；未采用 planning-with-files（catalog 来源 `.agents/skills/planning-with-files/SKILL.md`，未提供版本），复用本权威记录。没有新增代码或测试。
+- 计划及证据：通过 read_thread 核对目标会话的用户输入、文件读取顺序和提问；通过文件读取核对后续补建状态。会话在第一次产品提问前已读取 skill 正文和文档基线引用，故非未加载。探索集中于页面，尚未形成全局基线就连续深入产品范围；用户纠正后才补建清单、任务及持久入口。
+- 判断：直接偏差是把局部探索当作足够的前置调查；规则也存在阶段歧义，正文第 5 项及 project-documentation 将完整基线门槛明确放在 feature development 前，而没有明确规定深入需求访谈前的覆盖要求。不能把一次受众澄清本身断言为违反“禁止编码”门槛。记录中没有证据显示纠正前已实施业务功能。
+- 影响：只追加此审计记录；不改目标项目、skill、检查器或 manifest，不向目标会话发送消息。未保存目标项目的业务源码或数据。
+- 当前状态：原因调查完成；目标会话正在补做全局接管，其完成质量尚未验收。建议后续将首次接管、需求访谈、方案确认、实施定义为明确阶段，并允许必要的目标澄清；这属于建议，尚未实施或批准。只读证据核对不等于运行测试或证明 agent 理解程度。
+
 Updated: `2026-10-15` Asia/Shanghai
 Status: `complete` — 持久化与 issue 修复已验证，用户已批准提交与推送
 Base commit: `1aae5ed`

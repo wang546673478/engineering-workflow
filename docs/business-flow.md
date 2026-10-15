@@ -1,6 +1,6 @@
 # Engineering Workflow Maintenance Flow
 
-Status: `current with TASK-ISSUES-04 implementation in progress`
+Status: `current`; the manifest's active task owns current implementation and review status.
 
 ## Checker path and documentation flow
 
@@ -28,7 +28,7 @@ Status: `current with TASK-ISSUES-04 implementation in progress`
 4. The reviewed job is limited to same-repository PR heads; fork PRs never receive the environment value. The aggregate `quality` result is the branch-protection target. Review records, environment approval and checker reports form the audit trail. Pushes to `main` provide final verification; `workflow_dispatch` remains a manual fallback.
 5. If a reviewed checker report proves all rule/scope gates pass and only TEST fails, the workflow prints verbose fixture-test diagnostics. A passing rerun recovers a transient TEST failure; rule or scope failures remain failures.
 
-This repository's current adoption work is [TASK-PERSISTENCE-01](../planning/persistence-task.md). Installer validation, final approval and publication remain pending in that record. The GitHub issue review in the same record is an audit only.
+Historical adoption, installer verification and publication are recorded in [TASK-PERSISTENCE-01](../planning/persistence-task.md). Current work follows the manifest's active task; AGENTS.md points to that stable selector rather than maintaining a second current-task link.
 
 ## Skill change path
 
@@ -59,3 +59,7 @@ This repository's current adoption work is [TASK-PERSISTENCE-01](../planning/per
 The repository maintainer owns semantic review. The installer owns only the marked guidance blocks and thin references. Project task files own current state. The checker owns mechanical evidence. The skill-creator validator owns skill package structure. The user performs final review before any push or release.
 
 This repository's ordinary Actions path runs the submission gate before declared project checks. Protected-rule updates use a separate manual run for an exact reviewed SHA, after the repository owner configures a protected environment and required reviewers. The earlier setup and publication evidence is recorded in [the historical impact record](../planning/change-impact.md); that evidence does not verify this working tree or approve this task. Other projects can keep the entire review and verification flow local.
+
+## First-takeover stage flow
+
+Project rules and skill review → global discovery → reviewable current-system baseline → user baseline confirmation → detailed feature interview → complete proposal approval → implementation and verification. Basic goal clarification returns to discovery. Restore stage evidence on resumption; apply the small-fix, valid-baseline and no-existing-code exceptions from SKILL.md. This is an agent instruction, not an automated checker state machine.

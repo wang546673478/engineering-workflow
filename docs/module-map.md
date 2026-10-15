@@ -1,7 +1,7 @@
 # Engineering Workflow Module Map
 
-Status: `current with TASK-ISSUES-03 complete`
-Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
+Status: `current`; active task and current evidence are selected by `workflow.active_task` in [the manifest](../engineering-manifest.json).
+Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 ## Module: instructions
 
@@ -11,7 +11,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Direct dependencies and reason: The instructions route to references and templates; the installer renders the managed template and uses the Python standard library.
 - Dependents: `checker` uses manifest and task conventions defined here; `tests` verifies the installer.
 - Files read or written: The installer reads its template and project instruction files, then updates only its managed section in `AGENTS.md` and any explicitly selected thin adapter files. Plans and task state are maintained separately in project files. No database access.
-- Current state: Existing skill guidance is implemented; the new persistence installer and its exact behavior await the verification recorded in the active task.
+- Current state: Skill guidance and the persistence installer are implemented; historical verification is recorded in the persistence task, while the manifest-selected task records current changes and evidence.
 - Evidence: `SKILL.md`, `AGENTS.md`, references, templates, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, README.
 
 ## Module: checker
@@ -42,7 +42,7 @@ Persistence task: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Callers: Maintainers and CI.
 - Direct dependencies and reason: Checker, adapter and installer public entrypoints.
 - Dependents: None at runtime.
-- Current state: Existing coverage is implemented; issue #11-#13 regression results are recorded in the active task as they run.
+- Current state: Existing coverage is implemented; historical issue regression results remain in their task records, and fresh verification is recorded in the manifest-selected task.
 - Evidence: `scripts/tests/test_checker.py`, `scripts/tests/test_guidance.py`.
 
 ## Module: governance
@@ -66,3 +66,7 @@ Forbidden or risky dependencies: adapters must not read business rows; checker m
 Other-agent references do not duplicate the canonical workflow. Their presence does not guarantee automatic loading by a host; the project's selected agent and rule-file configuration determine that behavior.
 
 Intentionally isolated modules: test fixtures and templates are maintained separately from runtime checker code.
+
+## First-takeover stage ownership
+
+SKILL.md owns the stage sequence; requirements-interview and project-documentation define the interview/baseline boundary; implementation-workflow restores the stage; project-agents-clauses and the Spec/Plan/Task template carry state and evidence into projects. The checker does not infer semantic completeness or enforce conversational transitions. See [TASK-STAGES-01](../planning/takeover-stages-task.md).

@@ -49,4 +49,8 @@
 - Entrypoint: `scripts/init_manifest.py`.
 - Input: project root, output path, and `full` or `lite` profile.
 - Behavior: discovers common source directories and writes a planned manifest skeleton without overwriting an existing output unless `--force` is explicit. The skeleton is not completion evidence until paths, requirements, skill review, baseline, approval and checks are reviewed.
-- Current status: the new installer and these contracts require verification against the final working tree. Results, exact limitations and pending review are recorded in [TASK-PERSISTENCE-01](../planning/persistence-task.md); no success is implied by this documentation.
+- Current status: the helper is implemented. Historical adoption evidence is in [TASK-PERSISTENCE-01](../planning/persistence-task.md); the manifest-selected task owns fresh verification, limitations and pending review for current work.
+
+## First-takeover process contract
+
+Before detailed feature interviewing, first takeover without a valid baseline requires global discovery and user baseline confirmation. Project Tasks record the stage, baseline paths/source revision, coverage, gaps, transition evidence and next action. Baseline confirmation is distinct from proposal approval. Existing valid evidence and explicit scope exceptions are reusable. No manifest schema or CLI behavior changes.

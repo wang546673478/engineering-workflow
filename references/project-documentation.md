@@ -1,6 +1,8 @@
 # Project Documentation Baseline
 
-For first takeover of a documentation-incomplete project, establish and review a full baseline before feature development. Inventory the actual applicable modules, entrypoints, contracts, all tables and all fields first. Work without frontend/backend/database marks those views not applicable with evidence. Reuse existing documents and link to one authoritative location for each fact. A documented baseline is not approval of a major implementation plan.
+For first takeover of a documentation-incomplete project, establish a full baseline and obtain the user's review confirmation before the detailed feature interview, not merely before feature development. Follow the stages and exceptions in [SKILL.md](../SKILL.md). Inventory the actual applicable modules, entrypoints, contracts, all tables and all fields first. Work without frontend/backend/database marks those views not applicable with evidence. Reuse existing documents and link to one authoritative location for each fact. A documented baseline is not approval of a major implementation plan.
+
+Present the whole-system structure, important end-to-end flows, coverage and unverified behavior in plain language before asking for review. Record baseline paths, source revision, semantic review and the user's confirmation in the Task. Creating headings or a list of gaps does not complete the baseline. Future feature decisions can remain unresolved in the target Spec while the current-system baseline is established; do not invent requirements to complete it. Mechanical checks do not establish semantic completeness or user confirmation.
 
 ## Required views
 

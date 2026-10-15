@@ -2,6 +2,8 @@
 
 ## Before editing
 
+Restore the current stage and its transition evidence from the authoritative Task. First takeover without a valid baseline follows [SKILL.md](../SKILL.md): global discovery, user baseline review, detailed feature interview, complete proposal approval, implementation. Do not defer the baseline until coding begins or mistake baseline confirmation for implementation approval. Reuse applicable existing evidence and follow the stated small-fix/new-project exceptions.
+
 Read project instructions and the current Spec, module map, relevant frontend/backend contract, database dictionary, business flow, Plan, and Task. Search for existing implementations and public callers. Write an impact record with requirement IDs, owners, affected modules/routes/tables/fields, permission and financial effects, compatibility, migration, recovery, tests, and docs.
 
 At the start of every task, inspect the host's available skills catalog, plugin/tool registry, or project-provided skill inventory. Filter candidates against the task's actual deliverables, read each applicable `SKILL.md` and relevant linked guidance, and record the review in the Task `skill_review` field. Each candidate record includes its name or ID, source path/URI, visible version or release date (or `not provided`), review timestamp, decision (`adopted`, `not-adopted`, or `unavailable`), and a concrete fit/conflict reason. Record the catalog scope and evidence when no candidate applies or the host cannot expose a catalog. Repeat the review when task scope, deliverables, or available skills change; do not silently substitute a remembered skill version.

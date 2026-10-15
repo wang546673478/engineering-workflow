@@ -28,6 +28,14 @@ Approval record (who/when/what version):
 
 Objective and deliverables:
 
+Current stage and applicability (takeover / baseline review / detailed interview / proposal approval / implementation; or justified minimal workflow):
+
+Baseline paths, source revision, coverage/gaps and validity check:
+
+Stage transition evidence (user statement, date, scope, reviewed version; baseline confirmation is separate from proposal approval):
+
+Next action allowed in this stage:
+
 Prerequisites and parallel work:
 
 Required reading:
