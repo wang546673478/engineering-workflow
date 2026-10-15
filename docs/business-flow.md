@@ -75,6 +75,8 @@ Project rules and skill review → global discovery → reviewable current-syste
 
 The agent owns recording and state recovery; the user owns semantic module review. The checker verifies supplied files and mechanical evidence without reading conversation messages. These instructions do not provide a host execution hook or guarantee compliance. Current changes and scenario evidence belong to [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md).
 
+The 1.4.3 source push completed on 2026-10-16. Its date and verification receipt follow the publication flow below without altering feature-discussion behavior or consuming another version.
+
 ## Version and changelog delivery flow
 
 Project policy and batch diff → release-impact classification and version source → target version and synchronization of actual consumers → Unreleased change notes → version/content/status verification → authorized delivery/publication → actual publication date and evidence. Evidence-only receipts can document a no-bump decision without restarting this cycle. Existing project conventions and package release boundaries remain authoritative; checker protection of metadata is distinct from deciding that a release is appropriate.

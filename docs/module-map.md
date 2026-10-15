@@ -76,6 +76,8 @@ SKILL.md owns the stage sequence; requirements-interview and project-documentati
 
 SKILL.md owns applicability and continuity; AGENTS and its managed template provide the persistent project entry. Requirements-interview owns ongoing recording and module-review timing; project-documentation defines authoritative requirement/current-state views; implementation-workflow restores the latest state and dependent deferred topics. The Task and decision templates carry separate requirement/implementation states and review evidence. The agent maintains those project files; the user reviews a module's meaning, scope and omissions after its discussion converges. Module review retains the existing baseline and full implementation-proposal boundaries. Host discovery and model compliance are outside the installer and checker contracts.
 
+The 1.4.3 source publication occurred on 2026-10-16 and is recorded in TASK-CONTINUITY-01. Its date/status receipt changes no module responsibilities or dependencies and does not require another version.
+
 ## Version policy ownership
 
 SKILL.md owns the delivery obligation; implementation-workflow defines batch, compatibility, source synchronization and changelog rules; the Task template and project clauses persist release impact. VERSION remains this repository's canonical version, reflected in skill metadata, README and existing agent metadata. The checker reads VERSION and protects release files but does not infer a version bump or changelog completeness. See [TASK-VERSION-01](../planning/version-policy-task.md).

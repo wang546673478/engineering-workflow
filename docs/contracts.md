@@ -63,6 +63,8 @@ Before detailed feature interviewing, first takeover without a valid baseline re
 - Review: when a module discussion converges, consolidate its requirements, changes, unresolved/deferred items and linked impacts for user review. Save the user's wording, scope and document version. Save discussion continuously beforehand; do not introduce per-turn concentrated gates or repeated approval. Requirement confirmation does not itself authorize implementation, and existing baseline/full-proposal approval rules remain in force.
 - Evidence boundary: briefly identify updated records and remaining unknowns; a failed write cannot be reported as saved. The checker has no conversation-message input or new semantic checks. Installer output and instruction text do not guarantee host loading, model compliance or completeness. Current scope and validation are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md).
 
+The 1.4.3 source batch was uploaded on 2026-10-16 after local commit/committed checks. Publication receipts do not change the CLI, manifest schema or process contract; hosted CI is not established by a successful source push.
+
 ## Version and changelog process contract
 
 Tasks record release impact: project policy and version source, bump/exemption reason, old/target version and classification, affected packages/synchronization paths, change notes, checks and actual publication status. Version and changelog checks are human/agent workflow obligations; the manifest schema and checker do not gain new automatic release validation. This repository uses a candidate-version / Unreleased heading before publication, then the actual date. The metadata update grants no commit/tag/push/Release/deployment authority.

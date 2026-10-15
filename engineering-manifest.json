@@ -183,7 +183,7 @@
         ]
       }
     ],
-    "recheck": "Recheck before expanding into checker/runtime changes, other projects, CI or external publication."
+    "recheck": "2026-10-16: user authorized uploading the delivered 1.4.3 batch; reviewed unchanged checks/protections, public diagnosis scope and source publication receipts, see planning/continuous-requirements-task.md. Recheck again before expanding into checker/runtime changes, other projects or CI."
   },
   "documentation_impact": {
     "workflow-guidance": {

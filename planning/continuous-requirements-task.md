@@ -3,10 +3,10 @@
 ## 当前状态
 
 - 日期：2026-10-16（Asia/Shanghai）；源码基点：`37344909ac69db84ba8a49791512f48c2d90b255`，skill 1.4.2。
-- 阶段：本地修改与验证已完成，按用户新指示准备提交和上传GitHub；不涉及标签或托管Release。
-- 需求状态：confirmed；实施状态：complete（源文件待上传）。本任务是当前修改入口，诊断及确认范围见 [讨论摘要](backend-map-diagnosis.md)。
+- 阶段：1.4.3主源文件发布已完成，本文件与日期说明记录同批发布回执；不涉及标签或托管Release。
+- 需求状态：confirmed；实施状态：complete（1.4.3源文件已上传）。本任务是当前修改入口，诊断及确认范围见 [讨论摘要](backend-map-diagnosis.md)。
 - 开始时已有 `planning/version-policy-task.md` 的Actions核对修改及本会话的未跟踪诊断记录；保留原文，不把前者并入本次修复。
-- 下一步：对本批暂存区运行commit检查，提交后运行committed检查，上传并核对远程SHA，再更新真实发布回执。
+- 下一步：本批最终收尾的检查结果、远程SHA及原有本地记录还原证据，以work/continuous-requirements-release-final-receipt.json为准；其他变更另立任务。
 
 ## 用户决定与批准范围
 
@@ -54,8 +54,8 @@
 ## Release impact
 
 - 来源：本仓库VERSION；1.4.2 → 1.4.3，PATCH。理由：修正持续任务和文档执行规则，兼容既有CLI、清单和已启用项目；没有新增可执行能力。
-- 同步：VERSION、SKILL.md metadata、README、agents/openai.yaml；CHANGELOG添加1.4.3 Unreleased，历史发布条目保持原样。
-- 当前发布状态：本地候选已完成验证；未提交、推送或发布。历史报告不当作本次检查结果。
+- 同步：VERSION、SKILL.md metadata、README、agents/openai.yaml均为1.4.3；主提交上传后CHANGELOG改为2026-10-16，历史发布条目保持原样。
+- 当前发布状态：1.4.3主提交已上传，真实日期及验证回执属于同批收尾。历史报告不当作本次检查结果。
 
 ## 进度与验证结果
 
@@ -97,3 +97,14 @@
 - 原始详细诊断与发布前Task已分别备份到忽略目录work；拟公开诊断仅保留匿名问题、通用确认规则和证据边界。
 - Skill review复核：宿主清单已更新为1.4.3描述；继续采用engineering-workflow及已读skill-creator结构/元数据指导，产物为同一批提交与源文件上传，不新增专业技术或运行行为。无需再次升版；提交前后完整门槛结果待补记。
 - 计划：commit模式核对暂存区并运行既有检查 → 提交 → committed模式核对实际提交并运行检查 → 推送并比对远程SHA → 以真实日期更新CHANGELOG/README/状态与回执，收尾提交同样验证后上传。
+
+## 1.4.3实际提交与上传证据
+
+- 主提交：`a7fc575db22f4e1023992616448e19fcacb0948b`，Clarify continuous requirements and module review for 1.4.3，包含本批20个文件，不含原有version-policy-task修改。
+- 公开前已保留完整本机诊断与Task备份，匿名摘要检查未见其他项目业务资料、原始会话标识或凭据。首轮commit检查通过后，仅删除Task剩余的外部项目名称并重新暂存，再执行完整门槛；以前一轮报告冒充最终暂存区结果的做法未采用。
+- 最终commit检查退出码0：work/continuous-requirements-release-commit-final.json，task-gate、control-plane、commit-scope、TEST、COMPILE、GUIDANCE-COMPILE均pass，required_checks_satisfied=true。
+- 对实际主提交运行committed检查退出码0：work/continuous-requirements-release-committed.json，task-gate、control-plane、committed-scope及三项必需检查均pass，required_checks_satisfied=true。
+- 2026-10-16约02:00（Asia/Shanghai），git push origin main成功；随后ls-remote核对refs/heads/main与本地主提交完整SHA一致。没有创建标签、托管Release或部署。
+- 据实际源文件上传事件，将1.4.3 CHANGELOG从Unreleased更新为2026-10-16，README/权威文档与当前状态同步。此收尾仅更新发布日期及证据，不改变已交付规则，仍为同一1.4.3批次，不额外升版。
+- 收尾提交的实际SHA不能在其自身内容中预填；最后的commit/committed结果和远程核对信息保存在本地work/continuous-requirements-release-final-receipt.json。
+- GitHub hosted CI在本次上传流程中尚未验证；不把本地检查和成功上传描述为远程CI通过。先前CI环境继承问题保持原记录，未在本批修复。

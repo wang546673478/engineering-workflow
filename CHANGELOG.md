@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.4.3 - Unreleased
+## 1.4.3 - 2026-10-16
 
 - Apply the workflow to discussions of any feature/module change and continue active requirements without another explicit skill mention.
 - Keep requirement decisions and deferred topics in authoritative documents throughout discussion; refresh current state and record dependencies and conditions for revisiting postponed work.

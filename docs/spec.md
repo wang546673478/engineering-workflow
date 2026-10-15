@@ -2,7 +2,7 @@
 
 Status: `current`
 
-This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, continuous feature discussions, cross-layer changes, documentation impact gates, and verification work. Current batch scope and verification are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md); 1.4.3 is a local, unreleased candidate.
+This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, continuous feature discussions, cross-layer changes, documentation impact gates, and verification work. The 1.4.3 source batch was uploaded on 2026-10-16; scope, local verification and publication evidence are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). Hosted CI remains separate from that evidence.
 
 ## Requirements
 
