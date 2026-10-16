@@ -2,12 +2,12 @@
 
 ## 当前状态
 
-- 日期：2026-10-17（Asia/Shanghai）；阶段：1.4.4规则与模板已验证，用户已授权提交并上传GitHub；实际提交门禁与推送进行中。
-- 需求状态：confirmed；规则实施状态：complete；发布状态：authorized / not yet pushed。当前版本仍为1.4.4 / Unreleased，实际推送后补真实发布日期与回执。
+- 日期：2026-10-17（Asia/Shanghai）；阶段：1.4.4源码已完成提交门禁、真实提交复核和GitHub上传；本批同步真实日期及发布回执。
+- 需求状态：confirmed；规则实施状态：complete；发布状态：published source。源码已于2026-10-17上传；版本1.4.4，真实日期和源码SHA见下文。
 - 来源：本仓库SKILL.md 1.4.3；Git基点 `82f87c4d5d48d30ed3610303a5f7864023044038`。当前任务由engineering-manifest.json的workflow.active_task指向本Task。
 - 用户先前授权：“[$engineering-workflow] 开始更改skill吧”，范围为已讨论的自主基线调查、隔离环境准备、技术核验职责、可审阅范围与动态纠错规则。
 - 最新用户原话：“那就不采用,然后把1.4.4上传github”（2026-10-17，Asia/Shanghai）。实验融合候选已否决；本次仅提交并推送已审阅的原1.4.4及必要发布回执。无新增标签、托管Release、部署或CI保护变更。
-- 下一步：在干净发布工作区核对实际暂存内容，运行原commit及committed门禁，正常推送并核对远程SHA；实际发布后补日期和回执。
+- 下一步：本批功能无待实施；本回执按同一commit/committed门禁校验并推送。恢复时核对对应远程引用和本地验证报告；融合候选保持否决。
 
 ## Spec、影响与验收
 
@@ -26,7 +26,7 @@
 1. 正文保留必要行为与停止条件，细则集中在project-documentation及implementation-workflow；同步requirements-interview和接入条款。
 2. 更新AGENTS管理模板、本仓库入口与Spec/Plan/Task模板，增加环境、调查覆盖、真实阻塞、清单能力和持续纠错证据字段。
 3. 将project-manifest.example的手工清单required默认改为false，与现有init_manifest full行为一致；数据库/契约文档required不变，正文仍要求语义覆盖。只改变新接入示例，不编辑其他项目的清单。
-4. 同步README和本仓库Spec/模块地图/契约/业务流。更新VERSION、SKILL metadata、README、agents/openai.yaml与CHANGELOG，候选1.4.4 / Unreleased。
+4. 同步README和本仓库Spec/模块地图/契约/业务流。更新VERSION、SKILL metadata、README、agents/openai.yaml与CHANGELOG，候选1.4.4 / Unreleased（实施时状态；现发布状态见当前摘要与回执）。
 5. 运行TEST、COMPILE、GUIDANCE-COMPILE原命令；change模式核对Git基点及本Task文档影响，quick_validate、版本/链接/差异检查。独立场景在临时目录执行，根agent核对产物。
 
 此方案避免新增没有可信重提取协议的通用源码适配器，不改checker、适配器、CI、hook、检查命令或保护配置。manual/partial仍不满足已声明必需门槛；用户的基线范围接受也不能冒充机械检查通过。现有项目若要调整必需门槛或实现适配器，需要准备对应具体差异并按该项目规则取得批准，本任务不代为授权。
@@ -47,7 +47,7 @@
 ## Release impact
 
 - 版本来源VERSION；1.4.3 → 1.4.4，PATCH。依据：修正指令和初始化示例不一致，兼容既有CLI/schema/适配器；新示例行为变化已在上文说明。
-- 同步VERSION、SKILL metadata、README、agents/openai.yaml和CHANGELOG Unreleased；发布状态为已授权提交/推送、尚未实际发布；标签、托管Release和部署不在本次范围。
+- 同步VERSION、SKILL metadata、README、agents/openai.yaml和CHANGELOG Unreleased；发布状态为已上传GitHub源码，实际日期2026-10-17；标签、托管Release和部署不在本次范围。
 
 ## 进度与验证
 
@@ -74,3 +74,14 @@
 
 - 发布树复核：21个暂存文件，63个本地Markdown目标存在；技能结构quick_validate通过。没有实验候选、私有研究Task、脚本或CI差异；原checks、control_plane、模块/清单和旧tasks保持不变。
 - 首次commit检查中task-gate、control-plane、commit-scope及TEST（63.052秒）、COMPILE、GUIDANCE-COMPILE均pass；整体退出1，因为发布工作区尚无work目录，报告创建失败。该次不记为完整门禁通过。补齐报告目录后按原命令和必需检查重跑，不降低门槛。
+
+## 实际源码发布回执（2026-10-17T06:08:56+08:00）
+
+- 目标仓库：https://github.com/wang546673478/engineering-workflow；分支main。
+- 实际源码提交：`4bbd9af31193cb824f23611b5dbdd3160cbbfa28`；正常推送成功后通过git ls-remote核对远程main为同一SHA。
+- 发布内容：原1.4.4的自主调查、隔离准备、agent语义核验、持续基线校正和示例能力预检；融合候选明确不采用。没有标签、托管Release、部署或CI保护更改。
+- `work/release-source-commit2.json`：document:BASELINE_TASK=pass, document:CONTINUITY_TASK=pass, document:VERSION_TASK=pass, document:STAGES_TASK=pass, document:SPEC=pass, document:MAP=pass, document:DB=pass, document:CONTRACT=pass, document:FLOW=pass, document:IMPACT=pass, document:BASELINE=pass, document:SKILL_REVIEW=pass, document:PERSISTENCE_TASK=pass, document:ISSUES_TASK=pass, document:AUTO_REVIEW_TASK=pass, document:ISSUES_SECURITY_TASK=pass, manifest=pass, task-gate=pass, control-plane=pass, commit-scope=pass, TEST=pass, COMPILE=pass, GUIDANCE-COMPILE=pass；required_checks_satisfied=true，errors为空，退出0。
+- `work/release-source-committed.json`：document:BASELINE_TASK=pass, document:CONTINUITY_TASK=pass, document:VERSION_TASK=pass, document:STAGES_TASK=pass, document:SPEC=pass, document:MAP=pass, document:DB=pass, document:CONTRACT=pass, document:FLOW=pass, document:IMPACT=pass, document:BASELINE=pass, document:SKILL_REVIEW=pass, document:PERSISTENCE_TASK=pass, document:ISSUES_TASK=pass, document:AUTO_REVIEW_TASK=pass, document:ISSUES_SECURITY_TASK=pass, manifest=pass, task-gate=pass, control-plane=pass, committed-scope=pass, TEST=pass, COMPILE=pass, GUIDANCE-COMPILE=pass；required_checks_satisfied=true，errors为空，退出0。
+- quick_validate通过；实际源码树仅21个文件，私有诊断/试验和原有未提交笔记保留本地。
+- 本回执同步README、CHANGELOG、Spec、模块地图、契约、业务流和当前Task，仅更新真实状态/证据，行为与1.4.4源码一致，依据既有政策不再次升版。最终回执提交标识以Git远程引用为准，避免为记录自身SHA无限追加提交。
+- GitHub Actions结果与本地证据分开记录；本次未改变托管审阅配置。

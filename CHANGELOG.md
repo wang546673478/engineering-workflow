@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.4.4 - Unreleased
+## 1.4.4 - 2026-10-17
 
 - Continue authorized baseline investigation after saved batches and progress updates; prepare necessary local isolated runtimes, databases and caches and record actual validation and cleanup.
 - Assign source and semantic investigation to the agent; bind user baseline review to the evidenced revision, scope, findings and limits without claiming production certification.

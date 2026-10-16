@@ -4,7 +4,7 @@ Status: `current`
 
 This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, continuous feature discussions, cross-layer changes, documentation impact gates, and verification work. The 1.4.3 source batch was uploaded on 2026-10-16; scope, local verification and publication evidence are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). Hosted CI remains separate from that evidence.
 
-Current local candidate: 1.4.4 / Unreleased. Autonomous investigation and continuous baseline correction are implemented and verified; the user authorized source publication under [TASK-BASELINE-01](../planning/baseline-workflow-task.md); exact release commit gates and push receipts are recorded there.
+Current published source: 1.4.4, uploaded on 2026-10-17. Autonomous investigation and continuous baseline correction, exact local commit verification and the source push are recorded in [TASK-BASELINE-01](../planning/baseline-workflow-task.md). This date/status receipt changes no behavior and requires no additional version; hosted CI remains separate.
 
 ## Requirements
 
