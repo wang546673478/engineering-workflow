@@ -4,6 +4,8 @@ Status: `current`
 
 This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, continuous feature discussions, cross-layer changes, documentation impact gates, and verification work. The 1.4.3 source batch was uploaded on 2026-10-16; scope, local verification and publication evidence are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). Hosted CI remains separate from that evidence.
 
+Current local candidate: 1.4.4 / Unreleased. Autonomous investigation and continuous baseline correction are implemented and verified; the user authorized source publication under [TASK-BASELINE-01](../planning/baseline-workflow-task.md); exact release commit gates and push receipts are recorded there.
+
 ## Requirements
 
 - REQ-SELF-01: The repository maintains a traceable baseline for its own instructions, modules, contracts, business flow, database-adapter boundary, and verification checks.
@@ -31,6 +33,14 @@ This repository is the maintained source of the `engineering-workflow` Codex ski
 - REQ-CONTINUITY-04: Instructions, persistent entrypoints, templates and public documentation describe the same process and limits. The checker remains declaration-based, receives no conversation messages and cannot guarantee instruction execution or discover wholly unrecorded requirements.
 
 ## Acceptance
+
+- REQ-BASELINE-01 / AT-BASELINE-01: Authorized discovery continues after saved batches and progress reports until a scoped, evidenced baseline is reviewable or a concrete blocker prevents further dependent work. Technical investigation belongs to the agent; independent work continues without repeated user prompts.
+- REQ-BASELINE-02 / AT-BASELINE-02: Prepare necessary task-local runtimes, dependencies, database/cache instances and test data within existing authority. Record versions, migration/test results and cleanup; do not turn setup into permission for global settings or production changes.
+- REQ-BASELINE-03 / AT-BASELINE-03: Bind review to the source/worktree revision, covered scope, facts, verified behavior, known defects and limits. Account for applicable modules, entrypoints, consumers, tables and fields with agent semantic evidence; critical unknowns remain blocking for affected conclusions/work. User scope acceptance is neither field-level verification nor production certification.
+- REQ-BASELINE-04 / AT-BASELINE-04: Testing, runtime observation and source reading independently trigger factual baseline correction even without code edits. Verify contradictions, synchronize affected views and preserve old/new evidence and review history. Invalidated product decisions or plan premises reopen only affected review and dependent implementation; valid independent approvals remain usable.
+- REQ-BASELINE-05 / AT-BASELINE-05: Check inventory provenance and supported capability before setting required gates. The manifest example matches the existing full initializer's optional source inventories, while database/contract documents and semantic coverage remain required. Existing required gates and manual/partial behavior cannot be silently changed; resolve conflicts through concrete project-reviewed proposals.
+
+Validation for these requirements combines unchanged repository checks, template/initializer capability comparison and isolated observable discovery/correction scenarios. It does not claim host compliance or guaranteed future model behavior. Implementation authorization and completed-rule commit approval remain separate.
 
 - AT-SELF-01: The active manifest and baseline documents pass the checker in baseline mode.
 - AT-SELF-02: The test suite and Python compilation checks pass for the current source tree.

@@ -11,7 +11,7 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Direct dependencies and reason: The instructions route to references and templates; the installer renders the managed template and uses the Python standard library.
 - Dependents: `checker` uses manifest and task conventions defined here; `tests` verifies the installer.
 - Files read or written: The installer reads its template and project instruction files, then updates only its managed section in `AGENTS.md` and any explicitly selected thin adapter files. Plans and task state are maintained separately in project files. No database access.
-- Current state: Skill guidance and the persistence installer are implemented. The 1.4.3 candidate clarifies continuous requirement recording, deferred-topic recovery and module review; its current implementation and verification evidence are owned by [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). Historical verification remains in its original task.
+- Current state: Skill guidance and the persistence installer are implemented. Version1.4.3 was published; its historical evidence remains in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). The local1.4.4 candidate adds autonomous investigation and dynamic baseline maintenance; current scope and verification belong to [TASK-BASELINE-01](../planning/baseline-workflow-task.md).
 - Evidence: `SKILL.md`, `AGENTS.md`, references, templates, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, README.
 
 ## Module: checker
@@ -83,3 +83,9 @@ The 1.4.3 source publication occurred on 2026-10-16 and is recorded in TASK-CONT
 SKILL.md owns the delivery obligation; implementation-workflow defines batch, compatibility, source synchronization and changelog rules; the Task template and project clauses persist release impact. VERSION remains this repository's canonical version, reflected in skill metadata, README and existing agent metadata. The checker reads VERSION and protects release files but does not infer a version bump or changelog completeness. See [TASK-VERSION-01](../planning/version-policy-task.md).
 
 The 1.4.2 source publication is recorded in that task. The date/status receipt changes no module responsibilities or dependencies and does not require a new version.
+
+## Baseline investigation and correction ownership
+
+SKILL.md owns the autonomous investigation loop and stopping conditions. Project-documentation owns revision/scope coverage, agent semantic review, user scope acceptance, capability preflight and correction history. Implementation-workflow owns authorized local environment setup, teardown, evidence freshness and dependent-work recovery. Requirements-interview keeps factual investigation separate from missing user decisions.
+
+The managed AGENTS block and Task template carry these responsibilities into projects. The manifest example now matches init_manifest full: source inventories start optional pending capability review; database/contract documents remain required. The agent corrects current factual documents; the user reviews product decisions and invalidated implementation premises. No checker, adapter, runtime dependency, CI or module dependency changed. Existing manual/partial and required-gate semantics remain implemented as before.

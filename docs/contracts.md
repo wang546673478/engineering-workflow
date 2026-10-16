@@ -49,6 +49,7 @@
 - Entrypoint: `scripts/init_manifest.py`.
 - Input: project root, output path, and `full` or `lite` profile.
 - Behavior: discovers common source directories and writes a planned manifest skeleton without overwriting an existing output unless `--force` is explicit. The skeleton is not completion evidence until paths, requirements, skill review, baseline, approval and checks are reviewed.
+- Capability defaults: the full initializer and maintained manifest example both leave source inventories optional; database/contract documents remain required. Agents review actual source/adapter capabilities before making an inventory required. This template correction does not change existing project manifests or checker semantics.
 - Current status: the helper is implemented. Historical adoption evidence is in [TASK-PERSISTENCE-01](../planning/persistence-task.md); the manifest-selected task owns fresh verification, limitations and pending review for current work.
 
 ## First-takeover process contract
@@ -70,3 +71,11 @@ The 1.4.3 source batch was uploaded on 2026-10-16 after local commit/committed c
 Tasks record release impact: project policy and version source, bump/exemption reason, old/target version and classification, affected packages/synchronization paths, change notes, checks and actual publication status. Version and changelog checks are human/agent workflow obligations; the manifest schema and checker do not gain new automatic release validation. This repository uses a candidate-version / Unreleased heading before publication, then the actual date. The metadata update grants no commit/tag/push/Release/deployment authority.
 
 For 1.4.2, the source push occurred on 2026-10-15 and is recorded in TASK-VERSION-01; the dated changelog is a publication receipt, with version and CLI contracts unchanged.
+
+## Autonomous and continuously corrected baseline contract
+
+- Investigation continues after saving or reporting a batch. The agent prepares necessary authorized local isolated environments and performs code/semantic verification; a reviewable evidenced scope or concrete unresolved blocker is the stopping boundary, with independent work continuing.
+- Baseline acceptance records the actual source/worktree revision, scope, findings, known defects and limits. It does not assert production correctness, replace required checks or authorize product implementation.
+- Testing/source/runtime findings trigger baseline correction even without a code change. Verify before asserting new facts, synchronize affected documents, retain old/new evidence and historical review, and notify/reopen only invalidated decisions or implementation premises.
+- Manual inventories remain partial and cannot satisfy a declared required gate. Capability conflicts in existing projects need a concrete reviewed adjustment or supported source path; no automatic provenance relabeling, required-item removal or approval transfer is introduced.
+- These are agent process obligations recorded in project Task files; manifest schema, CLI, adapters and automated semantic capabilities are unchanged. Current local candidate and verification are tracked by TASK-BASELINE-01, not by historical publication reports.

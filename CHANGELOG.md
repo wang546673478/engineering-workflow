@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.4 - Unreleased
+
+- Continue authorized baseline investigation after saved batches and progress updates; prepare necessary local isolated runtimes, databases and caches and record actual validation and cleanup.
+- Assign source and semantic investigation to the agent; bind user baseline review to the evidenced revision, scope, findings and limits without claiming production certification.
+- Correct baseline errors discovered during testing or investigation even without code changes, synchronize affected views and preserve evidence/history; reopen only invalidated decisions and dependent implementation.
+- Check inventory capabilities before adoption and align the manifest example with the existing full initializer's optional source inventories. Existing required gates, manual/partial results, checker behavior and project tests remain unchanged.
+
 ## 1.4.3 - 2026-10-16
 
 - Apply the workflow to discussions of any feature/module change and continue active requirements without another explicit skill mention.

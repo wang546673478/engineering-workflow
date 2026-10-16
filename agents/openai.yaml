@@ -1,5 +1,5 @@
 interface:
   display_name: "Engineering Workflow"
-  short_description: "Record feature changes, review modules and verify delivery"
-  default_prompt: "Use $engineering-workflow to continue this project's feature requirements, record decisions and deferred topics, review each discussed module with the user, and guide approved implementation and verification."
-  version: "1.4.3"
+  short_description: "Investigate, maintain baselines and verify feature changes"
+  default_prompt: "Use $engineering-workflow to investigate this project autonomously, maintain a current baseline, record feature requirements, and guide reviewed implementation and verification."
+  version: "1.4.4"

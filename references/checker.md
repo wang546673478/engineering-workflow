@@ -44,6 +44,8 @@ The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `c
 
 从 [清单示例](../assets/templates/project-manifest.example.json) 调整实际路径；示例状态为 planned，直接复制不会被视为已完成。
 
+接入时先核对来源与适配能力。示例和full初始化均将数据库/接口源清单默认为可选，数据库字典、接口文档和agent语义核验仍按基线范围要求完成；只有真实来源有受支持、可达的验证路径并经项目审阅时才设置required。manual永远partial，当前没有通用接口/路由源码适配器；将它直接设为required会产生无法通过的门槛。既有项目的required不能自行删除或降级：先完成独立调查，准备具体适配器或验收范围调整方案，再按该项目控制面规则审阅。用户接受基线范围不会使partial变成pass，重复无关全量测试也不能解决适配能力冲突。
+
 | 字段 | 含义及关联 |
 | --- | --- |
 | schema_version | 整数 1；不是字符串或布尔值 |

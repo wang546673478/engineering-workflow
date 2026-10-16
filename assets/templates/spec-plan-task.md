@@ -38,7 +38,15 @@ Current stage and applicability (takeover / baseline review / detailed interview
 
 Baseline paths, source revision, coverage/gaps and validity check:
 
+Investigation coverage and continuation (applicable modules/entrypoints/consumers/tables/fields; source/semantic/runtime evidence; remaining work; concrete blockers and independent next actions):
+
+Environment preparation (available tooling; necessary local installs/isolated data and ports; versions; migrations/tests/results; cleanup or retained-environment recovery; limits of existing authority):
+
+Inventory capability review (provenance/scope versus supported adapter; achievable required gates; existing gate conflicts and concrete reviewable proposals; partial remains partial):
+
 Stage transition evidence (user statement, date, scope, reviewed version; baseline confirmation is separate from proposal approval):
+
+Baseline correction history (discovery trigger, old/new claim, source/worktree revision, confirming evidence, affected views/dependencies, current status; preserved historical review and affected approvals needing review):
 
 Next action allowed in this stage:
 

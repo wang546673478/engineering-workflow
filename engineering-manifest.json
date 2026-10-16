@@ -1,7 +1,13 @@
 {
   "schema_version": 1,
-  "workflow": {"active_task": "TASK-CONTINUITY-01"},
+  "workflow": {"active_task": "TASK-BASELINE-01"},
   "documents": [
+    {
+      "id": "BASELINE_TASK",
+      "path": "planning/baseline-workflow-task.md",
+      "kind": "task",
+      "required": true
+    },
     {"id": "CONTINUITY_TASK", "path": "planning/continuous-requirements-task.md", "kind": "task", "required": true},
     {"id": "VERSION_TASK", "path": "planning/version-policy-task.md", "kind": "task", "required": true},
     {"id": "STAGES_TASK", "path": "planning/takeover-stages-task.md", "kind": "task", "required": true},
@@ -19,6 +25,26 @@
     {"id": "ISSUES_SECURITY_TASK", "path": "planning/issues-14-16-task.md", "kind": "task", "required": true}
   ],
   "requirements": [
+    {
+      "id": "REQ-BASELINE-01",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-BASELINE-02",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-BASELINE-03",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-BASELINE-04",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-BASELINE-05",
+      "document": "SPEC"
+    },
     {"id": "REQ-CONTINUITY-01", "document": "CONTINUITY_TASK"},
     {"id": "REQ-CONTINUITY-02", "document": "CONTINUITY_TASK"},
     {"id": "REQ-CONTINUITY-03", "document": "CONTINUITY_TASK"},
@@ -47,6 +73,26 @@
     ,{"id": "REQ-ISSUES-11", "document": "SPEC"}
   ],
   "acceptance": [
+    {
+      "id": "AT-BASELINE-01",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-BASELINE-02",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-BASELINE-03",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-BASELINE-04",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-BASELINE-05",
+      "document": "SPEC"
+    },
     {"id": "AT-CONTINUITY-01", "document": "CONTINUITY_TASK"},
     {"id": "AT-CONTINUITY-02", "document": "CONTINUITY_TASK"},
     {"id": "AT-CONTINUITY-03", "document": "CONTINUITY_TASK"},
@@ -91,6 +137,103 @@
     {"id": "GUIDANCE-COMPILE", "command": ["python", "-m", "py_compile", "scripts/install_agents_guidance.py", "scripts/init_manifest.py"], "required": true, "timeout_seconds": 30}
   ],
   "tasks": [
+    {
+      "id": "TASK-BASELINE-01",
+      "requirement_ids": [
+        "REQ-BASELINE-01",
+        "REQ-BASELINE-02",
+        "REQ-BASELINE-03",
+        "REQ-BASELINE-04",
+        "REQ-BASELINE-05"
+      ],
+      "acceptance_ids": [
+        "AT-BASELINE-01",
+        "AT-BASELINE-02",
+        "AT-BASELINE-03",
+        "AT-BASELINE-04",
+        "AT-BASELINE-05"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "complete",
+      "impact_document": "BASELINE_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/baseline-workflow-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "scope": "Authorized autonomous investigation, isolated setup and dynamic baseline instruction/template update; no checker behavior change; reviewed 1.4.4 commit/push and publication receipts, excluding rejected experimental fusion",
+        "checked_at": "2026-10-17T06:03:21+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.4.3 baseline; 1.4.4 candidate",
+            "decision": "adopted",
+            "reason": "Explicit user invocation and repository workflow",
+            "evidence": [
+              "SKILL.md",
+              "references/project-documentation.md",
+              "references/implementation-workflow.md",
+              "references/checker.md",
+              "planning/baseline-workflow-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Focused skill maintenance, metadata and independent behavior validation",
+            "evidence": [
+              "planning/baseline-workflow-task.md"
+            ]
+          }
+        ],
+        "recheck": "2026-10-17: user explicitly rejected fusion and authorized uploading existing 1.4.4 to GitHub. Reviewed exact source/template/protection scope and unchanged checks; publication approval and receipts belong to planning/baseline-workflow-task.md."
+      },
+      "documentation_impact": {
+        "baseline-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "AGENTS.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents",
+            "assets",
+            "references"
+          ],
+          "document_ids": [
+            "SPEC",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "BASELINE_TASK"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning",
+            "docs"
+          ],
+          "document_ids": [
+            "BASELINE_TASK"
+          ]
+        }
+      }
+    },
 {
   "id": "TASK-CONTINUITY-01",
   "requirement_ids": [

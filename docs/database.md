@@ -19,3 +19,7 @@ The user accepted an empty business-database inventory on 2026-10-14. It is opti
 ## Ownership and limitations
 
 The adapter scripts own extraction. The checker owns offline snapshot consistency. Indexes, foreign keys, triggers, comments, migrations, cluster-wide Redis state, and field business semantics require additional project evidence or an explicitly recorded partial scope.
+
+## Investigation setup boundary
+
+The 1.4.4 guidance assigns necessary authorized local database/cache preparation and tests to the investigating agent, including task-owned isolation and cleanup evidence. This is separate from the metadata adapters: their commands still require explicit invocation and retain the same reads and exclusions. No adapter, schema or runtime dependency changes in this batch. A manual dictionary/source inventory remains partial mechanically; the agent performs semantic review and corrects factual errors discovered later. Existing required gates remain in force.

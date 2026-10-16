@@ -12,6 +12,14 @@ Read global architecture, module-map summary, active plan/task and recent progre
 
 Follow the continuous records and module review in [requirements-interview.md](requirements-interview.md) for functional change discussions, including short follow-up answers in an enabled task. Before dependent design or implementation, revisit deferred items and resolve blocking questions, check the requirement state and the separate implementation authorization, and update affected Spec/Plan/Task and impact records. A recorded or confirmed requirement is not evidence that code exists or that implementation was authorized.
 
+## Isolated investigation environments
+
+Within the authorized investigation and project rules, prepare necessary runtimes, locked dependencies, databases and caches autonomously. Inspect available project tooling first, then choose a task-local installation, portable instance, virtual environment or already available container runtime. Install missing local dependencies, start isolated instances and run applicable migrations and tests; absence from PATH is an investigation step, not by itself a user task.
+
+Use dedicated data directories/databases/namespaces, local ports and synthetic fixtures appropriate to the service; a Redis logical DB alone is not isolation from shared-instance commands. Record versions, setup method, relevant commands/results and teardown. Keep credentials out of records and clean up only task-owned processes, databases and test keys; do not treat this as permission to flush a shared service. Preserve any retained environment's purpose and restart/cleanup instructions for resumption.
+
+Global installation, system-service changes, shared/production resources or other actions outside existing authority follow the actual host and project approval rules. If tools, rights, credentials or a required external sandbox cannot be obtained, record the attempted options and concrete blocker, ask for only the missing input and continue independent work. Do not claim a connection or test occurred when execution tools are unavailable. Environment preparation does not authorize product behavior changes or production deployment.
+
 ## During editing
 
 Keep each capability in one cohesive owner. Depend on stable interfaces instead of internal details; avoid circular dependencies and duplicate validation, pricing, authorization, or persistence rules. Preserve transaction boundaries and exact-once identities where side effects matter. Add a new abstraction only when its boundary removes real coupling and its owner is explicit.
@@ -35,6 +43,8 @@ On start, resume, handoff, incomplete context or agent change, reread the projec
 Refresh the current stage, requirement state, implementation state, open/deferred items and next action when progress or decisions change; a historical append alone must not leave stale instructions current. Preserve the decision history and prior review scope. Recover deferred conclusions, dependencies and resumption conditions before continuing related work, without asking the user to restate recorded answers.
 
 Bind test evidence to the source version/worktree and relevant environment. Old reports become historical when affected source changes; do not claim a fresh pass. When a test expectation conflicts with implementation, reconcile both with confirmed requirements before updating it; never weaken an assertion only to get green results.
+
+Restore any baseline corrections and affected approval status as part of this check. Testing, runtime observations and source reading can invalidate baseline documents without a code edit. Follow [continuous correction](project-documentation.md#continuous-correction): flag, investigate, correct affected views and retain evidence/history; factual corrections do not wait for a separate permission request. Pause only implementation dependent on an invalidated decision or premise and reopen only its affected review. A batch save or report is not a stopping condition while authorized investigation remains actionable.
 
 ## Version and changelog before delivery
 

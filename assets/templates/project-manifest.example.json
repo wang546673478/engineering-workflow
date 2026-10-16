@@ -18,8 +18,8 @@
     {"id": "governance", "source_paths": ["engineering-manifest.json", "planning"], "document": "IMPACT", "depends_on": [], "allowed_dependencies": []}
   ],
   "inventories": [
-    {"id": "schema", "kind": "database", "path": "planning/database-inventory.json", "documentation": "planning/database-doc-mapping.json", "required": true},
-    {"id": "routes", "kind": "contract", "path": "planning/contract-inventory.json", "documentation": "planning/contract-doc-mapping.json", "required": true}
+    {"id": "schema", "kind": "database", "path": "planning/database-inventory.json", "documentation": "planning/database-doc-mapping.json", "required": false},
+    {"id": "routes", "kind": "contract", "path": "planning/contract-inventory.json", "documentation": "planning/contract-doc-mapping.json", "required": false}
   ],
   "checks": [{"id": "TEST", "command": ["python", "-m", "unittest", "discover"], "required": true, "timeout_seconds": 120, "working_directory": "."}],
   "tasks": [{

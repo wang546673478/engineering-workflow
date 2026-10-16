@@ -20,7 +20,7 @@ Track requirement state separately from implementation state using the project's
 
 ## One-question loop
 
-Ask exactly one material question per turn. Offer concrete, mutually exclusive choices when possible and identify the recommended default. After each answer:
+When a material product decision or unavailable access input is actually missing, ask at most one question at a time. Investigation that can proceed independently needs no question. Offer concrete, mutually exclusive choices when possible and identify the recommended default. After each answer:
 
 1. Save new information and decisions to the existing records above, with sources/dates and affected requirement IDs as applicable.
 2. Re-evaluate the remaining unknowns and remove questions answered by the new decision.
@@ -39,6 +39,8 @@ Readiness review: for each dimension write confirmed, repository fact, explicit 
 For this review, a module is the cohesive functional topic being discussed with the user; source-directory boundaries do not define a separate review unit. When that discussion concludes, combine the completeness check with the user's module review. Compare the discussion with the current requirements, changes, open/deferred items and related effects, then present that one reviewable summary in plain language. Let the user check understanding, scope and omissions; record their statement, date, reviewed scope and document version. If changes are needed, update that module and its affected links. Do not add a separate concentrated check or approval after every answer; continuous saving during discussion still applies.
 
 Keep the whole-system baseline review and the complete implementation proposal approval required by SKILL.md. Module reviews do not replace either gate. Reuse valid prior confirmations; after later changes, recheck and obtain review for the affected parts rather than restarting unrelated discussions.
+
+Baseline review accepts the source/worktree version, scope, main findings and stated limits. The agent owns technical and semantic investigation; do not ask the user to guarantee field-level facts or production correctness. The baseline stays current after acceptance: evidence-based factual corrections proceed autonomously, while invalidated product decisions or implementation premises reopen only the affected review under [project-documentation.md](project-documentation.md#continuous-correction).
 
 ## Record
 

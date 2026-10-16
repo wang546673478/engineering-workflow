@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.4.3` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.4.4` (Unreleased) · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -51,6 +51,8 @@ python <skill-dir>/scripts/init_manifest.py --root <project> --profile lite
 
 `lite` 只生成最小文档门槛，`full` 会额外生成数据库/契约清单占位和跨层影响门槛。生成结果仍处于 `planned`，必须补齐实际路径、权威验证命令、skill review、基线和批准记录后才能作为完成证据；默认不会覆盖已有清单。
 
+示例与full初始化的源清单默认可选；数据库字典、接口文档和语义覆盖仍须完成。接入时先核对来源与检查器能力，只有存在受支持验证路径的来源才设为必需。手工来源始终partial，检查器没有通用路由源码适配器；已启用项目不能自行降低原有门槛，须准备具体调整方案并按项目规则审阅。
+
 ## 工作流内容
 
 Skill 会引导 Agent：
@@ -61,6 +63,14 @@ Skill 会引导 Agent：
 4. 在模块讨论结束时集中核对需求及关联影响，再交用户审核；完整实施方案仍按既有门槛确认。
 5. 分析页面、接口、业务逻辑、数据库、事件和消费者之间的影响链，并在实现后同步相关文档。
 6. 运行项目检查，并记录通过、失败、跳过、未支持和未验证状态。
+
+## 自主调查与动态基线
+
+基线调查获得授权后，Agent持续调查、验证并保存记录，进度汇报后继续，不要求用户反复说“继续”。需要运行依赖、数据库或缓存时，在已有授权内自主准备局部隔离环境并测试；有真实权限、凭据、工具或业务决定阻塞时，说明证据并先完成独立工作。
+
+Agent负责源码和字段语义核验，用户审核具体版本、调查范围、主要结论及限制。基线区分当前事实、运行验证、已知缺陷和外部未知；首次审阅不等于生产认证，也不自动授权修复所有历史问题。影响结论或后续工作的关键未知仍需解决。
+
+后续测试、调查或模块修改发现基线错误时，即使源码未改，也立即标记并查证，证实后主动修正所有受影响的权威文档，保留旧结论、依据和原审阅范围。事实更正自主完成；若推翻已批准需求或方案依据，只暂停与重审依赖该结论的部分。细则见[基线文档](references/project-documentation.md)；本批范围与验证见[TASK-BASELINE-01](planning/baseline-workflow-task.md)。
 
 ## 持续需求记录与模块审核
 
@@ -112,7 +122,7 @@ python scripts/check_project.py \
 - `assets/templates/ci-committed.engineering`
 - `assets/templates/ci-committed.engineering.ps1`
 
-具体文档门禁由项目清单中的 `task.documentation_impact` 声明。检查器不会自动发现所有动态依赖，模块关联和字段语义仍需要人工复核。
+具体文档门禁由项目清单中的 `task.documentation_impact` 声明。检查器不会自动发现所有动态依赖，Agent仍须复核模块关联和字段语义，用户审核需决定的范围与结论。
 
 清单路径支持 `/` 和 `\\` 两种分隔符。`exclude_paths` 可使用项目相对的段级 glob：`*`、`?`、字符类只匹配单个目录段，`**` 匹配零个或多个目录段；例如 `**/node_modules` 会在解析链接前剪枝任意层依赖目录。根匹配、绝对 glob 和 `..` 段会被拒绝，排除项不会扩大变更覆盖范围。
 

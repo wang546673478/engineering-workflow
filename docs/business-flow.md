@@ -82,3 +82,11 @@ The 1.4.3 source push completed on 2026-10-16. Its date and verification receipt
 Project policy and batch diff → release-impact classification and version source → target version and synchronization of actual consumers → Unreleased change notes → version/content/status verification → authorized delivery/publication → actual publication date and evidence. Evidence-only receipts can document a no-bump decision without restarting this cycle. Existing project conventions and package release boundaries remain authoritative; checker protection of metadata is distinct from deciding that a release is appropriate.
 
 The 1.4.2 batch has reached source publication on 2026-10-15. Its follow-up records the actual date and check/push evidence without changing behavior or bumping the version again.
+
+## Autonomous discovery and continuous baseline correction
+
+Authorized scoped discovery → source/semantic investigation → necessary local isolated environment and validation → update current coverage/evidence → continue remaining actionable investigation → reviewable baseline or concrete unresolved blocker. A progress report does not reset authorization. User review accepts the actual revision, scope, findings and limits; product implementation keeps its separate approval boundary.
+
+Before creating required inventory gates, compare provenance/scope with supported adapters. The corrected example matches the existing full initializer's optional source inventories while requiring applicable documentary and semantic coverage. Existing required/manual conflicts remain unsatisfied until a concrete project-governed resolution; repeating successful tests cannot resolve that conflict.
+
+Later test/runtime/source finding → flag disputed claims → reconcile source and confirmed requirements → correct current module/contract/dictionary/flow/inventory/Task views → preserve old/new evidence and revision → revalidate affected conclusions. If an approved premise changes, notify and reopen only its affected review, pausing dependent implementation while valid independent work proceeds. No product-code edit is necessary to trigger this flow. Current batch: [TASK-BASELINE-01](../planning/baseline-workflow-task.md), 1.4.4 / Unreleased.
