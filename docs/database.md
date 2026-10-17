@@ -3,6 +3,8 @@
 Status: `current`  
 Last verified: `2026-10-14`
 
+Current reconciliation: `2026-10-18`, BASELINE-LINKED-02. Source comparison confirms no adapter or business-schema change in this batch; the original review remains historical. Greenfield projects document proposed schemas in Plan and add only implemented/evidenced structures to their factual dictionary; an unused database view records its reason. The adapter boundary below is retained, not re-certified by this documentation check.
+
 This skill repository has no application database. Its database-facing module is the metadata adapter boundary.
 
 The user accepted an empty business-database inventory on 2026-10-14. It is optional because no business schema exists here, not because adapter limitations have been waived. The adapter description below remains maintained. This change does not connect to or modify any database.

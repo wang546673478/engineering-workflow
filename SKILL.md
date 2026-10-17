@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.4.4
+  version: 1.5.0
 ---
 
 # 代码工程工作流
@@ -13,7 +13,7 @@ metadata:
 
 在项目中启用本流程时，把[接入模板](assets/templates/AGENTS.engineering.md)合并到项目根部的 `AGENTS.md`；已启用但缺少入口的项目，在下次使用时补齐。保留现有规则，已有无标记同名段落时先人工合并，避免重复。可运行 `scripts/install_agents_guidance.py` 幂等更新管理区；它始终写 `AGENTS.md`，显式指定 `--file CLAUDE.md`、`--file GEMINI.md` 或其他原生规则文件时，仅增加指向它的薄引用。核对宿主实际文件格式和加载范围；不能只凭文件存在声称宿主已加载。
 
-`AGENTS.md` 保存稳定入口；项目已有清单和状态文件保存当前 Spec、Plan、Task、决定、进度、影响分析、验证及交接，允许合并记录，避免重复建档。接入时填写实际 skill 来源和版本或 commit、当前任务与状态文件路径；安装器只维护规则入口，不替项目编造状态或完成证据。开始、恢复、接手、上下文压缩或不完整、切换 agent、范围变化时，按来源重新读取 skill 正文及本任务适用引用，同时重读任务状态并核对工作树。范围、交付物或技术类别变化时重新完成 `skill_review` 和影响分析。
+`AGENTS.md` 保存稳定入口；项目已有清单和状态文件保存当前 Global Baseline、Spec、Plan、Task、决定、进度、影响分析、验证及交接，形成同一组可追踪的联动工件，允许合并记录但不能丢失层间关系。接入时填写实际 skill 来源和版本或 commit、当前任务与状态文件路径；安装器只维护规则入口，不替项目编造状态或完成证据。开始、恢复、接手、上下文压缩或不完整、切换 agent、范围变化时，按来源重新读取 skill 正文及本任务适用引用，同时重读任务状态并核对工作树。范围、交付物或技术类别变化时重新完成 `skill_review` 和影响分析。
 
 ## 持续需求记录与模块审核
 
@@ -41,7 +41,21 @@ metadata:
 
 基线审阅前，只允许澄清影响调查方向的基本目标（例如使用对象或本轮只读分析还是计划改动）；获得必要答案后继续全局梳理，不连续追问功能清单、版本范围或详细方案。源码可查的信息自行调查。先探索当前系统不要求先确定未来功能需求，目标设计中的未知项单独保留。
 
-在权威 Task 中记录当前阶段、基线路径/源码版本、覆盖与缺口、审阅证据及下一步。先完成可独立开展的梳理，再请求审阅；没有证据不得自行跳阶段。已有基线先核对其有效性并补受影响部分，已有适用确认可复用；新会话本身不要求重做。小修复按最小必要影响分析执行；没有既有代码的新项目记录现状基线不适用后进入需求访谈。用户明确调整顺序或范围时记录原话和影响，不把一般性的“开始做”解释为豁免。
+在权威 Task 中记录当前阶段、基线路径/源码版本、覆盖与缺口、审阅证据及下一步。先完成可独立开展的梳理，再请求审阅；没有证据不得自行跳阶段。已有基线先核对其有效性并补受影响部分，已有适用确认可复用；新会话本身不要求重做。小修复按最小必要影响分析执行。没有既有实现的新项目先记录起点事实、外部约束及“现状调查不适用”的证据，再进入需求访谈；目标模块、接口和表放在 Plan。首批实现出现后将基线转为 partial 并记录真实实现，交付前形成 complete/approved 的事实基线；不能永久保留不适用，也不能把已有代码缺文档当作新项目。详见[新项目生命周期](references/baseline-linked-artifacts.md#新项目从零建立基线)。用户明确调整顺序或范围时记录原话和影响，不把一般性的“开始做”解释为豁免。
+
+### 全局基线与 Spec/Plan/Task 联动
+
+Global Baseline、Spec、Technical Plan 和 Task 是一组有版本边界的联动工件，不是四份互相独立的日志：
+
+`Baseline（现在是什么） → Spec（要构建什么） → Plan（如何构建） → Task（执行什么） → Code/Evidence（实际结果）`。
+
+- Baseline 绑定源码/工作树 revision、调查范围和证据；模块地图、前后端契约、数据库字典、业务流、配置/缓存/任务和运行限制属于 Baseline 视图。每个已审阅 revision 冻结，代码或证据变化后生成新的当前修订。
+- Spec 在用户确认后冻结为本批实施边界。新业务目标、权限、范围或验收必须创建新 revision 或变更请求；不能在实施中静默改写已批准边界。
+- Plan 必须引用它所依据的 Baseline 和 Spec revision，明确复用、扩展、替换、迁移、兼容、恢复和验证。技术细节可在不改变用户行为的前提下调整，但要同步当前 Plan 和决策历史。
+- Task 必须引用 Plan 项、需求/验收 ID 和受影响 Baseline 视图；Task 状态可以变化，但需求确认、方案批准和实施完成分别记录。
+- 测试、运行或源码调查发现事实错误时，先校正 Baseline，并沿影响链更新 Plan、Task、契约、数据库和业务流；只有推翻用户目标或关键业务前提时才重开 Spec。保留旧结论、证据、批准和受影响范围。
+
+新项目记录空实现起点；开源项目接管和旧项目恢复核对或调查已有 Baseline。代码完成后必须刷新受影响 Baseline 视图，不能只更新 Task。升级流程时还要按[既有文档整理规则](references/baseline-linked-artifacts.md#既有文档整理)核对当前权威文档、链接和状态，保留历史与原审阅范围；详细字段、状态、revision 和 manifest 链接见[基线与工件联动模型](references/baseline-linked-artifacts.md)。
 
 ### 自主调查与可审阅结果
 
@@ -55,7 +69,7 @@ metadata:
 2. **先检查可用 skills。** 每个任务开始时读取宿主提供的可用 skill 清单（例如会话 Skills catalog、插件/工具注册表或项目规定的清单），按任务目标筛选候选，阅读候选的 `SKILL.md` 及其适用的引用资料。把候选的名称/标识、来源路径或 URI、可见版本或发布日期、检查时间、采用或不采用的决定和理由写入 Task 的 `skill_review`；没有适用候选、清单不可用或 skill 不可读取时也要记录范围和证据。技能清单变化或任务范围变化时重新检查。
 3. **按规模进入。** 先判断上述接管阶段是否适用，再进入新项目与重大功能的完整访谈和规划；小修复按既定需求进行影响分析；跨层修改追踪全链，但不重开已解决的访谈。缺陷先复现并定位。中断后继续记录的阶段。
 4. **每次只问一个问题。** 只问源码和资料无法回答的产品决策，根据最新回答追问。把“95%”落实为目标、用户、范围、规则、数据关系、失败行为、约束和验收清楚，无高影响未决问题；不声称测得理解概率。
-5. **规划先于编码。** 形成或更新 Spec、Plan、Task。新项目与重大功能由用户确认完整方案后编码；明确要求实施已给出的完整计划即为批准，不重复询问。首次接管缺文档项目的全局基线须在深入功能访谈前完成并经用户审阅确认，不能拖到编码前才补。实际模式与模型由宿主控制，本技能不能切换 Plan Mode。
+5. **规划先于编码。** 形成或更新联动的 Baseline、Spec、Plan、Task。新项目与重大功能由用户确认完整方案后编码；明确要求实施已给出的完整计划即为批准，不重复询问。首次接管缺文档项目的全局基线须在深入功能访谈前完成并经用户审阅确认，不能拖到编码前才补。实际模式与模型由宿主控制，本技能不能切换 Plan Mode。
 6. **改前分析。** 追踪页面/客户端操作 → 接口契约 → 后端权限与业务处理 → 数据库/缓存/事件 → 消费者及页面更新。检索现有能力，明确负责模块和读写权威，再决定扩展或替换。记录权限、表字段、迁移、兼容、恢复、测试和文档影响。
 7. **实现并验证。** 保持职责集中、依赖方向清楚，避免重复状态与业务规则，接口抽象须解决真实问题。替换实现时登记旧入口退役。运行项目规定的有效检查，同步相关文档及实际验证结果。
 
@@ -73,7 +87,7 @@ metadata:
 
 事实更正直接完成；若推翻已批准需求或方案的重要依据，告知用户并标记受影响批准需复核，暂停依赖错误结论的实施，只重审受影响内容，独立有效工作继续。原审阅记录保留为历史，不能自动转移到修正版。恢复时核对当前修订及其仍有效的批准；细则见[基线文档](references/project-documentation.md)。
 
-代码改完后，不能只更新改动文件所在模块的说明；要按实际影响重新核对调用链、模块关系和数据结构，并在同一任务中更新权威文档。将变更归类后执行对应门槛：
+代码改完后，不能只更新改动文件所在模块的说明；要按实际影响重新核对调用链、模块关系和数据结构，并在同一任务中刷新受影响 Baseline、Spec/Plan/Task 引用和验证状态。将变更归类后执行对应门槛：
 
 - 模块边界、依赖方向、入口/调用方、事件或消费者变化：更新模块地图、业务流和受影响的前后端契约；同步契约或路由清单。
 - 路由、请求/响应类型、权限、事件、缓存或后台任务变化：更新前后端契约和业务流；若改变模块连接或消费者，再更新模块地图。
@@ -100,6 +114,7 @@ CHANGELOG 说明本批新增、修复、行为变化及适用的兼容/迁移影
 
 - 访谈与准备标准：[requirements-interview.md](references/requirements-interview.md)。
 - 全局文档、前后端联动、逐表逐字段与现状/目标区分：[project-documentation.md](references/project-documentation.md)。
+- 全局基线与 Spec/Plan/Task 版本、引用、回流和收敛：[baseline-linked-artifacts.md](references/baseline-linked-artifacts.md)。
 - 修改、恢复、变更、迁移与交付：[implementation-workflow.md](references/implementation-workflow.md)。
 - 项目必读规则及接入条款：[project-agents-clauses.md](references/project-agents-clauses.md)。
 - 清单、检查工具、结果与能力限制：[checker.md](references/checker.md)。

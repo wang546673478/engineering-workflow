@@ -1,50 +1,254 @@
 {
   "schema_version": 1,
-  "workflow": {"active_task": "TASK-01"},
+  "workflow": {
+    "active_baseline": "BASELINE",
+    "active_spec": "SPEC",
+    "active_plan": "PLAN",
+    "active_task": "TASK-01"
+  },
   "documents": [
-    {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
-    {"id": "MAP", "path": "docs/module-map.md", "kind": "module-map", "required": true},
-    {"id": "DB", "path": "docs/database.md", "kind": "database-dictionary", "required": true},
-    {"id": "CONTRACT", "path": "docs/contracts.md", "kind": "contract", "required": true},
-    {"id": "FLOW", "path": "docs/business-flow.md", "kind": "business-flow", "required": true},
-    {"id": "IMPACT", "path": "planning/change-impact.md", "kind": "impact", "required": true},
-    {"id": "TRACE", "path": "planning/traceability.md", "kind": "traceability-index", "required": true}
+    {
+      "id": "BASELINE",
+      "path": "planning/baseline-review.md",
+      "kind": "baseline",
+      "required": true
+    },
+    {
+      "id": "SPEC",
+      "path": "docs/spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "PLAN",
+      "path": "docs/plan.md",
+      "kind": "technical-plan",
+      "required": true
+    },
+    {
+      "id": "TASK",
+      "path": "planning/task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "MAP",
+      "path": "docs/module-map.md",
+      "kind": "module-map",
+      "required": true
+    },
+    {
+      "id": "DB",
+      "path": "docs/database.md",
+      "kind": "database-dictionary",
+      "required": true
+    },
+    {
+      "id": "CONTRACT",
+      "path": "docs/contracts.md",
+      "kind": "contract",
+      "required": true
+    },
+    {
+      "id": "FLOW",
+      "path": "docs/business-flow.md",
+      "kind": "business-flow",
+      "required": true
+    },
+    {
+      "id": "IMPACT",
+      "path": "planning/change-impact.md",
+      "kind": "impact",
+      "required": true
+    },
+    {
+      "id": "TRACE",
+      "path": "planning/traceability.md",
+      "kind": "traceability-index",
+      "required": true
+    }
   ],
-  "requirements": [{"id": "REQ-01", "document": "SPEC", "index": "TRACE"}],
-  "acceptance": [{"id": "AT-01", "document": "SPEC", "index": "TRACE"}],
+  "requirements": [
+    {
+      "id": "REQ-01",
+      "document": "SPEC",
+      "index": "TRACE"
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "AT-01",
+      "document": "SPEC",
+      "index": "TRACE"
+    }
+  ],
   "modules": [
-    {"id": "backend", "source_paths": ["backend"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
-    {"id": "frontend", "source_paths": ["frontend"], "document": "MAP", "depends_on": ["backend"], "allowed_dependencies": ["backend"]},
-    {"id": "governance", "source_paths": ["engineering-manifest.json", "planning"], "document": "IMPACT", "depends_on": [], "allowed_dependencies": []}
+    {
+      "id": "backend",
+      "source_paths": [
+        "backend"
+      ],
+      "document": "MAP",
+      "depends_on": [],
+      "allowed_dependencies": []
+    },
+    {
+      "id": "frontend",
+      "source_paths": [
+        "frontend"
+      ],
+      "document": "MAP",
+      "depends_on": [
+        "backend"
+      ],
+      "allowed_dependencies": [
+        "backend"
+      ]
+    },
+    {
+      "id": "governance",
+      "source_paths": [
+        "engineering-manifest.json",
+        "docs",
+        "planning"
+      ],
+      "document": "IMPACT",
+      "depends_on": [],
+      "allowed_dependencies": []
+    }
   ],
   "inventories": [
-    {"id": "schema", "kind": "database", "path": "planning/database-inventory.json", "documentation": "planning/database-doc-mapping.json", "required": false},
-    {"id": "routes", "kind": "contract", "path": "planning/contract-inventory.json", "documentation": "planning/contract-doc-mapping.json", "required": false}
+    {
+      "id": "schema",
+      "kind": "database",
+      "path": "planning/database-inventory.json",
+      "documentation": "planning/database-doc-mapping.json",
+      "required": false
+    },
+    {
+      "id": "routes",
+      "kind": "contract",
+      "path": "planning/contract-inventory.json",
+      "documentation": "planning/contract-doc-mapping.json",
+      "required": false
+    }
   ],
-  "checks": [{"id": "TEST", "command": ["python", "-m", "unittest", "discover"], "required": true, "timeout_seconds": 120, "working_directory": "."}],
-  "tasks": [{
-    "id": "TASK-01", "requirement_ids": ["REQ-01"], "acceptance_ids": ["AT-01"],
-    "module_ids": ["frontend", "backend"], "depends_on": [], "status": "planned",
-    "impact_document": "IMPACT", "required_checks": ["TEST"],
-    "approval_required": true, "approval": {"status": "pending", "evidence": "planning/approval.md"}
-    ,"skill_review": {
-      "catalog_source": "host Skills catalog or project inventory",
-      "scope": "task deliverables and technology categories",
-      "checked_at": "YYYY-MM-DDThh:mm:ss+TZ",
-      "candidates": [{
-        "id": "<skill-id>", "source": "<path-or-uri>",
-        "version_or_release_date": "<visible value or not provided>",
-        "decision": "adopted",
-        "reason": "<fit or conflict reason>",
-        "evidence": ["<SKILL.md or linked resource>"]
-      }],
-      "recheck": "<scope/catalog change and result, or none>"
+  "checks": [
+    {
+      "id": "TEST",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover"
+      ],
+      "required": true,
+      "timeout_seconds": 120,
+      "working_directory": "."
     }
-    ,"documentation_impact": {
-      "module-connectivity": {"when_paths": ["backend", "frontend"], "document_ids": ["MAP", "FLOW", "CONTRACT"]},
-      "database": {"when_paths": ["backend/db", "backend/migrations"], "document_ids": ["DB", "FLOW"]}
+  ],
+  "tasks": [
+    {
+      "id": "TASK-01",
+      "requirement_ids": [
+        "REQ-01"
+      ],
+      "acceptance_ids": [
+        "AT-01"
+      ],
+      "module_ids": [
+        "frontend",
+        "backend",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "planned",
+      "impact_document": "IMPACT",
+      "required_checks": [
+        "TEST"
+      ],
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "SPEC",
+        "plan": "PLAN",
+        "task": "TASK",
+        "traceability": "TRACE"
+      },
+      "approval_required": true,
+      "approval": {
+        "status": "pending",
+        "evidence": "planning/approval.md"
+      },
+      "skill_review": {
+        "catalog_source": "host Skills catalog or project inventory",
+        "scope": "task deliverables and technology categories",
+        "checked_at": "YYYY-MM-DDThh:mm:ss+TZ",
+        "candidates": [
+          {
+            "id": "<skill-id>",
+            "source": "<path-or-uri>",
+            "version_or_release_date": "<visible value or not provided>",
+            "decision": "adopted",
+            "reason": "<fit or conflict reason>",
+            "evidence": [
+              "<SKILL.md or linked resource>"
+            ]
+          }
+        ],
+        "recheck": "<scope/catalog change and result, or none>"
+      },
+      "documentation_impact": {
+        "module-connectivity": {
+          "when_paths": [
+            "backend",
+            "frontend"
+          ],
+          "document_ids": [
+            "MAP",
+            "FLOW",
+            "CONTRACT"
+          ]
+        },
+        "database": {
+          "when_paths": [
+            "backend/db",
+            "backend/migrations"
+          ],
+          "document_ids": [
+            "DB",
+            "FLOW"
+          ]
+        },
+        "workflow-records": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "docs",
+            "planning"
+          ],
+          "document_ids": [
+            "IMPACT"
+          ]
+        }
+      }
     }
-  }],
-  "baseline": {"status": "planned", "evidence": "planning/baseline-review.md"},
-  "exclude_paths": [".git", "build", "**/node_modules"]
+  ],
+  "baseline": {
+    "status": "planned",
+    "evidence": "planning/baseline-review.md",
+    "document_ids": [
+      "BASELINE",
+      "MAP",
+      "DB",
+      "CONTRACT",
+      "FLOW"
+    ],
+    "source_revision": "record-before-review",
+    "scope": "record reviewed modules and limits",
+    "origin": "existing"
+  },
+  "exclude_paths": [
+    ".git",
+    "build",
+    "**/node_modules"
+  ]
 }

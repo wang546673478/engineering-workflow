@@ -41,20 +41,36 @@
 ## Active task selection
 
 - `engineering-manifest.json` may declare `workflow.active_task`.
+- New manifests may also declare `workflow.active_baseline`, `workflow.active_spec` and `workflow.active_plan`; the checker validates those document IDs when present.
 - An explicit CLI `--task` takes precedence, followed by `ENGINEERING_TASK_ID`; when neither is supplied, checker commit/committed/handoff modes use `workflow.active_task`.
 - Reusable CI must consume this pointer or provide an explicit runtime task ID. Historical task IDs must not be hard-coded into workflow files.
+
+## Linked artifact selection and traceability
+
+- A project may declare `BASELINE`, `SPEC`, `PLAN`, `TASK` and `TRACE` documents in the manifest. `baseline.document_ids` identifies the current Baseline views; a task's optional `artifact_links` identifies the Baseline, Spec, Plan, Task and traceability files used by that task.
+- The checker validates declared document IDs and file existence. It does not decide whether a Spec is semantically approved, whether a Plan is technically sufficient, or whether a user understood a decision.
+- Existing manifests without these optional pointers remain compatible. New skeletons and examples include the linked pointers so a new project starts with an explicit Baseline → Spec → Plan → Task chain.
+
+### Greenfield baseline lifecycle
+
+- Existing projects retain complete/approved baseline requirements. Only origin=greenfield permits temporary not_applicable/partial states, with nonempty reason, source_revision, scope, evidence and literal non-root implementation_paths.
+- Declared implementation locations may be absent while provisional. A not_applicable claim fails if files exist inside those locations, independently of exclusions. Undeclared implementation locations and origin truth require agent review.
+- The required baseline-lifecycle result reports completion_ready=false for provisional work. Other task approval, impact, command and control-plane gates remain effective. Handoff and the selected task's complete status require a factual complete/approved baseline.
+- Code, contracts and database structures become current facts only as implemented and evidenced; targets remain in Plan. Current artifact revisions are recorded in the Spec/Plan/Task and traceability; the checker does not automatically validate their semantic/revision agreement.
 
 ## Manifest bootstrap helper
 
 - Entrypoint: `scripts/init_manifest.py`.
-- Input: project root, output path, and `full` or `lite` profile.
+- Input: project root, output path, `full` or `lite` profile, --project-kind existing/greenfield (default existing), and repeatable greenfield --implementation-path (default src/tests).
 - Behavior: discovers common source directories and writes a planned manifest skeleton without overwriting an existing output unless `--force` is explicit. The skeleton is not completion evidence until paths, requirements, skill review, baseline, approval and checks are reviewed.
-- Capability defaults: the full initializer and maintained manifest example both leave source inventories optional; database/contract documents remain required. Agents review actual source/adapter capabilities before making an inventory required. This template correction does not change existing project manifests or checker semantics.
+- Capability defaults: the full initializer and maintained manifest example leave source inventories optional; Baseline, Spec, Plan, Task and applicable database/contract documents remain required. Agents review actual source/adapter capabilities before making an inventory required. Existing project manifests remain compatible; new skeletons include explicit artifact links.
 - Current status: the helper is implemented. Historical adoption evidence is in [TASK-PERSISTENCE-01](../planning/persistence-task.md); the manifest-selected task owns fresh verification, limitations and pending review for current work.
+- Both profiles require every linked view file; lite omits inventories and requires current baseline plus an impact record for implementation changes. Full conservatively triggers baseline/map/contract/database/flow updates; reviewers specialize actual paths. Root triggers and invented migration scopes are not emitted. Source discovery remains a candidate scaffold, not a full architecture audit.
+- The helper creates only the planned manifest; it does not create source directories, documents, real project checks, completed baselines or approvals. Evidence-based transitions are maintained by the agent.
 
 ## First-takeover process contract
 
-Before detailed feature interviewing, first takeover without a valid baseline requires global discovery and user baseline confirmation. Project Tasks record the stage, baseline paths/source revision, coverage, gaps, transition evidence and next action. Baseline confirmation is distinct from proposal approval. Existing valid evidence and explicit scope exceptions are reusable. No manifest schema or CLI behavior changes.
+Before detailed feature interviewing, first takeover without a valid baseline requires global discovery and user baseline confirmation. Project Tasks record the stage, baseline paths/source revision, coverage, gaps, transition evidence and next action. Baseline confirmation is distinct from proposal approval. Existing valid evidence and explicit scope exceptions are reusable. New manifests expose the linked artifact pointers; older manifests continue through the compatibility path.
 
 ## Continuous requirement process contract
 
@@ -78,4 +94,4 @@ For 1.4.2, the source push occurred on 2026-10-15 and is recorded in TASK-VERSIO
 - Baseline acceptance records the actual source/worktree revision, scope, findings, known defects and limits. It does not assert production correctness, replace required checks or authorize product implementation.
 - Testing/source/runtime findings trigger baseline correction even without a code change. Verify before asserting new facts, synchronize affected documents, retain old/new evidence and historical review, and notify/reopen only invalidated decisions or implementation premises.
 - Manual inventories remain partial and cannot satisfy a declared required gate. Capability conflicts in existing projects need a concrete reviewed adjustment or supported source path; no automatic provenance relabeling, required-item removal or approval transfer is introduced.
-- These are agent process obligations recorded in project Task files; manifest schema, CLI, adapters and automated semantic capabilities are unchanged. The 1.4.4 source publication and exact local verification are tracked by TASK-BASELINE-01. Its date/status receipt changes no CLI, schema or adapter contract and requires no additional version.
+- These are agent process obligations recorded in project Task files. The checker adds optional mechanical validation for linked artifact pointers; it does not infer semantic completeness. The 1.4.4 source publication and exact local verification are tracked by TASK-BASELINE-01; the 1.5.0 candidate and its new optional fields are tracked by TASK-LINKED-ARTIFACTS-01. Existing command modes and adapter contracts remain compatible.

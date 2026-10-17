@@ -54,13 +54,13 @@ The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `c
 | modules | id、source_paths、document、depends_on、allowed_dependencies；文档为 ID，实际依赖必须属于允许依赖且无循环；此图仅为声明图 |
 | inventories | id、kind、path、documentation、required；path 指源清单 JSON，documentation 指文档映射 JSON，不是文档 ID |
 | checks | id、command、required、timeout_seconds、working_directory；command 是参数数组且不能含 NUL，超时为有限正数，合并输出固定限制为 8 MiB；working_directory 默认为项目根，必须是项目内已存在且不经过符号链接/目录连接的目录；无隐式 shell |
-| workflow | 可选对象；`active_task` 指向当前 CI/提交任务。没有显式 `--task` 或 `ENGINEERING_TASK_ID` 时，commit/committed/handoff 使用它；切换任务只需更新此字段及任务记录，不要在 workflow 文件复制历史任务 ID |
-| tasks | id、requirement_ids、acceptance_ids、module_ids、depends_on、status、impact_document、required_checks、approval_required、approval、documentation_impact；commit 门禁通过 `--task`、`ENGINEERING_TASK_ID` 或 `workflow.active_task` 选择任务 |
+| workflow | 可选对象；`active_task` 指向当前 CI/提交任务，新的清单还可声明 `active_baseline`、`active_spec`、`active_plan` 指向 documents。没有显式 `--task` 或 `ENGINEERING_TASK_ID` 时，commit/committed/handoff 使用 active_task；切换任务只需更新这些字段及任务记录，不要在 workflow 文件复制历史任务 ID |
+| tasks | id、requirement_ids、acceptance_ids、module_ids、depends_on、status、impact_document、required_checks、approval_required、approval、documentation_impact；可选 `artifact_links` 将任务连接到 Baseline/Spec/Plan/Task/Traceability 文档。commit 门禁通过 `--task`、`ENGINEERING_TASK_ID` 或 `workflow.active_task` 选择任务 |
 | task.status | planned、in_progress、blocked、complete；handoff 要求 complete，但状态不证明人已审查 |
 | task.impact_document | 已声明的文档 ID；对应修改前影响记录 |
 | task.required_checks | 已声明检查 ID；选定任务的必需检查强制生效，不能由检查自身 required=false 绕过 |
 | task.approval | 需要批准时为 `{status: approved, evidence: 项目内文件路径}`；证据引用用户原话/时间/范围，不能伪造或仅自行写 approved |
-| baseline | status 为 complete/approved，evidence 指已存在的基线验收记录；状态与证据存在不能自动证明业务完整性 |
+| baseline | 既有项目 status 为 complete/approved；新项目临时状态见下节。evidence 指已存在的基线记录；可选 `document_ids` 列出当前 Baseline 视图，`source_revision` 和 `scope` 绑定源码/工作树与审阅范围；状态与证据存在不能自动证明业务完整性 |
 | exclude_paths | 明确排除并在报告列出；可用项目相对的段级 glob（`*`、`?`、字符类和完整段 `**`），不能排除项目根，不得用宽泛排除隐藏业务改动 |
 | control_plane | 可选对象；`protected_paths` 声明额外受保护的控制文件，`approval_env` 为批准环境变量名（默认 `ENGINEERING_CONTROL_PLANE_APPROVED`）。manifest 和 checker 始终受保护；需人工审阅并通过外部批准才能提交变更 |
 
@@ -69,6 +69,31 @@ The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `c
 `task.documentation_impact` 可声明变更触发器与必须同步的文档：`{ "kind": { "when_paths": ["backend/migrations"], "document_ids": ["DB", "FLOW"] } }`。`when_paths` 保持字面路径；它可以是项目内模块 `source_paths`、规则所引用文档的路径，或一个严格非根的公共父目录，前提是该父目录包含所选任务中至少两个不同模块的 source scope。例如 `packages/api` 与 `packages/web` 可用 `packages` 聚合触发。公共父目录只触发文档门槛，不扩大变更覆盖范围；无关目录、单模块父目录、glob 和项目根仍非法。触发后 `document_ids` 中的每一份文档都必须出现在本次 diff 中，这是 AND 语义；需要“至少一份”时应拆分任务或明确记录例外，不使用未定义的 OR 语义。manifest、planning、影响分析和规则文件属于治理（governance）模块，若它们自身变化，应在任务中声明治理文档和影响记录，不能靠全局排除隐藏。commit/committed 还要求每个受影响的模块源路径命中至少一条规则，漏声明不能通过。只有实现细节变化时，可声明 `implementation-only` 规则，将对应源路径映射到影响分析文档，并在该文档中写明不更新模块/数据库文档的依据；该记录需与代码同一提交。常见类别包括模块/调用链（module map、business flow、contract）和数据库（database dictionary、business flow）。这是声明式门槛，仍不能自动发现未登记的动态依赖或判断语义是否真实。
 
 需求和验收 ID 默认必须出现在 `document` 指向的正文中。原有文档不适合插入机器 ID 时，可在条目增加 `index`，指向 `documents` 中的独立追踪索引；checker 只要求该索引包含 ID，并保留 `document` 作为规范正文归属。需要定位正文章节时可再声明 `anchor`（HTML/Markdown anchor 或标题）；`anchor` 与 `index` 都是 AND 条件。示例使用 `planning/traceability.md` 作为独立索引。
+
+## 新项目的临时基线
+
+`init_manifest.py --root <project> --project-kind greenfield --profile full` 显式选择从零起步，默认实现位置为 `src` 和 `tests`，可重复 `--implementation-path backend --implementation-path frontend` 替换。初始化仍生成 `planned`，不创建文档、批准或完成证据；先补齐权威文档、实际检查和调查证据。默认 `existing` 继续要求已有系统调查。已有平铺源码按实际顶层入口生成候选作用域；空目录须显式选择 greenfield。
+
+在确无既有实现时，agent 核验全仓库后可记录：
+
+```json
+{
+  "status": "not_applicable",
+  "origin": "greenfield",
+  "reason": "No prior implementation; recorded repository inspection",
+  "evidence": "planning/baseline-review.md",
+  "source_revision": "<actual source or empty-worktree identifier>",
+  "scope": "<inspected scope and external constraints>",
+  "implementation_paths": ["src", "tests"],
+  "document_ids": ["BASELINE", "MAP", "DB", "CONTRACT", "FLOW"]
+}
+```
+
+检查器要求临时状态的 origin、reason、source_revision、scope、evidence 和非空 implementation_paths。后者必须是项目内非根字面路径；not_applicable 时范围内任何文件都会触发失败，不受 exclude_paths 影响。实现出现后转 partial 并补真实基线；不存在的 source_paths 仅在这两种状态且与 implementation_paths 对应时允许。完成基线后恢复正常路径存在性检查。
+
+新增 `baseline-lifecycle` 结果明确 `completion_ready`。临时状态可通过 baseline/change/commit/committed 的生命周期校验，但其他批准、影响、保护和必需测试门槛仍执行。handoff 或选中任务 complete 时，临时状态失败；交付需 complete/approved。检查器仅核对已声明范围，不能发现全部漏登记实现或证明 origin 真实性；agent 必须按[联动模型](baseline-linked-artifacts.md)核验。
+
+full/lite 都要求已链接的基线视图和追踪文档存在；不适用视图写原因，不能靠 required=false 隐藏被引用文件。lite 省略源清单并使用影响记录；full 对实现范围保守触发基线/地图/契约/数据库/业务流更新，审阅实际项目后再收敛路径规则。两者都不生成项目验证政策，不把默认测试命令当作实际完整测试。
 
 ## 源清单与文档映射
 

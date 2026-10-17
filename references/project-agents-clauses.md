@@ -12,7 +12,8 @@ Adapt these clauses into each project's `AGENTS.md`; do not copy them blindly ov
 
 ## Required process
 
-- Before changing behavior, read the current Spec, architecture, module map, relevant contracts, database dictionary, business flow, Plan, Task, and progress.
+- Before changing behavior, read the current Global Baseline, Spec, Plan, Task and progress. The Plan must identify the Baseline and Spec revisions it uses; the Task must identify its Plan items and affected Baseline views.
+- For a project without implementation, record the evidenced empty starting state and constraints, then interview and plan. Baseline not-applicable is temporary; implementation produces partial factual views and delivery requires a complete baseline. Existing code without documentation requires discovery. Reconcile existing project documents after a workflow upgrade, preserving history and actual approvals; see baseline-linked-artifacts.md.
 - Continue authorized baseline investigation across saved batches and progress updates until a scoped, evidenced baseline is reviewable or a concrete blocker remains. Prepare needed local isolated runtimes/databases/caches and run applicable tests within existing authority; continue independent work. The agent owns code/semantic investigation; the user reviews scope, findings and limits.
 - Keep the baseline current during testing, source reading and feature work even without a product-code change. Flag contradictory claims, verify and correct affected documents with old/new evidence and revision history. If an approved premise is invalidated, pause only dependent work and reopen only affected review; preserve still-valid approvals.
 - Replace these generic names with actual project links and check commands; retain existing higher-priority project constraints. Every edit task reads the global summary and then affected detail, not every unrelated field.
@@ -27,7 +28,7 @@ Adapt these clauses into each project's `AGENTS.md`; do not copy them blindly ov
 
 ## Documentation and verification
 
-- Every route, interface, table, field, event, permission, and dependency change updates the corresponding documentation and acceptance evidence.
+- Every route, interface, table, field, event, permission, and dependency change updates the corresponding Baseline view and acceptance evidence, then reconciles the linked Spec/Plan/Task states. A code change that leaves the current Baseline stale is incomplete even when its local tests pass.
 - Every task that may affect module connectivity, cross-layer contracts, or schema/migrations declares the matching `documentation_impact` gates in the manifest; not-applicable decisions include search scope and evidence.
 - Before each commit, run the staged `commit` gate; source code changes without a matching documentation-impact rule fail. Recheck each committed tree locally or in the project's chosen CI. GitHub and GitHub Actions are optional; absence of either is not a failed requirement.
 - Explain protected-rule changes to the user before requesting final approval. An agent must not set the live project's external approval variable merely to obtain a passing gate. Approval paths may be exercised in disposable test fixtures; real approval must come from the human reviewer for the concrete change.
@@ -35,7 +36,7 @@ Adapt these clauses into each project's `AGENTS.md`; do not copy them blindly ov
 - Record current implementation separately from target design, and never claim unverified behavior.
 - Before delivering substantive changes, follow the version/changelog policy in SKILL.md and implementation-workflow.md; record release impact, the authoritative version source, old/target version, synchronization paths, change notes and actual release status in the Task. Apply project-specific versioning first; a metadata-only progress/verification receipt need not consume another version. Updating a version does not grant publication permissions.
 - Run meaningful project checks and record results, including skips and residual risk.
-- Maintain a project manifest with document/module/contract/schema inventories, active task and required checks; invoke the skill checker in baseline, change and handoff modes as applicable. Report unsatisfied required checks as incomplete, not passed. Keep unknowns open until reviewed; unsupported tooling does not establish full coverage.
+- Maintain a project manifest with Baseline, Spec, Plan, Task, traceability, document/module/contract/schema inventories, active artifact pointers and required checks; invoke the skill checker in baseline, change and handoff modes as applicable. Report unsatisfied required checks as incomplete, not passed. Keep unknowns open until reviewed; unsupported tooling does not establish full coverage.
 - Check provenance/adapter capability before making an inventory required. New examples leave manual inventories optional without waiving documentary/semantic coverage; existing required gates stay intact until their concrete change is reviewed. Diagnose impossible gates early rather than repeatedly asking the user to verify source facts or rerunning unrelated tests.
 - Keep the active task in the manifest's `workflow.active_task` (or an equivalent project state pointer). CI and reusable templates should consume that pointer or an explicit runtime task ID; they must not hard-code a historical task ID.
 

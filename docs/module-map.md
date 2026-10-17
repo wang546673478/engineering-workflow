@@ -11,8 +11,9 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Direct dependencies and reason: The instructions route to references and templates; the installer renders the managed template and uses the Python standard library.
 - Dependents: `checker` uses manifest and task conventions defined here; `tests` verifies the installer.
 - Files read or written: The installer reads its template and project instruction files, then updates only its managed section in `AGENTS.md` and any explicitly selected thin adapter files. Plans and task state are maintained separately in project files. No database access.
-- Current state: Skill guidance and the persistence installer are implemented. Version1.4.3 was published; its historical evidence remains in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). The local1.4.4 candidate adds autonomous investigation and dynamic baseline maintenance; current scope and verification belong to [TASK-BASELINE-01](../planning/baseline-workflow-task.md).
+- Current state: Skill guidance and the persistence installer are implemented. The linked-artifact candidate adds an explicit Baseline → Spec → Plan → Task chain, revision pointers, and evidence-driven Baseline correction; current scope and verification belong to [TASK-LINKED-ARTIFACTS-01](../planning/linked-artifact-model-task.md).
 - Evidence: `SKILL.md`, `AGENTS.md`, references, templates, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, README.
+- Current greenfield entry: init_manifest explicitly selects existing/greenfield, declares future implementation scopes without creating them, and emits a planned skeleton. Both profiles require linked view files; full/lite differ in inventories and impact gates. Existing-document reconciliation refreshes authority and links while retaining original review history.
 
 ## Module: checker
 
@@ -21,10 +22,11 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - Callers: Project hooks, CI, and maintainers.
 - Direct dependencies and reason: Python standard library, manifest documents, and adapter metadata validators.
 - Dependents: Project-specific hook and CI templates.
-- Current state: `implemented`; #11-#13 path/version rules and #14-#16 process-safety/release-protection rules are tracked in `TASK-ISSUES-04`.
+- Current state: `implemented`; #11-#13 path/version rules and #14-#16 process-safety/release-protection rules are tracked in `TASK-ISSUES-04`. The linked-artifact change adds optional validation for active Baseline/Spec/Plan pointers, Baseline document IDs and Task artifact links while preserving old manifests.
 - Evidence: `scripts/check_project.py`, `scripts/tests/test_checker.py`, `references/checker.md`, `docs/contracts.md`.
+- Current lifecycle behavior: origin=greenfield provisional states require metadata/scopes; declared files invalidate not_applicable even if excluded, and completion/handoff reject provisional baselines. These are required structural checks, not automatic proof of project origin or semantic/revision agreement.
 - Protected-rule checks: commit modes read the previous manifest from Git and combine previous and proposed protected scopes. Approval comes from outside the submitted manifest; these checks do not authenticate a human or replace protected branch settings.
-- Conversation boundary: the checker has no conversation-message input and validates only supplied files and declarations. Continuous requirement recording and module semantic review are agent/user responsibilities; this batch adds no checker behavior.
+- Conversation boundary: the checker has no conversation-message input and validates only supplied files and declarations. Continuous requirement recording and semantic review remain agent/user responsibilities; the candidate adds optional linked references and explicit provisional lifecycle checks.
 
 ## Module: adapters
 
@@ -39,7 +41,7 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 ## Module: tests
 
 - Responsibility and owner: Public behavior regression tests for the checker, metadata adapters and managed-guidance installer.
-- Entrypoints/public interfaces: `scripts/tests/test_checker.py` and `scripts/tests/test_guidance.py` through the declared unittest command.
+- Entrypoints/public interfaces: `scripts/tests/test_checker.py`, `scripts/tests/test_guidance.py` and `scripts/tests/test_init.py` through the declared unittest command; init fixtures exercise the full/lite empty-project-to-factual-baseline transition.
 - Callers: Maintainers and CI.
 - Direct dependencies and reason: Checker, adapter and installer public entrypoints.
 - Dependents: None at runtime.
@@ -88,6 +90,6 @@ The 1.4.2 source publication is recorded in that task. The date/status receipt c
 
 SKILL.md owns the autonomous investigation loop and stopping conditions. Project-documentation owns revision/scope coverage, agent semantic review, user scope acceptance, capability preflight and correction history. Implementation-workflow owns authorized local environment setup, teardown, evidence freshness and dependent-work recovery. Requirements-interview keeps factual investigation separate from missing user decisions.
 
-The managed AGENTS block and Task template carry these responsibilities into projects. The manifest example now matches init_manifest full: source inventories start optional pending capability review; database/contract documents remain required. The agent corrects current factual documents; the user reviews product decisions and invalidated implementation premises. No checker, adapter, runtime dependency, CI or module dependency changed. Existing manual/partial and required-gate semantics remain implemented as before.
+The managed AGENTS block and linked-artifact Task template carry these responsibilities into projects. The manifest example and initializer expose Baseline/Spec/Plan/Task pointers, while source inventories stay optional pending capability review and database/contract documents remain required. The agent corrects current factual documents; the user reviews product decisions and invalidated implementation premises. Existing manual/partial and required-gate semantics remain implemented as before.
 
-The 1.4.4 source was uploaded on 2026-10-17, as recorded in TASK-BASELINE-01. Its date/status receipt changes no module responsibility or dependency and requires no additional version.
+The 1.4.4 source was uploaded on 2026-10-17, as recorded in TASK-BASELINE-01. The current 1.5.0 linked-artifact candidate is recorded in TASK-LINKED-ARTIFACTS-01 and remains Unreleased; its scope changes the guidance/template/checker linkage, not adapters or product runtime dependencies.

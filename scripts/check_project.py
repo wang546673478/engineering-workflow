@@ -448,6 +448,16 @@ def validate(root, manifest, mode, task_id):
             raise ConfigError("workflow.active_task must be a non-empty task ID")
         if active_task not in tasks:
             faults.append("workflow.active_task references unknown task: " + active_task)
+        for field in ("active_baseline", "active_spec", "active_plan"):
+            reference = workflow.get(field)
+            if reference is None:
+                continue
+            if not isinstance(reference, str) or not reference.strip():
+                raise ConfigError("workflow." + field + " must be a non-empty document ID")
+            if reference not in docs:
+                faults.append("workflow." + field + " references unknown document: " + reference)
+            elif not safe_path(root, docs[reference]["path"]).is_file():
+                faults.append("workflow." + field + " references missing document: " + reference)
     excluded = build_exclude_specs(root, manifest["exclude_paths"])
     def fault(msg):
         faults.append(msg)
@@ -479,7 +489,13 @@ def validate(root, manifest, mode, task_id):
             fault("module has no source paths: " + ident)
         for raw in paths:
             path = safe_path(root, raw, file_only=False)
-            if not path.exists():
+            baseline_entry = manifest.get("baseline")
+            planned_greenfield_path = (
+                isinstance(baseline_entry, dict) and baseline_entry.get("origin") == "greenfield"
+                and baseline_entry.get("status") in ("not_applicable", "partial")
+                and isinstance(baseline_entry.get("implementation_paths"), list)
+                and raw in baseline_entry["implementation_paths"])
+            if not path.exists() and not planned_greenfield_path:
                 fault("source missing: " + raw)
             if path.is_dir():
                 for child in iter_module_paths(root, path, excluded):
@@ -534,6 +550,19 @@ def validate(root, manifest, mode, task_id):
             fault("task impact_document is unknown: " + ident)
         elif not safe_path(root, docs[task["impact_document"]]["path"]).is_file():
             fault("task references a missing impact document: " + ident)
+        artifact_links = task.get("artifact_links")
+        if artifact_links is not None:
+            if not isinstance(artifact_links, dict):
+                raise ConfigError("task.artifact_links must be an object: " + ident)
+            for link_name, document_id in artifact_links.items():
+                if not isinstance(link_name, str) or not link_name.strip():
+                    raise ConfigError("task.artifact_links keys must be non-empty strings: " + ident)
+                if not isinstance(document_id, str) or not document_id.strip():
+                    raise ConfigError("task.artifact_links values must be document IDs: " + ident)
+                if document_id not in docs:
+                    fault("task " + ident + " has unknown artifact link " + link_name + ": " + document_id)
+                elif not safe_path(root, docs[document_id]["path"]).is_file():
+                    fault("task " + ident + " artifact link points to missing document: " + document_id)
         impact = task.get("documentation_impact", {})
         if impact is not None and not isinstance(impact, dict):
             raise ConfigError("task.documentation_impact must be an object")
@@ -576,11 +605,54 @@ def validate(root, manifest, mode, task_id):
     baseline = manifest["baseline"]
     if not isinstance(baseline, dict):
         raise ConfigError("baseline must be an object")
-    if baseline.get("status") not in ("complete", "approved"):
+    baseline_status = baseline.get("status")
+    provisional = baseline_status in ("not_applicable", "partial")
+    lifecycle_gaps = []
+    if provisional:
+        if baseline.get("origin") != "greenfield":
+            lifecycle_gaps.append("provisional baseline requires origin=greenfield; existing code needs discovery")
+        for field in ("reason", "source_revision", "scope"):
+            if not isinstance(baseline.get(field), str) or not baseline[field].strip():
+                lifecycle_gaps.append("provisional baseline missing " + field)
+        implementation_paths = baseline.get("implementation_paths")
+        if not isinstance(implementation_paths, list) or not implementation_paths:
+            raise ConfigError("provisional baseline.implementation_paths must be a non-empty path array")
+        for raw in implementation_paths:
+            if has_glob_magic(normalize_manifest_path(raw)) or not relative_scope(root, raw):
+                raise ConfigError("baseline.implementation_paths must be literal non-root paths")
+            path = safe_path(root, raw, file_only=False)
+            # Do not let exclude_paths hide implementation in the declared scope.
+            if baseline_status == "not_applicable":
+                files = [path] if path.is_file() else (
+                    iter_module_paths(root, path, []) if path.is_dir() else [])
+                if any(candidate.is_file() for candidate in files):
+                    lifecycle_gaps.append("implementation exists; change baseline to partial or complete: " + raw)
+        if mode == "handoff":
+            lifecycle_gaps.append("handoff requires a complete or approved factual baseline")
+        selected = tasks.get(task_id) if task_id else None
+        if selected and selected.get("status") == "complete":
+            lifecycle_gaps.append("completed task requires a complete or approved factual baseline")
+    elif baseline_status not in ("complete", "approved"):
         fault("baseline not complete")
+    if provisional or baseline.get("origin") == "greenfield":
+        results.append(output_check(
+            "baseline-lifecycle", "fail" if lifecycle_gaps else "pass",
+            "declared greenfield baseline lifecycle",
+            {"status": baseline_status, "completion_ready": baseline_status in ("complete", "approved"),
+             "gaps": lifecycle_gaps}, required=True,
+            limitations=["Provisional success permits ongoing work, not delivery. Only declared implementation paths are inspected; project origin and semantics require review."]))
     evidence = safe_path(root, baseline.get("evidence"))
     if not evidence.is_file():
         fault("baseline evidence missing")
+    baseline_document_ids = baseline.get("document_ids")
+    if baseline_document_ids is not None:
+        if not isinstance(baseline_document_ids, list) or not baseline_document_ids or not all(isinstance(x, str) and x for x in baseline_document_ids):
+            raise ConfigError("baseline.document_ids must be a non-empty document ID array")
+        for document_id in baseline_document_ids:
+            if document_id not in docs:
+                fault("baseline references unknown document: " + document_id)
+            elif not safe_path(root, docs[document_id]["path"]).is_file():
+                fault("baseline references missing document: " + document_id)
     results.append(output_check("manifest", "fail" if faults else "pass", "declared IDs, references, graph and baseline", faults or ["manifest validated"],
                                 limitations=["Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."]))
     for ident, entry in inventories.items():

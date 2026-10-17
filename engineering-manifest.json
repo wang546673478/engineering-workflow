@@ -1,6 +1,11 @@
 {
   "schema_version": 1,
-  "workflow": {"active_task": "TASK-BASELINE-01"},
+  "workflow": {
+    "active_baseline": "BASELINE",
+    "active_spec": "SPEC",
+    "active_plan": "PLAN",
+    "active_task": "TASK-LINKED-ARTIFACTS-01"
+  },
   "documents": [
     {
       "id": "BASELINE_TASK",
@@ -22,7 +27,25 @@
     {"id": "PERSISTENCE_TASK", "path": "planning/persistence-task.md", "kind": "task", "required": true},
     {"id": "ISSUES_TASK", "path": "planning/issues-11-13-task.md", "kind": "task", "required": true},
     {"id": "AUTO_REVIEW_TASK", "path": "planning/issues-14-auto-review-task.md", "kind": "task", "required": true},
-    {"id": "ISSUES_SECURITY_TASK", "path": "planning/issues-14-16-task.md", "kind": "task", "required": true}
+    {"id": "ISSUES_SECURITY_TASK", "path": "planning/issues-14-16-task.md", "kind": "task", "required": true},
+    {
+      "id": "PLAN",
+      "path": "docs/plan.md",
+      "kind": "technical-plan",
+      "required": true
+    },
+    {
+      "id": "TRACE",
+      "path": "planning/traceability.md",
+      "kind": "traceability-index",
+      "required": true
+    },
+    {
+      "id": "LINKED_ARTIFACT_TASK",
+      "path": "planning/linked-artifact-model-task.md",
+      "kind": "task",
+      "required": true
+    }
   ],
   "requirements": [
     {
@@ -70,7 +93,32 @@
     ,{"id": "REQ-ISSUES-08", "document": "SPEC"}
     ,{"id": "REQ-ISSUES-09", "document": "SPEC"}
     ,{"id": "REQ-ISSUES-10", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-11", "document": "SPEC"}
+    ,{"id": "REQ-ISSUES-11", "document": "SPEC"},
+    {
+      "id": "REQ-LINKED-01",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-LINKED-02",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-LINKED-03",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-LINKED-04",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-LINKED-05",
+      "document": "SPEC",
+      "index": "TRACE"
+    }
   ],
   "acceptance": [
     {
@@ -118,7 +166,32 @@
     ,{"id": "AT-ISSUES-08", "document": "SPEC"}
     ,{"id": "AT-ISSUES-09", "document": "SPEC"}
     ,{"id": "AT-ISSUES-10", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-11", "document": "SPEC"}
+    ,{"id": "AT-ISSUES-11", "document": "SPEC"},
+    {
+      "id": "AT-LINKED-01",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-LINKED-02",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-LINKED-03",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-LINKED-04",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-LINKED-05",
+      "document": "SPEC",
+      "index": "TRACE"
+    }
   ],
   "modules": [
     {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "AGENTS.md", "VERSION", "CHANGELOG.md", "LICENSE", "scripts/install_agents_guidance.py", "scripts/init_manifest.py", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
@@ -723,7 +796,152 @@
       ]
     }
   }
-}],
+},
+    {
+      "id": "TASK-LINKED-ARTIFACTS-01",
+      "requirement_ids": [
+        "REQ-LINKED-01",
+        "REQ-LINKED-02",
+        "REQ-LINKED-03",
+        "REQ-LINKED-04",
+        "REQ-LINKED-05"
+      ],
+      "acceptance_ids": [
+        "AT-LINKED-01",
+        "AT-LINKED-02",
+        "AT-LINKED-03",
+        "AT-LINKED-04",
+        "AT-LINKED-05"
+      ],
+      "module_ids": [
+        "instructions",
+        "checker",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-BASELINE-01"
+      ],
+      "status": "complete",
+      "impact_document": "LINKED_ARTIFACT_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "SPEC",
+        "plan": "PLAN",
+        "task": "LINKED_ARTIFACT_TASK",
+        "traceability": "TRACE"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and repository skill inventory",
+        "scope": "Linked artifact model, greenfield lifecycle, initializer/checker behavior, templates and existing-document reconciliation",
+        "checked_at": "2026-10-18T00:45:00+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.5.0",
+            "decision": "adopted",
+            "reason": "This task updates the workflow's own Baseline/Spec/Plan/Task model",
+            "evidence": [
+              "SKILL.md",
+              "references/baseline-linked-artifacts.md",
+              "planning/linked-artifact-model-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Skill structure, progressive disclosure, compatibility and validator guidance apply",
+            "evidence": [
+              "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The repository's manifest, Plan, Task and traceability index remain the single planning authority",
+            "evidence": [
+              "Current session Skills catalog; existing repository planning authority"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Focused checker regression covers new executable behavior; no product TDD workflow is required",
+            "evidence": [
+              "Current session Skills catalog; existing repository planning authority"
+            ]
+          }
+        ],
+        "recheck": "2026-10-18: reread workflow and implementation/checker references for authorized publication; no new code or external-project migration"
+      },
+      "documentation_impact": {
+        "workflow-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "references",
+            "assets/templates",
+            "agents",
+            "scripts/init_manifest.py",
+            "AGENTS.md",
+            "VERSION",
+            "CHANGELOG.md"
+          ],
+          "document_ids": [
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "LINKED_ARTIFACT_TASK"
+          ]
+        },
+        "checker-behavior": {
+          "when_paths": [
+            "scripts/check_project.py",
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "SPEC",
+            "PLAN",
+            "CONTRACT",
+            "LINKED_ARTIFACT_TASK"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "docs",
+            "planning"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "TRACE",
+            "LINKED_ARTIFACT_TASK"
+          ]
+        }
+      },
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/linked-artifact-model-task.md"
+      }
+    }
+  ],
   "control_plane": {
     "protected_paths": [
       "SKILL.md",
@@ -740,6 +958,18 @@
     ],
     "approval_env": "ENGINEERING_CONTROL_PLANE_APPROVED"
   },
-  "baseline": {"status": "approved", "evidence": "planning/baseline-review.md"},
+  "baseline": {
+    "status": "complete",
+    "evidence": "planning/baseline-review.md",
+    "document_ids": [
+      "BASELINE",
+      "MAP",
+      "DB",
+      "CONTRACT",
+      "FLOW"
+    ],
+    "source_revision": "9df566229c976e3f3523007934e9f079550c770f plus local 1.5.0 worktree; source fingerprint and validation in baseline evidence",
+    "scope": "BASELINE-LINKED-02: instructions, templates, initializer, checker, tests and current authority; historical review does not approve this revision"
+  },
   "exclude_paths": [".git", "work", "__pycache__"]
 }

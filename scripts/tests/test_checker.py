@@ -76,6 +76,79 @@ class CheckerTests(unittest.TestCase):
         self.assertEqual(proc.returncode,1)
         self.assertIn("workflow.active_task", json.dumps(result))
 
+    def test_linked_artifact_pointers_and_task_links_pass(self):
+        (self.root / "docs/plan.md").write_text("plan", encoding="utf-8")
+        (self.root / "docs/task.md").write_text("task", encoding="utf-8")
+        (self.root / "docs/trace.md").write_text("REQ-1 AT-1", encoding="utf-8")
+        self.manifest["documents"].extend([
+            {"id": "baseline", "path": "docs/baseline.md", "kind": "baseline", "required": True},
+            {"id": "plan", "path": "docs/plan.md", "kind": "technical-plan", "required": True},
+            {"id": "task", "path": "docs/task.md", "kind": "task", "required": True},
+            {"id": "trace", "path": "docs/trace.md", "kind": "traceability-index", "required": True},
+        ])
+        self.manifest["workflow"] = {"active_baseline": "baseline", "active_spec": "spec", "active_plan": "plan", "active_task": "TASK-1"}
+        self.manifest["baseline"]["document_ids"] = ["baseline", "module"]
+        self.manifest["tasks"][0]["artifact_links"] = {"baseline": "baseline", "spec": "spec", "plan": "plan", "task": "task", "traceability": "trace"}
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,0, result)
+        self.assertTrue(result["required_checks_satisfied"])
+
+    def test_unknown_linked_artifact_document_blocks_baseline(self):
+        self.manifest["tasks"][0]["artifact_links"] = {"plan": "PLAN-MISSING"}
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,1)
+        self.assertIn("artifact link", json.dumps(result))
+
+    def test_provisional_baseline_cannot_exempt_existing_project(self):
+        for status in ("not_applicable", "partial"):
+            with self.subTest(status=status):
+                self.manifest["baseline"].update(status=status, origin="existing", reason="missing docs",
+                                                 source_revision="fixture", scope="src", implementation_paths=["src"])
+                proc,result=self.cli("--mode","baseline","--run-checks")
+                self.assertEqual(proc.returncode,1, result)
+                self.assertIn("origin=greenfield", json.dumps(result))
+
+    def test_greenfield_no_implementation_claim_checks_files_despite_exclusion(self):
+        self.manifest["baseline"].update(status="not_applicable", origin="greenfield", reason="new project",
+                                         source_revision="fixture", scope="src", implementation_paths=["src"])
+        self.manifest["exclude_paths"].append("src")
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,1, result)
+        self.assertIn("implementation exists", json.dumps(result))
+
+    def test_greenfield_partial_blocks_handoff_and_completed_task(self):
+        self.manifest["workflow"] = {"active_task": "TASK-1"}
+        self.manifest["baseline"].update(status="partial", origin="greenfield", reason="first slice in progress",
+                                         source_revision="fixture", scope="src", implementation_paths=["src"])
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,1, result)
+        self.assertIn("completed task", json.dumps(result))
+        self.manifest["tasks"][0]["status"] = "in_progress"
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,0, result)
+        proc,result=self.cli("--mode","handoff","--task","TASK-1","--run-checks")
+        self.assertEqual(proc.returncode,1, result)
+        self.assertIn("handoff requires", json.dumps(result))
+
+    def test_provisional_baseline_requires_reason_revision_scope_and_safe_paths(self):
+        self.manifest["tasks"][0]["status"] = "in_progress"
+        self.manifest["baseline"].update(status="partial", origin="greenfield", implementation_paths=["src"])
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,1, result)
+        self.assertIn("missing reason", json.dumps(result))
+        for paths in ([], ["."], ["../outside"], ["src/*"]):
+            with self.subTest(paths=paths):
+                self.manifest["baseline"]["implementation_paths"] = paths
+                proc,result=self.cli("--mode","baseline","--run-checks")
+                self.assertEqual(proc.returncode,2, result)
+
+    def test_active_artifact_missing_optional_file_is_rejected(self):
+        self.manifest["documents"].append({"id":"plan", "path":"docs/missing-plan.md", "kind":"technical-plan", "required":False})
+        self.manifest["workflow"] = {"active_task":"TASK-1", "active_plan":"plan"}
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,1, result)
+        self.assertIn("active_plan references missing", json.dumps(result))
+
     def test_report_uses_repository_version_file(self):
         proc, result = self.cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 0, result)

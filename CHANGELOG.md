@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0 - Unreleased
+
+- Make Global Baseline, Spec, Technical Plan and Task a versioned, traceable chain for new and existing projects.
+- Add active Baseline/Spec/Plan/Task pointers, task artifact links and Baseline document references to new manifest skeletons.
+- Validate declared linked-artifact references while preserving compatibility with existing manifests that omit the optional fields.
+- Document evidence-driven Baseline correction, frozen approved Spec revisions, Plan/Task reconciliation and delivery-time convergence.
+- Add an explicit greenfield bootstrap and evidenced not_applicable → partial → complete baseline lifecycle. Provisional states permit ongoing work but fail completion/handoff; existing-project gates remain intact.
+- Require linked views consistently in full/lite skeletons, replace invalid root/unowned documentation triggers with reviewable source scopes, and check active optional document targets for existence.
+- Reconcile this repository's current baseline, Spec, Plan, Tasks and traceability while preserving historical release/review evidence; align the skill frontmatter with the 1.5.0 candidate.
+
 ## 1.4.4 - 2026-10-17
 
 - Continue authorized baseline investigation after saved batches and progress updates; prepare necessary local isolated runtimes, databases and caches and record actual validation and cleanup.

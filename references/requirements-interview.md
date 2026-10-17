@@ -4,6 +4,8 @@
 
 Apply the takeover stages in [SKILL.md](../SKILL.md) before starting the detailed interview. On first takeover of existing code without a complete, valid baseline, establish the global baseline and obtain the user's review confirmation first. Before that, ask only basic goal questions necessary to orient discovery; after the answer, resume discovery rather than continuing into feature lists, release scope, or detailed design. A local page scan is not a global baseline. Record the current stage and transition evidence in the authoritative Task. Reuse a verified current baseline and applicable prior confirmation; small fixes retain their minimal workflow, and a project with no existing code records the baseline as not applicable.
 
+For a no-implementation project, record the empty starting state and constraints before interviewing; no review of a nonexistent system is required. Follow [the greenfield lifecycle](baseline-linked-artifacts.md#新项目从零建立基线). Baseline not-applicable is temporary: target architecture belongs in Plan, implementation produces partial factual views, and delivery requires a complete factual baseline. Existing code lacking documents still requires discovery.
+
 Search the repository and read project instructions, existing requirements, issue context, UI/API contracts, schemas, and tests. Ask only about product intent, policy, or tradeoffs that the repository cannot answer. Never ask the user to identify a file or symbol that can be discovered by inspection.
 
 ## Continuous discussion records

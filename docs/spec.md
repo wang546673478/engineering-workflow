@@ -2,9 +2,11 @@
 
 Status: `current`
 
+Active linked-model revision: `SPEC-LINKED-02` (2026-10-18). This adds greenfield lifecycle and current-document reconciliation to the initial linked-model scope. Local implementation is authorized by the user's “那就开始完整的更改吧” and request to organize existing documents. Current technical design is [PLAN-LINKED-02](plan.md); actual progress is in the manifest-selected Task. The subsequent 2026-10-18 user instruction to upload the completed upgrade approves this batch for submission/publication; see the current Task for the exact wording and scope. Earlier release/approval statements below retain their original scope.
+
 This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, continuous feature discussions, cross-layer changes, documentation impact gates, and verification work. The 1.4.3 source batch was uploaded on 2026-10-16; scope, local verification and publication evidence are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). Hosted CI remains separate from that evidence.
 
-Current published source: 1.4.4, uploaded on 2026-10-17. Autonomous investigation and continuous baseline correction, exact local commit verification and the source push are recorded in [TASK-BASELINE-01](../planning/baseline-workflow-task.md). This date/status receipt changes no behavior and requires no additional version; hosted CI remains separate.
+Current published source: 1.4.4, uploaded on 2026-10-17. Autonomous investigation and continuous baseline correction, exact local commit verification and the source push are recorded in [TASK-BASELINE-01](../planning/baseline-workflow-task.md). The linked-artifact model is the next 1.5.0 candidate and is recorded in [TASK-LINKED-ARTIFACTS-01](../planning/linked-artifact-model-task.md); publication progress and the actual source-upload receipt are recorded in that Task; CHANGELOG remains Unreleased until upload succeeds.
 
 ## Requirements
 
@@ -31,6 +33,11 @@ Current published source: 1.4.4, uploaded on 2026-10-17. Autonomous investigatio
 - REQ-CONTINUITY-02: Maintain one authoritative requirement record and current summary during discussion. Separate facts, candidates, confirmations and deferred topics; preserve deferred dependencies and recovery conditions, and keep requirement status distinct from implementation status.
 - REQ-CONTINUITY-03: At module discussion completion, consolidate the module's requirements, changes, open/deferred items and connected impacts for user review. This does not add per-turn approval or replace first-takeover baseline review and complete implementation-proposal approval.
 - REQ-CONTINUITY-04: Instructions, persistent entrypoints, templates and public documentation describe the same process and limits. The checker remains declaration-based, receives no conversation messages and cannot guarantee instruction execution or discover wholly unrecorded requirements.
+- REQ-LINKED-01: Global Baseline, Spec, Technical Plan and Task form a versioned linked chain. Baseline describes the current system; Spec freezes the approved target boundary; Plan binds the change design to both revisions; Task binds execution to Plan items and acceptance evidence.
+- REQ-LINKED-02: New project initialization and maintained examples expose active Baseline/Spec/Plan/Task pointers, Baseline document IDs and task artifact links. Existing manifests without optional linkage fields remain compatible.
+- REQ-LINKED-03: Source, test or runtime discoveries correct the current Baseline and propagate affected impacts through Plan and Task; only an accepted change to user intent, scope, permissions or acceptance reopens Spec approval. Historical conclusions remain marked as superseded rather than silently erased.
+- REQ-LINKED-04: A genuine no-implementation project records its empty starting state and constraints, puts target design in Plan, and evolves from evidenced not_applicable through partial implementation to a factual complete baseline before task completion/delivery. Existing code without documents still requires discovery; initialization must not manufacture completion or approvals.
+- REQ-LINKED-05: After changing the workflow, compare and organize this repository's current authoritative documents against code and decisions, refresh effective content and linked execution steps, and preserve historical versions, reviews and release facts. Other adopted projects require their own scoped reconciliation.
 
 ## Acceptance
 
@@ -65,6 +72,11 @@ Validation for these requirements combines unchanged repository checks, template
 - AT-CONTINUITY-02: Deferred topics retain their module, known conclusions, remaining question, impacts/dependencies and resumption condition. A confirmed requirement can remain unimplemented; a phase change refreshes current state while retaining its history.
 - AT-CONTINUITY-03: A module review presents a concrete summary and records user wording, scope and document version. Discussion is saved continuously before that review, and only affected portions reopen after a later change.
 - AT-CONTINUITY-04: Existing CLI/check commands and protection semantics remain intact; isolated conversation scenarios and manual review supplement structural checks without claiming host discovery or production reliability is proven.
+- AT-LINKED-01: A new manifest skeleton contains active Baseline/Spec/Plan/Task pointers, a Baseline document set, and task artifact links; the checker validates declared IDs and file existence.
+- AT-LINKED-02: An existing manifest without optional linkage fields continues to pass its prior structural path, while unknown declared linkage IDs fail with a bounded configuration result.
+- AT-LINKED-03: Public guidance, templates, references, self-maintenance Spec/Plan/Task and checker tests describe the same forward and return paths without claiming semantic approval or user understanding is mechanically proven.
+- AT-LINKED-04: Disposable full/lite initialization scenarios exercise planned → evidenced not_applicable → first implementation → partial → complete. Existing-origin exemptions, missing evidence metadata, unsafe scopes, declared implementation hidden by exclusions and premature completion/handoff fail. Provisional success states explicitly do not claim delivery readiness.
+- AT-LINKED-05: The current baseline, Spec, Plan, Task, views, traceability, templates and version metadata match final local behavior. A reconciliation record lists corrections, retained history and remaining limits; original reviews are not transferred to the new revision. Unchanged required repository checks pass for the final source.
 
 ## Persistence change status
 

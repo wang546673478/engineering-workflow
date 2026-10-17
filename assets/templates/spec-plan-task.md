@@ -1,5 +1,41 @@
 # Spec / Plan / Task Record
 
+## Linked artifact revisions
+
+Global Baseline document/revision and source/worktree revision:
+
+Spec document/revision and approval state:
+
+Plan document/revision and approval state:
+
+Task document/ID and current implementation state:
+
+Traceability index and affected Baseline views:
+
+## Global Baseline
+
+Entry path (existing implementation / greenfield; evidence, inherited scaffolding and external constraints):
+
+Greenfield lifecycle (planned → evidenced not_applicable → partial after first implementation → complete/approved before delivery); implementation_paths and reasons:
+
+Current facts versus target modules/contracts/schema (target stays in Plan until implemented):
+
+Current-system scope and source/worktree revision:
+
+Module map, entrypoints, callers and dependencies:
+
+Frontend/backend contracts and permission boundaries:
+
+Database tables/fields, writers/readers, migrations and transaction rules:
+
+Business flows, cache/config/background tasks and runtime evidence:
+
+Known defects, external unknowns, coverage gaps and validity limits:
+
+Baseline review status, user scope acceptance and correction history:
+
+Existing-document reconciliation (authoritative files reviewed, stale/current content corrected, superseded history retained, approval limits and unresolved conflicts):
+
 ## Spec
 
 Goal and users:
@@ -22,7 +58,11 @@ Module review when the functional topic concludes (requirements/changes/open or 
 
 ## Plan
 
+Baseline revision and Spec revision used:
+
 Milestones and dependency order:
+
+Plan items (stable ID; requirement/acceptance IDs; baseline facts/revision; reuse/new/extend/replace; code entry and target design; migration/compatibility/recovery; verification; affected baseline views):
 
 Affected modules/contracts/tables/flows:
 
@@ -31,6 +71,8 @@ Documentation and verification gates:
 Implementation approval record (who/when/scope/what version; requirement confirmation and module review are separate):
 
 ## Task: `<ID>`
+
+Linked Baseline / Spec / Plan / Traceability document IDs:
 
 Objective and deliverables:
 
@@ -51,6 +93,8 @@ Baseline correction history (discovery trigger, old/new claim, source/worktree r
 Next action allowed in this stage:
 
 Prerequisites and parallel work:
+
+Executable steps (ID, Plan item, requirement/acceptance IDs, dependency, owner, status, affected baseline views, actual evidence; planned design is not implemented fact):
 
 Required reading:
 

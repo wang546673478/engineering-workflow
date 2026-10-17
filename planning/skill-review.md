@@ -1,3 +1,9 @@
+# Current Skill Applicability Review Entry
+
+Current task: selected by workflow.active_task in [the manifest](../engineering-manifest.json). The current linked-artifact/greenfield skill applicability review, scope, user authorization and validation are in [TASK-LINKED-ARTIFACTS-01](linked-artifact-model-task.md). This entry preserves the original 2026-10-14 record below; its approval and skill decisions are historical and do not apply to subsequent revisions.
+
+## Historical 2026-10-14 record
+
 # Skill Applicability Review
 
 Checked: `2026-10-14` Asia/Shanghai  

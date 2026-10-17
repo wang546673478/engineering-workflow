@@ -4,6 +4,12 @@ For first takeover of a documentation-incomplete project, establish a full basel
 
 Present the whole-system structure, important end-to-end flows, coverage and unverified behavior in plain language before asking for review. Record baseline paths, source revision, semantic review and the user's confirmation in the Task. Creating headings or a list of gaps does not complete the baseline. Future feature decisions can remain unresolved in the target Spec while the current-system baseline is established; do not invent requirements to complete it. Mechanical checks do not establish semantic completeness or user confirmation.
 
+## Greenfield entry and document migration
+
+For a project with no prior implementation, follow [the greenfield lifecycle](baseline-linked-artifacts.md#新项目从零建立基线): document the empty starting state and external constraints, use `not_applicable` only with evidence, move to `partial` as implementation appears, and establish a factual `complete` baseline before delivery. Planned modules, contracts and schemas belong to the target Plan until actually implemented. Existing code without documents requires discovery, including inherited scaffolding and integrations; it is not a no-implementation exemption.
+
+On workflow upgrades, [reconcile existing documents](baseline-linked-artifacts.md#既有文档整理) with source and decisions. Refresh current content, authority, revisions, traceability and next actions; preserve historical releases, superseded plans and actual review scope. Updating the skill does not migrate external projects automatically.
+
 ## Autonomous discovery and bounded review
 
 Bind discovery to the source revision and working-tree changes, applicable modules, validation environments and intended baseline scope. Follow entrypoints, consumers, migrations and tests through the whole system. The agent performs code and field-semantic review, reconciles contradictions and gathers runtime evidence; “manual review” means reasoning beyond the checker, not assigning technical investigation to the user.
@@ -22,18 +28,20 @@ In an existing project, keep required declarations and failures intact. An impos
 
 ## Required views
 
-- **Spec:** goals, users, scope, business rules, permissions, constraints, requirements and acceptance IDs, with current requirement state, candidate/confirmed decisions and deferred questions.
+- **Global Baseline:** current modules, entrypoints, contracts, tables/fields, business flows, configuration/cache/jobs, verified behavior, known defects, external unknowns, source/worktree revision and evidence scope.
+- **Spec:** goals, users, scope, business rules, permissions, constraints, requirements and acceptance IDs, with current requirement state, candidate/confirmed decisions and deferred questions. An approved revision is frozen for its implementation batch.
 - **Module map:** each module's responsibility, public entrypoints, callers, dependencies, data ownership, events, cache/config/background-worker dependencies, and isolated/dead-code candidates.
 - **Frontend/backend contract:** page action, route/method, request and response fields, validation, auth, errors, loading/retry behavior, and UI state updates.
 - **Database dictionary:** every table and field, type/precision, nullability/default, meaning/unit/status, constraints/indexes/foreign keys, writers/readers, lifecycle, sensitivity, snapshot/immutability, transaction/lock/idempotency and migration rules.
 - **Business flow:** page -> endpoint -> use case -> table/field -> event/job/consumer, including success, failure, retry, recovery, and permission changes.
-- **Plan/Task:** dependency-ordered milestones, affected artifacts, acceptance evidence, requirement and implementation states tracked separately, implementation authorization, current next action and handoff notes.
+- **Plan/Task:** dependency-ordered milestones, affected artifacts, acceptance evidence, requirement and implementation states tracked separately, implementation authorization, current next action and handoff notes. Each Plan names its Baseline and Spec revisions; each Task names its Plan items and affected Baseline views.
+- **Traceability:** every active requirement maps to the Spec, Plan decisions map to requirements and baseline facts, and Tasks map to Plan items and acceptance evidence. A manifest may expose these links as `active_baseline`, `active_spec`, `active_plan`, `active_task` and task `artifact_links`.
 
 ## Source versus goal
 
 Label every statement as current implementation, simulated/partial, target design, or verified behavior. Cite source paths, migrations, schemas, tests, or runtime evidence. Do not describe a target interface as implemented merely because a page or type exists. Mark code as dead only after checking static references, dynamic registration, reflection, generated code, workers, external calls, and tests.
 
-Functional change discussions update the existing target requirements and current task state continuously, following [requirements-interview.md](requirements-interview.md). Separate facts, candidates, confirmed decisions and deferred discussion; link deferred conclusions, questions, effects/dependencies and resumption conditions. Preserve the current-system baseline as source evidence rather than rewriting it as the agreed target. Refresh current summaries when decisions change and retain superseded history with clear labels.
+Functional change discussions update the existing target requirements and current task state continuously, following [requirements-interview.md](requirements-interview.md). Separate facts, candidates, confirmed decisions and deferred discussion; link deferred conclusions, questions, effects/dependencies and resumption conditions. Preserve the current-system Baseline as source evidence rather than rewriting it as the agreed target. Refresh current summaries when decisions change and retain superseded history with clear labels. Keep the approved Spec stable within its batch; propagate accepted changes through a new Spec revision, then reconcile Plan and Tasks.
 
 ## Consistency gate
 
@@ -49,6 +57,6 @@ Keep architecture constraints and target decisions apart from the current module
 
 The current baseline is maintained throughout testing, investigation and approved development. Its historical review remains tied to the version and evidence actually reviewed. A newly discovered documentation error triggers correction even when product source has not changed.
 
-Immediately flag the affected claims and check source, confirmed requirements, migrations, tests and runtime evidence. Once established, correct the current authoritative views and follow the affected links through module ownership, contracts, dictionary, flow, inventories and Spec/Plan/Task. Record the old/new conclusion, discovery reason, source/worktree revision, evidence, affected scope and current next action in the existing task/history. Preserve contradictory or unverified evidence as open until reconciled; do not rewrite a failing implementation as the desired requirement or weaken a test to match it.
+Immediately flag the affected claims and check source, confirmed requirements, migrations, tests and runtime evidence. Once established, correct the current authoritative Baseline views and follow the affected links through module ownership, contracts, dictionary, flow, inventories and Spec/Plan/Task. Record the old/new conclusion, discovery reason, source/worktree revision, evidence, affected scope and current next action in the existing task/history. Preserve contradictory or unverified evidence as open until reconciled; do not rewrite a failing implementation as the desired requirement or weaken a test to match it.
 
 Factual documentation correction proceeds autonomously. If the correction changes a product decision or invalidates an approved plan's premise, notify the user, mark that approval as needing review for the affected scope, and pause only work dependent on the disputed premise. Reuse still-valid approvals elsewhere. Do not apply an old approval to corrected content silently. Revalidate affected conclusions and check citation/source freshness; a documentation-only correction does not require rerunning unrelated full suites unless project policy requires them. On recovery, load the current corrected view and its valid review evidence, not an obsolete snapshot presented as current.

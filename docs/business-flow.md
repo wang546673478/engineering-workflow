@@ -7,15 +7,24 @@ Status: `current`; the manifest's active task owns current implementation and re
 1. The checker reads manifest paths and normalizes `/` and `\\` separators at the safety boundary; foreign drive/UNC paths on POSIX, root escapes and link traversal fail before validation continues.
 2. Baseline validation resolves literal documents and modules. Exclusion globs are validated as project-relative segment patterns, and matching directory subtrees are pruned before child links are inspected.
 3. Change/commit validation compares Git paths against literal module/document coverage. Excluded paths are reported separately and are not coverage. A `when_paths` common parent shared by source scopes from at least two selected modules triggers all configured documentation updates, but does not make unrelated descendants covered.
-4. The checker validates command arguments before execution, runs each declared check with an incremental output limit, and emits a JSON report whose `tool_version` comes from the package `VERSION` file; declared tests run only after manifest and scope checks pass.
+4. The checker validates command arguments before execution, bounds declared check output, and emits a JSON report whose `tool_version` comes from `VERSION`. Commit/committed modes run declared tests only after submitted-tree gates pass; other modes retain their declared-command behavior, with failures visible in the report.
 5. A command that emits beyond its output limit is terminated and recorded as a failed check with byte-count/hash evidence. `VERSION` and `CHANGELOG.md` changes enter the protected control-plane review path.
+6. New manifests expose active Baseline/Spec/Plan/Task pointers and tasks may link their artifact documents; the checker validates those declared references without claiming semantic approval.
+
+## Greenfield and documentation reconciliation flow
+
+1. Inspect repository/inherited scaffolding, external constraints and rules. Existing implementation without docs follows discovery; a genuinely empty project explicitly selects greenfield initialization. The skeleton stays planned and creates no source/documents/approval.
+2. Record evidenced no-implementation scope and constraints, then interview and plan. Set not_applicable only after inspection; target module/API/schema designs remain in Plan. Declared files invalidate that state regardless of exclusions.
+3. Approved implementation creates partial factual views incrementally. Normal task approvals, tests, documentation-impact and control-plane protections remain active. A provisional lifecycle pass reports completion_ready=false.
+4. Reconcile actual source/evidence and affected views into a complete factual baseline before completing the selected Task or handoff. Future unimplemented requirements remain in Spec/Plan/Task, outside the delivered slice.
+5. Workflow updates trigger comparison of current authority, summaries, revisions and links. Correct evidenced errors, retain superseded plans/original approvals and refresh Spec/Plan/Task only within their change rules. The current Task records the reconciliation scope and limitations; external projects are not auto-migrated.
 
 ## Persistent project adoption and recovery
 
 1. The project chooses to adopt engineering-workflow. The agent reads existing project rules and selects the project's existing manifest, task and state locations.
 2. Merge the managed block into repository-root `AGENTS.md`, preserving rules outside its markers. The installer can repeat this update. Record the skill source/revision and canonical state locations in project files.
 3. For a project's selected agent, add a thin reference from its native instruction entry to `AGENTS.md` only when needed. Check the host's loading behavior; do not assume that every agent discovers every filename.
-4. At task start, resume, handoff, incomplete context, agent change or scope change, reload project rules, the adopted skill source/revision, manifest, `workflow.active_task` (unless an explicit task ID is supplied), and recent progress/handoff before editing. Reconcile those records with the working tree; scope changes refresh skill review and impact analysis.
+4. At task start, resume, handoff, incomplete context, agent change or scope change, reload project rules, the adopted skill source/revision, manifest, active Baseline/Spec/Plan/Task pointers (with `workflow.active_task` unless an explicit task ID is supplied), and recent progress/handoff before editing. Reconcile those records with the working tree; scope changes refresh skill review and impact analysis.
 5. Keep plans, decisions, impact, progress, verification and handoff in the project's authoritative files. `AGENTS.md` remains the stable entry, rather than accumulating every task's history.
 6. Review and verify the concrete adoption change. New protected-rule changes require their own final approval; a past task's approval cannot be reused. Missing skill access or unverified host integration is recorded explicitly.
 7. CI consumes the manifest's active task pointer instead of copying a historical task ID into workflow files. Changing the active task is a governed manifest/state change and must be reviewed with its documentation impact.
@@ -62,7 +71,7 @@ This repository's ordinary Actions path runs the submission gate before declared
 
 ## First-takeover stage flow
 
-Project rules and skill review → global discovery → reviewable current-system baseline → user baseline confirmation → detailed feature interview → complete proposal approval → implementation and verification. Basic goal clarification returns to discovery. Restore stage evidence on resumption; apply the small-fix, valid-baseline and no-existing-code exceptions from SKILL.md. This is an agent instruction, not an automated checker state machine.
+Project rules and skill review → global discovery → reviewable current-system Baseline → user Baseline confirmation → detailed feature interview → Spec/Plan/Task proposal approval → implementation, Baseline refresh and verification. Basic goal clarification returns to discovery. Restore stage evidence on resumption; apply the small-fix, valid-baseline and no-existing-code exceptions from SKILL.md. This is an agent instruction, not an automated checker state machine.
 
 ## Continuous feature discussion flow
 
@@ -89,4 +98,4 @@ Authorized scoped discovery → source/semantic investigation → necessary loca
 
 Before creating required inventory gates, compare provenance/scope with supported adapters. The corrected example matches the existing full initializer's optional source inventories while requiring applicable documentary and semantic coverage. Existing required/manual conflicts remain unsatisfied until a concrete project-governed resolution; repeating successful tests cannot resolve that conflict.
 
-Later test/runtime/source finding → flag disputed claims → reconcile source and confirmed requirements → correct current module/contract/dictionary/flow/inventory/Task views → preserve old/new evidence and revision → revalidate affected conclusions. If an approved premise changes, notify and reopen only its affected review, pausing dependent implementation while valid independent work proceeds. No product-code edit is necessary to trigger this flow. Current batch: [TASK-BASELINE-01](../planning/baseline-workflow-task.md), 1.4.4, source uploaded on 2026-10-17. The publication receipt follows the delivery flow above and changes no investigation/correction behavior.
+Later test/runtime/source finding → flag disputed claims → reconcile source and confirmed requirements → correct current Baseline module/contract/dictionary/flow/inventory views → propagate affected Plan/Task impacts → preserve old/new evidence and revision → revalidate affected conclusions. If an approved premise changes, notify and reopen only its affected review, pausing dependent implementation while valid independent work proceeds. No product-code edit is necessary to trigger this flow. Current batch: [TASK-LINKED-ARTIFACTS-01](../planning/linked-artifact-model-task.md). The publication receipt follows the delivery flow above and changes no investigation/correction behavior.

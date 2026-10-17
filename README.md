@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.4.4` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.5.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -39,7 +39,7 @@ git clone https://github.com/wang546673478/engineering-workflow.git `
 python <skill-dir>/scripts/install_agents_guidance.py --root <project>
 ```
 
-`AGENTS.md` 保存共享规则；项目现有清单和状态文件保存当前任务、计划、决定、进度、影响分析、验证及交接。安装器始终更新 `AGENTS.md`；显式追加 `--file CLAUDE.md` 或 `--file .github/copilot-instructions.md` 时，只写指向它的相对链接。其他 agent 按实际规则文件格式和加载范围接入；Cursor 等宿主可能需要专有文件扩展名或前言，普通 Markdown 引用不代表自动加载。不要把规则目录作为 `--file` 传入。
+`AGENTS.md` 保存共享规则；项目现有清单和状态文件保存联动的 Global Baseline、Spec、Plan、Task、决定、进度、影响分析、验证及交接。新清单通过活动指针和任务 `artifact_links` 连接这些工件。安装器始终更新 `AGENTS.md`；显式追加 `--file CLAUDE.md` 或 `--file .github/copilot-instructions.md` 时，只写指向它的相对链接。其他 agent 按实际规则文件格式和加载范围接入；Cursor 等宿主可能需要专有文件扩展名或前言，普通 Markdown 引用不代表自动加载。不要把规则目录作为 `--file` 传入。
 
 安装器只处理规则入口；接入 agent 还需在项目现有状态中记录 skill 来源/版本和当前任务路径，可用 `--skill` 指定可定位的来源描述、`--manifest` 与 `--state-dir` 指向实际位置。开始、恢复、接手、上下文压缩或不完整、切换 agent、范围变化时，重新读取 skill 正文、适用引用与状态文件，并核对工作树；范围变化还要重新做 `skill_review` 和影响分析。小修复复用现有记录，避免重复建档。
 
@@ -49,7 +49,15 @@ python <skill-dir>/scripts/install_agents_guidance.py --root <project>
 python <skill-dir>/scripts/init_manifest.py --root <project> --profile lite
 ```
 
-`lite` 只生成最小文档门槛，`full` 会额外生成数据库/契约清单占位和跨层影响门槛。生成结果仍处于 `planned`，必须补齐实际路径、权威验证命令、skill review、基线和批准记录后才能作为完成证据；默认不会覆盖已有清单。
+`lite` 省略源清单并使用影响记录，`full` 额外登记可选数据库/契约清单和跨层文档门槛。两种配置都要求联动的 Baseline、Spec、Plan、Task、追踪和基线视图文档存在；不适用视图记录原因。生成结果仍处于 `planned`，必须补齐实际路径、权威验证命令、skill review、基线和批准记录；默认不会覆盖已有清单。
+
+从零开始的新项目显式使用 `--project-kind greenfield`，例如：
+
+```text
+python scripts/init_manifest.py --root <project> --project-kind greenfield --profile full
+```
+
+先记录空实现起点和约束，核验后将基线从 planned 转为 not_applicable；写出首批实现后转 partial，交付前转 complete/approved。模块、接口和数据库的目标设计先写入 Plan，只有实现事实和证据进入当前 Baseline。临时状态允许继续开发，不能用于任务完成或 handoff；已有代码但缺少文档仍需调查。实现范围默认 src/tests，可通过重复的 `--implementation-path` 指定。初始化器只写清单，不创建实现、文档或审批。
 
 示例与full初始化的源清单默认可选；数据库字典、接口文档和语义覆盖仍须完成。接入时先核对来源与检查器能力，只有存在受支持验证路径的来源才设为必需。手工来源始终partial，检查器没有通用路由源码适配器；已启用项目不能自行降低原有门槛，须准备具体调整方案并按项目规则审阅。
 
@@ -57,14 +65,16 @@ python <skill-dir>/scripts/init_manifest.py --root <project> --profile lite
 
 Skill 会引导 Agent：
 
-1. 读取项目规则和现有权威文档。
+1. 读取项目规则和现有 Global Baseline、Spec、Plan、Task 及其链接。
 2. 检查当前任务可用的其他 skills，并记录采用或不采用的理由。
 3. 在功能讨论中持续更新权威需求和当前状态，保留候选、确认与延后事项。
 4. 在模块讨论结束时集中核对需求及关联影响，再交用户审核；完整实施方案仍按既有门槛确认。
-5. 分析页面、接口、业务逻辑、数据库、事件和消费者之间的影响链，并在实现后同步相关文档。
+5. 分析页面、接口、业务逻辑、数据库、事件和消费者之间的影响链，在实现后刷新受影响 Baseline，并同步 Spec/Plan/Task 的引用和状态。
 6. 运行项目检查，并记录通过、失败、跳过、未支持和未验证状态。
 
 ## 自主调查与动态基线
+
+基线不是功能需求的附录，而是 Spec/Plan/Task 的输入和实现后的回写目标。推荐链路为 `Baseline → Spec → Plan → Task → Code/Evidence → Baseline`：批准的 Spec 在本批次内冻结，技术变化更新 Plan，执行变化更新 Task，源码或测试发现的事实错误先校正 Baseline。新增业务目标才创建新的 Spec revision。升级工作流后，应核对当前权威文档、清理过时的当前状态、补齐引用并保留历史与原审批范围；更新 skill 不会自动迁移外部项目。详细规则见[基线与工件联动模型](references/baseline-linked-artifacts.md)。
 
 基线调查获得授权后，Agent持续调查、验证并保存记录，进度汇报后继续，不要求用户反复说“继续”。需要运行依赖、数据库或缓存时，在已有授权内自主准备局部隔离环境并测试；有真实权限、凭据、工具或业务决定阻塞时，说明证据并先完成独立工作。
 
@@ -200,4 +210,4 @@ python scripts/check_project.py --root . --manifest engineering-manifest.json --
 
 ## 首次接管的阶段顺序
 
-首次接管已有代码且缺少有效全局基线时：**全局现状梳理 → 用户审阅基线 → 深入功能访谈 → 完整方案确认 → 实现与验证**。梳理前可澄清必要的基本目标，但不能只看局部页面就连续追问功能范围。任务文件记录当前阶段、基线版本和转换证据；已有有效基线及确认可复用，小修复按最小必要步骤执行，没有既有代码的新项目可直接进入需求访谈。具体条件见 [SKILL.md](SKILL.md)。
+首次接管已有代码且缺少有效全局基线时：**全局现状梳理 → 用户审阅基线 → 深入功能访谈 → 完整方案确认 → 实现与验证**。梳理前可澄清必要的基本目标，但不能只看局部页面就连续追问功能范围。任务记录当前阶段、基线版本和转换证据；已有有效基线及确认可复用，小修复按最小必要步骤执行。无既有实现的新项目先记录空实现起点和约束，再进入访谈，后续按临时基线到事实基线的生命周期推进。具体条件见 [SKILL.md](SKILL.md)。
