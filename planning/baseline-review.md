@@ -45,3 +45,6 @@ PyYAML 6.0.3 was installed into ignored `work/pyyaml` at the user's request. The
 ## Current source-context annex
 
 BASELINE-CONTEXT-03 (2026-10-18): preserved existing workflow plus local source helpers, optional syntax adapters and selectable evidence views. Input c21e715; actual implementation/semantic scope, tests, two read-only source snapshots and publication evidence in [Task](source-context-task.md). Prior baseline reviews do not transfer to this revision; current user authorization explicitly covers selecting/integrating/uploading helper functions while keeping workflow phases/gates unchanged. External target-project business correctness is outside tool validation.
+
+
+1.6.0 source publication: `502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b`, verified on origin/main on 2026-10-18. This receipt does not change implementation/approval scope; exact local gates are in [the current Task](source-context-task.md). Hosted CI is tracked separately.

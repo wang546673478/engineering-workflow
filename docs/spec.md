@@ -113,3 +113,6 @@ REQ-VERSION-01 / AT-VERSION-01: Each substantive delivery batch follows the proj
 REQ-VERSION-02 / AT-VERSION-02: The Task records release impact and meaningful CHANGELOG/equivalent notes, separates unreleased content from actual publication, and documents any no-bump decision for progress/evidence-only changes. No automatic inference or new publication authority is implied. See [TASK-VERSION-01](../planning/version-policy-task.md).
 
 Publication checkpoint: the 1.4.2 source batch was uploaded on 2026-10-15 after local commit/committed checks. Its changelog date is now based on that event; hosted CI and real-agent behavior remain unverified.
+
+
+1.6.0 source publication: `502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b`, verified on origin/main on 2026-10-18. This receipt does not change implementation/approval scope; exact local gates are in [the current Task](../planning/source-context-task.md). Hosted CI is tracked separately.

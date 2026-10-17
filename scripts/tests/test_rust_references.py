@@ -126,6 +126,21 @@ class RustReferencesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             collector.collect(self.root, discovery=discovery, excludes=["app"])
 
+    def test_multiline_crlf_rust_statement_keeps_valid_evidence(self):
+        text = "use crate::local::{\r\n    Thing,\r\n};\r\n"
+        digest = hashlib.sha256(text.encode()).hexdigest()
+        evidence = {"path": "lib.rs", "line": 1, "end_line": 3,
+                    "sha256": digest, "statement": text.rstrip("\r\n"),
+                    "specifier": "crate::local::Thing"}
+        record = {"to": "local.rs", "kind": "rust_use", "type_only": False,
+                  "specifier": evidence["specifier"], "evidence": evidence}
+        graph = {"nodes": [{"id": "a", "path": "lib.rs"}, {"id": "b", "path": "local.rs"}],
+                 "edges": [{"from": "a", "to": "b", "target_path": "local.rs",
+                            "relation": "rust_use", "type_only": False, "evidence": evidence}]}
+        sources = {"lib.rs": {"sha256": digest, "text": text, "observed_references": [record]},
+                   "local.rs": {"sha256": None, "text": ""}}
+        self.assertTrue(relations.validate_graph(graph, sources)["valid"])
+
 
 if __name__ == "__main__":
     unittest.main()

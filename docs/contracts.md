@@ -102,3 +102,6 @@ Publication receipt: the contracts documented here were uploaded with 1.5.0 on 2
 ## Source helper CLI and evidence
 
 [Guide](../references/source-context.md) describes --include/limits, --relations and --views summary/table/diagram/all. Core collection does not require parsers. Optional references report supported/read scope, unresolved/conditional/unsupported facts, never business approval. JSON evidence remains complete regardless of view choice; output is outside source and refuses overwrite. Existing checker modes/contracts unchanged. [Task](../planning/source-context-task.md).
+
+
+1.6.0 source publication: `502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b`, verified on origin/main on 2026-10-18. This receipt does not change implementation/approval scope; exact local gates are in [the current Task](../planning/source-context-task.md). Hosted CI is tracked separately.

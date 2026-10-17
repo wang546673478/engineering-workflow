@@ -64,7 +64,8 @@ def validate_graph(graph, sources):
             continue
         fragment = "\n".join(lines[evidence["line"] - 1 : evidence["end_line"]])
         if edge["relation"].startswith("rust_"):
-            if evidence.get("statement") not in fragment:
+            statement = evidence.get("statement", "").replace("\r\n", "\n").replace("\r", "\n")
+            if statement not in fragment:
                 issues.append("evidence_statement_missing")
         elif evidence["specifier"] not in fragment:
             issues.append("evidence_specifier_missing")

@@ -106,3 +106,6 @@ Later test/runtime/source finding → flag disputed claims → reconcile source 
 ## Local source helper flow
 
 Task goal → inventory/direct search → full selected reading → optional syntax/config references → evidence checks → summary or requested table/diagram → existing semantic baseline/impact verification. First onboarding and cross-boundary uncertainty trigger suitable scope; small isolated edits may skip analysis. Discovery may be reused within one execution, not persisted as a stale cache. Existing review/plan/implementation gates remain. [Guide](../references/source-context.md) and [Task](../planning/source-context-task.md).
+
+
+1.6.0 source publication: `502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b`, verified on origin/main on 2026-10-18. This receipt does not change implementation/approval scope; exact local gates are in [the current Task](../planning/source-context-task.md). Hosted CI is tracked separately.

@@ -971,9 +971,358 @@
     ],
     "new_script_compile": "pass",
     "skill_creator_utf8_validation": "pass",
-    "commit_check": "pending",
-    "committed_check": "pending",
-    "hosted_CI": "not_run_yet"
+    "commit_check": "pass",
+    "committed_check": "pass",
+    "hosted_CI": "not_run_yet",
+    "exact_commit": "502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b",
+    "commit_evidence": [
+      {
+        "rule_id": "control-plane",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "baseline control-plane paths and submitted tree",
+        "evidence": {
+          "protected_paths": [
+            ".github/CODEOWNERS",
+            ".github/workflows/quality.yml",
+            "CHANGELOG.md",
+            "SKILL.md",
+            "VERSION",
+            "assets/templates/ci-committed.engineering",
+            "assets/templates/ci-committed.engineering.ps1",
+            "assets/templates/pre-commit.engineering",
+            "assets/templates/pre-commit.engineering.ps1",
+            "engineering-manifest.json",
+            "references/checker.md",
+            "scripts/check_project.py"
+          ],
+          "changed_paths": [
+            ".github/workflows/quality.yml",
+            "CHANGELOG.md",
+            "SKILL.md",
+            "VERSION",
+            "engineering-manifest.json"
+          ],
+          "first_adoption": false,
+          "approval_variable": "ENGINEERING_CONTROL_PLANE_APPROVED",
+          "external_approval_present": true
+        },
+        "limitations": [
+          "Control-plane approval is intentionally supplied outside the repository; review the manifest and checker changes separately."
+        ]
+      },
+      {
+        "rule_id": "commit-scope",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "Git staged index including deletions and rename endpoints",
+        "evidence": {
+          "uncovered": [],
+          "excluded": [],
+          "allowed": [
+            "scripts/collect_code_context.py",
+            "scripts/source_relations.py",
+            "scripts/analyze_references.mjs",
+            "scripts/rust_references.py",
+            "scripts/reference-requirements.txt",
+            "scripts/context-runtime/package.json",
+            "scripts/context-runtime/package-lock.json",
+            "assets/licenses/gitingest-MIT.txt",
+            "assets/licenses/gitdiagram-MIT.txt",
+            "docs/module-map.md",
+            "SKILL.md",
+            "README.md",
+            "AGENTS.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "LICENSE",
+            "scripts/install_agents_guidance.py",
+            "scripts/init_manifest.py",
+            "agents",
+            "assets",
+            "references",
+            "docs/module-map.md",
+            "scripts/tests",
+            "docs/module-map.md",
+            "engineering-manifest.json",
+            ".gitignore",
+            "docs",
+            "planning",
+            ".github",
+            "docs/module-map.md",
+            "planning/source-context-task.md",
+            "planning/baseline-review.md",
+            "docs/spec.md",
+            "docs/plan.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "planning/source-context-task.md",
+            "planning/source-context-evidence.json",
+            "planning/traceability.md",
+            "planning/baseline-review.md",
+            "docs/spec.md",
+            "docs/plan.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "planning/source-context-task.md",
+            "planning/source-context-evidence.json",
+            "planning/traceability.md"
+          ],
+          "documentation_gaps": []
+        },
+        "limitations": [
+          "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+        ]
+      },
+      {
+        "rule_id": "TEST",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 97.524,
+          "output_bytes": 603,
+          "output_sha256": "b5a506f98182bba4c442993fe6be0400c00d0f83fd2deec99c2d8a21e249582b",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.123,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "GUIDANCE-COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.108,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      }
+    ],
+    "committed_evidence": [
+      {
+        "rule_id": "control-plane",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "baseline control-plane paths and submitted tree",
+        "evidence": {
+          "protected_paths": [
+            ".github/CODEOWNERS",
+            ".github/workflows/quality.yml",
+            "CHANGELOG.md",
+            "SKILL.md",
+            "VERSION",
+            "assets/templates/ci-committed.engineering",
+            "assets/templates/ci-committed.engineering.ps1",
+            "assets/templates/pre-commit.engineering",
+            "assets/templates/pre-commit.engineering.ps1",
+            "engineering-manifest.json",
+            "references/checker.md",
+            "scripts/check_project.py"
+          ],
+          "changed_paths": [
+            ".github/workflows/quality.yml",
+            "CHANGELOG.md",
+            "SKILL.md",
+            "VERSION",
+            "engineering-manifest.json"
+          ],
+          "first_adoption": false,
+          "approval_variable": "ENGINEERING_CONTROL_PLANE_APPROVED",
+          "external_approval_present": true
+        },
+        "limitations": [
+          "Control-plane approval is intentionally supplied outside the repository; review the manifest and checker changes separately."
+        ]
+      },
+      {
+        "rule_id": "committed-scope",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "checked-out commit tree versus first parent",
+        "evidence": {
+          "uncovered": [],
+          "excluded": [],
+          "allowed": [
+            "scripts/collect_code_context.py",
+            "scripts/source_relations.py",
+            "scripts/analyze_references.mjs",
+            "scripts/rust_references.py",
+            "scripts/reference-requirements.txt",
+            "scripts/context-runtime/package.json",
+            "scripts/context-runtime/package-lock.json",
+            "assets/licenses/gitingest-MIT.txt",
+            "assets/licenses/gitdiagram-MIT.txt",
+            "docs/module-map.md",
+            "SKILL.md",
+            "README.md",
+            "AGENTS.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "LICENSE",
+            "scripts/install_agents_guidance.py",
+            "scripts/init_manifest.py",
+            "agents",
+            "assets",
+            "references",
+            "docs/module-map.md",
+            "scripts/tests",
+            "docs/module-map.md",
+            "engineering-manifest.json",
+            ".gitignore",
+            "docs",
+            "planning",
+            ".github",
+            "docs/module-map.md",
+            "planning/source-context-task.md",
+            "planning/baseline-review.md",
+            "docs/spec.md",
+            "docs/plan.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "planning/source-context-task.md",
+            "planning/source-context-evidence.json",
+            "planning/traceability.md",
+            "planning/baseline-review.md",
+            "docs/spec.md",
+            "docs/plan.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "planning/source-context-task.md",
+            "planning/source-context-evidence.json",
+            "planning/traceability.md"
+          ],
+          "documentation_gaps": []
+        },
+        "limitations": [
+          "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+        ]
+      },
+      {
+        "rule_id": "TEST",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 75.598,
+          "output_bytes": 603,
+          "output_sha256": "df2ebb5ad3586da1591b2abafc8bdec5fa92b1d32bcbbddfbe2d354b67131fd8",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.23,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "GUIDANCE-COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.124,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      }
+    ]
   },
   "measurement_limits": [
     "Offline o200k_base on material selected by each strategy; not real model API usage or answer quality",
@@ -992,7 +1341,7 @@
   },
   "source_hashes": {
     "scripts/collect_code_context.py": "7556739dd796cbbead2c9611503fea670c17fbd38ec6c39c5ef998de5e85ff22",
-    "scripts/source_relations.py": "b03ae37d0c57ca2893b8ee89b310af9eb7c4d5288e8a16b32e338d4d86d92691",
+    "scripts/source_relations.py": "34b49fb8ced8eade2e3dfb69bdb271e6f4f71a3fc0a0d703c82f198b4803c25a",
     "scripts/analyze_references.mjs": "545bf0fbc4d3855257bf03140f0a038119445a2090d4c32093a46387e2e7acc6",
     "scripts/rust_references.py": "e6398d6271bd8077f5957290a9847091b8e53f2c7b54891470a9ee580ff11113"
   },
@@ -1039,5 +1388,209 @@
       },
       "chars": 3600
     }
-  ]
+  ],
+  "publication": {
+    "source_commit": "502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b",
+    "verified_origin_main": "502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b",
+    "observed_at": "2026-10-18T06:41:11.316319+08:00",
+    "hosted_CI": "source run awaiting existing protected engineering-control-review human approval",
+    "run_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39076043405"
+  },
+  "final_crlf_correction": {
+    "finding": "Multiline CRLF Rust evidence rejected after splitlines normalization",
+    "fix": "Normalize only line endings for exact statement comparison; original source hash/text/range preserved",
+    "focused_tests": 9,
+    "final_test_count_expected": 158,
+    "full_checks": "158-test source passed unchanged commit gate; exact final committed gate follows commit",
+    "diagnostic_full_suite": {
+      "tests": 158,
+      "passed": true,
+      "seconds": 73.806,
+      "log": "external evidence/final-diagnostic-158.log",
+      "mode": "direct verbose diagnosis, not a commit gate"
+    },
+    "first_commit_attempt": {
+      "report": "work/release-final-commit.json",
+      "required_checks_satisfied": false,
+      "reason": "Declared TEST reached unchanged 120s timeout; no failing assertion output",
+      "timeout_seconds": 120,
+      "prior_result_preserved": true
+    },
+    "commit_gate": {
+      "observed_at": "2026-10-18T06:51:42.310804+08:00",
+      "report": "work/release-final-commit-retry.json",
+      "required_checks_satisfied": true,
+      "tests": 158,
+      "checks": [
+        {
+          "rule_id": "control-plane",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "baseline control-plane paths and submitted tree",
+          "evidence": {
+            "protected_paths": [
+              ".github/CODEOWNERS",
+              ".github/workflows/quality.yml",
+              "CHANGELOG.md",
+              "SKILL.md",
+              "VERSION",
+              "assets/templates/ci-committed.engineering",
+              "assets/templates/ci-committed.engineering.ps1",
+              "assets/templates/pre-commit.engineering",
+              "assets/templates/pre-commit.engineering.ps1",
+              "engineering-manifest.json",
+              "references/checker.md",
+              "scripts/check_project.py"
+            ],
+            "changed_paths": [
+              "CHANGELOG.md"
+            ],
+            "first_adoption": false,
+            "approval_variable": "ENGINEERING_CONTROL_PLANE_APPROVED",
+            "external_approval_present": true
+          },
+          "limitations": [
+            "Control-plane approval is intentionally supplied outside the repository; review the manifest and checker changes separately."
+          ]
+        },
+        {
+          "rule_id": "commit-scope",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "Git staged index including deletions and rename endpoints",
+          "evidence": {
+            "uncovered": [],
+            "excluded": [],
+            "allowed": [
+              "scripts/collect_code_context.py",
+              "scripts/source_relations.py",
+              "scripts/analyze_references.mjs",
+              "scripts/rust_references.py",
+              "scripts/reference-requirements.txt",
+              "scripts/context-runtime/package.json",
+              "scripts/context-runtime/package-lock.json",
+              "assets/licenses/gitingest-MIT.txt",
+              "assets/licenses/gitdiagram-MIT.txt",
+              "docs/module-map.md",
+              "SKILL.md",
+              "README.md",
+              "AGENTS.md",
+              "VERSION",
+              "CHANGELOG.md",
+              "LICENSE",
+              "scripts/install_agents_guidance.py",
+              "scripts/init_manifest.py",
+              "agents",
+              "assets",
+              "references",
+              "docs/module-map.md",
+              "scripts/tests",
+              "docs/module-map.md",
+              "engineering-manifest.json",
+              ".gitignore",
+              "docs",
+              "planning",
+              ".github",
+              "docs/module-map.md",
+              "planning/source-context-task.md",
+              "planning/baseline-review.md",
+              "docs/spec.md",
+              "docs/plan.md",
+              "docs/module-map.md",
+              "docs/contracts.md",
+              "docs/business-flow.md",
+              "planning/source-context-task.md",
+              "planning/source-context-evidence.json",
+              "planning/traceability.md",
+              "planning/baseline-review.md",
+              "docs/spec.md",
+              "docs/plan.md",
+              "docs/module-map.md",
+              "docs/contracts.md",
+              "docs/business-flow.md",
+              "planning/source-context-task.md",
+              "planning/source-context-evidence.json",
+              "planning/traceability.md"
+            ],
+            "documentation_gaps": []
+          },
+          "limitations": [
+            "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+          ]
+        },
+        {
+          "rule_id": "TEST",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 73.874,
+            "output_bytes": 603,
+            "output_sha256": "4d42feec1257094ca55d15309260b0812a460958d74fab2aff2c4731392f1cb0",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.123,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.123,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        }
+      ]
+    }
+  }
 }

@@ -100,3 +100,6 @@ Publication: the 1.5.0 module implementation was uploaded on 2026-10-18 as `46d5
 ## Module: source-context
 
 Owns local inventory, full-text packing, read limits/statuses, optional JS/TS/Rust module reference adapters and validated derived graph/text/table. Entrypoints scripts/collect_code_context.py and source_relations.py; depends on checker safe-root/path/glob helpers without modifying its rules. Rust uses optional pinned tree-sitter parsers, JS/TS optional pinned TypeScript. Data stays in caller-chosen local outputs; no business database/model calls. Scope/evidence: [Task](../planning/source-context-task.md), [guide](../references/source-context.md).
+
+
+1.6.0 source publication: `502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b`, verified on origin/main on 2026-10-18. This receipt does not change implementation/approval scope; exact local gates are in [the current Task](../planning/source-context-task.md). Hosted CI is tracked separately.

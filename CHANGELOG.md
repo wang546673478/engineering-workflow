@@ -1,4 +1,4 @@
-# 1.6.0 / Unreleased
+# 1.6.0 / 2026-10-18
 
 - Added optional local source inventory/tree/statistics, complete compact reading packs and explicit read budgets/omissions.
 - Added source-evidenced JS/TS and Rust module references with strict evidence checks and selectable summary/table/diagram outputs.

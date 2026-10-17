@@ -43,3 +43,6 @@ The initializer writes only a skeleton and refuses overwrite by default. Reconci
 ## Verification and release
 
 Run unchanged TEST, COMPILE and GUIDANCE-COMPILE; skill-creator validation with isolated PyYAML; local links, change-scope and diff review. New transitions run in disposable fixtures. Commit/committed gates apply when submission is authorized. Record exact results/limits in Task. The 1.5.0 source batch was uploaded on 2026-10-18 as `46d57a6cefd5cc80ae62e47099b782d4cb381504`; publication receipts do not change the design or require another version bump. Hosted CI is verified separately.
+
+
+1.6.0 source publication: `502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b`, verified on origin/main on 2026-10-18. This receipt does not change implementation/approval scope; exact local gates are in [the current Task](../planning/source-context-task.md). Hosted CI is tracked separately.
