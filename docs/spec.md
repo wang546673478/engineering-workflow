@@ -6,7 +6,7 @@ Active linked-model revision: `SPEC-LINKED-02` (2026-10-18). This adds greenfiel
 
 This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, continuous feature discussions, cross-layer changes, documentation impact gates, and verification work. The 1.4.3 source batch was uploaded on 2026-10-16; scope, local verification and publication evidence are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). Hosted CI remains separate from that evidence.
 
-Current published source: 1.4.4, uploaded on 2026-10-17. Autonomous investigation and continuous baseline correction, exact local commit verification and the source push are recorded in [TASK-BASELINE-01](../planning/baseline-workflow-task.md). The linked-artifact model is the next 1.5.0 candidate and is recorded in [TASK-LINKED-ARTIFACTS-01](../planning/linked-artifact-model-task.md); publication progress and the actual source-upload receipt are recorded in that Task; CHANGELOG remains Unreleased until upload succeeds.
+Previous published source: 1.4.4, uploaded on 2026-10-17. Autonomous investigation and continuous baseline correction, exact local commit verification and the source push are recorded in [TASK-BASELINE-01](../planning/baseline-workflow-task.md). Current published source: 1.5.0, uploaded on 2026-10-18 as `46d57a6cefd5cc80ae62e47099b782d4cb381504`. The linked-artifact/greenfield implementation, local exact-commit checks, scope and source-upload receipt are recorded in [TASK-LINKED-ARTIFACTS-01](../planning/linked-artifact-model-task.md); hosted CI has separate evidence.
 
 ## Requirements
 

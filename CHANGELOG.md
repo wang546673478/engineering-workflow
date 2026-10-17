@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.0 - Unreleased
+## 1.5.0 - 2026-10-18
 
 - Make Global Baseline, Spec, Technical Plan and Task a versioned, traceable chain for new and existing projects.
 - Add active Baseline/Spec/Plan/Task pointers, task artifact links and Baseline document references to new manifest skeletons.

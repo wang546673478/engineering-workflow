@@ -11,3 +11,5 @@ Revision: `TRACE-LINKED-02`, 2026-10-18. Active Spec `SPEC-LINKED-02`, Plan `PLA
 | REQ-LINKED-05 / AT-LINKED-05 | [document reconciliation](../docs/spec.md) | [PL-05](../docs/plan.md) | [TW-04/05 reconciliation table and current validation](linked-artifact-model-task.md) | [baseline](baseline-review.md), all current views |
 
 Historical task/requirement registrations remain in the manifest and their original files. This current index does not transfer past approvals or rewrite release receipts.
+
+Publication evidence: 1.5.0 source `46d57a6cefd5cc80ae62e47099b782d4cb381504`, uploaded 2026-10-18; staged and exact-commit check reports plus the source-upload receipt are recorded in the current Task. The requirement/Plan/step mappings remain unchanged.

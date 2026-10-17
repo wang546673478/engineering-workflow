@@ -2,7 +2,7 @@
 
 Revision: `BASELINE-LINKED-02` (2026-10-18); factual scope and required local checks complete, validation recorded in [the active Task](linked-artifact-model-task.md). Historical approval below applies only to its original tree; the subsequent 2026-10-18 upload instruction approves submission/publication of this completed revision, as recorded in the current Task.
 
-Source basis: `9df566229c976e3f3523007934e9f079550c770f` plus the local 1.5.0 Unreleased worktree. Scope: SKILL/references, managed guidance, templates, manifest initialization, checker, tests and self-maintenance documentation. Earlier pre-existing assessment-task edits remain separately owned; no external project was migrated.
+Source basis: `9df566229c976e3f3523007934e9f079550c770f` as the implementation input; the 1.5.0 output was uploaded on 2026-10-18 as `46d57a6cefd5cc80ae62e47099b782d4cb381504`. Scope: SKILL/references, managed guidance, templates, manifest initialization, checker, tests and self-maintenance documentation. Earlier pre-existing assessment-task edits remain separately owned; no external project was migrated.
 
 ## Current facts and coverage
 
@@ -11,7 +11,7 @@ Source basis: `9df566229c976e3f3523007934e9f079550c770f` plus the local 1.5.0 Un
 - The checker validates declared pointers/files and greenfield provisional lifecycle. Provisional states require evidence metadata, reject existing origin, reject no-implementation claims when files occur in declared scopes, and block completion/handoff. Old manifests keep their prior gates.
 - Current architecture and CLI facts are in [module map](../docs/module-map.md), [contracts](../docs/contracts.md) and [business flow](../docs/business-flow.md). [Spec](../docs/spec.md), [Plan](../docs/plan.md), [Task](linked-artifact-model-task.md) and [traceability](traceability.md) separate target, design and execution.
 - No business database, application frontend or HTTP service exists here. The [database view](../docs/database.md) retains explicit metadata-only adapter scope. Adapters were not modified in this batch. Optional manual database/contract inventories remain partial; they do not prove semantic completeness.
-- Verification: unchanged TEST (105 tests), COMPILE and GUIDANCE-COMPILE passed; the change-scope/manifest/task gates passed with no uncovered paths or documentation gaps. Official skill validation passed using existing isolated PyYAML. Current report: work/linked-greenfield-final-check.json; source fingerprint: work/linked-greenfield-source.json. The active Task records results/limits; historical results below are not fresh evidence.
+- Verification: unchanged TEST (105 tests), COMPILE and GUIDANCE-COMPILE passed; the change-scope/manifest/task gates passed with no uncovered paths or documentation gaps. Official skill validation passed using existing isolated PyYAML. Local implementation report: work/linked-greenfield-final-check.json; source fingerprint: work/linked-greenfield-source.json. Source publication was additionally verified by staged/committed reports in the current Task. The active Task records results/limits; historical results below are not fresh evidence.
 
 ## Limits and review
 

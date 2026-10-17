@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-- 阶段：本地实现、验证与文档整理完成，`complete`（2026-10-18）；用户现已授权提交并上传 GitHub；发布门禁正在执行。
+- 阶段：本地实现、验证与文档整理完成，`complete`（2026-10-18）；1.5.0 主提交已通过提交/实际提交门禁并上传 GitHub；正在补发布回执。
 - 当前工件：Baseline `BASELINE-LINKED-02`；Spec `SPEC-LINKED-02`；Plan `PLAN-LINKED-02`；Task `TASK-LINKED-ARTIFACTS-01`。路径由 [manifest](../engineering-manifest.json) 和 [traceability](traceability.md) 定位。
 - 来源：本仓库 SKILL.md，发布基点 1.4.4 / `9df5662`，当前 1.5.0 工作树，发布前保持 Unreleased；恢复时核对实际 diff。
 - 范围：指令、引用、持久化入口、模板、初始化器、checker、测试及本仓库当前文档。不修改联通中转站或其他项目。
@@ -75,8 +75,8 @@ LINKED-n 对应 REQ-LINKED-n / AT-LINKED-n；完整映射见追踪索引。
 ## Release impact 与下一步
 
 - VERSION 为权威，同一批 1.4.4 → 1.5.0 MINOR；兼容新增能力，历史版本保留。同步 SKILL、README、agents、CHANGELOG。
-- 发布准备中，CHANGELOG 保持 Unreleased，上传成功后填写实际日期。用户已批准具体完成范围，仅在对应一次检查的子进程环境传递批准信号，不写入永久设置。
-- 下一步：验证暂存区及实际提交，上传 origin/main，核对远程 SHA 并记录真实发布回执。
+- 1.5.0 源码已于 2026-10-18 上传，CHANGELOG 填写实际日期。用户已批准具体完成范围，仅在对应一次检查的子进程环境传递批准信号，不写入永久设置。
+- 下一步：将发布回执按同等门禁提交上传，核对最终远程 SHA；本地独立评估记录保留。
 
 ## 2026-10-18 发布授权与范围
 
@@ -87,3 +87,10 @@ LINKED-n 对应 REQ-LINKED-n / AT-LINKED-n；完整映射见追踪索引。
 本轮新增提交/发布证据不改变交付行为，继续使用 1.5.0，不再升版；GitHub 源码上传与 hosted CI 的结果分别核实。
 
 发布前 commit 模式发现 AGENTS.md、VERSION、CHANGELOG.md 三个已归属 instructions 的变更尚未列入本任务文档触发器。change 模式不强制逐源文件触发覆盖，因而此前通过不能替代提交门禁。现补齐这三个既有作用域到 workflow-guidance，继续要求同组 Spec/Plan/Map/Contract/Flow/Task 更新；未放宽检查或排除路径。失败时测试按门禁跳过，待提交预检通过后执行。
+
+### 1.5.0 源码上传回执
+
+- 主提交：`46d57a6cefd5cc80ae62e47099b782d4cb381504`；2026-10-18T02:08:31+08:00 核对远程 origin/main 为同一 SHA，源码上传成功。
+- 主提交暂存区门禁 `work/release-1.5.0-commit-v4.json` 与实际提交门禁 `work/release-1.5.0-committed.json` 均 exit 0，required_checks_satisfied=true。两次均包含 105 tests、COMPILE、GUIDANCE-COMPILE，以及 task/control-plane/提交范围检查；可选手工清单仍 partial。
+- 本次仅补发布日期、状态和真实回执，不改变实现或已批准的检查政策，保持版本 1.5.0；收尾仍按同等提交/实际提交门禁验证，不将未执行检查写成通过。
+- 尚未把 GitHub hosted CI 记为通过；上传成功和本地检查不是远程 CI 成功证据。最终回执 SHA 由本地 work/release-1.5.0-final-receipt.json 保存，避免自引用尚未存在的提交。
