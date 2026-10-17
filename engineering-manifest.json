@@ -4,7 +4,7 @@
     "active_baseline": "BASELINE",
     "active_spec": "SPEC",
     "active_plan": "PLAN",
-    "active_task": "TASK-LINKED-ARTIFACTS-01"
+    "active_task": "TASK-CONTEXT-RELEASE-01"
   },
   "documents": [
     {
@@ -13,21 +13,96 @@
       "kind": "task",
       "required": true
     },
-    {"id": "CONTINUITY_TASK", "path": "planning/continuous-requirements-task.md", "kind": "task", "required": true},
-    {"id": "VERSION_TASK", "path": "planning/version-policy-task.md", "kind": "task", "required": true},
-    {"id": "STAGES_TASK", "path": "planning/takeover-stages-task.md", "kind": "task", "required": true},
-    {"id": "SPEC", "path": "docs/spec.md", "kind": "spec", "required": true},
-    {"id": "MAP", "path": "docs/module-map.md", "kind": "module-map", "required": true},
-    {"id": "DB", "path": "docs/database.md", "kind": "database-dictionary", "required": true},
-    {"id": "CONTRACT", "path": "docs/contracts.md", "kind": "contract", "required": true},
-    {"id": "FLOW", "path": "docs/business-flow.md", "kind": "business-flow", "required": true},
-    {"id": "IMPACT", "path": "planning/change-impact.md", "kind": "impact", "required": true},
-    {"id": "BASELINE", "path": "planning/baseline-review.md", "kind": "baseline", "required": true},
-    {"id": "SKILL_REVIEW", "path": "planning/skill-review.md", "kind": "skill-review", "required": true},
-    {"id": "PERSISTENCE_TASK", "path": "planning/persistence-task.md", "kind": "task", "required": true},
-    {"id": "ISSUES_TASK", "path": "planning/issues-11-13-task.md", "kind": "task", "required": true},
-    {"id": "AUTO_REVIEW_TASK", "path": "planning/issues-14-auto-review-task.md", "kind": "task", "required": true},
-    {"id": "ISSUES_SECURITY_TASK", "path": "planning/issues-14-16-task.md", "kind": "task", "required": true},
+    {
+      "id": "CONTINUITY_TASK",
+      "path": "planning/continuous-requirements-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "VERSION_TASK",
+      "path": "planning/version-policy-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "STAGES_TASK",
+      "path": "planning/takeover-stages-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "SPEC",
+      "path": "docs/spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "MAP",
+      "path": "docs/module-map.md",
+      "kind": "module-map",
+      "required": true
+    },
+    {
+      "id": "DB",
+      "path": "docs/database.md",
+      "kind": "database-dictionary",
+      "required": true
+    },
+    {
+      "id": "CONTRACT",
+      "path": "docs/contracts.md",
+      "kind": "contract",
+      "required": true
+    },
+    {
+      "id": "FLOW",
+      "path": "docs/business-flow.md",
+      "kind": "business-flow",
+      "required": true
+    },
+    {
+      "id": "IMPACT",
+      "path": "planning/change-impact.md",
+      "kind": "impact",
+      "required": true
+    },
+    {
+      "id": "BASELINE",
+      "path": "planning/baseline-review.md",
+      "kind": "baseline",
+      "required": true
+    },
+    {
+      "id": "SKILL_REVIEW",
+      "path": "planning/skill-review.md",
+      "kind": "skill-review",
+      "required": true
+    },
+    {
+      "id": "PERSISTENCE_TASK",
+      "path": "planning/persistence-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ISSUES_TASK",
+      "path": "planning/issues-11-13-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "AUTO_REVIEW_TASK",
+      "path": "planning/issues-14-auto-review-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ISSUES_SECURITY_TASK",
+      "path": "planning/issues-14-16-task.md",
+      "kind": "task",
+      "required": true
+    },
     {
       "id": "PLAN",
       "path": "docs/plan.md",
@@ -44,6 +119,24 @@
       "id": "LINKED_ARTIFACT_TASK",
       "path": "planning/linked-artifact-model-task.md",
       "kind": "task",
+      "required": true
+    },
+    {
+      "id": "CONTEXT_TASK",
+      "path": "planning/source-context-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "CONTEXT_EVIDENCE",
+      "path": "planning/source-context-evidence.json",
+      "kind": "research-evidence",
+      "required": true
+    },
+    {
+      "id": "CONTEXT_BENCHMARK",
+      "path": "planning/source-context-benchmark.md",
+      "kind": "verification",
       "required": true
     }
   ],
@@ -68,32 +161,110 @@
       "id": "REQ-BASELINE-05",
       "document": "SPEC"
     },
-    {"id": "REQ-CONTINUITY-01", "document": "CONTINUITY_TASK"},
-    {"id": "REQ-CONTINUITY-02", "document": "CONTINUITY_TASK"},
-    {"id": "REQ-CONTINUITY-03", "document": "CONTINUITY_TASK"},
-    {"id": "REQ-CONTINUITY-04", "document": "CONTINUITY_TASK"},
-    {"id": "REQ-VERSION-01", "document": "VERSION_TASK"},
-    {"id": "REQ-VERSION-02", "document": "VERSION_TASK"},
-    {"id": "REQ-STAGES-01", "document": "STAGES_TASK"},
-    {"id": "REQ-SELF-01", "document": "SPEC"},
-    {"id": "REQ-SELF-02", "document": "SPEC"},
-    {"id": "REQ-SELF-03", "document": "SPEC"},
-    {"id": "REQ-SELF-04", "document": "SPEC"},
-    {"id": "REQ-SELF-05", "document": "SPEC"},
-    {"id": "REQ-PERSIST-01", "document": "SPEC"},
-    {"id": "REQ-PERSIST-02", "document": "SPEC"},
-    {"id": "REQ-PERSIST-03", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-01", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-02", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-03", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-04", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-05", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-06", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-07", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-08", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-09", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-10", "document": "SPEC"}
-    ,{"id": "REQ-ISSUES-11", "document": "SPEC"},
+    {
+      "id": "REQ-CONTINUITY-01",
+      "document": "CONTINUITY_TASK"
+    },
+    {
+      "id": "REQ-CONTINUITY-02",
+      "document": "CONTINUITY_TASK"
+    },
+    {
+      "id": "REQ-CONTINUITY-03",
+      "document": "CONTINUITY_TASK"
+    },
+    {
+      "id": "REQ-CONTINUITY-04",
+      "document": "CONTINUITY_TASK"
+    },
+    {
+      "id": "REQ-VERSION-01",
+      "document": "VERSION_TASK"
+    },
+    {
+      "id": "REQ-VERSION-02",
+      "document": "VERSION_TASK"
+    },
+    {
+      "id": "REQ-STAGES-01",
+      "document": "STAGES_TASK"
+    },
+    {
+      "id": "REQ-SELF-01",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-SELF-02",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-SELF-03",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-SELF-04",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-SELF-05",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-PERSIST-01",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-PERSIST-02",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-PERSIST-03",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-01",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-02",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-03",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-04",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-05",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-06",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-07",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-08",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-09",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-10",
+      "document": "SPEC"
+    },
+    {
+      "id": "REQ-ISSUES-11",
+      "document": "SPEC"
+    },
     {
       "id": "REQ-LINKED-01",
       "document": "SPEC",
@@ -116,6 +287,31 @@
     },
     {
       "id": "REQ-LINKED-05",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-CONTEXT-01",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-CONTEXT-02",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-CONTEXT-03",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-CONTEXT-04",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-CONTEXT-05",
       "document": "SPEC",
       "index": "TRACE"
     }
@@ -141,32 +337,110 @@
       "id": "AT-BASELINE-05",
       "document": "SPEC"
     },
-    {"id": "AT-CONTINUITY-01", "document": "CONTINUITY_TASK"},
-    {"id": "AT-CONTINUITY-02", "document": "CONTINUITY_TASK"},
-    {"id": "AT-CONTINUITY-03", "document": "CONTINUITY_TASK"},
-    {"id": "AT-CONTINUITY-04", "document": "CONTINUITY_TASK"},
-    {"id": "AT-VERSION-01", "document": "VERSION_TASK"},
-    {"id": "AT-VERSION-02", "document": "VERSION_TASK"},
-    {"id": "AT-STAGES-01", "document": "STAGES_TASK"},
-    {"id": "AT-SELF-01", "document": "SPEC"},
-    {"id": "AT-SELF-02", "document": "SPEC"},
-    {"id": "AT-SELF-03", "document": "SPEC"},
-    {"id": "AT-SELF-04", "document": "SPEC"},
-    {"id": "AT-SELF-05", "document": "SPEC"},
-    {"id": "AT-PERSIST-01", "document": "SPEC"},
-    {"id": "AT-PERSIST-02", "document": "SPEC"},
-    {"id": "AT-PERSIST-03", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-01", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-02", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-03", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-04", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-05", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-06", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-07", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-08", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-09", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-10", "document": "SPEC"}
-    ,{"id": "AT-ISSUES-11", "document": "SPEC"},
+    {
+      "id": "AT-CONTINUITY-01",
+      "document": "CONTINUITY_TASK"
+    },
+    {
+      "id": "AT-CONTINUITY-02",
+      "document": "CONTINUITY_TASK"
+    },
+    {
+      "id": "AT-CONTINUITY-03",
+      "document": "CONTINUITY_TASK"
+    },
+    {
+      "id": "AT-CONTINUITY-04",
+      "document": "CONTINUITY_TASK"
+    },
+    {
+      "id": "AT-VERSION-01",
+      "document": "VERSION_TASK"
+    },
+    {
+      "id": "AT-VERSION-02",
+      "document": "VERSION_TASK"
+    },
+    {
+      "id": "AT-STAGES-01",
+      "document": "STAGES_TASK"
+    },
+    {
+      "id": "AT-SELF-01",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-SELF-02",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-SELF-03",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-SELF-04",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-SELF-05",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-PERSIST-01",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-PERSIST-02",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-PERSIST-03",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-01",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-02",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-03",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-04",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-05",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-06",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-07",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-08",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-09",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-10",
+      "document": "SPEC"
+    },
+    {
+      "id": "AT-ISSUES-11",
+      "document": "SPEC"
+    },
     {
       "id": "AT-LINKED-01",
       "document": "SPEC",
@@ -191,23 +465,188 @@
       "id": "AT-LINKED-05",
       "document": "SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "AT-CONTEXT-01",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-CONTEXT-02",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-CONTEXT-03",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-CONTEXT-04",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-CONTEXT-05",
+      "document": "SPEC",
+      "index": "TRACE"
     }
   ],
   "modules": [
-    {"id": "instructions", "source_paths": ["SKILL.md", "README.md", "AGENTS.md", "VERSION", "CHANGELOG.md", "LICENSE", "scripts/install_agents_guidance.py", "scripts/init_manifest.py", "agents", "assets", "references"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
-    {"id": "checker", "source_paths": ["scripts/check_project.py"], "document": "MAP", "depends_on": ["adapters"], "allowed_dependencies": ["adapters"]},
-    {"id": "adapters", "source_paths": ["scripts/extract_database.py", "scripts/extract_sqlite.py"], "document": "MAP", "depends_on": [], "allowed_dependencies": []},
-    {"id": "tests", "source_paths": ["scripts/tests"], "document": "MAP", "depends_on": ["checker", "adapters", "instructions"], "allowed_dependencies": ["checker", "adapters", "instructions"]},
-    {"id": "governance", "source_paths": ["engineering-manifest.json", ".gitignore", "docs", "planning", ".github"], "document": "MAP", "depends_on": ["instructions"], "allowed_dependencies": ["instructions"]}
+    {
+      "id": "instructions",
+      "source_paths": [
+        "SKILL.md",
+        "README.md",
+        "AGENTS.md",
+        "VERSION",
+        "CHANGELOG.md",
+        "LICENSE",
+        "scripts/install_agents_guidance.py",
+        "scripts/init_manifest.py",
+        "agents",
+        "assets",
+        "references"
+      ],
+      "document": "MAP",
+      "depends_on": [],
+      "allowed_dependencies": []
+    },
+    {
+      "id": "checker",
+      "source_paths": [
+        "scripts/check_project.py"
+      ],
+      "document": "MAP",
+      "depends_on": [
+        "adapters"
+      ],
+      "allowed_dependencies": [
+        "adapters"
+      ]
+    },
+    {
+      "id": "adapters",
+      "source_paths": [
+        "scripts/extract_database.py",
+        "scripts/extract_sqlite.py"
+      ],
+      "document": "MAP",
+      "depends_on": [],
+      "allowed_dependencies": []
+    },
+    {
+      "id": "tests",
+      "source_paths": [
+        "scripts/tests"
+      ],
+      "document": "MAP",
+      "depends_on": [
+        "checker",
+        "adapters",
+        "instructions"
+      ],
+      "allowed_dependencies": [
+        "checker",
+        "adapters",
+        "instructions"
+      ]
+    },
+    {
+      "id": "governance",
+      "source_paths": [
+        "engineering-manifest.json",
+        ".gitignore",
+        "docs",
+        "planning",
+        ".github"
+      ],
+      "document": "MAP",
+      "depends_on": [
+        "instructions"
+      ],
+      "allowed_dependencies": [
+        "instructions"
+      ]
+    },
+    {
+      "id": "source-context",
+      "source_paths": [
+        "scripts/collect_code_context.py",
+        "scripts/source_relations.py",
+        "scripts/analyze_references.mjs",
+        "scripts/rust_references.py",
+        "scripts/reference-requirements.txt",
+        "scripts/context-runtime/package.json",
+        "scripts/context-runtime/package-lock.json",
+        "assets/licenses/gitingest-MIT.txt",
+        "assets/licenses/gitdiagram-MIT.txt"
+      ],
+      "document": "MAP",
+      "depends_on": [
+        "checker"
+      ],
+      "allowed_dependencies": [
+        "checker"
+      ]
+    }
   ],
   "inventories": [
-    {"id": "database", "kind": "database", "path": "planning/database-inventory.json", "documentation": "planning/database-doc-mapping.json", "required": false},
-    {"id": "contracts", "kind": "contract", "path": "planning/contract-inventory.json", "documentation": "planning/contract-doc-mapping.json", "required": false}
+    {
+      "id": "database",
+      "kind": "database",
+      "path": "planning/database-inventory.json",
+      "documentation": "planning/database-doc-mapping.json",
+      "required": false
+    },
+    {
+      "id": "contracts",
+      "kind": "contract",
+      "path": "planning/contract-inventory.json",
+      "documentation": "planning/contract-doc-mapping.json",
+      "required": false
+    }
   ],
   "checks": [
-    {"id": "TEST", "command": ["python", "-m", "unittest", "discover", "-s", "scripts/tests", "-q"], "required": true, "timeout_seconds": 120},
-    {"id": "COMPILE", "command": ["python", "-m", "py_compile", "scripts/check_project.py", "scripts/extract_database.py", "scripts/extract_sqlite.py"], "required": true, "timeout_seconds": 30},
-    {"id": "GUIDANCE-COMPILE", "command": ["python", "-m", "py_compile", "scripts/install_agents_guidance.py", "scripts/init_manifest.py"], "required": true, "timeout_seconds": 30}
+    {
+      "id": "TEST",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/tests",
+        "-q"
+      ],
+      "required": true,
+      "timeout_seconds": 120
+    },
+    {
+      "id": "COMPILE",
+      "command": [
+        "python",
+        "-m",
+        "py_compile",
+        "scripts/check_project.py",
+        "scripts/extract_database.py",
+        "scripts/extract_sqlite.py"
+      ],
+      "required": true,
+      "timeout_seconds": 30
+    },
+    {
+      "id": "GUIDANCE-COMPILE",
+      "command": [
+        "python",
+        "-m",
+        "py_compile",
+        "scripts/install_agents_guidance.py",
+        "scripts/init_manifest.py"
+      ],
+      "required": true,
+      "timeout_seconds": 30
+    }
   ],
   "tasks": [
     {
@@ -307,496 +746,1135 @@
         }
       }
     },
-{
-  "id": "TASK-CONTINUITY-01",
-  "requirement_ids": [
-    "REQ-CONTINUITY-01",
-    "REQ-CONTINUITY-02",
-    "REQ-CONTINUITY-03",
-    "REQ-CONTINUITY-04"
-  ],
-  "acceptance_ids": [
-    "AT-CONTINUITY-01",
-    "AT-CONTINUITY-02",
-    "AT-CONTINUITY-03",
-    "AT-CONTINUITY-04"
-  ],
-  "module_ids": [
-    "instructions",
-    "governance"
-  ],
-  "depends_on": [
-    "TASK-VERSION-01"
-  ],
-  "status": "complete",
-  "impact_document": "CONTINUITY_TASK",
-  "required_checks": [
-    "TEST",
-    "COMPILE",
-    "GUIDANCE-COMPILE"
-  ],
-  "approval_required": true,
-  "approval": {
-    "status": "approved",
-    "evidence": "planning/continuous-requirements-task.md"
-  },
-  "skill_review": {
-    "catalog_source": "Current session Skills catalog and tool registry",
-    "scope": "Continuous feature requirement recording, deferred topics, module review, separate requirement/implementation state, instruction/template/docs and 1.4.3 metadata",
-    "checked_at": "2026-10-16T01:34:00+08:00",
-    "candidates": [
-      {
-        "id": "engineering-workflow",
-        "source": "SKILL.md",
-        "version_or_release_date": "1.4.2 baseline; 1.4.3 candidate",
-        "decision": "adopted",
-        "reason": "User explicitly authorized implementing the recorded workflow decisions",
-        "evidence": [
-          "SKILL.md",
-          "references/implementation-workflow.md",
-          "references/requirements-interview.md",
-          "planning/continuous-requirements-task.md"
-        ]
+    {
+      "id": "TASK-CONTINUITY-01",
+      "requirement_ids": [
+        "REQ-CONTINUITY-01",
+        "REQ-CONTINUITY-02",
+        "REQ-CONTINUITY-03",
+        "REQ-CONTINUITY-04"
+      ],
+      "acceptance_ids": [
+        "AT-CONTINUITY-01",
+        "AT-CONTINUITY-02",
+        "AT-CONTINUITY-03",
+        "AT-CONTINUITY-04"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-VERSION-01"
+      ],
+      "status": "complete",
+      "impact_document": "CONTINUITY_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/continuous-requirements-task.md"
       },
-      {
-        "id": "skill-creator",
-        "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
-        "version_or_release_date": "not provided",
-        "decision": "adopted",
-        "reason": "Skill trigger/instruction update, structure and isolated behavior validation",
-        "evidence": [
-          "planning/continuous-requirements-task.md"
-        ]
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and tool registry",
+        "scope": "Continuous feature requirement recording, deferred topics, module review, separate requirement/implementation state, instruction/template/docs and 1.4.3 metadata",
+        "checked_at": "2026-10-16T01:34:00+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.4.2 baseline; 1.4.3 candidate",
+            "decision": "adopted",
+            "reason": "User explicitly authorized implementing the recorded workflow decisions",
+            "evidence": [
+              "SKILL.md",
+              "references/implementation-workflow.md",
+              "references/requirements-interview.md",
+              "planning/continuous-requirements-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Skill trigger/instruction update, structure and isolated behavior validation",
+            "evidence": [
+              "planning/continuous-requirements-task.md"
+            ]
+          },
+          {
+            "id": "openai-docs",
+            "source": "C:/Users/54667/.codex/skills/.system/openai-docs/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Use already fetched official skills/AGENTS guidance for discovery boundary",
+            "evidence": [
+              "planning/backend-map-diagnosis.md"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Existing manifest and Task remain the canonical state",
+            "evidence": [
+              "planning/continuous-requirements-task.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No executable behavior change; existing tests and independent scenario validation apply",
+            "evidence": [
+              "planning/continuous-requirements-task.md"
+            ]
+          }
+        ],
+        "recheck": "2026-10-16: user authorized uploading the delivered 1.4.3 batch; reviewed unchanged checks/protections, public diagnosis scope and source publication receipts, see planning/continuous-requirements-task.md. Recheck again before expanding into checker/runtime changes, other projects or CI."
       },
-      {
-        "id": "openai-docs",
-        "source": "C:/Users/54667/.codex/skills/.system/openai-docs/SKILL.md",
-        "version_or_release_date": "not provided",
-        "decision": "adopted",
-        "reason": "Use already fetched official skills/AGENTS guidance for discovery boundary",
-        "evidence": [
-          "planning/backend-map-diagnosis.md"
-        ]
-      },
-      {
-        "id": "planning-with-files",
-        "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
-        "version_or_release_date": "not provided",
-        "decision": "not-adopted",
-        "reason": "Existing manifest and Task remain the canonical state",
-        "evidence": [
-          "planning/continuous-requirements-task.md"
-        ]
-      },
-      {
-        "id": "tdd",
-        "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
-        "version_or_release_date": "not provided",
-        "decision": "not-adopted",
-        "reason": "No executable behavior change; existing tests and independent scenario validation apply",
-        "evidence": [
-          "planning/continuous-requirements-task.md"
-        ]
+      "documentation_impact": {
+        "workflow-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "AGENTS.md",
+            "references",
+            "assets/templates",
+            "agents",
+            "VERSION",
+            "CHANGELOG.md"
+          ],
+          "document_ids": [
+            "SPEC",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "CONTINUITY_TASK"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning",
+            "docs"
+          ],
+          "document_ids": [
+            "CONTINUITY_TASK"
+          ]
+        }
       }
-    ],
-    "recheck": "2026-10-16: user authorized uploading the delivered 1.4.3 batch; reviewed unchanged checks/protections, public diagnosis scope and source publication receipts, see planning/continuous-requirements-task.md. Recheck again before expanding into checker/runtime changes, other projects or CI."
-  },
-  "documentation_impact": {
-    "workflow-guidance": {
-      "when_paths": [
-        "SKILL.md",
-        "README.md",
-        "AGENTS.md",
-        "references",
-        "assets/templates",
-        "agents",
-        "VERSION",
-        "CHANGELOG.md"
-      ],
-      "document_ids": [
-        "SPEC",
-        "MAP",
-        "CONTRACT",
-        "FLOW",
-        "CONTINUITY_TASK"
-      ]
     },
-    "governance": {
-      "when_paths": [
-        "engineering-manifest.json",
-        "planning",
-        "docs"
+    {
+      "id": "TASK-SELF-01",
+      "requirement_ids": [
+        "REQ-SELF-01",
+        "REQ-SELF-02",
+        "REQ-SELF-03",
+        "REQ-SELF-04",
+        "REQ-SELF-05"
       ],
-      "document_ids": [
-        "CONTINUITY_TASK"
-      ]
-    }
-  }
-},{
-    "id": "TASK-SELF-01",
-    "requirement_ids": ["REQ-SELF-01", "REQ-SELF-02", "REQ-SELF-03", "REQ-SELF-04", "REQ-SELF-05"],
-    "acceptance_ids": ["AT-SELF-01", "AT-SELF-02", "AT-SELF-03", "AT-SELF-04", "AT-SELF-05"],
-    "module_ids": ["instructions", "checker", "adapters", "tests", "governance"],
-    "depends_on": [],
-    "status": "complete",
-    "impact_document": "IMPACT",
-    "required_checks": ["TEST", "COMPILE"],
-    "approval_required": true,
-    "approval": {"status": "approved", "evidence": "planning/baseline-review.md"},
-    "skill_review": {
-      "catalog_source": "Codex skills catalog available in the maintenance session",
-      "scope": "skill structure, checker behavior, repository documentation, and test changes",
-      "checked_at": "2026-10-14T00:00:00+08:00",
-      "candidates": [
-        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Defines skill structure and validation for updating this skill", "evidence": ["SKILL.md"]},
-        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Applies to checker behavior changes and regression tests", "evidence": ["SKILL.md"]},
-        {"id": "setup-pre-commit", "source": "C:/Users/54667/.agents/skills/setup-pre-commit/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The repository already ships its own generic hook templates and is not adding Husky", "evidence": ["SKILL.md"]}
+      "acceptance_ids": [
+        "AT-SELF-01",
+        "AT-SELF-02",
+        "AT-SELF-03",
+        "AT-SELF-04",
+        "AT-SELF-05"
       ],
-      "recheck": "2026-10-14: protected-rule verification, plain-language review and local-only checks; same skill choices; skill-creator validation passed with local PyYAML; user approved the completed change and publication"
-    },
-    "documentation_impact": {
-      "module-connectivity": {"when_paths": ["SKILL.md", "references", "scripts/check_project.py", "scripts/extract_database.py", "scripts/extract_sqlite.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "IMPACT"]},
-      "tests": {"when_paths": ["scripts/tests"], "document_ids": ["IMPACT"]},
-      "public-guidance": {"when_paths": ["README.md", "agents", "assets/templates"], "document_ids": ["CONTRACT", "IMPACT"]},
-      "database": {"when_paths": ["scripts/extract_database.py", "scripts/extract_sqlite.py"], "document_ids": ["DB", "FLOW", "IMPACT"]},
-      "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "IMPACT", "BASELINE"]},
-      "baseline-docs": {"when_paths": ["docs", "planning"], "document_ids": ["IMPACT"]},
-      "governance": {"when_paths": [".github", ".gitignore"], "document_ids": ["SPEC", "IMPACT"]}
-    }
-  }, {
-    "id": "TASK-PERSISTENCE-01",
-    "requirement_ids": ["REQ-PERSIST-01", "REQ-PERSIST-02", "REQ-PERSIST-03"],
-    "acceptance_ids": ["AT-PERSIST-01", "AT-PERSIST-02", "AT-PERSIST-03"],
-    "module_ids": ["instructions", "tests", "governance"],
-    "depends_on": [],
-    "status": "complete",
-    "impact_document": "PERSISTENCE_TASK",
-    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
-    "approval_required": true,
-    "approval": {"status": "approved", "evidence": "planning/persistence-task.md"},
-    "skill_review": {
-      "catalog_source": "Codex session skills catalog on 2026-10-14 (Asia/Shanghai)",
-      "scope": "GitHub issue audit, persistent project instructions, cross-agent references, installer and maintenance records",
-      "checked_at": "2026-10-14T21:16:01+08:00",
-      "candidates": [
-        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "not provided; repository base commit 1aae5ed", "decision": "adopted", "reason": "Explicitly requested by the user; governs impact, state recovery, documentation and review", "evidence": ["SKILL.md", "references/project-agents-clauses.md", "references/implementation-workflow.md", "references/checker.md"]},
-        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Read for the scope and validation of an existing skill update", "evidence": ["C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md"]},
-        {"id": "planning-with-files", "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The existing manifest and this canonical task record already hold plan, decisions, progress and evidence; avoid a second state system", "evidence": ["Session skills catalog description", "engineering-manifest.json", "planning/persistence-task.md"]},
-        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No test-first workflow was requested; verify the installer using the existing unittest suite", "evidence": ["Session skills catalog description"]},
-        {"id": "setup-pre-commit", "source": "C:/Users/54667/.agents/skills/setup-pre-commit/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No Husky or hook installation is part of this change", "evidence": ["Session skills catalog description"]}
+      "module_ids": [
+        "instructions",
+        "checker",
+        "adapters",
+        "tests",
+        "governance"
       ],
-      "recheck": "2026-10-14: scope includes the guidance installer and thin agent adapters; engineering-workflow and skill-creator remain applicable. Recheck if any audited issue is implemented."
-    },
-    "documentation_impact": {
-      "module-connectivity": {"when_paths": ["SKILL.md", "references/implementation-workflow.md", "references/project-agents-clauses.md", "scripts/install_agents_guidance.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "PERSISTENCE_TASK"]},
-      "public-guidance": {"when_paths": ["README.md", "AGENTS.md", "assets/templates/AGENTS.engineering.md"], "document_ids": ["SPEC", "CONTRACT", "PERSISTENCE_TASK"]},
-      "tests": {"when_paths": ["scripts/tests/test_guidance.py"], "document_ids": ["PERSISTENCE_TASK"]},
-      "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "PERSISTENCE_TASK"]},
-      "task-records": {"when_paths": ["docs", "planning/persistence-task.md"], "document_ids": ["PERSISTENCE_TASK"]}
-    }
-  }, {
-    "id": "TASK-ISSUES-01",
-    "requirement_ids": ["REQ-ISSUES-01", "REQ-ISSUES-02", "REQ-ISSUES-03", "REQ-ISSUES-04"],
-    "acceptance_ids": ["AT-ISSUES-01", "AT-ISSUES-02", "AT-ISSUES-03", "AT-ISSUES-04"],
-    "module_ids": ["instructions", "checker", "adapters", "tests", "governance"],
-    "depends_on": ["TASK-PERSISTENCE-01"],
-    "status": "complete",
-    "impact_document": "PERSISTENCE_TASK",
-    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
-    "approval_required": true,
-    "approval": {"status": "approved", "evidence": "planning/persistence-task.md"},
-    "skill_review": {
-      "catalog_source": "Codex session skills catalog on 2026-10-14 (Asia/Shanghai)",
-      "scope": "GitHub issue #2-#10 implementation, checker, adapter, bootstrap and documentation changes",
-      "checked_at": "2026-10-14T21:16:01+08:00",
-      "candidates": [
-        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "1.4.0 working tree; base 1aae5ed", "decision": "adopted", "reason": "User explicitly requested issue fixes under this workflow", "evidence": ["SKILL.md", "references/checker.md"]},
-        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "The maintained skill package and metadata are being updated", "evidence": ["SKILL.md"]},
-        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The change extends the existing regression suite rather than adopting a separate test-first workflow", "evidence": ["Session skills catalog description"]}
+      "depends_on": [],
+      "status": "complete",
+      "impact_document": "IMPACT",
+      "required_checks": [
+        "TEST",
+        "COMPILE"
       ],
-      "recheck": "Scope expanded from persistence audit to issue implementation; checker, adapter and bootstrap paths were re-reviewed."
-    },
-    "documentation_impact": {
-      "module-connectivity": {"when_paths": ["scripts/check_project.py", "scripts/extract_sqlite.py", "scripts/extract_database.py", "scripts/init_manifest.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "PERSISTENCE_TASK"]},
-      "public-guidance": {"when_paths": ["README.md", "SKILL.md", "AGENTS.md", "agents", "references", "assets/templates", "scripts/install_agents_guidance.py", "VERSION", "CHANGELOG.md", "LICENSE"], "document_ids": ["SPEC", "CONTRACT", "PERSISTENCE_TASK"]},
-      "tests": {"when_paths": ["scripts/tests"], "document_ids": ["PERSISTENCE_TASK"]},
-      "control-plane": {"when_paths": ["engineering-manifest.json", ".github"], "document_ids": ["MAP", "PERSISTENCE_TASK"]}
-    }
-  }, {
-    "id": "TASK-ISSUES-02",
-    "requirement_ids": ["REQ-ISSUES-05", "REQ-ISSUES-06", "REQ-ISSUES-07"],
-    "acceptance_ids": ["AT-ISSUES-05", "AT-ISSUES-06", "AT-ISSUES-07"],
-    "module_ids": ["instructions", "checker", "tests", "governance"],
-    "depends_on": ["TASK-ISSUES-01"],
-    "status": "complete",
-    "impact_document": "ISSUES_TASK",
-    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
-    "approval_required": true,
-    "approval": {"status": "approved", "evidence": "planning/issues-11-13-task.md"},
-    "skill_review": {
-      "catalog_source": "Codex Skills catalog available in this session",
-      "scope": "GitHub issues #11-#13, checker path portability, segment globs, common documentation-impact parents, tests and documentation",
-      "checked_at": "2026-10-15T01:36:22+08:00",
-      "candidates": [
-        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "1.4.0", "decision": "adopted", "reason": "User explicitly requested issue implementation under this workflow; read the skill and applicable references", "evidence": ["SKILL.md", "references/checker.md", "references/implementation-workflow.md", "references/project-documentation.md"]},
-        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Public checker behavior needs regression coverage; read SKILL.md, tests.md and mocking.md", "evidence": ["SKILL.md", "tests.md", "mocking.md"]},
-        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No skill package structure or metadata change is in scope", "evidence": ["Session skills catalog"]},
-        {"id": "planning-with-files", "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "Existing manifest and this task record are the authoritative state", "evidence": ["Session skills catalog", "engineering-manifest.json"]}
-      ],
-      "recheck": "2026-10-15: scope expanded from audit to implementation of #11-#13; TDD adopted and common-parent/glob decisions recorded in planning/issues-11-13-task.md. Recheck if the grammar or protected workflow changes."
-    },
-    "documentation_impact": {
-      "module-connectivity": {"when_paths": ["scripts/check_project.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "ISSUES_TASK"]},
-      "public-guidance": {"when_paths": ["README.md", "references", "assets/templates"], "document_ids": ["SPEC", "CONTRACT", "ISSUES_TASK"]},
-      "tests": {"when_paths": ["scripts/tests"], "document_ids": ["ISSUES_TASK"]},
-      "control-plane": {"when_paths": ["engineering-manifest.json", ".github"], "document_ids": ["MAP", "ISSUES_TASK"]},
-      "task-records": {"when_paths": ["planning/issues-11-13-task.md", "planning/persistence-task.md"], "document_ids": ["ISSUES_TASK"]}
-    }
-  }, {
-    "id": "TASK-ISSUES-03",
-    "requirement_ids": ["REQ-ISSUES-08"],
-    "acceptance_ids": ["AT-ISSUES-08"],
-    "module_ids": ["instructions", "governance"],
-    "depends_on": ["TASK-ISSUES-02"],
-    "status": "complete",
-    "impact_document": "AUTO_REVIEW_TASK",
-    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
-    "approval_required": true,
-    "approval": {"status": "approved", "evidence": "planning/issues-14-auto-review-task.md"},
-    "skill_review": {
-      "catalog_source": "Codex Skills catalog available in this session",
-      "scope": "Automatic protected-path review, PR review linkage, environment approval and aggregate Actions result",
-      "checked_at": "2026-10-15T02:00:00+08:00",
-      "candidates": [
-        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "1.4.0", "decision": "adopted", "reason": "User selected automatic environment review; protected workflow and task-state rules apply", "evidence": ["SKILL.md", "references/checker.md", "references/implementation-workflow.md"]},
-        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No checker behavior change; workflow orchestration is verified with parsing and hosted runs", "evidence": ["Session skills catalog"]},
-        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "No skill package structure change", "evidence": ["Session skills catalog"]}
-      ],
-      "recheck": "2026-10-15: refined from automatic push environment review to PR-review-linked exact-commit review; ordinary/fork jobs receive no approval value."
-    },
-    "documentation_impact": {
-      "module-connectivity": {"when_paths": [".github/workflows/quality.yml"], "document_ids": ["MAP", "FLOW", "CONTRACT", "AUTO_REVIEW_TASK"]},
-      "public-guidance": {"when_paths": ["README.md", "references", ".github/CODEOWNERS"], "document_ids": ["SPEC", "CONTRACT", "AUTO_REVIEW_TASK"]},
-      "control-plane": {"when_paths": [".github", "engineering-manifest.json"], "document_ids": ["MAP", "AUTO_REVIEW_TASK"]},
-      "task-records": {"when_paths": ["planning/issues-14-auto-review-task.md"], "document_ids": ["AUTO_REVIEW_TASK"]}
-    }
-  }, {
-    "id": "TASK-ISSUES-04",
-    "requirement_ids": ["REQ-ISSUES-09", "REQ-ISSUES-10", "REQ-ISSUES-11"],
-    "acceptance_ids": ["AT-ISSUES-09", "AT-ISSUES-10", "AT-ISSUES-11"],
-    "module_ids": ["checker", "instructions", "tests", "governance"],
-    "depends_on": ["TASK-ISSUES-03"],
-    "status": "complete",
-    "impact_document": "ISSUES_SECURITY_TASK",
-    "required_checks": ["TEST", "COMPILE", "GUIDANCE-COMPILE"],
-    "approval_required": true,
-    "approval": {"status": "approved", "evidence": "planning/issues-14-16-task.md"},
-    "skill_review": {
-      "catalog_source": "Codex Skills catalog available in this session",
-      "scope": "GitHub issues #14-#16, checker process safety, bounded command output, release metadata protection, tests and documentation",
-      "checked_at": "2026-10-15T00:00:00+08:00",
-      "candidates": [
-        {"id": "engineering-workflow", "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md", "version_or_release_date": "1.4.0", "decision": "adopted", "reason": "User explicitly requested issue investigation under this workflow; it governs protected changes, impact records and verification", "evidence": ["SKILL.md", "references/checker.md", "references/implementation-workflow.md", "references/project-documentation.md"]},
-        {"id": "tdd", "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md", "version_or_release_date": "not provided", "decision": "adopted", "reason": "Checker process behavior needs public CLI regression tests", "evidence": ["SKILL.md", "tests.md", "mocking.md"]},
-        {"id": "skill-creator", "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "This task does not change skill package structure or metadata", "evidence": ["Session skills catalog"]},
-        {"id": "planning-with-files", "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md", "version_or_release_date": "not provided", "decision": "not-adopted", "reason": "The existing manifest and task record are the canonical state system", "evidence": ["Session skills catalog", "engineering-manifest.json"]}
-      ],
-      "recheck": "Scope includes #14-#16 and a protected manifest update; recheck before commit and after any output-limit or control-plane design change."
-    },
-    "documentation_impact": {
-      "module-connectivity": {"when_paths": ["scripts/check_project.py"], "document_ids": ["MAP", "FLOW", "CONTRACT", "ISSUES_SECURITY_TASK"]},
-      "public-guidance": {"when_paths": ["README.md", "references"], "document_ids": ["SPEC", "CONTRACT", "ISSUES_SECURITY_TASK"]},
-      "tests": {"when_paths": ["scripts/tests"], "document_ids": ["ISSUES_SECURITY_TASK"]},
-      "control-plane": {"when_paths": ["engineering-manifest.json"], "document_ids": ["MAP", "ISSUES_SECURITY_TASK"]},
-      "task-records": {"when_paths": ["planning/issues-14-16-task.md", "planning/persistence-task.md"], "document_ids": ["ISSUES_SECURITY_TASK"]}
-    }
-  }, {
-  "id": "TASK-STAGES-01",
-  "requirement_ids": [
-    "REQ-STAGES-01"
-  ],
-  "acceptance_ids": [
-    "AT-STAGES-01"
-  ],
-  "module_ids": [
-    "instructions",
-    "governance"
-  ],
-  "depends_on": [],
-  "status": "complete",
-  "impact_document": "STAGES_TASK",
-  "required_checks": [
-    "TEST",
-    "COMPILE",
-    "GUIDANCE-COMPILE"
-  ],
-  "approval_required": true,
-  "approval": {
-    "status": "approved",
-    "evidence": "planning/takeover-stages-task.md"
-  },
-  "skill_review": {
-    "catalog_source": "Current session Skills catalog",
-    "scope": "First takeover stages, persistent task recovery, documentation and 1.4.1 release metadata/publication",
-    "checked_at": "2026-10-15T19:10:40+08:00",
-    "candidates": [
-      {
-        "id": "engineering-workflow",
-        "source": "SKILL.md",
-        "version_or_release_date": "1.4.0 baseline; 1.4.1 proposed release",
-        "decision": "adopted",
-        "reason": "User requested clarifying the takeover sequence",
-        "evidence": [
-          "SKILL.md"
-        ]
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/baseline-review.md"
       },
-      {
-        "id": "skill-creator",
-        "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
-        "version_or_release_date": "not provided",
-        "decision": "adopted",
-        "reason": "Narrow skill instruction update and structural validation",
-        "evidence": [
-          "planning/takeover-stages-task.md"
-        ]
-      }
-    ],
-    "recheck": "2026-10-15: user authorized publishing current reviewed changes and updating version; skill-creator metadata guidance read; release impact and approval evidence recorded in task."
-  },
-  "documentation_impact": {
-    "stage-guidance": {
-      "when_paths": [
-        "SKILL.md",
-        "references",
-        "assets",
-        "README.md"
-      ],
-      "document_ids": [
-        "SPEC",
-        "MAP",
-        "FLOW",
-        "CONTRACT",
-        "STAGES_TASK"
-      ]
-    },
-    "governance": {
-      "when_paths": [
-        "AGENTS.md",
-        "engineering-manifest.json",
-        "planning",
-        "docs"
-      ],
-      "document_ids": [
-        "STAGES_TASK"
-      ]
-    },
-    "release-metadata": {
-      "when_paths": [
-        "VERSION",
-        "CHANGELOG.md",
-        "agents"
-      ],
-      "document_ids": [
-        "SPEC",
-        "MAP",
-        "FLOW",
-        "CONTRACT",
-        "STAGES_TASK"
-      ]
-    }
-  }
-},
-{
-  "id": "TASK-VERSION-01",
-  "requirement_ids": [
-    "REQ-VERSION-01",
-    "REQ-VERSION-02"
-  ],
-  "acceptance_ids": [
-    "AT-VERSION-01",
-    "AT-VERSION-02"
-  ],
-  "module_ids": [
-    "instructions",
-    "governance"
-  ],
-  "depends_on": [
-    "TASK-STAGES-01"
-  ],
-  "status": "complete",
-  "impact_document": "VERSION_TASK",
-  "required_checks": [
-    "TEST",
-    "COMPILE",
-    "GUIDANCE-COMPILE"
-  ],
-  "approval_required": true,
-  "approval": {
-    "status": "approved",
-    "evidence": "planning/version-policy-task.md"
-  },
-  "skill_review": {
-    "catalog_source": "Current session Skills catalog",
-    "scope": "Version/changelog delivery policy, instructions, task template and 1.4.2 candidate metadata",
-    "checked_at": "2026-10-15T19:30:42+08:00",
-    "candidates": [
-      {
-        "id": "engineering-workflow",
-        "source": "SKILL.md",
-        "version_or_release_date": "1.4.1 baseline; 1.4.2 published source batch",
-        "decision": "adopted",
-        "reason": "User requested version-policy update; preserve task state and verification",
-        "evidence": [
-          "SKILL.md",
-          "references/implementation-workflow.md",
-          "references/project-agents-clauses.md",
-          "references/checker.md"
-        ]
+      "skill_review": {
+        "catalog_source": "Codex skills catalog available in the maintenance session",
+        "scope": "skill structure, checker behavior, repository documentation, and test changes",
+        "checked_at": "2026-10-14T00:00:00+08:00",
+        "candidates": [
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Defines skill structure and validation for updating this skill",
+            "evidence": [
+              "SKILL.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Applies to checker behavior changes and regression tests",
+            "evidence": [
+              "SKILL.md"
+            ]
+          },
+          {
+            "id": "setup-pre-commit",
+            "source": "C:/Users/54667/.agents/skills/setup-pre-commit/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The repository already ships its own generic hook templates and is not adding Husky",
+            "evidence": [
+              "SKILL.md"
+            ]
+          }
+        ],
+        "recheck": "2026-10-14: protected-rule verification, plain-language review and local-only checks; same skill choices; skill-creator validation passed with local PyYAML; user approved the completed change and publication"
       },
-      {
-        "id": "skill-creator",
-        "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
-        "version_or_release_date": "not provided",
-        "decision": "adopted",
-        "reason": "Narrow skill update and metadata validation",
-        "evidence": [
-          "planning/version-policy-task.md"
-        ]
+      "documentation_impact": {
+        "module-connectivity": {
+          "when_paths": [
+            "SKILL.md",
+            "references",
+            "scripts/check_project.py",
+            "scripts/extract_database.py",
+            "scripts/extract_sqlite.py"
+          ],
+          "document_ids": [
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "IMPACT"
+          ]
+        },
+        "tests": {
+          "when_paths": [
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "IMPACT"
+          ]
+        },
+        "public-guidance": {
+          "when_paths": [
+            "README.md",
+            "agents",
+            "assets/templates"
+          ],
+          "document_ids": [
+            "CONTRACT",
+            "IMPACT"
+          ]
+        },
+        "database": {
+          "when_paths": [
+            "scripts/extract_database.py",
+            "scripts/extract_sqlite.py"
+          ],
+          "document_ids": [
+            "DB",
+            "FLOW",
+            "IMPACT"
+          ]
+        },
+        "control-plane": {
+          "when_paths": [
+            "engineering-manifest.json"
+          ],
+          "document_ids": [
+            "MAP",
+            "IMPACT",
+            "BASELINE"
+          ]
+        },
+        "baseline-docs": {
+          "when_paths": [
+            "docs",
+            "planning"
+          ],
+          "document_ids": [
+            "IMPACT"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            ".github",
+            ".gitignore"
+          ],
+          "document_ids": [
+            "SPEC",
+            "IMPACT"
+          ]
+        }
       }
-    ],
-    "recheck": "2026-10-15: user explicitly authorized committing/pushing this 1.4.2 batch; scope and unchanged checks/protections reviewed, see task approval and publication plan."
-  },
-  "documentation_impact": {
-    "version-guidance": {
-      "when_paths": [
-        "SKILL.md",
-        "references",
-        "assets/templates",
-        "README.md",
-        "agents",
-        "VERSION",
-        "CHANGELOG.md"
-      ],
-      "document_ids": [
-        "SPEC",
-        "MAP",
-        "FLOW",
-        "CONTRACT",
-        "VERSION_TASK"
-      ]
     },
-    "governance": {
-      "when_paths": [
-        "engineering-manifest.json",
-        "planning",
-        "docs"
+    {
+      "id": "TASK-PERSISTENCE-01",
+      "requirement_ids": [
+        "REQ-PERSIST-01",
+        "REQ-PERSIST-02",
+        "REQ-PERSIST-03"
       ],
-      "document_ids": [
-        "VERSION_TASK"
-      ]
-    }
-  }
-},
+      "acceptance_ids": [
+        "AT-PERSIST-01",
+        "AT-PERSIST-02",
+        "AT-PERSIST-03"
+      ],
+      "module_ids": [
+        "instructions",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "complete",
+      "impact_document": "PERSISTENCE_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/persistence-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Codex session skills catalog on 2026-10-14 (Asia/Shanghai)",
+        "scope": "GitHub issue audit, persistent project instructions, cross-agent references, installer and maintenance records",
+        "checked_at": "2026-10-14T21:16:01+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+            "version_or_release_date": "not provided; repository base commit 1aae5ed",
+            "decision": "adopted",
+            "reason": "Explicitly requested by the user; governs impact, state recovery, documentation and review",
+            "evidence": [
+              "SKILL.md",
+              "references/project-agents-clauses.md",
+              "references/implementation-workflow.md",
+              "references/checker.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Read for the scope and validation of an existing skill update",
+            "evidence": [
+              "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The existing manifest and this canonical task record already hold plan, decisions, progress and evidence; avoid a second state system",
+            "evidence": [
+              "Session skills catalog description",
+              "engineering-manifest.json",
+              "planning/persistence-task.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No test-first workflow was requested; verify the installer using the existing unittest suite",
+            "evidence": [
+              "Session skills catalog description"
+            ]
+          },
+          {
+            "id": "setup-pre-commit",
+            "source": "C:/Users/54667/.agents/skills/setup-pre-commit/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No Husky or hook installation is part of this change",
+            "evidence": [
+              "Session skills catalog description"
+            ]
+          }
+        ],
+        "recheck": "2026-10-14: scope includes the guidance installer and thin agent adapters; engineering-workflow and skill-creator remain applicable. Recheck if any audited issue is implemented."
+      },
+      "documentation_impact": {
+        "module-connectivity": {
+          "when_paths": [
+            "SKILL.md",
+            "references/implementation-workflow.md",
+            "references/project-agents-clauses.md",
+            "scripts/install_agents_guidance.py"
+          ],
+          "document_ids": [
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "PERSISTENCE_TASK"
+          ]
+        },
+        "public-guidance": {
+          "when_paths": [
+            "README.md",
+            "AGENTS.md",
+            "assets/templates/AGENTS.engineering.md"
+          ],
+          "document_ids": [
+            "SPEC",
+            "CONTRACT",
+            "PERSISTENCE_TASK"
+          ]
+        },
+        "tests": {
+          "when_paths": [
+            "scripts/tests/test_guidance.py"
+          ],
+          "document_ids": [
+            "PERSISTENCE_TASK"
+          ]
+        },
+        "control-plane": {
+          "when_paths": [
+            "engineering-manifest.json"
+          ],
+          "document_ids": [
+            "MAP",
+            "PERSISTENCE_TASK"
+          ]
+        },
+        "task-records": {
+          "when_paths": [
+            "docs",
+            "planning/persistence-task.md"
+          ],
+          "document_ids": [
+            "PERSISTENCE_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-ISSUES-01",
+      "requirement_ids": [
+        "REQ-ISSUES-01",
+        "REQ-ISSUES-02",
+        "REQ-ISSUES-03",
+        "REQ-ISSUES-04"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUES-01",
+        "AT-ISSUES-02",
+        "AT-ISSUES-03",
+        "AT-ISSUES-04"
+      ],
+      "module_ids": [
+        "instructions",
+        "checker",
+        "adapters",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-PERSISTENCE-01"
+      ],
+      "status": "complete",
+      "impact_document": "PERSISTENCE_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/persistence-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Codex session skills catalog on 2026-10-14 (Asia/Shanghai)",
+        "scope": "GitHub issue #2-#10 implementation, checker, adapter, bootstrap and documentation changes",
+        "checked_at": "2026-10-14T21:16:01+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+            "version_or_release_date": "1.4.0 working tree; base 1aae5ed",
+            "decision": "adopted",
+            "reason": "User explicitly requested issue fixes under this workflow",
+            "evidence": [
+              "SKILL.md",
+              "references/checker.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "The maintained skill package and metadata are being updated",
+            "evidence": [
+              "SKILL.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The change extends the existing regression suite rather than adopting a separate test-first workflow",
+            "evidence": [
+              "Session skills catalog description"
+            ]
+          }
+        ],
+        "recheck": "Scope expanded from persistence audit to issue implementation; checker, adapter and bootstrap paths were re-reviewed."
+      },
+      "documentation_impact": {
+        "module-connectivity": {
+          "when_paths": [
+            "scripts/check_project.py",
+            "scripts/extract_sqlite.py",
+            "scripts/extract_database.py",
+            "scripts/init_manifest.py"
+          ],
+          "document_ids": [
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "PERSISTENCE_TASK"
+          ]
+        },
+        "public-guidance": {
+          "when_paths": [
+            "README.md",
+            "SKILL.md",
+            "AGENTS.md",
+            "agents",
+            "references",
+            "assets/templates",
+            "scripts/install_agents_guidance.py",
+            "VERSION",
+            "CHANGELOG.md",
+            "LICENSE"
+          ],
+          "document_ids": [
+            "SPEC",
+            "CONTRACT",
+            "PERSISTENCE_TASK"
+          ]
+        },
+        "tests": {
+          "when_paths": [
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "PERSISTENCE_TASK"
+          ]
+        },
+        "control-plane": {
+          "when_paths": [
+            "engineering-manifest.json",
+            ".github"
+          ],
+          "document_ids": [
+            "MAP",
+            "PERSISTENCE_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-ISSUES-02",
+      "requirement_ids": [
+        "REQ-ISSUES-05",
+        "REQ-ISSUES-06",
+        "REQ-ISSUES-07"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUES-05",
+        "AT-ISSUES-06",
+        "AT-ISSUES-07"
+      ],
+      "module_ids": [
+        "instructions",
+        "checker",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-ISSUES-01"
+      ],
+      "status": "complete",
+      "impact_document": "ISSUES_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/issues-11-13-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Codex Skills catalog available in this session",
+        "scope": "GitHub issues #11-#13, checker path portability, segment globs, common documentation-impact parents, tests and documentation",
+        "checked_at": "2026-10-15T01:36:22+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+            "version_or_release_date": "1.4.0",
+            "decision": "adopted",
+            "reason": "User explicitly requested issue implementation under this workflow; read the skill and applicable references",
+            "evidence": [
+              "SKILL.md",
+              "references/checker.md",
+              "references/implementation-workflow.md",
+              "references/project-documentation.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Public checker behavior needs regression coverage; read SKILL.md, tests.md and mocking.md",
+            "evidence": [
+              "SKILL.md",
+              "tests.md",
+              "mocking.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No skill package structure or metadata change is in scope",
+            "evidence": [
+              "Session skills catalog"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Existing manifest and this task record are the authoritative state",
+            "evidence": [
+              "Session skills catalog",
+              "engineering-manifest.json"
+            ]
+          }
+        ],
+        "recheck": "2026-10-15: scope expanded from audit to implementation of #11-#13; TDD adopted and common-parent/glob decisions recorded in planning/issues-11-13-task.md. Recheck if the grammar or protected workflow changes."
+      },
+      "documentation_impact": {
+        "module-connectivity": {
+          "when_paths": [
+            "scripts/check_project.py"
+          ],
+          "document_ids": [
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "ISSUES_TASK"
+          ]
+        },
+        "public-guidance": {
+          "when_paths": [
+            "README.md",
+            "references",
+            "assets/templates"
+          ],
+          "document_ids": [
+            "SPEC",
+            "CONTRACT",
+            "ISSUES_TASK"
+          ]
+        },
+        "tests": {
+          "when_paths": [
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "ISSUES_TASK"
+          ]
+        },
+        "control-plane": {
+          "when_paths": [
+            "engineering-manifest.json",
+            ".github"
+          ],
+          "document_ids": [
+            "MAP",
+            "ISSUES_TASK"
+          ]
+        },
+        "task-records": {
+          "when_paths": [
+            "planning/issues-11-13-task.md",
+            "planning/persistence-task.md"
+          ],
+          "document_ids": [
+            "ISSUES_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-ISSUES-03",
+      "requirement_ids": [
+        "REQ-ISSUES-08"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUES-08"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-ISSUES-02"
+      ],
+      "status": "complete",
+      "impact_document": "AUTO_REVIEW_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/issues-14-auto-review-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Codex Skills catalog available in this session",
+        "scope": "Automatic protected-path review, PR review linkage, environment approval and aggregate Actions result",
+        "checked_at": "2026-10-15T02:00:00+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+            "version_or_release_date": "1.4.0",
+            "decision": "adopted",
+            "reason": "User selected automatic environment review; protected workflow and task-state rules apply",
+            "evidence": [
+              "SKILL.md",
+              "references/checker.md",
+              "references/implementation-workflow.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No checker behavior change; workflow orchestration is verified with parsing and hosted runs",
+            "evidence": [
+              "Session skills catalog"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No skill package structure change",
+            "evidence": [
+              "Session skills catalog"
+            ]
+          }
+        ],
+        "recheck": "2026-10-15: refined from automatic push environment review to PR-review-linked exact-commit review; ordinary/fork jobs receive no approval value."
+      },
+      "documentation_impact": {
+        "module-connectivity": {
+          "when_paths": [
+            ".github/workflows/quality.yml"
+          ],
+          "document_ids": [
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "AUTO_REVIEW_TASK"
+          ]
+        },
+        "public-guidance": {
+          "when_paths": [
+            "README.md",
+            "references",
+            ".github/CODEOWNERS"
+          ],
+          "document_ids": [
+            "SPEC",
+            "CONTRACT",
+            "AUTO_REVIEW_TASK"
+          ]
+        },
+        "control-plane": {
+          "when_paths": [
+            ".github",
+            "engineering-manifest.json"
+          ],
+          "document_ids": [
+            "MAP",
+            "AUTO_REVIEW_TASK"
+          ]
+        },
+        "task-records": {
+          "when_paths": [
+            "planning/issues-14-auto-review-task.md"
+          ],
+          "document_ids": [
+            "AUTO_REVIEW_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-ISSUES-04",
+      "requirement_ids": [
+        "REQ-ISSUES-09",
+        "REQ-ISSUES-10",
+        "REQ-ISSUES-11"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUES-09",
+        "AT-ISSUES-10",
+        "AT-ISSUES-11"
+      ],
+      "module_ids": [
+        "checker",
+        "instructions",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-ISSUES-03"
+      ],
+      "status": "complete",
+      "impact_document": "ISSUES_SECURITY_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/issues-14-16-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Codex Skills catalog available in this session",
+        "scope": "GitHub issues #14-#16, checker process safety, bounded command output, release metadata protection, tests and documentation",
+        "checked_at": "2026-10-15T00:00:00+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+            "version_or_release_date": "1.4.0",
+            "decision": "adopted",
+            "reason": "User explicitly requested issue investigation under this workflow; it governs protected changes, impact records and verification",
+            "evidence": [
+              "SKILL.md",
+              "references/checker.md",
+              "references/implementation-workflow.md",
+              "references/project-documentation.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Checker process behavior needs public CLI regression tests",
+            "evidence": [
+              "SKILL.md",
+              "tests.md",
+              "mocking.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "This task does not change skill package structure or metadata",
+            "evidence": [
+              "Session skills catalog"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The existing manifest and task record are the canonical state system",
+            "evidence": [
+              "Session skills catalog",
+              "engineering-manifest.json"
+            ]
+          }
+        ],
+        "recheck": "Scope includes #14-#16 and a protected manifest update; recheck before commit and after any output-limit or control-plane design change."
+      },
+      "documentation_impact": {
+        "module-connectivity": {
+          "when_paths": [
+            "scripts/check_project.py"
+          ],
+          "document_ids": [
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "ISSUES_SECURITY_TASK"
+          ]
+        },
+        "public-guidance": {
+          "when_paths": [
+            "README.md",
+            "references"
+          ],
+          "document_ids": [
+            "SPEC",
+            "CONTRACT",
+            "ISSUES_SECURITY_TASK"
+          ]
+        },
+        "tests": {
+          "when_paths": [
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "ISSUES_SECURITY_TASK"
+          ]
+        },
+        "control-plane": {
+          "when_paths": [
+            "engineering-manifest.json"
+          ],
+          "document_ids": [
+            "MAP",
+            "ISSUES_SECURITY_TASK"
+          ]
+        },
+        "task-records": {
+          "when_paths": [
+            "planning/issues-14-16-task.md",
+            "planning/persistence-task.md"
+          ],
+          "document_ids": [
+            "ISSUES_SECURITY_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-STAGES-01",
+      "requirement_ids": [
+        "REQ-STAGES-01"
+      ],
+      "acceptance_ids": [
+        "AT-STAGES-01"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "complete",
+      "impact_document": "STAGES_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/takeover-stages-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "scope": "First takeover stages, persistent task recovery, documentation and 1.4.1 release metadata/publication",
+        "checked_at": "2026-10-15T19:10:40+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.4.0 baseline; 1.4.1 proposed release",
+            "decision": "adopted",
+            "reason": "User requested clarifying the takeover sequence",
+            "evidence": [
+              "SKILL.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Narrow skill instruction update and structural validation",
+            "evidence": [
+              "planning/takeover-stages-task.md"
+            ]
+          }
+        ],
+        "recheck": "2026-10-15: user authorized publishing current reviewed changes and updating version; skill-creator metadata guidance read; release impact and approval evidence recorded in task."
+      },
+      "documentation_impact": {
+        "stage-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "references",
+            "assets",
+            "README.md"
+          ],
+          "document_ids": [
+            "SPEC",
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "STAGES_TASK"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            "AGENTS.md",
+            "engineering-manifest.json",
+            "planning",
+            "docs"
+          ],
+          "document_ids": [
+            "STAGES_TASK"
+          ]
+        },
+        "release-metadata": {
+          "when_paths": [
+            "VERSION",
+            "CHANGELOG.md",
+            "agents"
+          ],
+          "document_ids": [
+            "SPEC",
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "STAGES_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-VERSION-01",
+      "requirement_ids": [
+        "REQ-VERSION-01",
+        "REQ-VERSION-02"
+      ],
+      "acceptance_ids": [
+        "AT-VERSION-01",
+        "AT-VERSION-02"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-STAGES-01"
+      ],
+      "status": "complete",
+      "impact_document": "VERSION_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/version-policy-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "scope": "Version/changelog delivery policy, instructions, task template and 1.4.2 candidate metadata",
+        "checked_at": "2026-10-15T19:30:42+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.4.1 baseline; 1.4.2 published source batch",
+            "decision": "adopted",
+            "reason": "User requested version-policy update; preserve task state and verification",
+            "evidence": [
+              "SKILL.md",
+              "references/implementation-workflow.md",
+              "references/project-agents-clauses.md",
+              "references/checker.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Narrow skill update and metadata validation",
+            "evidence": [
+              "planning/version-policy-task.md"
+            ]
+          }
+        ],
+        "recheck": "2026-10-15: user explicitly authorized committing/pushing this 1.4.2 batch; scope and unchanged checks/protections reviewed, see task approval and publication plan."
+      },
+      "documentation_impact": {
+        "version-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "references",
+            "assets/templates",
+            "README.md",
+            "agents",
+            "VERSION",
+            "CHANGELOG.md"
+          ],
+          "document_ids": [
+            "SPEC",
+            "MAP",
+            "FLOW",
+            "CONTRACT",
+            "VERSION_TASK"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning",
+            "docs"
+          ],
+          "document_ids": [
+            "VERSION_TASK"
+          ]
+        }
+      }
+    },
     {
       "id": "TASK-LINKED-ARTIFACTS-01",
       "requirement_ids": [
@@ -940,6 +2018,126 @@
         "status": "approved",
         "evidence": "planning/linked-artifact-model-task.md"
       }
+    },
+    {
+      "id": "TASK-CONTEXT-RELEASE-01",
+      "requirement_ids": [
+        "REQ-CONTEXT-01",
+        "REQ-CONTEXT-02",
+        "REQ-CONTEXT-03",
+        "REQ-CONTEXT-04",
+        "REQ-CONTEXT-05"
+      ],
+      "acceptance_ids": [
+        "AT-CONTEXT-01",
+        "AT-CONTEXT-02",
+        "AT-CONTEXT-03",
+        "AT-CONTEXT-04",
+        "AT-CONTEXT-05"
+      ],
+      "module_ids": [
+        "source-context",
+        "instructions",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-LINKED-ARTIFACTS-01"
+      ],
+      "status": "complete",
+      "impact_document": "CONTEXT_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/source-context-task.md"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "SPEC",
+        "plan": "PLAN",
+        "task": "CONTEXT_TASK",
+        "traceability": "TRACE"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-18",
+        "scope": "User-authorized source helper combinations, two read-only corpora and publication",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.5.0 input / 1.6.0 output",
+            "decision": "adopted",
+            "reason": "Explicit user instruction and project authority"
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Add scoped helper resources and preserve original workflow semantics"
+          }
+        ],
+        "evidence": "planning/source-context-task.md"
+      },
+      "documentation_impact": {
+        "helper": {
+          "when_paths": [
+            "scripts/collect_code_context.py",
+            "scripts/source_relations.py",
+            "scripts/analyze_references.mjs",
+            "scripts/rust_references.py",
+            "scripts/reference-requirements.txt",
+            "scripts/context-runtime/package.json",
+            "scripts/context-runtime/package-lock.json",
+            "assets/licenses/gitingest-MIT.txt",
+            "assets/licenses/gitdiagram-MIT.txt",
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "CONTEXT_TASK",
+            "CONTEXT_EVIDENCE",
+            "TRACE"
+          ]
+        },
+        "guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents",
+            "references/source-context.md",
+            ".github/workflows/quality.yml",
+            "engineering-manifest.json",
+            "docs",
+            "planning",
+            ".gitignore"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "CONTEXT_TASK",
+            "CONTEXT_EVIDENCE",
+            "TRACE"
+          ]
+        }
+      }
     }
   ],
   "control_plane": {
@@ -968,8 +2166,12 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "9df566229c976e3f3523007934e9f079550c770f plus local 1.5.0 worktree; source fingerprint and validation in baseline evidence",
-    "scope": "BASELINE-LINKED-02: instructions, templates, initializer, checker, tests and current authority; historical review does not approve this revision"
+    "source_revision": "c21e715 input; current source-context 1.6.0 working tree, exact evidence in CONTEXT_TASK",
+    "scope": "BASELINE-CONTEXT-03: existing workflow preserved plus local source helpers and explicit optional parsers/views"
   },
-  "exclude_paths": [".git", "work", "__pycache__"]
+  "exclude_paths": [
+    ".git",
+    "work",
+    "__pycache__"
+  ]
 }

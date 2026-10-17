@@ -1,0 +1,1043 @@
+{
+  "revision": "SOURCE-CONTEXT-EVIDENCE-01",
+  "observed_at": "2026-10-18T06:31:06.570777+08:00",
+  "upstream_sources": {
+    "gitingest": "4e259a02fe72115bee538271622f1234a81c8e1a",
+    "gitdiagram": "310e2e696b1953cec0e76560cad5e9cd7ca5d964"
+  },
+  "corpora": {
+    "pi": {
+      "files": 1941,
+      "bytes": 24880527,
+      "fingerprint": "0b980e385667009954c54051d500e0409de7b2bb94f22ab3c3e919652dbaab68",
+      "hashes_unchanged": true,
+      "git_head": "c268154ca1171c2f9eefe75d3d7372a68aada2d5",
+      "git_status": ""
+    },
+    "codex": {
+      "files": 6739,
+      "bytes": 70764425,
+      "fingerprint": "057870dd92be16ce30a318d91c66843ed4fc31ec780db7b044eb070a0a5489db",
+      "hashes_unchanged": true,
+      "git_head": "03147407e3a078c559f92f9fbad39d13541c3049",
+      "git_status": ""
+    }
+  },
+  "combinations": {
+    "P1": "global content/refs first, then task selection, all views",
+    "P2": "inventory -> task full text -> refs -> all views",
+    "P3": "inventory -> entry refs -> direct-target expanded full text -> all views",
+    "P4": "inventory -> task full text -> refs only for cross/review -> summary/table/diagram for actual scenario"
+  },
+  "execution_count": 24,
+  "results": [
+    {
+      "corpus": "pi",
+      "scenario": "small",
+      "plan": "P1",
+      "seconds": 8.15528,
+      "bytes_read": 24889782,
+      "files_in_pack": 1,
+      "requested_files": 1,
+      "target_contents_valid": true,
+      "reference_source_count": 1928,
+      "target_reference_count": 0,
+      "analysis_summary": {
+        "source_files": 1664,
+        "references": 8779,
+        "resolved": 5992,
+        "type_only": 1341,
+        "unresolved": 1241,
+        "unknown": 9,
+        "unsupported_files": 264
+      },
+      "pack_tokens": 2449,
+      "optional_view_tokens": 342237,
+      "model_material_tokens": 344686,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      }
+    },
+    {
+      "corpus": "pi",
+      "scenario": "small",
+      "plan": "P2",
+      "seconds": 1.40855,
+      "bytes_read": 9255,
+      "files_in_pack": 1,
+      "requested_files": 1,
+      "target_contents_valid": true,
+      "reference_source_count": 1,
+      "target_reference_count": 0,
+      "analysis_summary": {
+        "source_files": 1,
+        "references": 0,
+        "resolved": 0,
+        "type_only": 0,
+        "unresolved": 0,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 2449,
+      "optional_view_tokens": 60,
+      "model_material_tokens": 2509,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      }
+    },
+    {
+      "corpus": "pi",
+      "scenario": "small",
+      "plan": "P3",
+      "seconds": 1.7669,
+      "bytes_read": 18510,
+      "files_in_pack": 1,
+      "requested_files": 1,
+      "target_contents_valid": true,
+      "reference_source_count": 1,
+      "target_reference_count": 0,
+      "analysis_summary": {
+        "source_files": 1,
+        "references": 0,
+        "resolved": 0,
+        "type_only": 0,
+        "unresolved": 0,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 2449,
+      "optional_view_tokens": 60,
+      "model_material_tokens": 2509,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      }
+    },
+    {
+      "corpus": "pi",
+      "scenario": "small",
+      "plan": "P4",
+      "seconds": 1.08548,
+      "bytes_read": 9255,
+      "files_in_pack": 1,
+      "requested_files": 1,
+      "target_contents_valid": true,
+      "reference_source_count": 0,
+      "target_reference_count": 0,
+      "analysis_summary": null,
+      "pack_tokens": 2449,
+      "optional_view_tokens": 0,
+      "model_material_tokens": 2449,
+      "views": {
+        "status": "not_needed_for_small_local_edit"
+      }
+    },
+    {
+      "corpus": "pi",
+      "scenario": "cross",
+      "plan": "P1",
+      "seconds": 8.26173,
+      "bytes_read": 24903958,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 1928,
+      "target_reference_count": 10,
+      "analysis_summary": {
+        "source_files": 1664,
+        "references": 8779,
+        "resolved": 5992,
+        "type_only": 1341,
+        "unresolved": 1241,
+        "unknown": 9,
+        "unsupported_files": 264
+      },
+      "pack_tokens": 5900,
+      "optional_view_tokens": 342237,
+      "model_material_tokens": 348137,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "pi",
+      "scenario": "cross",
+      "plan": "P2",
+      "seconds": 1.49077,
+      "bytes_read": 23431,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 3,
+      "target_reference_count": 10,
+      "analysis_summary": {
+        "source_files": 3,
+        "references": 15,
+        "resolved": 10,
+        "type_only": 3,
+        "unresolved": 1,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 5900,
+      "optional_view_tokens": 1075,
+      "model_material_tokens": 6975,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "pi",
+      "scenario": "cross",
+      "plan": "P3",
+      "seconds": 1.95501,
+      "bytes_read": 137353,
+      "files_in_pack": 10,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 10,
+      "target_reference_count": 10,
+      "analysis_summary": {
+        "source_files": 10,
+        "references": 100,
+        "resolved": 90,
+        "type_only": 48,
+        "unresolved": 4,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 29413,
+      "optional_view_tokens": 8742,
+      "model_material_tokens": 38155,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "pi",
+      "scenario": "cross",
+      "plan": "P4",
+      "seconds": 1.47993,
+      "bytes_read": 23431,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 3,
+      "target_reference_count": 10,
+      "analysis_summary": {
+        "source_files": 3,
+        "references": 15,
+        "resolved": 10,
+        "type_only": 3,
+        "unresolved": 1,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 5900,
+      "optional_view_tokens": 579,
+      "model_material_tokens": 6479,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "not_requested",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "pi",
+      "scenario": "review",
+      "plan": "P1",
+      "seconds": 8.33807,
+      "bytes_read": 24951705,
+      "files_in_pack": 4,
+      "requested_files": 4,
+      "target_contents_valid": true,
+      "reference_source_count": 1928,
+      "target_reference_count": 10,
+      "analysis_summary": {
+        "source_files": 1664,
+        "references": 8779,
+        "resolved": 5992,
+        "type_only": 1341,
+        "unresolved": 1241,
+        "unknown": 9,
+        "unsupported_files": 264
+      },
+      "pack_tokens": 16659,
+      "optional_view_tokens": 342237,
+      "model_material_tokens": 358896,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "pi",
+      "scenario": "review",
+      "plan": "P2",
+      "seconds": 2.17192,
+      "bytes_read": 71178,
+      "files_in_pack": 4,
+      "requested_files": 4,
+      "target_contents_valid": true,
+      "reference_source_count": 4,
+      "target_reference_count": 10,
+      "analysis_summary": {
+        "source_files": 4,
+        "references": 11,
+        "resolved": 10,
+        "type_only": 5,
+        "unresolved": 1,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 16659,
+      "optional_view_tokens": 875,
+      "model_material_tokens": 17534,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "pi",
+      "scenario": "review",
+      "plan": "P3",
+      "seconds": 3.41008,
+      "bytes_read": 103034,
+      "files_in_pack": 5,
+      "requested_files": 4,
+      "target_contents_valid": true,
+      "reference_source_count": 5,
+      "target_reference_count": 10,
+      "analysis_summary": {
+        "source_files": 5,
+        "references": 45,
+        "resolved": 42,
+        "type_only": 17,
+        "unresolved": 3,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 17244,
+      "optional_view_tokens": 3979,
+      "model_material_tokens": 21223,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "pi",
+      "scenario": "review",
+      "plan": "P4",
+      "seconds": 2.8164,
+      "bytes_read": 71178,
+      "files_in_pack": 4,
+      "requested_files": 4,
+      "target_contents_valid": true,
+      "reference_source_count": 4,
+      "target_reference_count": 10,
+      "analysis_summary": {
+        "source_files": 4,
+        "references": 11,
+        "resolved": 10,
+        "type_only": 5,
+        "unresolved": 1,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 16659,
+      "optional_view_tokens": 366,
+      "model_material_tokens": 17025,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "codex",
+      "scenario": "small",
+      "plan": "P1",
+      "seconds": 35.82757,
+      "bytes_read": 70763403,
+      "files_in_pack": 1,
+      "requested_files": 1,
+      "target_contents_valid": true,
+      "reference_source_count": 6722,
+      "target_reference_count": 0,
+      "analysis_summary": {
+        "source_files": 4175,
+        "references": 70110,
+        "resolved": 44079,
+        "type_only": 0,
+        "unresolved": 25978,
+        "unknown": 6,
+        "unsupported_files": 2543
+      },
+      "pack_tokens": 1217,
+      "optional_view_tokens": 3182834,
+      "model_material_tokens": 3184051,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      }
+    },
+    {
+      "corpus": "codex",
+      "scenario": "small",
+      "plan": "P2",
+      "seconds": 4.18466,
+      "bytes_read": 5129,
+      "files_in_pack": 1,
+      "requested_files": 1,
+      "target_contents_valid": true,
+      "reference_source_count": 1,
+      "target_reference_count": 0,
+      "analysis_summary": {
+        "source_files": 1,
+        "references": 7,
+        "resolved": 0,
+        "type_only": 0,
+        "unresolved": 7,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 1217,
+      "optional_view_tokens": 60,
+      "model_material_tokens": 1277,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      }
+    },
+    {
+      "corpus": "codex",
+      "scenario": "small",
+      "plan": "P3",
+      "seconds": 4.53776,
+      "bytes_read": 10258,
+      "files_in_pack": 1,
+      "requested_files": 1,
+      "target_contents_valid": true,
+      "reference_source_count": 1,
+      "target_reference_count": 0,
+      "analysis_summary": {
+        "source_files": 1,
+        "references": 7,
+        "resolved": 0,
+        "type_only": 0,
+        "unresolved": 7,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 1217,
+      "optional_view_tokens": 60,
+      "model_material_tokens": 1277,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      }
+    },
+    {
+      "corpus": "codex",
+      "scenario": "small",
+      "plan": "P4",
+      "seconds": 3.75513,
+      "bytes_read": 5129,
+      "files_in_pack": 1,
+      "requested_files": 1,
+      "target_contents_valid": true,
+      "reference_source_count": 0,
+      "target_reference_count": 0,
+      "analysis_summary": null,
+      "pack_tokens": 1217,
+      "optional_view_tokens": 0,
+      "model_material_tokens": 1217,
+      "views": {
+        "status": "not_needed_for_small_local_edit"
+      }
+    },
+    {
+      "corpus": "codex",
+      "scenario": "cross",
+      "plan": "P1",
+      "seconds": 35.1466,
+      "bytes_read": 70950188,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 6722,
+      "target_reference_count": 91,
+      "analysis_summary": {
+        "source_files": 4175,
+        "references": 70110,
+        "resolved": 44079,
+        "type_only": 0,
+        "unresolved": 25978,
+        "unknown": 6,
+        "unsupported_files": 2543
+      },
+      "pack_tokens": 41105,
+      "optional_view_tokens": 3182834,
+      "model_material_tokens": 3223939,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "codex",
+      "scenario": "cross",
+      "plan": "P2",
+      "seconds": 9.09952,
+      "bytes_read": 191914,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 3,
+      "target_reference_count": 91,
+      "analysis_summary": {
+        "source_files": 2,
+        "references": 115,
+        "resolved": 91,
+        "type_only": 0,
+        "unresolved": 24,
+        "unknown": 0,
+        "unsupported_files": 1
+      },
+      "pack_tokens": 41105,
+      "optional_view_tokens": 8133,
+      "model_material_tokens": 49238,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "codex",
+      "scenario": "cross",
+      "plan": "P3",
+      "seconds": 17.71333,
+      "bytes_read": 1730063,
+      "files_in_pack": 44,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 44,
+      "target_reference_count": 91,
+      "analysis_summary": {
+        "source_files": 43,
+        "references": 2130,
+        "resolved": 1738,
+        "type_only": 0,
+        "unresolved": 392,
+        "unknown": 0,
+        "unsupported_files": 1
+      },
+      "pack_tokens": 324220,
+      "optional_view_tokens": 108876,
+      "model_material_tokens": 433096,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "codex",
+      "scenario": "cross",
+      "plan": "P4",
+      "seconds": 9.83269,
+      "bytes_read": 191914,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 3,
+      "target_reference_count": 91,
+      "analysis_summary": {
+        "source_files": 2,
+        "references": 115,
+        "resolved": 91,
+        "type_only": 0,
+        "unresolved": 24,
+        "unknown": 0,
+        "unsupported_files": 1
+      },
+      "pack_tokens": 41105,
+      "optional_view_tokens": 5686,
+      "model_material_tokens": 46791,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "not_requested",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "codex",
+      "scenario": "review",
+      "plan": "P1",
+      "seconds": 87.03757,
+      "bytes_read": 71177088,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 6722,
+      "target_reference_count": 609,
+      "analysis_summary": {
+        "source_files": 4175,
+        "references": 70110,
+        "resolved": 44079,
+        "type_only": 0,
+        "unresolved": 25978,
+        "unknown": 6,
+        "unsupported_files": 2543
+      },
+      "pack_tokens": 86129,
+      "optional_view_tokens": 3182834,
+      "model_material_tokens": 3268963,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "codex",
+      "scenario": "review",
+      "plan": "P2",
+      "seconds": 9.82259,
+      "bytes_read": 418814,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 3,
+      "target_reference_count": 609,
+      "analysis_summary": {
+        "source_files": 3,
+        "references": 670,
+        "resolved": 609,
+        "type_only": 0,
+        "unresolved": 61,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 86129,
+      "optional_view_tokens": 37592,
+      "model_material_tokens": 123721,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "codex",
+      "scenario": "review",
+      "plan": "P3",
+      "seconds": 19.17747,
+      "bytes_read": 2014291,
+      "files_in_pack": 97,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 97,
+      "target_reference_count": 609,
+      "analysis_summary": {
+        "source_files": 97,
+        "references": 3498,
+        "resolved": 2746,
+        "type_only": 0,
+        "unresolved": 752,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 414858,
+      "optional_view_tokens": 177334,
+      "model_material_tokens": 592192,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    },
+    {
+      "corpus": "codex",
+      "scenario": "review",
+      "plan": "P4",
+      "seconds": 9.83276,
+      "bytes_read": 418814,
+      "files_in_pack": 3,
+      "requested_files": 3,
+      "target_contents_valid": true,
+      "reference_source_count": 3,
+      "target_reference_count": 609,
+      "analysis_summary": {
+        "source_files": 3,
+        "references": 670,
+        "resolved": 609,
+        "type_only": 0,
+        "unresolved": 61,
+        "unknown": 0,
+        "unsupported_files": 0
+      },
+      "pack_tokens": 86129,
+      "optional_view_tokens": 0,
+      "model_material_tokens": 86129,
+      "views": {
+        "status": "complete_for_read_supported_files",
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "view_limit; full graph data retained",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "target_reference_parity": true
+    }
+  ],
+  "selected": "P4 task/scenario-first, P3 bounded expansion only for concrete unknowns; all seven helper capabilities remain available",
+  "hard_constraints": "All target full text/hash checks and relevant-source reference parity passed in the four combinations",
+  "workflow_invariant": "Original stage/review/checker text and rules preserved except one short optional-helper route and version",
+  "validation": {
+    "local_change_check": "pass",
+    "test_count": 157,
+    "evidence": [
+      {
+        "rule_id": "manifest",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "declared IDs, references, graph and baseline",
+        "evidence": [
+          "manifest validated"
+        ],
+        "limitations": [
+          "Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."
+        ]
+      },
+      {
+        "rule_id": "change-scope",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "Git base diff including deletions, untracked paths and declared documentation impact",
+        "evidence": {
+          "uncovered": [],
+          "excluded": [],
+          "allowed": [
+            "scripts/collect_code_context.py",
+            "scripts/source_relations.py",
+            "scripts/analyze_references.mjs",
+            "scripts/rust_references.py",
+            "scripts/reference-requirements.txt",
+            "scripts/context-runtime/package.json",
+            "scripts/context-runtime/package-lock.json",
+            "assets/licenses/gitingest-MIT.txt",
+            "assets/licenses/gitdiagram-MIT.txt",
+            "docs/module-map.md",
+            "SKILL.md",
+            "README.md",
+            "AGENTS.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "LICENSE",
+            "scripts/install_agents_guidance.py",
+            "scripts/init_manifest.py",
+            "agents",
+            "assets",
+            "references",
+            "docs/module-map.md",
+            "scripts/tests",
+            "docs/module-map.md",
+            "engineering-manifest.json",
+            ".gitignore",
+            "docs",
+            "planning",
+            ".github",
+            "docs/module-map.md",
+            "planning/source-context-task.md",
+            "planning/baseline-review.md",
+            "docs/spec.md",
+            "docs/plan.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "planning/source-context-task.md",
+            "planning/source-context-evidence.json",
+            "planning/traceability.md",
+            "planning/baseline-review.md",
+            "docs/spec.md",
+            "docs/plan.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "planning/source-context-task.md",
+            "planning/source-context-evidence.json",
+            "planning/traceability.md"
+          ],
+          "documentation_gaps": []
+        },
+        "limitations": [
+          "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+        ]
+      },
+      {
+        "rule_id": "TEST",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 74.746,
+          "output_bytes": 603,
+          "output_sha256": "27b673dea1d795bd9881922cebab43942f462ba404f34c0b5bdc10831d4155e2",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.124,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "GUIDANCE-COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.122,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      }
+    ],
+    "new_script_compile": "pass",
+    "skill_creator_utf8_validation": "pass",
+    "commit_check": "pending",
+    "committed_check": "pending",
+    "hosted_CI": "not_run_yet"
+  },
+  "measurement_limits": [
+    "Offline o200k_base on material selected by each strategy; not real model API usage or answer quality",
+    "Single deterministic run per combination/scenario; speed differences are not statistically established",
+    "Fixed task scopes favor task-first; unknown-boundary work may need scoped reference-led expansion",
+    "Rust module prefixes/config do not resolve individual items, cfg or macros; unsupported/unresolved retained",
+    "Best means constrained choice among tested combinations, not global optimality",
+    "Narrow view deduplication correction re-rendered/recounted saved graph outputs. Original helper timings predate this graphic-only fix; corrected per-view rendering measured separately below 1ms each."
+  ],
+  "environment": {
+    "python": "3.13.5",
+    "node": "24.21.0",
+    "typescript": "6.0.3",
+    "tree-sitter": "0.25.2",
+    "tree-sitter-rust": "0.24.2"
+  },
+  "source_hashes": {
+    "scripts/collect_code_context.py": "7556739dd796cbbead2c9611503fea670c17fbd38ec6c39c5ef998de5e85ff22",
+    "scripts/source_relations.py": "b03ae37d0c57ca2893b8ee89b310af9eb7c4d5288e8a16b32e338d4d86d92691",
+    "scripts/analyze_references.mjs": "545bf0fbc4d3855257bf03140f0a038119445a2090d4c32093a46387e2e7acc6",
+    "scripts/rust_references.py": "e6398d6271bd8077f5957290a9847091b8e53f2c7b54891470a9ee580ff11113"
+  },
+  "view_correction": {
+    "finding": "Conditional Rust use edges were collapsed with unconditional mod/use edges by visualization deduplication; full JSON/evidence retained them.",
+    "fix": "View dedup identity now includes relation kind and complete condition labels; focused behavioral test rejects missing conditional edge.",
+    "reverification": "Rerendered affected saved graphs and remeasured optional-view material for all 24 rows, without rereading/reparsing unchanged corpora.",
+    "render_seconds": [
+      0.00044499989598989487,
+      0.0003537996672093868,
+      0.0007064999081194401,
+      0.0009265001863241196,
+      0.000668299850076437,
+      0.0007998999208211899,
+      0.0005545001477003098,
+      0.00047369999811053276,
+      0.0003673001192510128,
+      0.0008547999896109104
+    ],
+    "timing_limit": "Original 24-run helper times predate this narrow visualization correction; corrected rendering measured separately, source/coverage/reference results unchanged."
+  },
+  "diagram_validation": [
+    {
+      "corpus": "pi",
+      "scenario": "review",
+      "result": {
+        "valid": true
+      },
+      "chars": 874
+    },
+    {
+      "corpus": "pi",
+      "scenario": "review",
+      "result": {
+        "valid": true
+      },
+      "chars": 257
+    },
+    {
+      "corpus": "codex",
+      "scenario": "review",
+      "result": {
+        "valid": true
+      },
+      "chars": 3600
+    }
+  ]
+}

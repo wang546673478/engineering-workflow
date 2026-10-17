@@ -2,7 +2,15 @@
 
 Status: `current`
 
-Active linked-model revision: `SPEC-LINKED-02` (2026-10-18). This adds greenfield lifecycle and current-document reconciliation to the initial linked-model scope. Local implementation is authorized by the user's “那就开始完整的更改吧” and request to organize existing documents. Current technical design is [PLAN-LINKED-02](plan.md); actual progress is in the manifest-selected Task. The subsequent 2026-10-18 user instruction to upload the completed upgrade approves this batch for submission/publication; see the current Task for the exact wording and scope. Earlier release/approval statements below retain their original scope.
+Current revision `SPEC-CONTEXT-03` (2026-10-18): user-authorized local source helpers and two-corpus optimization/publication, preserving the original workflow. Exact authorization and scope are in [Task](../planning/source-context-task.md). Historical specifications and approvals below retain their own scope.
+
+- REQ-CONTEXT-01 / AT-CONTEXT-01: Complete local inventory, compact full-source packs, explicit budgets/omissions and version-bound evidence.
+- REQ-CONTEXT-02 / AT-CONTEXT-02: Optional syntax/config JS/TS and Rust module references; directions, source lines/hashes and unknown conditions preserved.
+- REQ-CONTEXT-03 / AT-CONTEXT-03: Choose analysis/view invocation by actual task; derived summaries/tables/diagrams preserve the existing engineering phases and gates.
+- REQ-CONTEXT-04 / AT-CONTEXT-04: Compare four helper orders across Pi and Codex read-only corpora, prioritizing coverage/correctness before measurable cost.
+- REQ-CONTEXT-05 / AT-CONTEXT-05: Synchronize versioned artifacts, exact local checks and authorized source publication; hosted CI evidence reported separately.
+
+Historical linked-model revision: `SPEC-LINKED-02` (2026-10-18). This adds greenfield lifecycle and current-document reconciliation to the initial linked-model scope. Local implementation is authorized by the user's “那就开始完整的更改吧” and request to organize existing documents. Current technical design is [PLAN-LINKED-02](plan.md); actual progress is in the manifest-selected Task. The subsequent 2026-10-18 user instruction to upload the completed upgrade approves this batch for submission/publication; see the current Task for the exact wording and scope. Earlier release/approval statements below retain their original scope.
 
 This repository is the maintained source of the `engineering-workflow` Codex skill. The skill must remain useful to unfamiliar projects, continuous feature discussions, cross-layer changes, documentation impact gates, and verification work. The 1.4.3 source batch was uploaded on 2026-10-16; scope, local verification and publication evidence are recorded in [TASK-CONTINUITY-01](../planning/continuous-requirements-task.md). Hosted CI remains separate from that evidence.
 

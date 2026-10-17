@@ -1,3 +1,17 @@
+# Current Source Context Traceability
+
+Revision TRACE-CONTEXT-03: BASELINE-CONTEXT-03 → SPEC-CONTEXT-03 → PLAN-CONTEXT-03 → TASK-CONTEXT-RELEASE-01.
+
+| Requirement / acceptance | Plan / execution | Evidence and affected views |
+| --- | --- | --- |
+| REQ-CONTEXT-01 / AT-CONTEXT-01 | [Plan](../docs/plan.md), CR-01 | [Task](source-context-task.md), [evidence](source-context-evidence.json), map/contract/flow/baseline |
+| REQ-CONTEXT-02 / AT-CONTEXT-02 | [Plan](../docs/plan.md), CR-02 | [Task](source-context-task.md), [evidence](source-context-evidence.json), map/contract/flow/baseline |
+| REQ-CONTEXT-03 / AT-CONTEXT-03 | [Plan](../docs/plan.md), CR-03 | [Task](source-context-task.md), [evidence](source-context-evidence.json), map/contract/flow/baseline |
+| REQ-CONTEXT-04 / AT-CONTEXT-04 | [Plan](../docs/plan.md), CR-04 | [Task](source-context-task.md), [evidence](source-context-evidence.json), map/contract/flow/baseline |
+| REQ-CONTEXT-05 / AT-CONTEXT-05 | [Plan](../docs/plan.md), CR-05 | [Task](source-context-task.md), [evidence](source-context-evidence.json), map/contract/flow/baseline |
+
+## Historical linked-model trace (original scope)
+
 # Current Linked Artifact Traceability
 
 Revision: `TRACE-LINKED-02`, 2026-10-18. Active Spec `SPEC-LINKED-02`, Plan `PLAN-LINKED-02`, output Baseline `BASELINE-LINKED-02` and Task `TASK-LINKED-ARTIFACTS-01`. The input baseline is the published source plus pre-existing worktree, as recorded in Plan. The checker validates declared IDs/files; the table's semantic/revision alignment is agent-reviewed.

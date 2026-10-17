@@ -9,4 +9,5 @@ __pycache__/
 *.sqlite-wal
 *.sqlite-shm
 work/
+scripts/context-runtime/node_modules/
 

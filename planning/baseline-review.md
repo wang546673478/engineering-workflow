@@ -1,5 +1,10 @@
 # Current Engineering Workflow Baseline
 
+Current revision: `BASELINE-CONTEXT-03` (2026-10-18), based on c21e715 and the source-helper working tree. Current facts include unchanged engineering stages/checker policy and local collection, JS/TS/Rust module evidence and selectable views. Exact coverage, current source hashes, two-corpus comparison and validation are in [Task](source-context-task.md) and [evidence](source-context-evidence.json). User authorization covers implementing/selecting/uploading the helper batch, not certification of target-project business behavior.
+
+## Historical 1.5.0 baseline (original evidence/review scope)
+
+
 Revision: `BASELINE-LINKED-02` (2026-10-18); factual scope and required local checks complete, validation recorded in [the active Task](linked-artifact-model-task.md). Historical approval below applies only to its original tree; the subsequent 2026-10-18 upload instruction approves submission/publication of this completed revision, as recorded in the current Task.
 
 Source basis: `9df566229c976e3f3523007934e9f079550c770f` as the implementation input; the 1.5.0 output was uploaded on 2026-10-18 as `46d57a6cefd5cc80ae62e47099b782d4cb381504`. Scope: SKILL/references, managed guidance, templates, manifest initialization, checker, tests and self-maintenance documentation. Earlier pre-existing assessment-task edits remain separately owned; no external project was migrated.
@@ -35,3 +40,8 @@ The user subsequently reviewed the final plain-language summary and stated: â€œç
 Review status: approved on 2026-10-14. The external approval signal is supplied only for this reviewed change's verification; it is not stored as an executable setting or automatic approval for later changes. Hosted reviewer/branch settings and remote execution require their own evidence and are not established by this document.
 
 PyYAML 6.0.3 was installed into ignored `work/pyyaml` at the user's request. The independent skill-creator quick validator succeeded with UTF-8 enabled. No global dependency was installed.
+
+
+## Current source-context annex
+
+BASELINE-CONTEXT-03 (2026-10-18): preserved existing workflow plus local source helpers, optional syntax adapters and selectable evidence views. Input c21e715; actual implementation/semantic scope, tests, two read-only source snapshots and publication evidence in [Task](source-context-task.md). Prior baseline reviews do not transfer to this revision; current user authorization explicitly covers selecting/integrating/uploading helper functions while keeping workflow phases/gates unchanged. External target-project business correctness is outside tool validation.

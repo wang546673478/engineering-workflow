@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.5.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.6.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -211,3 +211,7 @@ python scripts/check_project.py --root . --manifest engineering-manifest.json --
 ## 首次接管的阶段顺序
 
 首次接管已有代码且缺少有效全局基线时：**全局现状梳理 → 用户审阅基线 → 深入功能访谈 → 完整方案确认 → 实现与验证**。梳理前可澄清必要的基本目标，但不能只看局部页面就连续追问功能范围。任务记录当前阶段、基线版本和转换证据；已有有效基线及确认可复用，小修复按最小必要步骤执行。无既有实现的新项目先记录空实现起点和约束，再进入访谈，后续按临时基线到事实基线的生命周期推进。具体条件见 [SKILL.md](SKILL.md)。
+
+## 源码辅助工具
+
+1.6.0增加可选源码清单、目录统计、完整紧凑阅读包、预算/遗漏和JS/TS/Rust引用证据，按需输出文字、关系表和Mermaid。调用/范围/安装及限制见[说明](references/source-context.md)。原工程阶段、审批和验证要求保持；引用不是运行时调用或业务事实。

@@ -1,3 +1,15 @@
+# Source Context Technical Plan
+
+Revision PLAN-CONTEXT-03, based on SPEC-CONTEXT-03 and input BASELINE-LINKED-02/c21e715. User authorizes comparison, scoped integration and upload; exact wording in [Task](../planning/source-context-task.md). Output BASELINE-CONTEXT-03.
+
+1. Retain original workflow body/meaning and checker controls; add a short route and focused reference.
+2. Reuse safe path/glob primitives; provide complete source packs with explicit omitted states, per-run discovery reuse and optional syntax adapters.
+3. Compare P1..P4 in the Task on both frozen corpora; prefer scoped task-first execution unless evidence justifies reference-led expansion; output one appropriate view.
+4. Preserve original required checks, add new behavior tests and script-disabled optional dependency setup for repository CI.
+5. Reconcile current views/version/evidence, then staged/committed checks, authorized upload and independent hosted-status evidence.
+
+## Historical plan (original scope retained)
+
 # Linked Baseline / Spec / Plan / Task Technical Plan
 
 Revision: `PLAN-LINKED-02` (2026-10-18). Status: implemented and locally verified; the subsequent user upload instruction authorizes submission/publication of this batch.

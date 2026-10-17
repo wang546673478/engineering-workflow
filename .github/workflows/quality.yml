@@ -94,6 +94,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install reference parser test dependencies without package scripts
+        run: |
+          python -m pip install -r scripts/reference-requirements.txt
+          npm ci --ignore-scripts --prefix scripts/context-runtime
       - name: Prepare report directory
         run: python -c "from pathlib import Path; Path('work').mkdir(exist_ok=True)"
       - name: Check submitted tree and run declared tests
@@ -130,6 +137,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install reference parser test dependencies without package scripts
+        run: |
+          python -m pip install -r scripts/reference-requirements.txt
+          npm ci --ignore-scripts --prefix scripts/context-runtime
       - name: Prepare report directory
         run: python -c "from pathlib import Path; Path('work').mkdir(exist_ok=True)"
       - name: Require the exact detected commit
@@ -190,6 +204,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install reference parser test dependencies without package scripts
+        run: |
+          python -m pip install -r scripts/reference-requirements.txt
+          npm ci --ignore-scripts --prefix scripts/context-runtime
       - name: Prepare report directory
         run: python -c "from pathlib import Path; Path('work').mkdir(exist_ok=True)"
       - name: Require the exact manually reviewed commit

@@ -97,3 +97,8 @@ For 1.4.2, the source push occurred on 2026-10-15 and is recorded in TASK-VERSIO
 - These are agent process obligations recorded in project Task files. The checker adds optional mechanical validation for linked artifact pointers; it does not infer semantic completeness. The 1.4.4 source publication and exact local verification are tracked by TASK-BASELINE-01; the published 1.5.0 implementation and its new fields are tracked by TASK-LINKED-ARTIFACTS-01. Existing command modes and adapter contracts remain compatible.
 
 Publication receipt: the contracts documented here were uploaded with 1.5.0 on 2026-10-18 (`46d57a6cefd5cc80ae62e47099b782d4cb381504`). This receipt does not change CLI behavior or establish hosted CI success.
+
+
+## Source helper CLI and evidence
+
+[Guide](../references/source-context.md) describes --include/limits, --relations and --views summary/table/diagram/all. Core collection does not require parsers. Optional references report supported/read scope, unresolved/conditional/unsupported facts, never business approval. JSON evidence remains complete regardless of view choice; output is outside source and refuses overwrite. Existing checker modes/contracts unchanged. [Task](../planning/source-context-task.md).

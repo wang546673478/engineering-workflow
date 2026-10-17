@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.5.0
+  version: 1.6.0
 ---
 
 # 代码工程工作流
@@ -72,6 +72,8 @@ Global Baseline、Spec、Technical Plan 和 Task 是一组有版本边界的联�
 5. **规划先于编码。** 形成或更新联动的 Baseline、Spec、Plan、Task。新项目与重大功能由用户确认完整方案后编码；明确要求实施已给出的完整计划即为批准，不重复询问。首次接管缺文档项目的全局基线须在深入功能访谈前完成并经用户审阅确认，不能拖到编码前才补。实际模式与模型由宿主控制，本技能不能切换 Plan Mode。
 6. **改前分析。** 追踪页面/客户端操作 → 接口契约 → 后端权限与业务处理 → 数据库/缓存/事件 → 消费者及页面更新。检索现有能力，明确负责模块和读写权威，再决定扩展或替换。记录权限、表字段、迁移、兼容、恢复、测试和文档影响。
 7. **实现并验证。** 保持职责集中、依赖方向清楚，避免重复状态与业务规则，接口抽象须解决真实问题。替换实现时登记旧入口退役。运行项目规定的有效检查，同步相关文档及实际验证结果。
+
+需要梳理源码清单、跨文件引用或审阅模块关系时，按[源码辅助工具的触发与展示规则](references/source-context.md)选择采集、引用分析和视图；小修可直接搜索读取，工具结果继续按现有流程核验。
 
 ## 和用户沟通
 

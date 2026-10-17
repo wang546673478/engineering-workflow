@@ -1,3 +1,11 @@
+# 1.6.0 / Unreleased
+
+- Added optional local source inventory/tree/statistics, complete compact reading packs and explicit read budgets/omissions.
+- Added source-evidenced JS/TS and Rust module references with strict evidence checks and selectable summary/table/diagram outputs.
+- Added scenario-specific invocation and scope/view rules; same-run discovery reuse avoids repeated scans without a persistent cache.
+- Added exact optional-parser dependency locks and CI preparation for their behavior tests. Existing workflow stages, approval duties, checker code, required commands and protection scopes remain unchanged.
+- Excluded product token estimation, Notebook conversion, incremental cache and additional model/cloud generation chains. Third-party MIT notices retained.
+
 # Changelog
 
 ## 1.5.0 - 2026-10-18

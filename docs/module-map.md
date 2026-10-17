@@ -95,3 +95,8 @@ The managed AGENTS block and linked-artifact Task template carry these responsib
 The 1.4.4 source was uploaded on 2026-10-17, as recorded in TASK-BASELINE-01. The current 1.5.0 linked-artifact candidate is recorded in TASK-LINKED-ARTIFACTS-01 and remains Unreleased; its scope changes the guidance/template/checker linkage, not adapters or product runtime dependencies.
 
 Publication: the 1.5.0 module implementation was uploaded on 2026-10-18 as `46d57a6cefd5cc80ae62e47099b782d4cb381504`; exact local commit checks are in the active Task, while hosted CI is tracked separately.
+
+
+## Module: source-context
+
+Owns local inventory, full-text packing, read limits/statuses, optional JS/TS/Rust module reference adapters and validated derived graph/text/table. Entrypoints scripts/collect_code_context.py and source_relations.py; depends on checker safe-root/path/glob helpers without modifying its rules. Rust uses optional pinned tree-sitter parsers, JS/TS optional pinned TypeScript. Data stays in caller-chosen local outputs; no business database/model calls. Scope/evidence: [Task](../planning/source-context-task.md), [guide](../references/source-context.md).

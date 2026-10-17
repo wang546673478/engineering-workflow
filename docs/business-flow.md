@@ -101,3 +101,8 @@ Before creating required inventory gates, compare provenance/scope with supporte
 Later test/runtime/source finding → flag disputed claims → reconcile source and confirmed requirements → correct current Baseline module/contract/dictionary/flow/inventory views → propagate affected Plan/Task impacts → preserve old/new evidence and revision → revalidate affected conclusions. If an approved premise changes, notify and reopen only its affected review, pausing dependent implementation while valid independent work proceeds. No product-code edit is necessary to trigger this flow. Current batch: [TASK-LINKED-ARTIFACTS-01](../planning/linked-artifact-model-task.md). The publication receipt follows the delivery flow above and changes no investigation/correction behavior.
 
 1.5.0 publication: commit/committed checks passed, source commit `46d57a6cefd5cc80ae62e47099b782d4cb381504` was pushed to origin/main on 2026-10-18 and the remote SHA matched. Date/status receipts follow the same gates; hosted CI results remain separate from source upload.
+
+
+## Local source helper flow
+
+Task goal → inventory/direct search → full selected reading → optional syntax/config references → evidence checks → summary or requested table/diagram → existing semantic baseline/impact verification. First onboarding and cross-boundary uncertainty trigger suitable scope; small isolated edits may skip analysis. Discovery may be reused within one execution, not persisted as a stale cache. Existing review/plan/implementation gates remain. [Guide](../references/source-context.md) and [Task](../planning/source-context-task.md).
