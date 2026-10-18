@@ -32,7 +32,7 @@ Status: `current`; the manifest's active task owns current implementation and re
 ## Hosted protected review
 
 1. A pull request runs ordinary checks without approval variables or protected environment values.
-2. If a control-plane path changes, CODEOWNERS and branch protection require maintainer review. A submitted approval triggers the workflow again only when its `commit_id` equals the current PR head.
+2. If a control-plane path changes, CODEOWNERS and branch protection require maintainer review. A submitted approval triggers the workflow again only when its `commit_id` equals the current PR head; approval is specific to that exact commit.
 3. The reviewed job enters the fixed `engineering-control-review` environment, checks out that exact commit, and runs the committed checker on Ubuntu and Windows. The environment value is never exposed to ordinary or fork jobs.
 4. The reviewed job is limited to same-repository PR heads; fork PRs never receive the environment value. The aggregate `quality` result is the branch-protection target. Review records, environment approval and checker reports form the audit trail. Pushes to `main` provide final verification; `workflow_dispatch` remains a manual fallback.
 5. If a reviewed checker report proves all rule/scope gates pass and only TEST fails, the workflow prints verbose fixture-test diagnostics. Both automatic reviewed and manual-reviewed jobs use the shared finalizer. The rerun helps locate a transient failure, but the finalizer requires the original checker result to pass; any original required-check failure keeps the reviewed and aggregate jobs failed.

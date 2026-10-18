@@ -8,7 +8,7 @@ Revision PLAN-CONTEXT-06, based on unchanged SPEC-CONTEXT-03 and input BASELINE-
 4. Preserve original required checks and timeouts. Make the original checker outcome authoritative in reviewed and manual-reviewed paths through the shared `.github/scripts/finalize_reviewed_quality.py`; keep diagnostic reruns for evidence only and cover finalization behavior with regression tests.
 5. Reconcile current views/version/evidence, then staged/committed checks, authorized upload and independent hosted-status evidence.
 
-Local commit and exact-commit checks passed on source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` and receipt commit `a693a9e28c598f1ac5cf2dbd332646097f392523`; hosted verification is tied to the final uploaded SHA and remains separate.
+Local commit and exact-commit checks passed on source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` and receipt commit `a693a9e28c598f1ac5cf2dbd332646097f392523`. Source was pushed as `3fab75ba5d8e2663af811d2b7daee53c90fe6818`; run `39115700117` awaits environment approval before hosted verification.
 
 ## Historical plan (original scope retained)
 
