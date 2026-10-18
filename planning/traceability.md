@@ -12,7 +12,7 @@ Revision TRACE-CONTEXT-04: BASELINE-CONTEXT-06 → SPEC-CONTEXT-03 → PLAN-CONT
 
 ### Hosted CI correction (1.6.2)
 
-The 1.6.1 exact-SHA hosted run exposed a mismatch between the original checker artifact and the successful diagnostic rerun. BASELINE-CONTEXT-06 and PLAN-CONTEXT-06 keep SPEC-CONTEXT-03 and REQ-CONTEXT-01..05 unchanged while restoring the required-check contract: both protected finalizers now require the original checker to succeed. The focused regression tests, full declared checks, exact commit and hosted artifacts are recorded in the [current Task](source-context-task.md) and [machine evidence](source-context-evidence.json).
+The 1.6.1 exact-SHA hosted run exposed a mismatch between the original checker artifact and the successful diagnostic rerun. BASELINE-CONTEXT-06 and PLAN-CONTEXT-06 keep SPEC-CONTEXT-03 and REQ-CONTEXT-01..05 unchanged while restoring the required-check contract: both protected finalizers now require the original checker to succeed. Source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` and evidence receipt `a693a9e28c598f1ac5cf2dbd332646097f392523` passed local gates; the final uploaded SHA still needs hosted artifact verification. Full results are in the [current Task](source-context-task.md) and [machine evidence](source-context-evidence.json).
 
 ## Historical linked-model trace (original scope)
 

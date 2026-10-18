@@ -58,7 +58,7 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 - The governance workflow also owns automatic PR-review-linked protected checks: ordinary jobs receive no approval value, the fixed environment gates exact commits, and the aggregate `quality` check is intended for branch protection.
 - Reviewed workflow diagnostics are owned by governance and are constrained to rule-valid, TEST-only failures; they do not change checker or test ownership.
 - Diagnostic reruns are owned by governance and run only after the report proves rule/scope validation passed with TEST alone failing. They provide verbose failure context and never replace the original required checker result; any original checker failure blocks the reviewed and aggregate jobs.
-- Source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` passed local commit and committed checks; hosted per-platform verification remains a separate release step.
+- Source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` and receipt commit `a693a9e28c598f1ac5cf2dbd332646097f392523` passed local commit and committed checks; hosted per-platform verification remains a separate release step.
 - Release metadata (`VERSION` and `CHANGELOG.md`) is within the protected review scope so a checker report cannot be re-labeled silently.
 
 ## Dependency rules

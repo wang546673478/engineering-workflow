@@ -2,8 +2,8 @@
 
 ## 当前状态和用户授权
 
-- 2026-10-18恢复实施：远程 `main` 起始于已发布的1.6.1提交 `a407b112410e8717511d62fda8eead66d18cf043`。用户授权按全局根因修复并上传。reviewed 与 manual-reviewed 两路曾在原始 checker 失败后重跑测试，并允许诊断成功覆盖原始失败，导致汇总 job 误报通过；当前批次已修正两路最终判定，诊断仍保留用于定位。旧命令、测试范围、120秒时限和人工批准职责不变。Windows reparse fixture 路径规范化修正一并保留。SPEC-CONTEXT-03不变，候选发布版本1.6.2 PATCH。源码提交 `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` 的 commit 与 committed 门禁均通过；任务保持 `in_progress`，直到上传及新 SHA 的托管结果核验完成。
-- 下一步：将 committed 验证回执和当前基线修订写入一个收尾提交，对其精确 SHA 重跑 committed 门禁，然后上传并核对新 SHA 的原始 hosted artifacts。新 SHA 的环境人工审批不能从旧 run 继承。
+- 2026-10-18恢复实施：远程 `main` 起始于已发布的1.6.1提交 `a407b112410e8717511d62fda8eead66d18cf043`。用户授权按全局根因修复并上传。reviewed 与 manual-reviewed 两路曾在原始 checker 失败后重跑测试，并允许诊断成功覆盖原始失败，导致汇总 job 误报通过；当前批次已修正两路最终判定，诊断仍保留用于定位。旧命令、测试范围、120秒时限和人工批准职责不变。Windows reparse fixture 路径规范化修正一并保留。SPEC-CONTEXT-03不变，候选发布版本1.6.2 PATCH。源码提交 `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` 和收尾回执提交 `a693a9e28c598f1ac5cf2dbd332646097f392523` 的 commit/committed 门禁均通过；任务保持 `in_progress`，直到上传及新 SHA 的托管结果核验完成。
+- 下一步：上传当前本地提交并核对新 SHA 的原始 hosted artifacts。若环境要求人工审批，等待用户批准该精确 SHA；旧 run 的批准不继承。
 - 历史暂停记录（2026-10-18T16:32+08:00）：当时尚未完成Windows fixture follow-up 验证；暂停状态只适用于此前回合。run39110935645 的 Ubuntu 原 TEST artifact 通过、Windows 160 项中1项失败，JSON回执污染已从备份恢复；这些历史失败保留，不作为当前版本通过证据。旧run39109363841原TEST失败artifact也保留；诊断重跑成功不替代原始门槛。
 - 用户原话：“这样你把多测试几个功能组合和排序,这几个功能都是需要只不过要完善使用规则,应该怎么组合,然后进行测试,E:\pi-main和D:\agent-harness-research\codex 这几个应该够你测试了,你找出最优,在不改变skill流程的情况下,把最优的上传github”。明确授权比较、完善规则、在已讨论辅助功能内择优正式实现并提交上传；不要求额外同范围批准。排序限辅助能力的调用/展示顺序，原阶段/需求确认/方案批准/门槛职责不变。
 - 保留七项组合：盘点、树/统计、完整紧凑阅读包、限额/遗漏、引用分析、出处/图校验、图/文字/表格与源码定位；Token计量仅实验，Notebook/增量缓存/云模型链不引入。
@@ -162,5 +162,5 @@ CI变更只增加Node22准备、script-disabled npm ci和固定Python解析依�
 - 第三次 commit 门禁通过：`required_checks_satisfied=true`；TEST 163项/72.78秒、COMPILE 0.11秒、GUIDANCE-COMPILE 0.12秒，control-plane 与 commit-scope 均通过。调用的是原声明命令，任务/批准变量仅在本次子进程中存在；为让Windows子进程可见锁定解析依赖，本地 `PYTHONPATH` 指向任务隔离环境。
 - 源码提交 `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` 的 committed 门禁通过：`required_checks_satisfied=true`；TEST 163项/72.27秒、COMPILE 0.11秒、GUIDANCE-COMPILE 0.11秒，control-plane 与 committed-scope 均通过。完整摘要保存在 [machine evidence](source-context-evidence.json)；原始本地报告为 `work/ci-global-repair-committed-r1.json`。
 - 两次未通过的准备报告保留：首次因 `.github/CODEOWNERS` 未被声明为文档影响路径而阻止检查执行；补上路径后，第二次因嵌套 Python 子进程解析到缺少解析依赖的基础环境而TEST失败。定位后通过任务局部 `PYTHONPATH` 重跑，未修改原命令、超时或测试范围。
-- 收尾回执提交的 committed 报告：待执行；受保护变更仅在本次本地检查子进程使用经用户授权的短时外部批准变量。
+- 收尾回执提交 `a693a9e28c598f1ac5cf2dbd332646097f392523` 的 committed 门禁通过：`required_checks_satisfied=true`；TEST 163项/72.77秒、COMPILE 0.11秒、GUIDANCE-COMPILE 0.11秒，control-plane 与 committed-scope 均通过。原始本地报告为 `work/ci-global-repair-final-committed.json`。
 - GitHub 上传和远程 SHA：待执行。新 push 会触发新的 protected run；若环境要求人工批准，等待用户批准后再读原始 Ubuntu/Windows checker artifact 和 job 结果。
