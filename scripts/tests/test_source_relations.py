@@ -12,6 +12,7 @@ class RelationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.temporary = tempfile.TemporaryDirectory(prefix="fusion-reference-")
+        cls.addClassCleanup(cls.temporary.cleanup)
         cls.base = Path(cls.temporary.name)
         cls.root = cls.base / "source"
         cls.root.mkdir()
@@ -72,6 +73,8 @@ class RelationTests(unittest.TestCase):
         )
         cls.analysis = json.loads((cls.output / "references.json").read_text())
         cls.graph = json.loads((cls.output / "graph.json").read_text())
+        if not cls.analysis["files"]:
+            raise RuntimeError("Required JS/TS regression environment is unavailable.\n" + relations.diagnostic_text(cls.status["diagnostics"]))
         cls.sources = {
             e["path"]: {"sha256": None, "text": "", "observed_references": []}
             for e in cls.result["inventory"]["entries"]
@@ -226,6 +229,21 @@ class RelationTests(unittest.TestCase):
             status = relations.build_relation_outputs(self.result, output)
         self.assertEqual(status["status"], "unsupported")
         self.assertTrue((output / "reading-pack.txt").exists())
+
+    def test_partial_language_support_keeps_valid_javascript_edges(self):
+        output = self.base / "partial-language"
+        result = copy.deepcopy(self.result)
+        rust = {"references": [], "unknown": [], "unsupported": [{"path": "src/lib.rs", "status": "rust_parser_unavailable"}], "files": [], "configuration": []}
+        result["files"].append({"path": "src/lib.rs", "text": "mod local;", "source_sha256": "fixture"})
+        with patch("rust_references.analyze_rust", return_value=rust):
+            analysis = relations.analyze_result(result)
+        collector.write_result(self.result, output)
+        status = relations.build_relation_outputs(self.result, output, analysis=analysis)
+        self.assertGreater(status["summary"]["resolved"], 0)
+        self.assertEqual(status["unsupported"], rust["unsupported"])
+        self.assertEqual(status["diagnostics"][0]["status"], "rust_parser_unavailable")
+        self.assertIn("coverage is incomplete", (output / "relations-summary.txt").read_text())
+        self.assertTrue(json.loads((output / "graph.json").read_text())["edges"])
 
 
 if __name__ == "__main__":

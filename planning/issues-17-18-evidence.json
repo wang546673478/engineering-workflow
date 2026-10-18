@@ -1,0 +1,372 @@
+{
+  "revision": "ASSESS-17-18-01",
+  "scope": "Assessment only; no implementation or submission approval",
+  "checked_at": "2026-10-19T01:34+08:00",
+  "local_revision": "a407b112410e8717511d62fda8eead66d18cf043",
+  "assessed_revision": "0216e4cd341bee534ccc85a8824c83a40a7e9840",
+  "versions": {
+    "python": "3.13.5",
+    "node": "24.21.0",
+    "npm": "11.13.0",
+    "tree-sitter": "0.25.2",
+    "tree-sitter-rust": "0.24.2",
+    "typescript": "6.0.3"
+  },
+  "source_blobs": {
+    "scripts/init_manifest.py": "1af164dcb993e001e7bb122df6733fe7ff8374f8",
+    "scripts/check_project.py": "ef079288a5e825967b944d6fe3c25cc144e03778",
+    "scripts/collect_code_context.py": "a85c02a360da32eb0501f8b4163d6475e14c953b",
+    "scripts/source_relations.py": "27e6900628694d7ee1befe0f8697b147cc6dc24c",
+    "scripts/rust_references.py": "65719e9d1f50f39c6f79b278fa0c42b78d7163ba",
+    "scripts/analyze_references.mjs": "de0fd272e205a35c8e50506f9937d2d630f02b7f",
+    "scripts/tests/test_rust_references.py": "2b71cfb7770d54dc24da1cf8106a087d9545d0ef",
+    "scripts/tests/test_source_relations.py": "56ff41af72f29380edcfac074dbee9fcf0196392",
+    "assets/templates/project-manifest.example.json": "b46feb5af3b6ef6e7879af54a3e9f34bd0d0f617"
+  },
+  "issue17": {
+    "link_type": "junction",
+    "before_install_excludes": [
+      ".git",
+      "node_modules",
+      "build",
+      "dist",
+      "work",
+      "__pycache__"
+    ],
+    "after_install_excludes": [
+      ".git",
+      "node_modules",
+      "build",
+      "dist",
+      "work",
+      "__pycache__"
+    ],
+    "journeys": [
+      {
+        "profile": "lite",
+        "glob": false,
+        "returncode": 2,
+        "errors": [
+          "symlink path is not allowed: work/issues-17-18\\monorepo\\packages\\a\\node_modules\\vitest"
+        ],
+        "failed_rules": []
+      },
+      {
+        "profile": "lite",
+        "glob": true,
+        "returncode": 1,
+        "errors": [],
+        "failed_rules": [
+          "TEST"
+        ]
+      },
+      {
+        "profile": "full",
+        "glob": false,
+        "returncode": 2,
+        "errors": [
+          "symlink path is not allowed: work/issues-17-18\\monorepo\\packages\\a\\node_modules\\vitest"
+        ],
+        "failed_rules": []
+      },
+      {
+        "profile": "full",
+        "glob": true,
+        "returncode": 1,
+        "errors": [],
+        "failed_rules": [
+          "TEST"
+        ]
+      }
+    ],
+    "glob_paths": {
+      "node_modules/a": true,
+      "packages/a/node_modules/a": true,
+      "apps/a/node_modules/a": true,
+      "nested/deeper/a/node_modules/a": true,
+      "packages/a/src/main.ts": false,
+      "packages/a/node_modules_custom/a": false
+    },
+    "explicit_scope_consequence": true,
+    "unexcluded_link_check": {
+      "profile": "lite",
+      "glob": true,
+      "returncode": 2,
+      "errors": [
+        "symlink path is not allowed: work/issues-17-18\\monorepo\\packages\\a\\src\\unexcluded-link"
+      ],
+      "failed_rules": []
+    },
+    "explanation": "Candidate glob eliminates link validation error; TEST is skipped because baseline invocation omitted --run-checks, so exit 1 is not an overall gate pass."
+  },
+  "issue18": {
+    "rust_missing": {
+      "analysis_unsupported": [
+        {
+          "path": "src/lib.rs",
+          "status": "rust_parser_unavailable"
+        }
+      ],
+      "output_status": {
+        "status": "unsupported",
+        "summary": {
+          "source_files": 0,
+          "references": 0,
+          "resolved": 0,
+          "type_only": 0,
+          "unresolved": 0,
+          "unknown": 0,
+          "unsupported_files": 1
+        },
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "written",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "cli_returncode": 0
+    },
+    "mixed_missing_rust": {
+      "status": "complete_for_read_supported_files",
+      "summary": {
+        "source_files": 1,
+        "references": 1,
+        "resolved": 1,
+        "type_only": 0,
+        "unresolved": 0,
+        "unknown": 0,
+        "unsupported_files": 1
+      },
+      "validation": {
+        "valid": true,
+        "issues": []
+      },
+      "diagram": "not_requested",
+      "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+    },
+    "node_missing": [
+      {
+        "path": "src/main.ts",
+        "status": "node_runtime_missing"
+      }
+    ],
+    "js_parser_missing": [
+      {
+        "path": "src/main.ts",
+        "status": "js_parser_unavailable"
+      }
+    ],
+    "skip_gate": {
+      "returncode": 1,
+      "required_checks_satisfied": false,
+      "test": {
+        "rule_id": "TEST",
+        "status": "partial",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "5b3e2487db4374bc2af25f9e7d5ca2478d01469d4e44199c5892c2ce27656726",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.269,
+          "output_bytes": 112,
+          "output_sha256": "f85b0bcdf716f420cd56d5618c37ae81a91926d55b555431dcad800aa12cd793",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false,
+          "skip_marker_detected": true
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      }
+    },
+    "rust_present": {
+      "status": {
+        "status": "complete_for_read_supported_files",
+        "summary": {
+          "source_files": 1,
+          "references": 2,
+          "resolved": 2,
+          "type_only": 0,
+          "unresolved": 0,
+          "unknown": 0,
+          "unsupported_files": 0
+        },
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "not_requested",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "unsupported": []
+    },
+    "no_references": {
+      "status": {
+        "status": "complete_for_read_supported_files",
+        "summary": {
+          "source_files": 1,
+          "references": 0,
+          "resolved": 0,
+          "type_only": 0,
+          "unresolved": 0,
+          "unknown": 0,
+          "unsupported_files": 0
+        },
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "not_requested",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "unsupported": []
+    },
+    "mixed_present": {
+      "status": {
+        "status": "complete_for_read_supported_files",
+        "summary": {
+          "source_files": 2,
+          "references": 3,
+          "resolved": 3,
+          "type_only": 0,
+          "unresolved": 0,
+          "unknown": 0,
+          "unsupported_files": 0
+        },
+        "validation": {
+          "valid": true,
+          "issues": []
+        },
+        "diagram": "not_requested",
+        "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness"
+      },
+      "unsupported": []
+    }
+  },
+  "test_runs": [
+    {
+      "case": "rust_missing",
+      "tests": 163,
+      "passed": false,
+      "failures": 2,
+      "errors": 2,
+      "tail": [
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 163 tests in 77.144s",
+        "",
+        "FAILED (failures=2, errors=2)"
+      ],
+      "log_path": "work/issues-17-18/without-rust-tests.log",
+      "sha256": "15ef2138e91e86e4d50afe8f97ab6d36df19726cb175ebbd02b20f639f41f9b1"
+    },
+    {
+      "case": "typescript_missing",
+      "tests": 15,
+      "passed": false,
+      "failures": 3,
+      "errors": 7,
+      "tail": [
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 15 tests in 0.386s",
+        "",
+        "FAILED (failures=3, errors=7)"
+      ],
+      "log_path": "work/issues-17-18/without-js-tests.log",
+      "sha256": "32a98fb840fa952f8c32150d90e541356899a7f760159a06a42501d17ab6e22c"
+    },
+    {
+      "case": "all_parser_dependencies",
+      "tests": 163,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "tail": [
+        "error: invalid managed block markers: C:\\Users\\54667\\AppData\\Local\\Temp\\tmpxlig5bnv\\CLAUDE.md",
+        "----------------------------------------------------------------------",
+        "Ran 163 tests in 76.201s",
+        "",
+        "OK"
+      ],
+      "log_path": "work/issues-17-18/with-parsers-tests.log",
+      "sha256": "cf8bcfc06ad87ee33bd9653d75fa98d6cd1e72733b82127dca8c1b9e930fa10d"
+    }
+  ],
+  "limitations": [
+    "Windows local fixtures only; no Linux/production pnpm install performed.",
+    "Full 163 tests run against isolated unmodified remote source snapshot, not current 1.6.1 working tree or new patch.",
+    "Issue17 candidate excludes were changed only in generated fixture manifests; overall baseline remains unsatisfied without run-checks.",
+    "No commit/committed/handoff gate was invoked or claimed."
+  ],
+  "diagnostic_errors": [
+    {
+      "operation": "supplemental fixture checker invocation",
+      "error": "omitted required --manifest caused empty stdout and JSONDecodeError",
+      "resolution": "provided --manifest engineering-manifest.json; reran successfully"
+    },
+    {
+      "operation": "snapshot raw-byte comparison",
+      "error": "Git Windows archive applies CRLF with core.autocrlf=true",
+      "resolution": "verified canonical line contents match remote blobs and recorded snapshot raw hashes/line ending counts"
+    }
+  ],
+  "snapshot_validation": {
+    "note": "git archive used core.autocrlf=true on Windows; canonical LF contents match remote blobs, while snapshot raw CRLF hashes are retained here.",
+    "files": {
+      "scripts/init_manifest.py": {
+        "raw_sha256": "4265b7d5af8ecfa3b218d99d1f6d40254cc7cd23edf7ac3ff10a5d562d011952",
+        "crlf_count": 139,
+        "canonical_source_matches": true
+      },
+      "scripts/check_project.py": {
+        "raw_sha256": "265f85d548191aaa1d2a4645e84315c4d8ca43da98f3d82526a1822485519e33",
+        "crlf_count": 1210,
+        "canonical_source_matches": true
+      },
+      "scripts/collect_code_context.py": {
+        "raw_sha256": "1f52b371f84aae3686330851c787173dbca3afca4b3b82fea8895e6608d127a5",
+        "crlf_count": 655,
+        "canonical_source_matches": true
+      },
+      "scripts/source_relations.py": {
+        "raw_sha256": "34b49fb8ced8eade2e3dfb69bdb271e6f4f71a3fc0a0d703c82f198b4803c25a",
+        "crlf_count": 421,
+        "canonical_source_matches": true
+      },
+      "scripts/rust_references.py": {
+        "raw_sha256": "e6398d6271bd8077f5957290a9847091b8e53f2c7b54891470a9ee580ff11113",
+        "crlf_count": 301,
+        "canonical_source_matches": true
+      },
+      "scripts/analyze_references.mjs": {
+        "raw_sha256": "9c1cb8057e4e8ca2de87209a0d008149b78a613d80f80555e75c08213354f462",
+        "crlf_count": 138,
+        "canonical_source_matches": true
+      },
+      "scripts/tests/test_rust_references.py": {
+        "raw_sha256": "787b7dc8c58650c57fe2cc6ab1011ef7766b2b08e158a220b6f10cf3658eae35",
+        "crlf_count": 146,
+        "canonical_source_matches": true
+      },
+      "scripts/tests/test_source_relations.py": {
+        "raw_sha256": "228caedc189f0f786c77ec7aecb62cc1cde5d158ff28e4aa0b51008e52d508d2",
+        "crlf_count": 232,
+        "canonical_source_matches": true
+      },
+      "assets/templates/project-manifest.example.json": {
+        "raw_sha256": "19465a0182e8d55d54468d00a39bdac177defe4fffe98d404c60e314ba5190af",
+        "crlf_count": 254,
+        "canonical_source_matches": true
+      }
+    }
+  },
+  "verified_at": "2026-10-19T01:35:53.524143+08:00"
+}

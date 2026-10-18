@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.6.2` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.6.3` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -136,6 +136,8 @@ python scripts/check_project.py \
 
 清单路径支持 `/` 和 `\\` 两种分隔符。`exclude_paths` 可使用项目相对的段级 glob：`*`、`?`、字符类只匹配单个目录段，`**` 匹配零个或多个目录段；例如 `**/node_modules` 会在解析链接前剪枝任意层依赖目录。根匹配、绝对 glob 和 `..` 段会被拒绝，排除项不会扩大变更覆盖范围。
 
+full/lite 初始化器默认显式生成 `**/node_modules`，无论初始化时是否已安装依赖，各层依赖目录均按该规则排除。已有清单保持原样；若需要相同政策，请审阅后将根级 `node_modules` 改为该glob。特殊项目若在此目录维护自有源码，应相应调整清单；检查器继续只按显式排除工作。
+
 声明的检查命令参数不能包含空字节。检查输出固定限制为 8 MiB；超过上限会终止命令并将检查标记为失败，报告只保留字节数和摘要哈希。`VERSION` 与 `CHANGELOG.md` 在本仓库属于控制面文件，修改时需要外部审阅。
 
 `documentation_impact.when_paths` 仍是字面路径。除了模块或文档自身范围，还可以使用包含至少两个不同所选模块 source scope 的严格公共父目录，例如 `packages/api` 与 `packages/web` 共用 `packages`。公共父目录只触发配置的文档更新门槛，不会让该目录下的其他路径自动通过覆盖检查。
@@ -179,6 +181,19 @@ scripts/tests/                   检查器和适配器测试
 ```
 
 ## 验证
+
+本仓库完整回归需要 Rust 和 JS/TS 两类解析环境。在任务隔离环境中准备依赖，再使用该环境的 Python：
+
+```text
+python -m venv <task-work>/reference-env
+<task-work>/reference-env/Scripts/python.exe -m pip install -r scripts/reference-requirements.txt
+npm ci --ignore-scripts --prefix scripts/context-runtime
+<task-work>/reference-env/Scripts/python.exe -m unittest discover -s scripts/tests -q
+```
+
+POSIX 使用 `reference-env/bin/python`；JS/TS 依赖需先安装 Node.js。门禁执行声明中的 `python` 时，应先激活同一环境或将其可执行目录加入本次命令的 PATH。缺依赖会集中提示准备方法并保持回归失败，不能用 skip 代替完整验证。
+
+这些依赖对日常工具使用是可选的：普通盘点/阅读包不需要解析器，只分析 Rust 或 JS/TS 时准备对应环境即可。引用分析缺能力时，终端 JSON 和 `relations-summary.txt` 会显示原因、安装指引和覆盖缺口，已成功解析的部分保留。安装仅针对本工具，不安装被分析项目的依赖。
 
 ```text
 python -m unittest discover -s scripts/tests -q

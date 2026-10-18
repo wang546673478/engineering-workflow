@@ -1,6 +1,17 @@
+# Current baseline: BASELINE-UX-17-18-01
+
+2026-10-19; source base 0216e4cd341bee534ccc85a8824c83a40a7e9840 plus the TASK-ISSUES-17-18 working tree. Current implementation now generates explicit recursive node_modules exclusions in both profiles, surfaces parser reasons/setup diagnostics in relation status/CLI/text, retains partial references, and fails required parser fixture setup early with actionable guidance. Core collection, existing manifests, checker rules and CI gates are unchanged. Current verification/publication evidence belongs to [Task](issues-17-18-task.md) and [fix evidence](issues-17-18-fix-evidence.json); prior 163-test assessment reports are historical. No business database or metadata-adapter change applies.
+
+The user adopted the bounded assessment and requested implementation/upload and issue replies/closure; exact wording is in the Task. This is not a transfer of old baseline reviews, and the program checks still require fresh results. Modules, contracts and flows below are linked current views.
+
+## Prior baseline revisions and assessment evidence
+
 # Current Engineering Workflow Baseline
 
 Current revision: `BASELINE-CONTEXT-06` (2026-10-18), based on source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8`; receipt commits change only evidence and linked-view status. Current facts include unchanged engineering stages and checker commands, local collection/JS/TS/Rust module evidence, selectable views, and a corrected protected-CI result contract: diagnostic reruns cannot replace the original required checker outcome. Exact source SHA `3fab75ba5d8e2663af811d2b7daee53c90fe6818` passed the approved Ubuntu/Windows reviewed jobs and aggregate quality run `39115700117`. Exact scope and validation are in [Task](source-context-task.md) and [evidence](source-context-evidence.json). User authorization covers the CI correction and upload; it does not certify target-project business behavior.
+
+Assessment-only supplement (2026-10-19): [ASSESS-17-18-01](issues-17-18-assessment.md) and [source-bound evidence](issues-17-18-evidence.json) verify initializer defaults, explicit exclusion consumers, optional parser statuses and required-test skip handling at remote 1.6.2/0216e4c. The initializer still emits root-only node_modules while the example manifest uses a recursive glob. Missing Rust/JS parsers already have explicit unsupported records; terminal guidance and test setup diagnostics remain usability gaps. Required unittest skips remain partial and cannot satisfy the gate. This factual supplement neither changes implementation nor transfers prior review/implementation approvals; the existing baseline revision/history below remains bounded to its original source.
+
 
 ## Historical 1.5.0 baseline (original evidence/review scope)
 

@@ -1,0 +1,156 @@
+{
+  "task": "TASK-ISSUES-17-18",
+  "source_base": "0216e4cd341bee534ccc85a8824c83a40a7e9840",
+  "status": "local_implementation_verified_commit_pending",
+  "checks": [
+    {
+      "mode": "change",
+      "required_checks_satisfied": true,
+      "report": "work/issues-17-18/fix-change.json",
+      "report_sha256": "4bcab8dc09650a3070466803ef966950fd4db56437c53f6b9daaf38187893711",
+      "commands": [
+        {
+          "id": "TEST",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 77.403,
+            "output_bytes": 603,
+            "output_sha256": "dda5b094b2b3784200221f45bd39bbf5ce9967272aac2ed3532b428b47b37fc6",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        },
+        {
+          "id": "COMPILE",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.232,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        },
+        {
+          "id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.109,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        }
+      ]
+    }
+  ],
+  "test_cases": 170,
+  "environment": {
+    "python": "3.13.5",
+    "node": "24.21.0",
+    "typescript": "6.0.3",
+    "tree_sitter": "0.25.2",
+    "tree_sitter_rust": "0.24.2",
+    "PyYAML": "6.0.3"
+  },
+  "focused": {
+    "diagnostics": 4,
+    "rust": 10,
+    "js_ts": 16,
+    "initializer": 6
+  },
+  "missing_environment": [
+    {
+      "case": "missing_rust_regression_setup",
+      "returncode": 5,
+      "actionable": true,
+      "no_index_error": true,
+      "tail": [
+        "----------------------------------------------------------------------",
+        "Ran 0 tests in 0.042s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case": "missing_typescript_regression_setup",
+      "returncode": 5,
+      "actionable": true,
+      "no_index_error": true,
+      "tail": [
+        "----------------------------------------------------------------------",
+        "Ran 0 tests in 0.043s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    }
+  ],
+  "native_junctions": [
+    {
+      "profile": "lite",
+      "exit": 0,
+      "required_checks_satisfied": true,
+      "errors": []
+    },
+    {
+      "profile": "full",
+      "exit": 0,
+      "required_checks_satisfied": true,
+      "errors": []
+    },
+    {
+      "case": "unexcluded_junction_rejected",
+      "exit": 2
+    }
+  ],
+  "package_validation": "passed",
+  "gate_policy": {
+    "original_checker_unchanged": true,
+    "ci_unchanged": true,
+    "required_commands_timeouts_unchanged": true,
+    "existing_manifest_exclusions_unchanged": true
+  },
+  "source_sha256": {
+    "scripts/init_manifest.py": "9395966d97725deff469a5574d015712e8e32c2bfe916f30dc3f12033b793fb7",
+    "scripts/source_relations.py": "696440ac8707c698db3da6538ebebba0ba872d3ad767b686a34157397e5f4634",
+    "scripts/tests/test_init.py": "88a22bc0bc4ece498781c451cb273bba084053a36fd69ced76cace72a5e17977",
+    "scripts/tests/test_rust_references.py": "2138782558fb170fb3daf3604c4b4349714a699048c401fe8b1f804976033dcb",
+    "scripts/tests/test_source_relations.py": "face7f4296d1ad1ba5484ce34133608bee59eaac1a83cfa8c95f1075f7f7a8b5",
+    "scripts/tests/test_reference_diagnostics.py": "953b93e86f701a440d1d25864c2b8782165793c905c63d29fa122dd485c1f038"
+  },
+  "publication": {
+    "state": "pending"
+  },
+  "issue_replies": {
+    "state": "pending"
+  },
+  "limitations": [
+    "Native fixtures run on Windows; new hosted validation not yet complete.",
+    "Optional manual inventories remain partial as before."
+  ]
+}

@@ -1,6 +1,17 @@
+# Historical source-context task
+
+Current work moved to [TASK-ISSUES-17-18](issues-17-18-task.md) after explicit user adoption of the assessment. The following assessment and release history retain their original source/approval scope.
+
 # TASK-CONTEXT-RELEASE-01：来源辅助功能交付与受保护 CI 判定修复
 
-## 当前状态和用户授权
+## 当前状态：GitHub #17 / #18 评估（2026-10-19）
+
+- 本轮用户要求查看GitHub issue，评估是否值得修复以及建议在全局上是否值得采用。当前评估完成、可审阅，详见[评估与skill review](issues-17-18-assessment.md)和[绑定源码的证据](issues-17-18-evidence.json)；候选修复尚未实施，历史上传批准不扩展到本轮。
+- 工作树基点a407b11/1.6.1；已fetch最新远程0216e4c/1.6.2，两issue相关实现未变化。上一发布状态以该远程任务记录为新证据，本地历史记录保留，不再据下方旧“下一步”继续上传。
+- 已核实#17两种profile的默认排除缺口；#18已有逐文件不可用状态，真实缺口在摘要/安装指引/测试诊断。检查器已将skip识别为partial，不建议靠skip处理完整回归。最新远程隔离副本补齐固定依赖后163项/76.201秒通过。
+- 下一步：呈现逐条取舍和候选最小方案。当前需求/方案是建议，实施状态未开始；本轮文档记录没有新发布内容，不升版、不提交/上传。
+
+## 上一发布任务状态和用户授权（历史）
 
 - 当前状态（2026-10-18T18:11+08:00）：用户要求“那就进行修复然后上传github”后，已修复诊断重跑可以覆盖原必需检查失败的判定漏洞，保留 Windows reparse fixture 路径修正，版本1.6.2已推送。实现 SHA `3fab75ba5d8e2663af811d2b7daee53c90fe6818` 的 reviewed Actions run `39115700117` 已获精确 SHA 的 `engineering-control-review` 审批；Ubuntu 和 Windows reviewed jobs、aggregate `quality` 均成功，两个平台均上传 checker artifacts。本地 163 项 TEST、COMPILE、GUIDANCE-COMPILE 及 commit/committed 门禁通过；run `39116840236` 对后续回执 SHA `3c676f4df3f6be6f6cfb48f65f393663a7bab19f` 的普通 Actions path 也成功。本任务状态已完成。
 - 发布提交链：实现 `82b3c8531a9a9867dd77756444a2bcbc922aa2c8`，已验证发布 SHA `3fab75ba5d8e2663af811d2b7daee53c90fe6818`，上传状态回执 `3c676f4df3f6be6f6cfb48f65f393663a7bab19f`。GitHub `main` 当前已包含这些提交；本轮最终状态/托管回执为本次提交。

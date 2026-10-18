@@ -1,3 +1,17 @@
+# Current plan: PLAN-UX-17-18-01
+
+Based on SPEC-UX-17-18-01 and input BASELINE-CONTEXT-06 / 0216e4cd341bee534ccc85a8824c83a40a7e9840 plus ASSESS-17-18-01. Output baseline: BASELINE-UX-17-18-01. Scope and implementation status are in [Task](../planning/issues-17-18-task.md).
+
+1. UX-01: Reuse the existing segment-aware glob in initializer defaults, with both profiles and before/after-install fixtures. Preserve existing project manifests and explicit checker policy.
+2. UX-02: Derive grouped dependency diagnostics from existing unsupported records. Add details to status/CLI/text; keep existing enums and valid partial graphs. Distinguish an installed JS analyzer execution failure from a missing runtime/parser.
+3. UX-03: Make required parser fixture setup fail with preparation guidance; add simulated missing-environment and mixed/empty-reference behavior coverage. Document both optional runtimes and full-suite setup; no skip or gate relaxation.
+4. UX-04: Refresh affected baseline views, traceability and version 1.6.3 PATCH. Run original TEST/COMPILE/GUIDANCE-COMPILE, focused behavior checks, package validation and exact commit gates.
+5. UX-05: Publish tested source to GitHub, verify exact remote SHA, then post factual issue-specific replies and close #17/#18 as explicitly authorized. Hosted independent environment review remains separate.
+
+Compatibility/recovery: new explicit defaults affect only newly generated manifests; old ones need reviewed migration. Diagnostics are additive JSON fields, core collection exit semantics stay unchanged, and no business-data migration applies. Avoid workspace-specific config parsers, implicit checker excludes, target-project dependency installation and new strict-analysis modes.
+
+## Prior plans and evidence
+
 # Source Context Technical Plan
 
 Revision PLAN-CONTEXT-06, based on unchanged SPEC-CONTEXT-03 and input BASELINE-CONTEXT-05/a407b112. The current user instruction authorizes the evidenced hosted-CI correction and upload; exact scope and wording are in [Task](../planning/source-context-task.md). Output BASELINE-CONTEXT-06.

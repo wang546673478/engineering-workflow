@@ -98,7 +98,7 @@ def manifest(root: Path, profile: str, project_kind: str = "existing", implement
             "documentation_impact": impact,
         }],
         "baseline": baseline,
-        "exclude_paths": [".git", "node_modules", "build", "dist", "work", "__pycache__"],
+        "exclude_paths": [".git", "**/node_modules", "build", "dist", "work", "__pycache__"],
     }
 
 

@@ -1,3 +1,13 @@
+# Current specification: SPEC-UX-17-18-01
+
+Confirmed on 2026-10-19 by the user's instruction to implement the reviewed recommendations, publish, reply to and close #17/#18. The exact statement and boundaries are in [Task](../planning/issues-17-18-task.md). This revision freezes only the compatible issue-fix batch; prior requirements/review scope below remain historical.
+
+- REQ-UX-17 / AT-UX-17: Newly generated full/lite manifests explicitly exclude node_modules at any depth before link resolution, independent of dependency-install timing. Ordinary source, similar directory names and unexcluded link protections remain covered; existing manifests are not rewritten.
+- REQ-UX-18 / AT-UX-18: Optional Rust/Node/TypeScript failures expose reasons, preparation guidance and unsupported scope in CLI/summaries while preserving core collection and valid partial references. Missing parsers, execution failure and successfully parsed zero-reference files remain distinct.
+- REQ-UX-VERIFY / AT-UX-VERIFY: Full parser regressions require prepared pinned environments, fail early with guidance when unavailable, and do not use skip to satisfy required checks. Preserve checker/CI commands, limits and review duties; publish the tested change and factual issue replies/closure.
+
+## Prior specifications and evidence
+
 # Self-Maintenance Specification
 
 Status: `current`

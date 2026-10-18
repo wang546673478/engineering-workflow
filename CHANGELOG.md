@@ -1,3 +1,9 @@
+# 1.6.3 / Unreleased
+
+- Generate an explicit recursive node_modules exclusion in both initializer profiles, keeping existing manifests and checker policy unchanged.
+- Surface optional Rust/Node/TypeScript parser failures and installation guidance in relation status, CLI output and summaries; retain valid partial results and distinguish analyzer execution failures.
+- Fail parser regression setup with actionable guidance instead of cascading empty-graph assertions; document both pinned test runtimes without skipping required coverage.
+
 # 1.6.2 / 2026-10-18
 
 - Keep the original required checker outcome authoritative in reviewed and manually reviewed CI jobs, even when a diagnostic test rerun passes.

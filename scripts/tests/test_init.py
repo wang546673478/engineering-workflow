@@ -10,6 +10,9 @@ from unittest import mock
 
 
 SCRIPTS = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SCRIPTS))
+import check_project as checker
+import init_manifest as initializer
 
 
 class InitManifestTests(unittest.TestCase):
@@ -20,6 +23,38 @@ class InitManifestTests(unittest.TestCase):
         self.addCleanup(environment.stop)
         os.environ.pop("ENGINEERING_TASK_ID", None)
         os.environ.pop("ENGINEERING_CONTROL_PLANE_APPROVED", None)
+
+    def test_generated_profiles_prune_dependencies_before_link_validation(self):
+        for profile in ("lite", "full"):
+            with self.subTest(profile=profile), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                (root / "packages/a/src").mkdir(parents=True)
+                source = root / "packages/a/src/main.ts"
+                source.write_text("export const x=1", encoding="utf-8")
+                before = initializer.manifest(root, profile)
+                links = []
+                for folder in ("node_modules", "packages/a/node_modules", "apps/a/node_modules", "nested/deeper/app/node_modules"):
+                    link = root / folder / "vitest"
+                    link.parent.mkdir(parents=True)
+                    link.write_text("link fixture", encoding="utf-8")
+                    links.append(link)
+                similar = root / "packages/a/node_modules_custom/owned.ts"
+                similar.parent.mkdir()
+                similar.write_text("authored source", encoding="utf-8")
+                after = initializer.manifest(root, profile)
+                self.assertEqual(before["exclude_paths"], after["exclude_paths"])
+                excludes = checker.build_exclude_specs(root, after["exclude_paths"])
+                original = checker.is_link
+                with mock.patch.object(checker, "is_link", side_effect=lambda p: p in links or original(p)):
+                    walked = list(checker.iter_module_paths(root, root, excludes))
+                self.assertIn(source, walked)
+                self.assertIn(similar, walked)
+                self.assertTrue(all(link not in walked for link in links))
+                unsafe = root / "packages/a/src/linked-source"
+                unsafe.write_text("unexcluded link fixture", encoding="utf-8")
+                with mock.patch.object(checker, "is_link", side_effect=lambda p: p == unsafe or original(p)):
+                    with self.assertRaises(checker.ConfigError):
+                        list(checker.iter_module_paths(root, root, excludes))
 
     def test_lite_profile_discovers_sources_and_refuses_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:

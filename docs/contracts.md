@@ -113,3 +113,10 @@ The collector additionally checks lstat reparse attributes before scanning links
 
 
 The 1.6.1 hosted-report review additionally isolates checker/initializer test fixture task and approval environments; product checker/CI policy stays unchanged. Initial hosted artifacts remain failed historical evidence despite the workflow diagnostic retry succeeding. The follow-up validates the unchanged declared commands with the enclosing CI variables present; exact results are in the current source-context Task.
+
+
+## Issue #17/#18 compatible contract changes (1.6.3)
+
+Both initializer profiles generate **/node_modules explicitly; existing manifests are not migrated. Relation status and CLI relations objects add unsupported per-file records and grouped diagnostics (status, files, message, setup_commands argv), retaining existing status/summary/validation fields and enums. Summary text flags incomplete selected-source coverage and renders setup hints. js_analysis_failed denotes failure executing an installed analyzer and carries no missing-parser installation recommendation. Partial results retain valid edges. Core collection exit codes remain based on inventory scan policy; graph validation is not parser coverage. Full regression environments need both pinned parsers; skips remain partial under the unchanged checker.
+
+Current scope, source and validation: [TASK-ISSUES-17-18](../planning/issues-17-18-task.md).

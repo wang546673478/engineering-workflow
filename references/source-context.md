@@ -72,3 +72,9 @@ Relations cite caller path, line/end-line, original hash and literal specifier; 
 Actual scope, choices, requirements and validation are in [the current Task](../planning/source-context-task.md).
 
 Rust parser versions are pinned in scripts/reference-requirements.txt; tree-sitter and tree-sitter-rust use MIT licenses. The analysis reads metadata only and never executes Cargo or target code. Unsupported languages, generated macro dependencies, runtime registrations, HTTP/events and unresolved module targets still require normal source/test investigation.
+
+## Parser availability and regression setup
+
+`relations-status.json` and the collector CLI's `relations` object retain the existing status/summary and additionally expose per-file `unsupported` records plus grouped `diagnostics` with messages and setup argv. `relations-summary.txt` states incomplete selected-source coverage and renders actionable setup hints. Rust, Node and TypeScript absence remain distinct; a failure executing an installed JS analyzer is `js_analysis_failed`, without assuming an installation fixes it. Mixed-language results retain valid edges and identify the unsupported part. A parsed file with zero references has a parser file record and no missing-parser diagnostic; empty-graph validation alone does not establish analysis coverage.
+
+These dependencies remain optional for inventory/packing. The repository's full regression suite requires both pinned parser environments: run the setup commands above, then `python -m unittest discover -s scripts/tests -q` with that Python environment active. Required parser fixture setup fails early with preparation guidance when unavailable; it does not skip capability tests. The generic checker continues treating detected required-test skips as partial. No checker policy or collection exit-code change is introduced.

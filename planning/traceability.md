@@ -42,3 +42,14 @@ The collector additionally checks lstat reparse attributes before scanning links
 
 
 The 1.6.1 hosted-report review additionally isolates checker/initializer test fixture task and approval environments; product checker/CI policy stays unchanged. Initial hosted artifacts remain failed historical evidence despite the workflow diagnostic retry succeeding. The follow-up validates the unchanged declared commands with the enclosing CI variables present; exact results are in the current source-context Task.
+
+
+## Issue #17/#18 fix batch (2026-10-19)
+
+SPEC-UX-17-18-01 -> PLAN-UX-17-18-01 -> TASK-ISSUES-17-18 -> BASELINE-UX-17-18-01; implementation/validation and publication status: [Task](issues-17-18-task.md).
+
+| Requirement | Acceptance | Plan | Evidence |
+| --- | --- | --- | --- |
+| REQ-UX-17 | AT-UX-17 | UX-01 | initializer/checker dependency-pruning fixtures; fix evidence |
+| REQ-UX-18 | AT-UX-18 | UX-02 | CLI/status/summary and missing/mixed/empty-reference regressions |
+| REQ-UX-VERIFY | AT-UX-VERIFY | UX-03..05 | required environment setup, original full checks, exact commit/upload and issue receipts |

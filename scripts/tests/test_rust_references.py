@@ -14,6 +14,7 @@ class RustReferencesTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.temp = tempfile.TemporaryDirectory(prefix="rust-context-")
+        cls.addClassCleanup(cls.temp.cleanup)
         cls.root = Path(cls.temp.name) / "source"
         cls.root.mkdir()
         files = {
@@ -48,6 +49,8 @@ class RustReferencesTests(unittest.TestCase):
             p.write_text(text, encoding="utf-8")
         cls.result = collector.collect(cls.root, includes=["app/src/lib.rs"])
         cls.analysis = relations.analyze_result(cls.result)
+        if not cls.analysis["files"]:
+            raise RuntimeError("Required Rust regression environment is unavailable.\n" + relations.diagnostic_text(relations.dependency_diagnostics(cls.analysis)))
 
     @classmethod
     def tearDownClass(cls):
@@ -70,6 +73,14 @@ class RustReferencesTests(unittest.TestCase):
                 (9, "app/src/alternate.rs"),
             },
         )
+
+    def test_parsed_source_with_no_references_has_no_missing_parser_diagnostic(self):
+        result = collector.collect(self.root, includes=["app/src/fake.rs"])
+        analysis = relations.analyze_result(result)
+        self.assertEqual(analysis["summary"]["source_files"], 1)
+        self.assertEqual(analysis["references"], [])
+        self.assertEqual(analysis["unsupported"], [])
+        self.assertEqual(relations.dependency_diagnostics(analysis), [])
 
     def test_comments_strings_not_edges(self):
         self.assertFalse(

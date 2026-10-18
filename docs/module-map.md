@@ -112,3 +112,10 @@ The collector additionally checks lstat reparse attributes before scanning links
 
 
 The 1.6.1 hosted-report review additionally isolates checker/initializer test fixture task and approval environments; product checker/CI policy stays unchanged. Initial hosted artifacts remain failed historical evidence despite the workflow diagnostic retry succeeding. The follow-up validates the unchanged declared commands with the enclosing CI variables present; exact results are in the current source-context Task.
+
+
+## Issue #17/#18 ownership (1.6.3)
+
+instructions owns the new explicit initializer default and verification setup documentation; checker continues consuming explicit manifest excludes without hidden pruning or required-test policy changes. source-context owns grouped dependency diagnostics derived from existing unsupported records and the additive CLI/status/text output. tests owns required parser setup failures and missing/mixed/zero-reference regressions. governance owns versioned evidence, active task and publication/issue receipts. No new cross-module dependency or business database is introduced.
+
+Current scope, source and validation: [TASK-ISSUES-17-18](../planning/issues-17-18-task.md).

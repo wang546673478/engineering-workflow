@@ -4,7 +4,7 @@
     "active_baseline": "BASELINE",
     "active_spec": "SPEC",
     "active_plan": "PLAN",
-    "active_task": "TASK-CONTEXT-RELEASE-01"
+    "active_task": "TASK-ISSUES-17-18"
   },
   "documents": [
     {
@@ -136,6 +136,18 @@
     {
       "id": "CONTEXT_BENCHMARK",
       "path": "planning/source-context-benchmark.md",
+      "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "ISSUES_17_18_TASK",
+      "path": "planning/issues-17-18-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ISSUES_17_18_EVIDENCE",
+      "path": "planning/issues-17-18-fix-evidence.json",
       "kind": "verification",
       "required": true
     }
@@ -314,6 +326,21 @@
       "id": "REQ-CONTEXT-05",
       "document": "SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "REQ-UX-17",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-UX-18",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-UX-VERIFY",
+      "document": "SPEC",
+      "index": "TRACE"
     }
   ],
   "acceptance": [
@@ -488,6 +515,21 @@
     },
     {
       "id": "AT-CONTEXT-05",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-UX-17",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-UX-18",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-UX-VERIFY",
       "document": "SPEC",
       "index": "TRACE"
     }
@@ -2144,6 +2186,114 @@
           ]
         }
       }
+    },
+    {
+      "id": "TASK-ISSUES-17-18",
+      "requirement_ids": [
+        "REQ-UX-17",
+        "REQ-UX-18",
+        "REQ-UX-VERIFY"
+      ],
+      "acceptance_ids": [
+        "AT-UX-17",
+        "AT-UX-18",
+        "AT-UX-VERIFY"
+      ],
+      "module_ids": [
+        "instructions",
+        "source-context",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-CONTEXT-RELEASE-01"
+      ],
+      "status": "in_progress",
+      "impact_document": "ISSUES_17_18_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/issues-17-18-task.md"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "SPEC",
+        "plan": "PLAN",
+        "task": "ISSUES_17_18_TASK",
+        "traceability": "TRACE"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-19T01:41+08:00",
+        "scope": "User-adopted #17/#18 fixes, validation, versioning, publication and issue replies/closure",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.6.2 / 0216e4c",
+            "decision": "adopted",
+            "reason": "Explicit user request and repository workflow authority"
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Scoped skill resources and release metadata validation"
+          }
+        ],
+        "evidence": "planning/issues-17-18-task.md",
+        "recheck": "Scope changed from assessment to user-approved implementation/publication; existing rules, references and linked artifacts reread."
+      },
+      "documentation_impact": {
+        "implementation": {
+          "when_paths": [
+            "scripts/init_manifest.py",
+            "scripts/source_relations.py",
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ISSUES_17_18_TASK",
+            "ISSUES_17_18_EVIDENCE",
+            "TRACE"
+          ]
+        },
+        "guidance-governance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents",
+            "references/source-context.md",
+            "engineering-manifest.json",
+            "docs",
+            "planning"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ISSUES_17_18_TASK",
+            "ISSUES_17_18_EVIDENCE",
+            "TRACE"
+          ]
+        }
+      }
     }
   ],
   "control_plane": {
@@ -2173,8 +2323,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "3fab75ba5d8e2663af811d2b7daee53c90fe6818; implementation and protected Ubuntu/Windows hosted verification passed",
-    "scope": "BASELINE-CONTEXT-06: source helper delivery and hosted protected-CI result integrity; checker command definitions, required checks, timeouts and workflow approval duties unchanged"
+    "source_revision": "0216e4cd341bee534ccc85a8824c83a40a7e9840 + TASK-ISSUES-17-18 working tree",
+    "scope": "Existing workflow plus explicit initializer dependency exclusions and optional-parser diagnostics; BASELINE-UX-17-18-01"
   },
   "exclude_paths": [
     ".git",

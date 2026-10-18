@@ -8,9 +8,12 @@ this graph deliberately does not claim runtime calls or business verification.
 import hashlib
 import re
 import json
+import os
 from pathlib import Path
+import shlex
 import shutil
 import subprocess
+import sys
 import tempfile
 
 
@@ -239,6 +242,51 @@ def package_graph(graph, inventory_paths):
     }
 
 
+def dependency_diagnostics(analysis):
+    scripts = Path(__file__).resolve().parent
+    npm = ["npm", "ci", "--ignore-scripts", "--prefix", str(scripts / "context-runtime")]
+    guidance = {
+        "rust_parser_unavailable": (
+            "Rust references were not analyzed. Use Python 3.11+ and install the pinned parsers in the environment running collection/tests.",
+            [[sys.executable, "-m", "pip", "install", "-r", str(scripts / "reference-requirements.txt")]],
+        ),
+        "node_runtime_missing": (
+            "JavaScript/TypeScript references were not analyzed. Install Node.js, then prepare this tool's TypeScript runtime.",
+            [npm],
+        ),
+        "js_parser_unavailable": (
+            "JavaScript/TypeScript references were not analyzed. Prepare this tool's pinned TypeScript runtime.",
+            [npm],
+        ),
+        "js_analysis_failed": (
+            "JavaScript/TypeScript analysis failed during execution. Review the analyzer/runtime failure before using its reference coverage.",
+            [],
+        ),
+    }
+    groups = {}
+    for item in analysis["unsupported"]:
+        if item["status"] in guidance:
+            groups.setdefault(item["status"], []).append(item["path"])
+    return [
+        {"status": reason, "files": sorted(set(paths)),
+         "message": guidance[reason][0], "setup_commands": guidance[reason][1]}
+        for reason, paths in sorted(groups.items())
+    ]
+
+
+def diagnostic_text(diagnostics):
+    lines = []
+    for item in diagnostics:
+        lines.append(f"{item['status']} ({len(item['files'])} files): {item['message']}")
+        for command in item["setup_commands"]:
+            if os.name == "nt":
+                hint = "& " + " ".join("'" + arg.replace("'", "''") + "'" for arg in command)
+            else:
+                hint = shlex.join(command)
+            lines.append("Setup: " + hint)
+    return "\n".join(lines)
+
+
 def analyze_result(result):
     entries = result["inventory"]["entries"]
     request = {
@@ -278,6 +326,11 @@ def analyze_result(result):
                 {"path": s["path"], "status": "node_runtime_missing"}
                 for s in js_sources
             )
+        elif not (Path(__file__).with_name("context-runtime") / "node_modules/typescript/lib/typescript.js").is_file():
+            analysis["unsupported"].extend(
+                {"path": s["path"], "status": "js_parser_unavailable"}
+                for s in js_sources
+            )
         else:
             with tempfile.TemporaryDirectory(prefix="references-") as temporary:
                 inp = Path(temporary) / "request.json"
@@ -300,9 +353,9 @@ def analyze_result(result):
                 js = json.loads(proc.stdout)
             except json.JSONDecodeError:
                 js = {"status": "error"}
-            if proc.returncode or js.get("status") == "error":
+            if proc.returncode or not isinstance(js, dict) or js.get("status") == "error":
                 analysis["unsupported"].extend(
-                    {"path": s["path"], "status": "js_parser_unavailable"}
+                    {"path": s["path"], "status": "js_analysis_failed"}
                     for s in js_sources
                 )
             else:
@@ -380,8 +433,14 @@ def build_relation_outputs(result, output, views="summary", analysis=None):
         (output / "relations.md").write_text(
             relation_markdown(graph, request["root"]), encoding="utf-8"
         )
+    diagnostics = dependency_diagnostics(analysis)
+    summary_text = f"Observed references: {analysis['summary']['resolved']}; unresolved/external: {analysis['summary']['unresolved']}; unknown: {analysis['summary']['unknown']}; unsupported files: {analysis['summary']['unsupported_files']}. Semantics unreviewed.\n"
+    if analysis["unsupported"]:
+        summary_text += "Selected source coverage is incomplete; see unsupported records in references.json and relations-status.json.\n"
+    if diagnostics:
+        summary_text += diagnostic_text(diagnostics) + "\n"
     (output / "relations-summary.txt").write_text(
-        f"Observed references: {analysis['summary']['resolved']}; unresolved/external: {analysis['summary']['unresolved']}; unknown: {analysis['summary']['unknown']}; unsupported files: {analysis['summary']['unsupported_files']}. Semantics unreviewed.\n",
+        summary_text,
         encoding="utf-8",
     )
     packages = package_graph(graph, request["files"])
@@ -411,6 +470,8 @@ def build_relation_outputs(result, output, views="summary", analysis=None):
         if analysis["files"]
         else "unsupported",
         "summary": analysis["summary"],
+        "unsupported": analysis["unsupported"],
+        "diagnostics": diagnostics,
         "validation": validation,
         "diagram": diagram_status,
         "limits": "Unselected/unsupported/unresolved sources remain unknown; not semantic completeness",
