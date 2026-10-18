@@ -1,6 +1,6 @@
 # Current Engineering Workflow Baseline
 
-Current revision: `BASELINE-CONTEXT-06` (2026-10-18), based on a407b112 and the source-helper working tree. Current facts include unchanged engineering stages and checker commands, local collection/JS/TS/Rust module evidence, selectable views, and a corrected protected-CI result contract: diagnostic reruns cannot replace the original required checker outcome. Exact scope and validation are in [Task](source-context-task.md) and [evidence](source-context-evidence.json). User authorization covers the CI correction and upload; it does not certify target-project business behavior.
+Current revision: `BASELINE-CONTEXT-06` (2026-10-18), based on source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8`. Current facts include unchanged engineering stages and checker commands, local collection/JS/TS/Rust module evidence, selectable views, and a corrected protected-CI result contract: diagnostic reruns cannot replace the original required checker outcome. Exact scope and validation are in [Task](source-context-task.md) and [evidence](source-context-evidence.json). User authorization covers the CI correction and upload; it does not certify target-project business behavior.
 
 ## Historical 1.5.0 baseline (original evidence/review scope)
 

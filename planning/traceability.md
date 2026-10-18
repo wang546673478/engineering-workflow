@@ -1,6 +1,6 @@
 # Current Source Context Traceability
 
-Revision TRACE-CONTEXT-03: BASELINE-CONTEXT-03 → SPEC-CONTEXT-03 → PLAN-CONTEXT-03 → TASK-CONTEXT-RELEASE-01.
+Revision TRACE-CONTEXT-04: BASELINE-CONTEXT-06 → SPEC-CONTEXT-03 → PLAN-CONTEXT-06 → TASK-CONTEXT-RELEASE-01.
 
 | Requirement / acceptance | Plan / execution | Evidence and affected views |
 | --- | --- | --- |

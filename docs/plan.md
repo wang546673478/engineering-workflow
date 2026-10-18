@@ -5,8 +5,10 @@ Revision PLAN-CONTEXT-06, based on unchanged SPEC-CONTEXT-03 and input BASELINE-
 1. Preserve existing engineering stages and checker controls; require the original checker result to pass on both protected review paths, keeping diagnostic reruns for evidence only.
 2. Reuse safe path/glob primitives; provide complete source packs with explicit omitted states, per-run discovery reuse and optional syntax adapters.
 3. Compare P1..P4 in the Task on both frozen corpora; prefer scoped task-first execution unless evidence justifies reference-led expansion; output one appropriate view.
-4. Preserve original required checks and timeouts. Make the original checker outcome authoritative in reviewed and manual-reviewed paths; keep diagnostic reruns for evidence only and cover finalization behavior with regression tests.
+4. Preserve original required checks and timeouts. Make the original checker outcome authoritative in reviewed and manual-reviewed paths through the shared `.github/scripts/finalize_reviewed_quality.py`; keep diagnostic reruns for evidence only and cover finalization behavior with regression tests.
 5. Reconcile current views/version/evidence, then staged/committed checks, authorized upload and independent hosted-status evidence.
+
+Local commit and exact-commit checks passed on source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8`; hosted verification is tied to the final uploaded SHA and remains separate.
 
 ## Historical plan (original scope retained)
 

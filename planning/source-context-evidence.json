@@ -1,6 +1,6 @@
 {
-  "revision": "SOURCE-CONTEXT-EVIDENCE-01",
-  "observed_at": "2026-10-18T06:31:06.570777+08:00",
+  "revision": "SOURCE-CONTEXT-EVIDENCE-02",
+  "observed_at": "2026-10-18T17:16:03.4662767+08:00",
   "upstream_sources": {
     "gitingest": "4e259a02fe72115bee538271622f1234a81c8e1a",
     "gitdiagram": "310e2e696b1953cec0e76560cad5e9cd7ca5d964"
@@ -1932,6 +1932,30 @@
           }
         },
         "runtime": "Python 3.13.5; task-local venv site-packages exposed to nested base-interpreter commands via process-only PYTHONPATH"
+      },
+      "local_committed_gate": {
+        "commit": "82b3c8531a9a9867dd77756444a2bcbc922aa2c8",
+        "required_checks_satisfied": true,
+        "report": "work/ci-global-repair-committed-r1.json",
+        "control_plane": "pass",
+        "committed_scope": "pass",
+        "checks": {
+          "TEST": {
+            "status": "pass",
+            "tests": 163,
+            "seconds": 72.27,
+            "timeout_seconds": 120
+          },
+          "COMPILE": {
+            "status": "pass",
+            "seconds": 0.11
+          },
+          "GUIDANCE-COMPILE": {
+            "status": "pass",
+            "seconds": 0.11
+          }
+        },
+        "runtime": "Python 3.13.5 with task-local pinned parser dependencies available to nested commands"
       },
       "precheck_findings": [
         {

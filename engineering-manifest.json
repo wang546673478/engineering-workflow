@@ -2173,7 +2173,7 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "a407b112410e8717511d62fda8eead66d18cf043 input; 1.6.1 Windows fixture path correction retained",
+    "source_revision": "82b3c8531a9a9867dd77756444a2bcbc922aa2c8; receipt-only commits may follow without changing implementation",
     "scope": "BASELINE-CONTEXT-06: source helper delivery and hosted protected-CI result integrity; checker command definitions, required checks, timeouts and workflow approval duties unchanged"
   },
   "exclude_paths": [
