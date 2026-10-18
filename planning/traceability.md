@@ -53,3 +53,8 @@ SPEC-UX-17-18-01 -> PLAN-UX-17-18-01 -> TASK-ISSUES-17-18 -> BASELINE-UX-17-18-0
 | REQ-UX-17 | AT-UX-17 | UX-01 | initializer/checker dependency-pruning fixtures; fix evidence |
 | REQ-UX-18 | AT-UX-18 | UX-02 | CLI/status/summary and missing/mixed/empty-reference regressions |
 | REQ-UX-VERIFY | AT-UX-VERIFY | UX-03..05 | required environment setup, original full checks, exact commit/upload and issue receipts |
+
+
+REQ-UX-17/AT-UX-17, REQ-UX-18/AT-UX-18 and REQ-UX-VERIFY/AT-UX-VERIFY map to published source 0040878, fresh 170-test local gates and verified issue replies/closure. Receipt-only follow-up retains these boundaries; hosted outcome remains pending.
+
+Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.

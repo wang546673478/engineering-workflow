@@ -1,7 +1,7 @@
 {
   "task": "TASK-ISSUES-17-18",
   "source_base": "0216e4cd341bee534ccc85a8824c83a40a7e9840",
-  "status": "local_implementation_verified_commit_pending",
+  "status": "complete_published_issues_closed",
   "checks": [
     {
       "mode": "change",
@@ -67,6 +67,146 @@
           }
         }
       ]
+    },
+    {
+      "mode": "commit",
+      "source_commit": "staged implementation tree",
+      "required_checks_satisfied": true,
+      "report": "work/issues-17-18/fix-commit.json",
+      "report_sha256": "5d0d9f58ddbc1b116b959c6a3287890a6b5023ff1a2342d395ac162803d1ad6f",
+      "commands": [
+        {
+          "id": "TEST",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 77.594,
+            "output_bytes": 603,
+            "output_sha256": "dabddbcff6833dd08e10a591c5a51c9413bcdd60c20cb8155a2762f17f084c66",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        },
+        {
+          "id": "COMPILE",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.22,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        },
+        {
+          "id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.109,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        }
+      ]
+    },
+    {
+      "mode": "committed",
+      "source_commit": "0040878f69450657bb65ee779b6cecda4697049d",
+      "required_checks_satisfied": true,
+      "report": "work/issues-17-18/fix-committed.json",
+      "report_sha256": "ea31c0dbf23f8044f5140a75c6bfd08b86e8b6dd4bbd1957f1467ad4a7924809",
+      "commands": [
+        {
+          "id": "TEST",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 77.682,
+            "output_bytes": 603,
+            "output_sha256": "e3542512a884f0454f0d74e986f05cb7f2ab782b36e318b39cf2d15eae68e219",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        },
+        {
+          "id": "COMPILE",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.11,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        },
+        {
+          "id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "evidence": {
+            "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.123,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          }
+        }
+      ]
+    },
+    {
+      "mode": "receipt-commit preliminary",
+      "required_checks_satisfied": true,
+      "source_unchanged": true,
+      "report": "work/issues-17-18/receipt-commit.json",
+      "report_sha256": "b955c4229c664e46244610412e7ea2ff67f5acc87feaa6e9e57d6acd44564c31",
+      "note": "Preliminary receipt tree; subsequent edits only clarify delivery/CI state. Final staged and exact-commit reports are retained task-locally."
     }
   ],
   "test_cases": 170,
@@ -144,13 +284,60 @@
     "scripts/tests/test_reference_diagnostics.py": "953b93e86f701a440d1d25864c2b8782165793c905c63d29fa122dd485c1f038"
   },
   "publication": {
-    "state": "pending"
+    "state": "published",
+    "version": "1.6.3",
+    "published_date": "2026-10-19",
+    "source_commit": "0040878f69450657bb65ee779b6cecda4697049d",
+    "remote_main_verified": true
   },
-  "issue_replies": {
-    "state": "pending"
-  },
+  "issue_replies": [
+    {
+      "number": 17,
+      "comment_url": "https://github.com/wang546673478/engineering-workflow/issues/17#issuecomment-6253194112",
+      "state": "closed",
+      "state_reason": "completed",
+      "closed_at": "2026-10-18T17:55:32Z"
+    },
+    {
+      "number": 18,
+      "comment_url": "https://github.com/wang546673478/engineering-workflow/issues/18#issuecomment-6253194625",
+      "state": "closed",
+      "state_reason": "completed",
+      "closed_at": "2026-10-18T17:55:35Z"
+    }
+  ],
   "limitations": [
-    "Native fixtures run on Windows; new hosted validation not yet complete.",
-    "Optional manual inventories remain partial as before."
-  ]
+    "Native local fixtures ran on Windows; implementation source additionally passed original hosted Windows/Ubuntu artifacts.",
+    "Optional manual inventories remain partial as before.",
+    "Receipt-only later commits require their own local gates and independent hosted status; source CI approval is not transferred."
+  ],
+  "hosted_ci": {
+    "run": 39151794183,
+    "source_commit": "0040878f69450657bb65ee779b6cecda4697049d",
+    "approval_user": "wang546673478",
+    "approval_state": "approved",
+    "platforms": [
+      {
+        "name": "reviewed-windows-latest",
+        "artifact_sha256": "0abdad38d2166e03a1ab18576c94c875ae8cd32f90eb5340d289d5ecb6b300ec",
+        "report_sha256": "93dbdc56ac400173365c7687fbfdb4d380f9ba4fb19506caf416b0bb65a0f099",
+        "required_checks_satisfied": true,
+        "test_seconds": 63.828,
+        "source_sha_present": false
+      },
+      {
+        "name": "reviewed-ubuntu-latest",
+        "artifact_sha256": "d2550348e7a616f750862325f75a9d2c44dfe4f8e295427cad046e8011f666bc",
+        "report_sha256": "3a5f327ce820c111b1c14df881333ea792554fe93c7a0885687faa099ac01996",
+        "required_checks_satisfied": true,
+        "test_seconds": 13.813,
+        "source_sha_present": false
+      }
+    ],
+    "state": "passed_for_implementation_source",
+    "run_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39151794183",
+    "binding": "Artifacts belong to the exact implementation-SHA run; report JSON does not repeat commit SHA. Both original required-check results were inspected."
+  },
+  "recorded_at": "2026-10-19T01:56:54.483150+08:00",
+  "receipt_validation_note": "A repeated report path was refused (exit 2); prior evidence was preserved and the final staged gate uses a new receipt-commit-final-v2.json path."
 }

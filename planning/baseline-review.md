@@ -77,3 +77,8 @@ Actual protected-run artifacts showed a test fixture inherited the parent task I
 ### BASELINE-CONTEXT-06: reviewed CI result integrity
 
 Run `39110935645` showed that the original Windows TEST report failed while the diagnostic rerun passed; the workflow then marked the reviewed job successful. Both reviewed and manual-reviewed finalizers used the diagnostic rerun as an alternate success condition, so the aggregate quality job could report success without the original required checker passing. The finalizer now treats the original checker outcome as authoritative on both paths. The verbose rerun remains available for diagnosis and cannot recover a failed required check. Existing command definitions, test scope, 120-second timeout, protected environment, and approval duties remain unchanged. Implementation and new regression evidence are tracked in [the current Task](source-context-task.md).
+
+
+The implementation source 0040878f69450657bb65ee779b6cecda4697049d was published on 2026-10-19; the same source passed fresh 170-test change/commit/committed gates. #17/#18 replies and completed closure are verified. This receipt revises evidence/status only; hosted approval/results remain separate.
+
+Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.

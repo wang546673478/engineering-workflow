@@ -75,3 +75,8 @@ The 1.6.1 hosted-report review additionally isolates checker/initializer test fi
 ## CI fixture correction
 
 Keep explicit assertions and existing commands/timeouts. Scope the parent task/approval environment only to the host project; each checker and initializer test fixture must provide an isolated environment so generated manifests exercise their own active task. Re-run all declared tests with the real outer variables present, then validate the exact commit on both hosted platforms. Full results are recorded in [Task](../planning/source-context-task.md).
+
+
+UX-01..05 implementation/publication actions are complete on source 0040878 with passing original local gates and verified issue closure. This follow-up records real release date and receipts only, retaining 1.6.3 and all source/acceptance boundaries.
+
+Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.

@@ -119,3 +119,8 @@ The 1.6.1 hosted-report review additionally isolates checker/initializer test fi
 instructions owns the new explicit initializer default and verification setup documentation; checker continues consuming explicit manifest excludes without hidden pruning or required-test policy changes. source-context owns grouped dependency diagnostics derived from existing unsupported records and the additive CLI/status/text output. tests owns required parser setup failures and missing/mixed/zero-reference regressions. governance owns versioned evidence, active task and publication/issue receipts. No new cross-module dependency or business database is introduced.
 
 Current scope, source and validation: [TASK-ISSUES-17-18](../planning/issues-17-18-task.md).
+
+
+Publication receipt: the 1.6.3 source-context/instructions/test changes are on main at 0040878; fresh 170-test local gates passed. The receipt introduces no module, entrypoint or dependency changes.
+
+Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.

@@ -134,3 +134,8 @@ The collector additionally checks lstat reparse attributes before scanning links
 
 
 The 1.6.1 hosted-report review additionally isolates checker/initializer test fixture task and approval environments; product checker/CI policy stays unchanged. Initial hosted artifacts remain failed historical evidence despite the workflow diagnostic retry succeeding. The follow-up validates the unchanged declared commands with the enclosing CI variables present; exact results are in the current source-context Task.
+
+
+Delivery receipt: all three REQ-UX / AT-UX boundaries were implemented in source 0040878 and locally verified with 170 tests; upload and both issue replies/closure were verified on 2026-10-19. Frozen targets above are unchanged; hosted verification is recorded separately.
+
+Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.

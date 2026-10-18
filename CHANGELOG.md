@@ -1,4 +1,4 @@
-# 1.6.3 / Unreleased
+# 1.6.3 / 2026-10-19
 
 - Generate an explicit recursive node_modules exclusion in both initializer profiles, keeping existing manifests and checker policy unchanged.
 - Surface optional Rust/Node/TypeScript parser failures and installation guidance in relation status, CLI output and summaries; retain valid partial results and distinguish analyzer execution failures.

@@ -120,3 +120,8 @@ The 1.6.1 hosted-report review additionally isolates checker/initializer test fi
 Both initializer profiles generate **/node_modules explicitly; existing manifests are not migrated. Relation status and CLI relations objects add unsupported per-file records and grouped diagnostics (status, files, message, setup_commands argv), retaining existing status/summary/validation fields and enums. Summary text flags incomplete selected-source coverage and renders setup hints. js_analysis_failed denotes failure executing an installed analyzer and carries no missing-parser installation recommendation. Partial results retain valid edges. Core collection exit codes remain based on inventory scan policy; graph validation is not parser coverage. Full regression environments need both pinned parsers; skips remain partial under the unchanged checker.
 
 Current scope, source and validation: [TASK-ISSUES-17-18](../planning/issues-17-18-task.md).
+
+
+Publication receipt: source 0040878 implements the additive diagnostics and explicit-default contracts above; original local gates passed and #17/#18 were replied to/closed on 2026-10-19. The receipt changes no CLI or checker contract.
+
+Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.

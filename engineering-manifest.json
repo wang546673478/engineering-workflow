@@ -2208,7 +2208,7 @@
       "depends_on": [
         "TASK-CONTEXT-RELEASE-01"
       ],
-      "status": "in_progress",
+      "status": "complete",
       "impact_document": "ISSUES_17_18_TASK",
       "required_checks": [
         "TEST",
@@ -2323,7 +2323,7 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "0216e4cd341bee534ccc85a8824c83a40a7e9840 + TASK-ISSUES-17-18 working tree",
+    "source_revision": "0040878f69450657bb65ee779b6cecda4697049d (1.6.3 implementation); receipt working tree changes evidence only",
     "scope": "Existing workflow plus explicit initializer dependency exclusions and optional-parser diagnostics; BASELINE-UX-17-18-01"
   },
   "exclude_paths": [
