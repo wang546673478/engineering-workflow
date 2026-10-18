@@ -8,7 +8,7 @@ Current task: selected by workflow.active_task in [the manifest](../engineering-
 - Control flow: reviewed and manual-reviewed finalization now requires the original checker to pass. Diagnostic retries remain diagnostic and cannot make a failed required check successful.
 - Contracts and evidence: update the protected CI contract, governance module map/flow, current Baseline/Plan/Spec/Task/traceability, and machine validation evidence.
 - Database and product API: no impact. Checker declarations, test command, timeout, approval environment and workflow stage order remain unchanged.
-- Validation: shared finalizer regressions pass 3/3. Source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` and receipt commit `a693a9e28c598f1ac5cf2dbd332646097f392523` passed local commit and exact-commit checks: 163 TESTs, COMPILE and GUIDANCE-COMPILE. Uploaded SHA is `3fab75ba5d8e2663af811d2b7daee53c90fe6818`; its protected Actions run awaits environment approval before per-platform reports exist.
+- Validation: shared finalizer regressions pass 3/3. Source commit `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` and receipt commits passed local commit and exact-commit checks: 163 TESTs, COMPILE and GUIDANCE-COMPILE. Uploaded SHA `3fab75ba5d8e2663af811d2b7daee53c90fe6818` was approved on exact SHA; run `39115700117` passed reviewed Ubuntu/Windows jobs and aggregate quality, with both checker artifacts uploaded.
 
 ## Historical 2026-10-14 record
 

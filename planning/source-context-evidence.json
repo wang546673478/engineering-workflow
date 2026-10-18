@@ -1,6 +1,6 @@
 {
-  "revision": "SOURCE-CONTEXT-EVIDENCE-04",
-  "observed_at": "2026-10-18T17:37:00.7506098+08:00",
+  "revision": "SOURCE-CONTEXT-EVIDENCE-05",
+  "observed_at": "2026-10-18T18:11:33.9259791+08:00",
   "upstream_sources": {
     "gitingest": "4e259a02fe72115bee538271622f1234a81c8e1a",
     "gitdiagram": "310e2e696b1953cec0e76560cad5e9cd7ca5d964"
@@ -1957,6 +1957,29 @@
         },
         "runtime": "Python 3.13.5 with task-local pinned parser dependencies available to nested commands"
       },
+      "published_source_commit_gate": {
+        "commit": "3fab75ba5d8e2663af811d2b7daee53c90fe6818",
+        "required_checks_satisfied": true,
+        "report": "work/ci-global-repair-final-final-committed.json",
+        "checks": {
+          "TEST": {
+            "status": "pass",
+            "tests": 163,
+            "seconds": 73.75,
+            "timeout_seconds": 120
+          },
+          "COMPILE": {
+            "status": "pass",
+            "seconds": 0.12
+          },
+          "GUIDANCE-COMPILE": {
+            "status": "pass",
+            "seconds": 0.11
+          }
+        },
+        "control_plane": "pass",
+        "committed_scope": "pass"
+      },
       "receipt_commit_gate": {
         "commit": "a693a9e28c598f1ac5cf2dbd332646097f392523",
         "required_checks_satisfied": true,
@@ -1987,8 +2010,47 @@
         "pushed_sha": "3fab75ba5d8e2663af811d2b7daee53c90fe6818",
         "push_result": "success",
         "actions_run": "39115700117",
-        "actions_status": "waiting for engineering-control-review environment approval",
-        "raw_checker_artifacts": "not generated while the protected jobs wait for approval"
+        "actions_status": "success after exact-SHA engineering-control-review approval",
+        "raw_checker_artifacts": "reviewed Ubuntu and Windows artifacts uploaded; see hosted_verification.checker_artifacts"
+      },
+      "hosted_verification": {
+        "source_sha": "3fab75ba5d8e2663af811d2b7daee53c90fe6818",
+        "run": "39115700117",
+        "run_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39115700117",
+        "environment": "engineering-control-review",
+        "environment_approval": {
+          "status": "approved",
+          "reviewed_by": "wang546673478",
+          "approved_at": "2026-10-18T17:39+08:00",
+          "scope": "Exact source SHA 3fab75ba5d8e2663af811d2b7daee53c90fe6818"
+        },
+        "jobs": {
+          "reviewed-ubuntu-latest": "success",
+          "reviewed-windows-latest": "success",
+          "quality": "success"
+        },
+        "checker_artifacts": [
+          {
+            "name": "reviewed-ubuntu-latest",
+            "artifact_id": "12132666400",
+            "size": "2.51 KB",
+            "sha256": "5cfab0971168b129acea1f330419ee814e60d6fa09a29ce7095a34c4bf021b6a"
+          },
+          {
+            "name": "reviewed-windows-latest",
+            "artifact_id": "12132049899",
+            "size": "2.53 KB",
+            "sha256": "f8f08ee75f0c3314dd6ba8fbb315d00c941f2dc2091e44f121ed7e788943dc05"
+          }
+        ],
+        "result": "Both reviewed platform jobs and the aggregate quality job succeeded after exact-SHA environment approval; artifacts were uploaded."
+      },
+      "latest_receipt_ci": {
+        "sha": "3c676f4df3f6be6f6cfb48f65f393663a7bab19f",
+        "run": "39116840236",
+        "status": "success",
+        "quality": "success",
+        "scope": "Documentation and upload receipt only; the protected implementation run remains 39115700117"
       },
       "upload_receipt_commit_gate": {
         "required_checks_satisfied": true,

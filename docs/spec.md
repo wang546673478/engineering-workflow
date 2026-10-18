@@ -2,7 +2,7 @@
 
 Status: `current`
 
-Current revision `SPEC-CONTEXT-03` (2026-10-18): user-authorized local source helpers and two-corpus optimization/publication, preserving the original workflow and requiring the original result of every declared check to remain authoritative. Diagnostic reruns may provide evidence but cannot replace a failed required check. The 1.6.2 correction is on `main` at `3fab75ba5d8e2663af811d2b7daee53c90fe6818`; its exact-SHA protected Actions run awaits environment approval. Exact authorization and scope are in [Task](../planning/source-context-task.md). Historical specifications and approvals below retain their own scope.
+Current revision `SPEC-CONTEXT-03` (2026-10-18): user-authorized local source helpers and two-corpus optimization/publication, preserving the original workflow and requiring the original result of every declared check to remain authoritative. Diagnostic reruns may provide evidence but cannot replace a failed required check. The 1.6.2 correction is on `main` at `3fab75ba5d8e2663af811d2b7daee53c90fe6818`; exact-SHA Actions run `39115700117` passed its approved reviewed Ubuntu/Windows jobs and aggregate quality check. Exact authorization and scope are in [Task](../planning/source-context-task.md). Historical specifications and approvals below retain their own scope.
 
 - REQ-CONTEXT-01 / AT-CONTEXT-01: Complete local inventory, compact full-source packs, explicit budgets/omissions and version-bound evidence.
 - REQ-CONTEXT-02 / AT-CONTEXT-02: Optional syntax/config JS/TS and Rust module references; directions, source lines/hashes and unknown conditions preserved.
