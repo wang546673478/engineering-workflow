@@ -1,16 +1,26 @@
 import json
+import os
 from pathlib import Path
 import subprocess
 import shutil
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 SCRIPTS = Path(__file__).resolve().parents[1]
 
 
 class InitManifestTests(unittest.TestCase):
+    def setUp(self):
+        # Generated fixture manifests must not inherit the enclosing CI task.
+        environment = mock.patch.dict(os.environ, {})
+        environment.start()
+        self.addCleanup(environment.stop)
+        os.environ.pop("ENGINEERING_TASK_ID", None)
+        os.environ.pop("ENGINEERING_CONTROL_PLANE_APPROVED", None)
+
     def test_lite_profile_discovers_sources_and_refuses_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

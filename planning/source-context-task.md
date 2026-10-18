@@ -2,12 +2,12 @@
 
 ## 当前状态和用户授权
 
-- 2026-10-18T06:17:47.851388+08:00；1.6.0本地交付已完成；当前1.6.1兼容修复及本地验证complete；精确提交、上传和托管结果核对中。来源：正式SKILL.md1.5.0/c21e715；release工作副本基点同远程main；前期两仓调研、Pi融合实测和按需规则有效。
+- 2026-10-18T16:14:06.009955+08:00；1.6.0与1.6.1代码修复已上传；Windows目录兼容及CI fixture隔离本地修复complete。官方Python3.11/3.13带真实CI外层变量完整160 tests通过，原声明提交门禁通过。当前阶段：精确committed核验后提交本批Task/文档回执、上传，并复核新精确SHA的hosted原始artifact。旧run39109363841已获用户审批，但其原TEST失败artifact保留历史，不以诊断重跑代替原门禁。来源：本机工程skill1.6.1/c6c3b2f；本批release基点该提交。
 - 用户原话：“这样你把多测试几个功能组合和排序,这几个功能都是需要只不过要完善使用规则,应该怎么组合,然后进行测试,E:\pi-main和D:\agent-harness-research\codex 这几个应该够你测试了,你找出最优,在不改变skill流程的情况下,把最优的上传github”。明确授权比较、完善规则、在已讨论辅助功能内择优正式实现并提交上传；不要求额外同范围批准。排序限辅助能力的调用/展示顺序，原阶段/需求确认/方案批准/门槛职责不变。
 - 保留七项组合：盘点、树/统计、完整紧凑阅读包、限额/遗漏、引用分析、出处/图校验、图/文字/表格与源码定位；Token计量仅实验，Notebook/增量缓存/云模型链不引入。
 - 本轮原清单/研究文档有未提交工作，完整备份在外部primary-original。发布从干净远程基点构建，只带本批实现/文档/摘要证据；保留旧评估原文件，不把它们混作新审批。
 - 两个目标仅作只读语料；不运行其产品/模型/依赖安装、不改Git状态或源码。初始hash和实际Git状态在外部evidence，按每项目规则读取适用文件。
-- 下一步：执行1.6.1实际提交的原committed门槛后上传；核对新托管run并同步安装副本，保留原本地研究与回执。
+- 下一步：提交前检查当前所有文档/index/版本与原流程保护，再以精确commit SHA执行原committed门槛和上传；新的hosted环境需对新SHA重新审批后核对Windows/Ubuntu直接artifact。
 
 ## 规格和验收（SPEC-CONTEXT-01）
 
@@ -107,6 +107,22 @@ CI变更只增加Node22准备、script-disabled npm ci和固定Python解析依�
 - 已复现：以Windows真实8.3别名路径调用读取失败fixture，target与采集时resolve后的长路径不相等，故模拟PermissionError未触发。fixture先resolve目标后注入失败，仍要求unreadable且源码不导出；不将included视为正确结果。
 - 方案：保持所有现有工程阶段/批准/检查、原TEST120秒和CI配置；为旧Python补兼容识别，增加真实/模拟内部连接和根边界行为覆盖；用隔离官方Python3.11.9及现有3.13验证。只修该辅助模块/测试/当前文档，两个测试语料不改。规格/用户目标未变，继续SPEC-CONTEXT-03/REQ-CONTEXT-01..05。
 - 发布影响：1.6.0已交付，后续兼容修复为PATCH1.6.1；同步VERSION/SKILL/README/agents/CHANGELOG，保留1.6.0证据及失败日志。原检查器/CI/必需命令/保护规则不改。
-- Skill review重新核对：当前会话catalog，engineering-workflow正式1.6.0正文/AGENTS/活动Task、implementation-workflow/checker及本批Baseline/Plan/模块图已读；skill-creator正文已读，用于窄范围兼容修复及元数据验证。不采用新的规划台账或多agent，沿用本Task权威。当前状态in_progress，尚无新源码或托管通过证据。
+- Skill review重新核对：当前会话catalog，engineering-workflow正式1.6.1正文/AGENTS/活动Task、implementation-workflow/checker及BASELINE-CONTEXT-05/PLAN-CONTEXT-05/模块图已读；skill-creator正文已读，用于窄范围兼容修复及元数据验证。不采用新的规划台账或多agent，沿用本Task权威。范围限定为CI测试fixture隔离；当前本地原门槛通过，精确committed及新托管验证尚未完成。
 
 - 2026-10-18T15:51:42.328831+08:00：官方WindowsPython3.11.9原commit门槛通过；现有Python3.13.5完整160 tests/80.748s通过，无skip，原COMPILE/GUIDANCE-COMPILE通过。31项采集focused通过，Windows真实8.3路径fixture复现修正后通过。代码hash不再变化；仅更新当前状态/版本/记录并做结构/引用/index复核，实际提交再运行完整原committed门槛。24次组合结果是原1.6.0测量，本次不重复全量比较或声称新的耗时结果。
+
+
+## 同批1.6.1托管报告复核与夹具环境隔离（2026-10-18T16:07:05.423454+08:00）
+
+用户确认“已在GitHub批准”run39109363841；API确认审批已解除。进一步下载Ubuntu的原checker artifact发现required_checks_satisfied=false/TEST失败，而原有诊断路径重跑通过，因此作业success不能转写为原报告pass。Windows也进入相同诊断路径。
+
+本地带ENGINEERING_TASK_ID=TASK-CONTEXT-RELEASE-01复现：checker fixture临时项目只含TASK-1，默认任务/partial生命周期测试误用主项目任务；init fixture的lite/full也同样误报。该问题来自旧fixture继承CI环境，非采集器或产品规则变更。方案只在这两个TestCase的setUp隔离外部任务/批准变量，并在cleanup恢复；显式测试环境变量优先级的用例仍自行设置值。保留全部断言、160项范围、原检查器/CI/时限。携带CI外部任务与批准变量跑完整commit/committed，确保原report直接满足必需门槛。
+
+这是当前1.6.1托管验收尚未闭环时发现的同批测试可靠性修正；版本维持1.6.1，CHANGELOG补充实际修正，不改工程流程或重开用户规格。Skill review：沿用本轮已读engineering-workflow1.6.1及checker/implementation引用；范围仅旧fixtures环境隔离/验证回执，其他技能和多agent不适用。影响为tests与当前基线/Task证据，文档按已有门槛同步。
+
+
+### CI fixture 隔离最终本地验证
+
+- 已在真实外层变量`ENGINEERING_TASK_ID=TASK-CONTEXT-RELEASE-01`及`ENGINEERING_CONTROL_PLANE_APPROVED=1`下运行原160项TEST：官方Windows Python3.11.9为64.596秒，Python3.13.5为73.842秒，均全部通过。checker原commit门禁使用同一变量/原TEST命令与120秒时限，required_checks_satisfied=true；TEST67.485秒，COMPILE及GUIDANCE-COMPILE均通过，保护与commit-scope通过。未删测试、未降门槛。
+- 修改只是在checker与initializer单测setUp隔离这两个由fixture拥有的变量，并以addCleanup恢复外层环境。显式的task ID环境变量优先级测试仍自设任务并通过。旧run39109363841的原checker artifact记录TEST fail；之后诊断重跑成功不等于原artifact通过，现作为失败历史保留。
+- 当前Baseline/Plan更新至BASELINE-CONTEXT-05/PLAN-CONTEXT-05；SPEC-CONTEXT-03及需求范围不变。下一步以当前精确提交重跑committed并推送同一1.6.1批次；新的protected run需对精确SHA人工审批后才能验证两平台直接artifact。

@@ -2044,7 +2044,7 @@
       "depends_on": [
         "TASK-LINKED-ARTIFACTS-01"
       ],
-      "status": "complete",
+      "status": "in_progress",
       "impact_document": "CONTEXT_TASK",
       "required_checks": [
         "TEST",
@@ -2065,8 +2065,8 @@
       },
       "skill_review": {
         "catalog_source": "Current session Skills catalog",
-        "checked_at": "2026-10-18T15:48:16.378745+08:00",
-        "scope": "Follow-up Windows Actions compatibility correction; original helper scope and workflow controls unchanged",
+        "checked_at": "2026-10-18T16:14:06.009955+08:00",
+        "scope": "1.6.1 Windows/hosted validation follow-up, rechecking fixture environment isolation; workflow/checker policy unchanged",
         "candidates": [
           {
             "id": "engineering-workflow",
@@ -2083,7 +2083,8 @@
             "reason": "Add scoped helper resources and preserve original workflow semantics"
           }
         ],
-        "evidence": "planning/source-context-task.md"
+        "evidence": "planning/source-context-task.md",
+        "recheck": "Reread installed engineering-workflow 1.6.1, AGENTS, active Task, implementation/checker refs and skill-creator; original run artifacts distinguished from diagnostic retry; fixture-only scope."
       },
       "documentation_impact": {
         "helper": {
@@ -2166,8 +2167,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "21f9aa2 input; current 1.6.1 correction working tree, exact evidence in CONTEXT_TASK",
-    "scope": "BASELINE-CONTEXT-04: unchanged workflow plus Windows3.11 reparse compatibility correction"
+    "source_revision": "c6c3b2faafbf9b3c8a5fe2305b61dedf90549b0 input; final 1.6.1 test-isolation correction",
+    "scope": "BASELINE-CONTEXT-05: 1.6.1 source collection and isolated CI fixture environment; workflow/checker policy unchanged"
   },
   "exclude_paths": [
     ".git",

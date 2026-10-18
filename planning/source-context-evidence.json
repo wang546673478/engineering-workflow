@@ -1803,5 +1803,76 @@
     "version": "1.6.1",
     "status": "local checks passed; exact commit/push/hosted checks pending",
     "observed_at": "2026-10-18T15:51:42.328831+08:00"
+  },
+  "ci_fixture_environment_correction": {
+    "observed_at": "2026-10-18T16:07:39.804152+08:00",
+    "input_commit": "c6c3b2faafbf9b3c8a5fe2305b61dedf90549b0c",
+    "finding": "Hosted original checker TEST fails when fixture subprocesses inherit the enclosing ENGINEERING_TASK_ID; diagnostic retry without the variable passes.",
+    "original_artifact_required_checks_satisfied": false,
+    "reproduced": [
+      "Checker active-task and partial lifecycle cases",
+      "Initializer lite/full partial lifecycle cases"
+    ],
+    "fix": "Isolate task/default approval variables per fixture TestCase and restore environment with addCleanup; explicit env-priority test still sets its own task.",
+    "focused_cases": 4,
+    "focused_result": "pass with enclosing CI task and approval values present",
+    "full_gate": "pass with actual enclosing CI task/approval variables",
+    "tests": 160,
+    "version": "1.6.1, same unfinished hosted validation batch",
+    "production_checker_ci_commands_timeouts": "unchanged",
+    "fixture_hashes": {
+      "scripts/tests/test_checker.py": "3ce3cfbd7c9bdd5316fa5fec80539001c921e5c87c4746ba00a524a41fab0625",
+      "scripts/tests/test_init.py": "754e02794c36b3e56aa8781121ec3d34f10506f9add508f0996404f63d47b169"
+    },
+    "python311_full_suite": {
+      "result": "pass",
+      "seconds": 64.596,
+      "log": "external evidence/hosted-all-full-fixed.log"
+    },
+    "python313_full_suite": {
+      "result": "pass",
+      "seconds": 73.842,
+      "log": "external evidence/hosted-task-env-full-fixed.log"
+    },
+    "original_staged_commit_gate": {
+      "required_checks_satisfied": true,
+      "report": "work/ci-fix-env-commit-311.json",
+      "checks": [
+        {
+          "rule_id": "control-plane",
+          "status": "pass",
+          "seconds": null
+        },
+        {
+          "rule_id": "commit-scope",
+          "status": "pass",
+          "seconds": null
+        },
+        {
+          "rule_id": "TEST",
+          "status": "pass",
+          "seconds": 67.485
+        },
+        {
+          "rule_id": "COMPILE",
+          "status": "pass",
+          "seconds": 0.125
+        },
+        {
+          "rule_id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "seconds": 0.125
+        }
+      ]
+    },
+    "actual_ci_environment": {
+      "ENGINEERING_TASK_ID": "TASK-CONTEXT-RELEASE-01",
+      "ENGINEERING_CONTROL_PLANE_APPROVED": "1"
+    },
+    "source_hashes": {
+      "scripts/tests/test_checker.py": "3ce3cfbd7c9bdd5316fa5fec80539001c921e5c87c4746ba00a524a41fab0625",
+      "scripts/tests/test_init.py": "754e02794c36b3e56aa8781121ec3d34f10506f9add508f0996404f63d47b169"
+    },
+    "hosted_39109363841": "Original Ubuntu and Windows checker artifacts inspected; Ubuntu original TEST failed, then diagnostic suite succeeded. Windows initial artifact also failed; both are historical and not the final verification."
   }
 }

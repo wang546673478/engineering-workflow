@@ -26,6 +26,12 @@ database_extractor = load("extract_database")
 
 class CheckerTests(unittest.TestCase):
     def setUp(self):
+        # Fixture projects own their task/approval inputs, even inside a CI gate.
+        environment = mock.patch.dict(os.environ, {})
+        environment.start()
+        self.addCleanup(environment.stop)
+        os.environ.pop("ENGINEERING_TASK_ID", None)
+        os.environ.pop("ENGINEERING_CONTROL_PLANE_APPROVED", None)
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name).resolve()
         for path, content in {"docs/spec.md":"REQ-1 AT-1", "docs/module.md":"module", "docs/impact.md":"impact", "docs/baseline.md":"reviewed", "docs/approval.md":"approved", "src/app.py":"print('app')", "data.sql":"CREATE TABLE accounts(id integer);", "docs/db.md":"accounts id value"}.items():
