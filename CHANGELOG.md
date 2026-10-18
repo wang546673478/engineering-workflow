@@ -1,3 +1,10 @@
+# 1.6.4 / Unreleased
+
+- Bind commit/committed verification to HEAD and the index tree before reading inputs, reject post-check index/worktree/HEAD drift, and expose successful verified_tree/verification_head evidence.
+- Report deep JSON, integer parser limits and non-object manifests as structured configuration failures; damaged historical manifests fail closed instead of becoming missing policy.
+- Clean owned process families and output readers on normal completion, timeout and interruption. Windows commands start suspended, join a kill-on-close Job Object and then resume; POSIX retains process-group cleanup. CLI SIGINT/SIGTERM cancellation is non-success and restores handlers.
+- Preserve required checks, limits, approval policy and original workflow stages. Boundary checks are not a hostile-code sandbox; POSIX SIGKILL and the Windows pre-assignment startup window still require external lifecycle controls for absolute guarantees.
+
 # 1.6.3 / 2026-10-19
 
 - Generate an explicit recursive node_modules exclusion in both initializer profiles, keeping existing manifests and checker policy unchanged.

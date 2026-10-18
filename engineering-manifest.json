@@ -4,7 +4,7 @@
     "active_baseline": "BASELINE",
     "active_spec": "SPEC",
     "active_plan": "PLAN",
-    "active_task": "TASK-ISSUES-17-18"
+    "active_task": "TASK-ISSUES-19-21"
   },
   "documents": [
     {
@@ -148,6 +148,18 @@
     {
       "id": "ISSUES_17_18_EVIDENCE",
       "path": "planning/issues-17-18-fix-evidence.json",
+      "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "ISSUES_19_21_TASK",
+      "path": "planning/issues-19-21-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ISSUES_19_21_FIX_EVIDENCE",
+      "path": "planning/issues-19-21-fix-evidence.json",
       "kind": "verification",
       "required": true
     }
@@ -341,6 +353,26 @@
       "id": "REQ-UX-VERIFY",
       "document": "SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "REQ-SAFE-19",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SAFE-20",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SAFE-21",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SAFE-DELIVERY",
+      "document": "SPEC",
+      "index": "TRACE"
     }
   ],
   "acceptance": [
@@ -530,6 +562,26 @@
     },
     {
       "id": "AT-UX-VERIFY",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SAFE-19",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SAFE-20",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SAFE-21",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SAFE-DELIVERY",
       "document": "SPEC",
       "index": "TRACE"
     }
@@ -2294,6 +2346,115 @@
           ]
         }
       }
+    },
+    {
+      "id": "TASK-ISSUES-19-21",
+      "requirement_ids": [
+        "REQ-SAFE-19",
+        "REQ-SAFE-20",
+        "REQ-SAFE-21",
+        "REQ-SAFE-DELIVERY"
+      ],
+      "acceptance_ids": [
+        "AT-SAFE-19",
+        "AT-SAFE-20",
+        "AT-SAFE-21",
+        "AT-SAFE-DELIVERY"
+      ],
+      "module_ids": [
+        "checker",
+        "tests",
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-ISSUES-17-18"
+      ],
+      "status": "in_progress",
+      "impact_document": "ISSUES_19_21_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/issues-19-21-task.md"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "SPEC",
+        "plan": "PLAN",
+        "task": "ISSUES_19_21_TASK",
+        "traceability": "TRACE"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-19T02:30+08:00",
+        "scope": "User-adopted #19-21 fixes, cross-platform lifecycle validation, publication and issue closure",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.6.3 / 871bda4",
+            "decision": "adopted",
+            "reason": "Explicit user adoption and repository authority"
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Scoped skill resource and release metadata validation"
+          }
+        ],
+        "evidence": "planning/issues-19-21-task.md",
+        "recheck": "Reread adopted workflow and linked artifacts after implementation/publication scope approval."
+      },
+      "documentation_impact": {
+        "implementation": {
+          "when_paths": [
+            "scripts/check_project.py",
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ISSUES_19_21_TASK",
+            "ISSUES_19_21_FIX_EVIDENCE",
+            "TRACE"
+          ]
+        },
+        "guidance-governance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents",
+            "references/checker.md",
+            "engineering-manifest.json",
+            "docs",
+            "planning"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ISSUES_19_21_TASK",
+            "ISSUES_19_21_FIX_EVIDENCE",
+            "TRACE"
+          ]
+        }
+      }
     }
   ],
   "control_plane": {
@@ -2323,8 +2484,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "0040878f69450657bb65ee779b6cecda4697049d (1.6.3 implementation); receipt working tree changes evidence only",
-    "scope": "Existing workflow plus explicit initializer dependency exclusions and optional-parser diagnostics; BASELINE-UX-17-18-01"
+    "source_revision": "871bda427d3f46d114e568565dac10cca1395920 + TASK-ISSUES-19-21 working tree",
+    "scope": "Existing workflow plus Git verification state binding, JSON errors and owned command lifecycle; BASELINE-SAFE-19-21-01"
   },
   "exclude_paths": [
     ".git",

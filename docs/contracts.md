@@ -2,9 +2,10 @@
 
 ## Checker CLI
 
+
 - Input: project root, manifest path, mode, task ID, and optional base or commit reference.
 - Modes: `baseline`, `change`, `handoff`, `commit`, `committed`.
-- Output: JSON containing `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, and `errors`.
+- Output: JSON containing `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, `errors`, and nullable `verified_tree`/`verification_head`.
 - `tool_version` is read from the repository-root `VERSION` file beside the checker package.
 - Exit codes: `0` required checks passed; `1` a declared check or validation requirement failed (including an output limit); `2` malformed configuration, unavailable environment, or unsupported capability before a check can run.
 - Safety: no shell command composition; declared checks are opt-in through `--run-checks`; command arguments containing NUL are rejected before process creation.
@@ -125,3 +126,12 @@ Current scope, source and validation: [TASK-ISSUES-17-18](../planning/issues-17-
 Publication receipt: source 0040878 implements the additive diagnostics and explicit-default contracts above; original local gates passed and #17/#18 were replied to/closed on 2026-10-19. The receipt changes no CLI or checker contract.
 
 Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.
+
+
+## 1.6.4 checker state and lifecycle
+
+Both submitted-tree modes snapshot input HEAD/index tree before validation and require post-command verification-state to pass. Persistent HEAD/index/worktree and nonignored-file drift fails; successful reports expose verified_tree and the input verification_head. Ignored generated artifacts remain allowed. These are boundary observations before report output, not atomic commit or malicious-code isolation.
+
+File/historical JSON parser limits and non-object manifest roots fail structurally; missing historical paths differ from corrupt/unavailable content. CLI cancellation produces a failed interrupted result and nonzero 128+signal exit (KeyboardInterrupt130); handlers are restored. Owned ordinary process families/readers are cleaned in finally. POSIX uses process groups; Windows suspended children enter a kill-on-close job before resume, with setup failures refusing command execution. POSIX SIGKILL and pre-assignment hard-kill windows remain limits. No original check, limit or review duty is relaxed.
+
+Current source/evidence: [TASK-ISSUES-19-21](../planning/issues-19-21-task.md). Earlier investigation remains in the linked assessment as historical facts.

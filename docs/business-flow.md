@@ -129,3 +129,10 @@ Current scope, source and validation: [TASK-ISSUES-17-18](../planning/issues-17-
 Publication receipt: both repaired user journeys were validated locally, source 0040878 was uploaded, and issue-specific replies/closures verified on 2026-10-19. Receipt updates do not alter runtime flow or hosted approval duties.
 
 Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.
+
+
+## 1.6.4 validation and cancellation flow
+
+Read safe root -> snapshot HEAD/index for submitted-tree modes -> decode/type-check manifest and historical policy -> existing structure/scope/control approval -> launch owned command family (Windows suspended/job/resume, POSIX session) -> bounded output/wait -> finally cleanup/handler restoration -> verify final HEAD/index/worktree -> overall required result and successful verified_tree/base -> new report and hook/CI consumption. Invalid/cancelled/drifted paths remain non-success, preserve user changes and never manufacture a pass through diagnostics. Strong external sandbox/SIGKILL guarantees remain separate.
+
+Scope and evidence: [TASK-ISSUES-19-21](../planning/issues-19-21-task.md).

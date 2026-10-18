@@ -58,3 +58,15 @@ SPEC-UX-17-18-01 -> PLAN-UX-17-18-01 -> TASK-ISSUES-17-18 -> BASELINE-UX-17-18-0
 REQ-UX-17/AT-UX-17, REQ-UX-18/AT-UX-18 and REQ-UX-VERIFY/AT-UX-VERIFY map to published source 0040878, fresh 170-test local gates and verified issue replies/closure. Receipt-only follow-up retains these boundaries; hosted outcome remains pending.
 
 Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.
+
+
+## Issue #19/#20/#21 repair batch
+
+SPEC-SAFE-19-21-01 -> PLAN-SAFE-19-21-01 -> TASK-ISSUES-19-21 -> BASELINE-SAFE-19-21-01. Source, checks and publication: [Task](issues-19-21-task.md).
+
+| Requirement | Acceptance | Plan | Evidence |
+| --- | --- | --- | --- |
+| REQ-SAFE-19 | AT-SAFE-19 | SAFE-01 | real Git drift and hook/commit-tree regressions |
+| REQ-SAFE-20 | AT-SAFE-20 | SAFE-02 | structured input/history failures, no execution, large-shallow compatibility |
+| REQ-SAFE-21 | AT-SAFE-21 | SAFE-03 | ordinary descendant cleanup, cancellation, native platform lifecycle and setup failure |
+| REQ-SAFE-DELIVERY | AT-SAFE-DELIVERY | SAFE-04..05 | original full gates, source upload, hosted artifacts and issue receipts |

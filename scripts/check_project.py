@@ -2,6 +2,7 @@
 """Read-only manifest checks; declared commands run only with --run-checks."""
 from __future__ import annotations
 import argparse
+from contextlib import contextmanager
 from datetime import datetime
 from fnmatch import fnmatchcase
 import hashlib
@@ -148,11 +149,20 @@ def excluded_path(root, path, specs):
                     return True
     return False
 
+def parse_json(data, source):
+    try:
+        if isinstance(data, bytes):
+            data = data.decode("utf-8-sig")
+        return json.loads(data)
+    except (ValueError, RecursionError) as exc:
+        raise ConfigError("invalid JSON or parser limit exceeded: " + str(source)) from exc
+
+
 def read_json(path):
     try:
-        return json.loads(path.read_text(encoding="utf-8-sig"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
-        raise ConfigError("invalid JSON: " + str(path)) from exc
+        return parse_json(path.read_bytes(), path)
+    except OSError as exc:
+        raise ConfigError("cannot read JSON: " + str(path)) from exc
 
 def array(value, name):
     if not isinstance(value, list):
@@ -377,15 +387,24 @@ def manifest_from_git(root, revision, manifest_path):
         return None
     relative = relative_scope(root, manifest_path)
     prefix = ["git", "-c", "safe.directory=" + str(root)]
+    entry = subprocess.run(prefix + ["ls-tree", "-z", "--full-tree", oid, "--", ":(literal)" + relative],
+                           cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                           stdin=subprocess.DEVNULL, timeout=30)
+    if entry.returncode:
+        raise ConfigError("Git historical manifest discovery is unavailable")
+    if not entry.stdout:
+        return None
+    if entry.stdout.split(b"\t", 1)[0].split()[1:2] != [b"blob"]:
+        raise ConfigError("historical manifest is not a file")
     proc = subprocess.run(prefix + ["show", "--no-ext-diff", "--format=", oid + ":" + relative],
                           cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                           stdin=subprocess.DEVNULL, timeout=30)
     if proc.returncode:
-        return None
-    try:
-        return json.loads(proc.stdout.decode("utf-8-sig"))
-    except (UnicodeError, json.JSONDecodeError):
-        return None
+        raise ConfigError("Git historical manifest content is unavailable")
+    data = parse_json(proc.stdout, "Git manifest " + oid + ":" + relative)
+    if not isinstance(data, dict):
+        raise ConfigError("historical manifest must be a JSON object")
+    return data
 
 def control_plane_check(root, manifest, manifest_path, mode, changed_paths, commit_ref=None, allow=False):
     """Block control-plane edits unless explicitly approved outside the repository."""
@@ -963,16 +982,159 @@ def change_check(root, manifest, docs, modules, tasks, task_id, base=None, paths
     return paths, output_check(rule_id, status, scope, details,
                                limitations=["Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."])
 
+def verification_snapshot(root):
+    prefix = ["git", "-c", "safe.directory=" + str(root)]
+    proc = subprocess.run(prefix + ["write-tree"], cwd=root, stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, stdin=subprocess.DEVNULL, timeout=30)
+    tree = proc.stdout.decode("ascii", "replace").strip()
+    if proc.returncode or not re.fullmatch(r"[a-fA-F0-9]{40}|[a-fA-F0-9]{64}", tree):
+        raise ConfigError("Git cannot snapshot the index tree")
+    return {"head": git_revision(root, "HEAD"), "tree": tree}
+
+
+def verification_state_check(root, before):
+    prefix = ["git", "-c", "safe.directory=" + str(root)]
+    proc = subprocess.run(prefix + ["diff", "--cached", "--no-ext-diff", "--no-textconv", "--no-renames",
+                                    "--name-only", "-z", before["tree"], "--"],
+                          cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          stdin=subprocess.DEVNULL, timeout=30)
+    if proc.returncode:
+        raise ConfigError("Git cannot inspect index drift after verification")
+    index_paths = sorted(p.decode("utf-8", "surrogateescape") for p in proc.stdout.split(b"\0") if p)
+    # A clean index diff already proves tree equality; compute a new OID only on drift.
+    after = verification_snapshot(root) if index_paths else {"head": git_revision(root, "HEAD"), "tree": before["tree"]}
+    dirty = unstaged_git_paths(root)
+    drifted = before != after or bool(dirty)
+    return output_check("verification-state", "fail" if drifted else "pass",
+                        "HEAD, index tree and worktree after declared checks",
+                        {"before": before, "after": after, "index_paths": index_paths,
+                         "worktree_paths": dirty}, limitations=[
+                            "Boundary snapshots detect persistent drift, not transient changes restored by hostile code, later hook races or sandbox escapes."
+                        ])
+
+
+class CheckCancelled(Exception):
+    def __init__(self, signum):
+        super().__init__("verification interrupted by signal " + str(signum))
+        self.exit_code = 128 + signum
+
+
+@contextmanager
+def command_cancellation():
+    previous = {}
+    def cancel(signum, frame):
+        raise CheckCancelled(signum)
+    try:
+        if threading.current_thread() is threading.main_thread():
+            for name in ("SIGINT", "SIGTERM", "SIGBREAK"):
+                signum = getattr(signal, name, None)
+                if signum is not None:
+                    previous[signum] = signal.getsignal(signum)
+                    signal.signal(signum, cancel)
+        yield
+    finally:
+        for signum, handler in previous.items():
+            signal.signal(signum, handler)
+
+
+class _WindowsProcessJob:
+    """Own an ordinary Windows process family before its code can execute."""
+    def __init__(self):
+        import ctypes
+        from ctypes import wintypes as w
+        class Limits(ctypes.Structure):
+            _fields_ = [("process_time", ctypes.c_longlong), ("job_time", ctypes.c_longlong),
+                        ("flags", w.DWORD), ("minimum_working_set", ctypes.c_size_t),
+                        ("maximum_working_set", ctypes.c_size_t), ("active_processes", w.DWORD),
+                        ("affinity", ctypes.c_size_t), ("priority", w.DWORD), ("scheduling", w.DWORD)]
+        class IO(ctypes.Structure):
+            _fields_ = [(name, ctypes.c_ulonglong) for name in
+                        ("read_ops", "write_ops", "other_ops", "read_bytes", "write_bytes", "other_bytes")]
+        class ExtendedLimits(ctypes.Structure):
+            _fields_ = [("basic", Limits), ("io", IO), ("process_memory", ctypes.c_size_t),
+                        ("job_memory", ctypes.c_size_t), ("peak_process_memory", ctypes.c_size_t),
+                        ("peak_job_memory", ctypes.c_size_t)]
+        class ThreadEntry(ctypes.Structure):
+            _fields_ = [("size", w.DWORD), ("usage", w.DWORD), ("thread_id", w.DWORD),
+                        ("owner_pid", w.DWORD), ("base_priority", w.LONG),
+                        ("delta_priority", w.LONG), ("flags", w.DWORD)]
+        self.ctypes, self.thread_entry = ctypes, ThreadEntry
+        self.kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        signatures = {
+            "CreateJobObjectW": ([ctypes.c_void_p, w.LPCWSTR], w.HANDLE),
+            "SetInformationJobObject": ([w.HANDLE, ctypes.c_int, ctypes.c_void_p, w.DWORD], w.BOOL),
+            "AssignProcessToJobObject": ([w.HANDLE, w.HANDLE], w.BOOL),
+            "OpenProcess": ([w.DWORD, w.BOOL, w.DWORD], w.HANDLE),
+            "TerminateJobObject": ([w.HANDLE, w.UINT], w.BOOL),
+            "CloseHandle": ([w.HANDLE], w.BOOL),
+            "CreateToolhelp32Snapshot": ([w.DWORD, w.DWORD], w.HANDLE),
+            "Thread32First": ([w.HANDLE, ctypes.POINTER(ThreadEntry)], w.BOOL),
+            "Thread32Next": ([w.HANDLE, ctypes.POINTER(ThreadEntry)], w.BOOL),
+            "OpenThread": ([w.DWORD, w.BOOL, w.DWORD], w.HANDLE),
+            "ResumeThread": ([w.HANDLE], w.DWORD),
+        }
+        for name, (args, result) in signatures.items():
+            function = getattr(self.kernel, name)
+            function.argtypes, function.restype = args, result
+        self.handle = self.kernel.CreateJobObjectW(None, None)
+        if not self.handle:
+            raise ctypes.WinError(ctypes.get_last_error())
+        info = ExtendedLimits()
+        info.basic.flags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE; handle is not inheritable.
+        if not self.kernel.SetInformationJobObject(self.handle, 9, ctypes.byref(info), ctypes.sizeof(info)):
+            error = ctypes.WinError(ctypes.get_last_error())
+            self.close()
+            raise error
+
+    def attach_and_resume(self, pid):
+        c, k = self.ctypes, self.kernel
+        process = k.OpenProcess(0x0100 | 0x0001, False, pid)  # SET_QUOTA | TERMINATE
+        if not process:
+            raise c.WinError(c.get_last_error())
+        try:
+            if not k.AssignProcessToJobObject(self.handle, process):
+                raise c.WinError(c.get_last_error())
+        finally:
+            k.CloseHandle(process)
+        snapshot = k.CreateToolhelp32Snapshot(0x00000004, 0)  # TH32CS_SNAPTHREAD
+        if snapshot == c.c_void_p(-1).value:
+            raise c.WinError(c.get_last_error())
+        resumed = 0
+        try:
+            entry = self.thread_entry()
+            entry.size = c.sizeof(entry)
+            present = k.Thread32First(snapshot, c.byref(entry))
+            while present:
+                if entry.owner_pid == pid:
+                    thread = k.OpenThread(0x0002, False, entry.thread_id)  # SUSPEND_RESUME
+                    if not thread:
+                        raise c.WinError(c.get_last_error())
+                    try:
+                        if k.ResumeThread(thread) == 0xFFFFFFFF:
+                            raise c.WinError(c.get_last_error())
+                        resumed += 1
+                    finally:
+                        k.CloseHandle(thread)
+                present = k.Thread32Next(snapshot, c.byref(entry))
+        finally:
+            k.CloseHandle(snapshot)
+        if not resumed:
+            raise OSError("cannot resume the owned Windows process")
+
+    def terminate(self):
+        if not self.kernel.TerminateJobObject(self.handle, 1):
+            raise self.ctypes.WinError(self.ctypes.get_last_error())
+
+    def close(self):
+        if self.handle:
+            self.kernel.CloseHandle(self.handle)
+            self.handle = None
+
+
 def run_declared_command(command, cwd, timeout_seconds):
-    """Run one declared command while keeping combined output bounded."""
-    launch_options = {}
-    if os.name == "nt":
-        launch_options["creationflags"] = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
-    else:
-        launch_options["start_new_session"] = True
-    process = subprocess.Popen(command, cwd=cwd, stdin=subprocess.DEVNULL,
-                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                               shell=False, **launch_options)
+    """Bound output and clean the owned process family on every exit path."""
+    process = job = reader = None
+    reader_started = False
     chunks = queue.Queue(maxsize=8)
     stop_reader = threading.Event()
     reader_finished = threading.Event()
@@ -995,8 +1157,6 @@ def run_declared_command(command, cwd, timeout_seconds):
         finally:
             reader_finished.set()
 
-    reader = threading.Thread(target=read_output, name="engineering-check-output", daemon=True)
-    reader.start()
     start = time.monotonic()
     total_bytes = 0
     digest = hashlib.sha256()
@@ -1004,49 +1164,90 @@ def run_declared_command(command, cwd, timeout_seconds):
     timed_out = False
     limit_exceeded = False
     cleanup_timed_out = False
+    returncode = None
 
     def stop_process():
+        nonlocal cleanup_timed_out
         stop_reader.set()
+        if process is None:
+            return
         try:
-            if os.name != "nt":
-                os.killpg(process.pid, signal.SIGKILL)
+            if job is not None:
+                job.terminate()
             else:
-                process.kill()
-        except (OSError, ProcessLookupError):
+                os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
             pass
+        except OSError:
+            cleanup_timed_out = True
+        if job is not None and process.poll() is None:
+            try:
+                # Also covers a suspended child whose job assignment failed.
+                process.kill()
+            except OSError:
+                if process.poll() is None:
+                    cleanup_timed_out = True
 
-    while not reader_finished.is_set() or not chunks.empty():
-        remaining = timeout_seconds - (time.monotonic() - start)
-        if remaining <= 0:
+    try:
+        if os.name == "nt":
+            job = _WindowsProcessJob()
+            launch_options = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000004}
+        else:
+            launch_options = {"start_new_session": True}
+        process = subprocess.Popen(command, cwd=cwd, stdin=subprocess.DEVNULL,
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                   shell=False, **launch_options)
+        if job is not None:
+            job.attach_and_resume(process.pid)
+        reader = threading.Thread(target=read_output, name="engineering-check-output", daemon=True)
+        reader.start()
+        reader_started = True
+        while not reader_finished.is_set() or not chunks.empty():
+            remaining = timeout_seconds - (time.monotonic() - start)
+            if remaining <= 0:
+                timed_out = True
+                break
+            try:
+                chunk = chunks.get(timeout=min(remaining, 0.1))
+            except queue.Empty:
+                continue
+            total_bytes += len(chunk)
+            digest.update(chunk)
+            if len(captured) < MAX_CHECK_OUTPUT_BYTES:
+                captured.extend(chunk[:MAX_CHECK_OUTPUT_BYTES - len(captured)])
+            if total_bytes > MAX_CHECK_OUTPUT_BYTES:
+                limit_exceeded = True
+                break
+        if timed_out or limit_exceeded or reader_failed.is_set():
+            stop_process()
+        try:
+            wait_limit = 2 if timed_out or limit_exceeded or reader_failed.is_set() else max(0, timeout_seconds - (time.monotonic() - start))
+            returncode = process.wait(timeout=wait_limit)
+        except subprocess.TimeoutExpired:
             timed_out = True
             stop_process()
-            break
-        try:
-            chunk = chunks.get(timeout=min(remaining, 0.1))
-        except queue.Empty:
-            continue
-        total_bytes += len(chunk)
-        digest.update(chunk)
-        if len(captured) < MAX_CHECK_OUTPUT_BYTES:
-            captured.extend(chunk[:MAX_CHECK_OUTPUT_BYTES - len(captured)])
-        if total_bytes > MAX_CHECK_OUTPUT_BYTES:
-            limit_exceeded = True
-            stop_process()
-            break
-
-    if timed_out or limit_exceeded:
+            try:
+                returncode = process.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                cleanup_timed_out = True
+    finally:
+        pending = sys.exc_info()[1]
         stop_process()
-    try:
-        returncode = process.wait(timeout=2)
-    except subprocess.TimeoutExpired:
-        stop_process()
-        try:
-            returncode = process.wait(timeout=2)
-        except subprocess.TimeoutExpired:
-            cleanup_timed_out = True
-            returncode = None
-    reader.join(timeout=2)
-    reader_stalled = reader.is_alive()
+        if process is not None:
+            try:
+                process.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                cleanup_timed_out = True
+        if job is not None:
+            job.close()
+        if reader_started:
+            reader.join(timeout=2)
+        reader_stalled = reader_started and reader.is_alive()
+        if process is not None and process.stdout is not None and not reader_stalled:
+            process.stdout.close()
+        if pending is not None:
+            pending.cleanup_timed_out = cleanup_timed_out
+            pending.reader_stalled = reader_stalled
     return {
         "returncode": returncode,
         "output": bytes(captured),
@@ -1110,13 +1311,19 @@ def main(argv=None):
     parser.add_argument("--report")
     args = parser.parse_args(argv)
     task_id = args.task or os.environ.get("ENGINEERING_TASK_ID")
-    report = {"tool_version": VERSION, "mode": args.mode, "required_checks_satisfied": False, "checks": [], "summary": "", "changed_paths": [], "errors": []}
+    report = {"tool_version": VERSION, "mode": args.mode, "required_checks_satisfied": False, "checks": [], "summary": "", "changed_paths": [], "errors": [], "verified_tree": None, "verification_head": None}
     # These modes must positively prove the submitted tree is safe to run;
     # exceptions and incomplete history leave command execution disabled.
     commands_allowed = args.mode not in ("commit", "committed")
+    snapshot = None
+    cancelled_exit = None
     try:
         root = safe_root(args.root)
+        if args.mode in ("commit", "committed"):
+            snapshot = verification_snapshot(root)
         manifest = read_json(safe_path(root, args.manifest))
+        if not isinstance(manifest, dict):
+            raise ConfigError("manifest must be a JSON object")
         if task_id is None and isinstance(manifest.get("workflow"), dict):
             task_id = manifest["workflow"].get("active_task")
         results, docs, modules, tasks, declared = validate(root, manifest, args.mode, task_id)
@@ -1181,11 +1388,28 @@ def main(argv=None):
                 report["checks"].append(output_check("committed-scope", "unsupported", "committed tree discovery", str(exc)))
         forced = set(tasks[task_id]["required_checks"]) if task_id and task_id in tasks else set()
         reason = None if commands_allowed else "not run; submitted-tree validation did not pass"
-        report["checks"].extend(run_checks(root, declared, args.run_checks and commands_allowed, forced, reason))
+        with command_cancellation():
+            report["checks"].extend(run_checks(root, declared, args.run_checks and commands_allowed, forced, reason))
+    except (CheckCancelled, KeyboardInterrupt) as exc:
+        cancelled_exit = exc.exit_code if isinstance(exc, CheckCancelled) else 130
+        report["checks"].append(output_check("interrupted", "fail", "verification cancelled",
+                                             {"exit_code": cancelled_exit,
+                                              "cleanup_timed_out": getattr(exc, "cleanup_timed_out", False),
+                                              "reader_stalled": getattr(exc, "reader_stalled", False)}))
     except (ConfigError, OSError, UnicodeError, TypeError, KeyError) as exc:
         report["errors"].append(str(exc))
+    finally:
+        if snapshot is not None:
+            try:
+                report["checks"].append(verification_state_check(root, snapshot))
+            except (ConfigError, OSError, subprocess.TimeoutExpired) as exc:
+                report["checks"].append(output_check("verification-state", "unsupported",
+                                                     "post-check Git state discovery", str(exc)))
     required = [x for x in report["checks"] if x["required"]]
     report["required_checks_satisfied"] = bool(required) and not report["errors"] and all(x["status"] == "pass" for x in required)
+    if report["required_checks_satisfied"] and snapshot is not None:
+        report["verified_tree"] = snapshot["tree"]
+        report["verification_head"] = snapshot["head"]
     report["summary"] = "required checks satisfied" if report["required_checks_satisfied"] else "required checks not satisfied"
     if args.report:
         try:
@@ -1197,8 +1421,12 @@ def main(argv=None):
         except (OSError, ConfigError) as exc:
             report["errors"].append(str(exc))
             report["required_checks_satisfied"] = False
+            report["verified_tree"] = None
+            report["verification_head"] = None
             report["summary"] = "required checks not satisfied"
     print(json.dumps(report, ensure_ascii=False, indent=2))
+    if cancelled_exit is not None:
+        return cancelled_exit
     if report["required_checks_satisfied"]:
         return 0
     if report["errors"] or any(x["status"] in ("error", "unsupported") for x in required):

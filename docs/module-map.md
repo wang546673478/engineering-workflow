@@ -124,3 +124,10 @@ Current scope, source and validation: [TASK-ISSUES-17-18](../planning/issues-17-
 Publication receipt: the 1.6.3 source-context/instructions/test changes are on main at 0040878; fresh 170-test local gates passed. The receipt introduces no module, entrypoint or dependency changes.
 
 Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.
+
+
+## 1.6.4 checker ownership
+
+checker retains JSON/file/history policy, Git input/result binding, CLI cancellation handlers and native Windows job/POSIX group ownership in the existing protected check_project.py. tests owns real Git/hook, invalid-input and native lifecycle regressions; governance/instructions own reports, limits, version and publication records. No critical helper is moved outside the protected checker. ctypes/kernel32 is Windows-only standard-library/native support; no new package dependency or business database is introduced.
+
+Scope and evidence: [TASK-ISSUES-19-21](../planning/issues-19-21-task.md).

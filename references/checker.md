@@ -18,7 +18,7 @@ python <skill-dir>/scripts/extract_database.py redis --url-env ENGINEERING_DATAB
 
 baseline 核对声明结构和资料；change/handoff 必须提供 Git base 和任务，包含删除、重命名前后路径及未跟踪文件。base 先解析为 commit OID，不能传 Git 选项。handoff 还核对批准、前置任务、完成状态与本次实际验证。基线不要求 Git；首版无 Git 项目无法完成自动变更范围核对，保持未验证，不以基线检查替代完整交付。
 
-`commit` 是本地提交门禁：只读取当前 Git index 中已暂存的路径，拒绝空暂存区和任何未暂存的工作树差异，防止从工作区读取到与提交内容不一致的文档或清单。它会将源代码路径与 `task.documentation_impact` 中的触发路径关联，源代码变更未声明门槛也会失败；遗漏任一文档时退出失败。初始提交使用空树比较，删除和重命名同时检查旧路径与新路径。任务 ID 可用 `--task` 指定，也可通过 `ENGINEERING_TASK_ID` 提供；命令行参数优先。
+`commit` 是本地提交门禁：验证输入读取前绑定HEAD和index tree；声明检查结束后新增必需的verification-state，拒绝HEAD/index/工作树和未忽略新文件的持久漂移，失败不自动还原用户修改。只读取当前 Git index 中已暂存的路径，拒绝空暂存区和任何未暂存的工作树差异，防止从工作区读取到与提交内容不一致的文档或清单。它会将源代码路径与 `task.documentation_impact` 中的触发路径关联，源代码变更未声明门槛也会失败；遗漏任一文档时退出失败。初始提交使用空树比较，删除和重命名同时检查旧路径与新路径。任务 ID 可用 `--task` 指定，也可通过 `ENGINEERING_TASK_ID` 提供；命令行参数优先。
 
 `committed` 用于 CI/受保护分支复核已生成的提交：checkout 必须位于 `--commit-ref`，按该 commit 与父提交（根提交则用空树）比较，并拒绝工作树/index 偏离提交树。CI 应对待合并的每个提交运行该模式；本地 hook 可被跳过，不能作为唯一门禁。复制 [POSIX 模板](../assets/templates/pre-commit.engineering) 或 [PowerShell 模板](../assets/templates/pre-commit.engineering.ps1) 作为本地 hook；CI checkout 每个待检 commit 后可调用 [POSIX CI 模板](../assets/templates/ci-committed.engineering) 或 [PowerShell CI 模板](../assets/templates/ci-committed.engineering.ps1)。两个 CI 模板都要求显式指定 commit SHA 和该提交的任务 ID。
 
@@ -38,7 +38,7 @@ CI 不得在仓库可修改的 workflow 中把批准变量写成常量 `1`，也
 
 GitHub Actions 是可选的托管检查方式，不是每个使用本 skill 的项目都必须拥有 GitHub 仓库或启用 Actions。项目可以只使用本地 hook，也可以接入 GitLab CI、Jenkins 等其他 CI；只要在合并或发布前运行等价的 `committed` 检查即可。只有选择 GitHub Actions 的项目才需要复制或启用对应 workflow；没有远程 CI 时，仍应在本地运行 `commit` 门禁并保留验证记录。本 skill 不要求上传项目源码，也不会因为没有 GitHub Actions 就把项目判为失败。
 
-The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, and `errors`. Exit code 0 means every required check passed; 1 means a declared check or validation requirement failed, including an output-limit failure; 2 means malformed configuration, unavailable environment, or an unsupported capability before a check can run. `pass`, `fail`, `partial`, `unsupported`, `skipped`, and `error` are reported separately. Partial, skipped, or unsupported required checks cannot satisfy completion.
+The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, `errors`, and nullable `verified_tree` / `verification_head`. Successful commit/committed results bind those fields to the index tree and pre-verification HEAD; other/failed results leave them null. `verification-state` records before/after IDs and drift paths after declared checks and before report-file creation. This evidence is not a signed attestation or an atomic final commit. Exit code 0 means every required check passed; 1 means a declared check or validation requirement failed, including an output-limit failure; 2 means malformed configuration, unavailable environment, or an unsupported capability before a check can run. `pass`, `fail`, `partial`, `unsupported`, `skipped`, and `error` are reported separately. Partial, skipped, or unsupported required checks cannot satisfy completion.
 
 ## 项目清单字段
 
@@ -110,6 +110,7 @@ full/lite 都要求已链接的基线视图和追踪文档存在；不适用视�
 
 ## 结果的能力限制
 
+
 检查器核对文件/本地引用、编号、已声明模块图、任务依赖和变更路径、对象字段清单及执行结果。它只证明 manifest 中声明的命令在声明的目录执行并返回成功，不能证明命令选择覆盖了项目真正的验证政策，也不能证明所有动态调用已被发现、文档语义正确、认真阅读过资料、达到真实概率 95%、架构合理或整个产品完成。项目应把权威验证命令写入 `AGENTS.md`、项目 README 或 CI 规则；若任务选择替代检查，必须在影响/决定记录中说明差异、理由和未覆盖风险。不要用机械扫描把自声明命令伪装成完整验证。只有声明图的循环得到检查，不是所有语言 import 图。
 
 执行证据包含退出码、耗时、命令与输出摘要；为避免凭据泄露不展示原始参数/输出。常见测试 skip 汇总标记会成为 partial，但没有匹配标记不证明任何框架都没有跳过；人工仍需核对实际测试行为。历史报告不是本次执行证据。必需检查未执行、部分支持或失败都不得标为完成。
@@ -120,3 +121,14 @@ For protected reviewed and manually reviewed runs, the original committed checke
 
 SQLite 提取使用只读 immutable 快照和 table_xinfo，覆盖 main schema 的用户表、视图及隐藏/生成字段，附字段类型等详情；不读业务行、不写数据库。活跃 WAL、外部附加库和快照范围外状态不支持；使用项目自身受控的 checkpointed 测试快照，不能自动清空或修改真实库来满足检查。提取器默认只能创建新文件；目标已存在时必须显式使用 `--update`。更新模式仅接受包含匹配 `tool_version`、`kind=database` 且能解析为 JSON 的本工具快照，写入同目录临时文件并原子替换；普通 JSON、手工清单或数据库/sidecar 路径都会拒绝，失败不改变原文件。complete 仅指这个元数据范围，不含字段业务含义、触发器、索引约束、迁移与全系统读写关系。
 远程适配器同样只证明声明的元数据快照，没有证明实时数据库状态；快照不得包含连接密码、业务行、Redis key 或 value。
+
+
+## 1.6.4 输入、状态和进程生命周期合同
+
+- 文件和Git历史JSON共用可预期解析异常处理，深度/整数保护及manifest非对象根产生结构化配置错误。历史文件真实缺失与存在但不可读/损坏分别处理，后者不能静默替代旧保护政策。没有新增任意大小上限或提高解释器保护设置。
+- commit与committed均执行前后状态复核；合法的Git忽略产物可生成，源码/未忽略文件漂移仍失败。verified_tree用于结果与实际提交树比对；后续hook、并发修改、临时篡改后恢复和同权限恶意代码仍需要可信CI/OS隔离。
+- CLI声明命令执行期间捕获SIGINT/SIGTERM（Windows另含SIGBREAK），finally终止拥有的普通进程家族，限时等待输出线程并恢复原handler；取消报告不成功，退出码为128+信号号，KeyboardInterrupt为130。
+- POSIX沿用独立会话/进程组清理。Windows先创建kill-on-close Job Object，子进程挂起创建、赋予job后才恢复；约束建立失败时清理且拒绝执行命令。正常退出、超时、取消均清理普通后代。Job已建立后父进程被强制结束也由OS关闭句柄触发清理。
+- 此合同不是全平台SIGKILL保证：POSIX SIGKILL无法捕获，Windows赋予job前的启动窗口及恶意同权限攻击也不作绝对保证；更强生命周期需要外部监督/OS约束。导入函数调用者自行管理信号策略，CLI只在主线程临时注册handler。
+
+历史缺陷和原始复现保留在[ASSESS-19-21-01](../planning/issues-19-21-assessment.md)；当前实现、测试与发布证据见[TASK-ISSUES-19-21](../planning/issues-19-21-task.md)。原工作流、TEST/编译命令、120秒和审批职责保持。

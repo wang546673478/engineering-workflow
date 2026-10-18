@@ -1,3 +1,17 @@
+# Current plan: PLAN-SAFE-19-21-01
+
+Input BASELINE-UX-17-18-01 / 871bda427d3f46d114e568565dac10cca1395920 plus ASSESS-19-21-01; specification SPEC-SAFE-19-21-01; output BASELINE-SAFE-19-21-01. Implementation/status: [Task](../planning/issues-19-21-task.md).
+
+1. SAFE-01: Snapshot Git HEAD/index before reading inputs, retain initial scope/control checks, and require final state consistency in commit and committed. Add verified_tree/verification_head only on overall success. Keep hook/CI exit-code consumption; validate a real pre-commit template and actual commit tree.
+2. SAFE-02: Share file/history JSON decoding error handling; validate root type before workflow lookup; distinguish absent historical files from unreadable/damaged policy. Add deep object/array, integer, root and large-shallow behavior regressions without new arbitrary size limits.
+3. SAFE-03: Own command lifecycle in finally, restore CLI cancellation handlers, preserve bounded output/waits, and clean ordinary groups/families. Windows Job Object creation/assignment precedes command execution via suspended startup; setup failure rejects execution. Validate native family, cancellation, timeout and platform lifetime boundaries, with no absolute POSIX SIGKILL guarantee.
+4. SAFE-04: Refresh affected baseline/module/CLI/flow views, traceability and 1.6.4 PATCH metadata. Run original full checks plus focused native behavior tests and package validation, preserving failures as evidence.
+5. SAFE-05: Exact staged/committed verification, authorized GitHub upload and independent hosted verification, then factual issue-specific replies/closure and publication receipts.
+
+No business-data migration applies. Existing projects need no manifest migration. Generated ignored artifacts remain allowed, persistent source drift now fails. Protect the same checker entrypoint and policy; do not move lifecycle/security logic to an unprotected helper. External sandbox/strict hard-kill containment and new JSON resource policies remain deferred.
+
+## Prior plans and evidence
+
 # Current plan: PLAN-UX-17-18-01
 
 Based on SPEC-UX-17-18-01 and input BASELINE-CONTEXT-06 / 0216e4cd341bee534ccc85a8824c83a40a7e9840 plus ASSESS-17-18-01. Output baseline: BASELINE-UX-17-18-01. Scope and implementation status are in [Task](../planning/issues-17-18-task.md).

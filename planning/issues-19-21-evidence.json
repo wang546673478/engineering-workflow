@@ -1,0 +1,253 @@
+{
+  "assessment": "ASSESS-19-21-01",
+  "source_revision": "871bda427d3f46d114e568565dac10cca1395920",
+  "environment": {
+    "os": "Windows",
+    "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "source_blobs": {
+    "scripts/check_project.py": {
+      "git_blob": "ef079288a5e825967b944d6fe3c25cc144e03778",
+      "raw_sha256": "265f85d548191aaa1d2a4645e84315c4d8ca43da98f3d82526a1822485519e33"
+    },
+    "scripts/init_manifest.py": {
+      "git_blob": "72fb9ae04e3f5867d1d3185f34b68d13334d9bdb",
+      "raw_sha256": "9395966d97725deff469a5574d015712e8e32c2bfe916f30dc3f12033b793fb7"
+    },
+    "assets/templates/pre-commit.engineering": {
+      "git_blob": "36969e68802b212ea500efcb4fe199b96df295eb",
+      "raw_sha256": "de40c6ffac19e9d02358655f00a730750d2a115aeaff66deabca58e3f3c15c31"
+    },
+    "assets/templates/pre-commit.engineering.ps1": {
+      "git_blob": "b0eb49cb861aa19f51d5fd8059e3238f5a73263f",
+      "raw_sha256": "53583f6df49b9d41bebd842aca25b317f486d061aa78d6a527b41453be6ab4ff"
+    },
+    "assets/templates/ci-committed.engineering": {
+      "git_blob": "d6131bf6ef7ca658c8727dbe1fe2ff249b8a33d1",
+      "raw_sha256": "db97c80b4cb08946725897efacf9caa149ad9a23782d85d87233363754745ede"
+    },
+    "assets/templates/ci-committed.engineering.ps1": {
+      "git_blob": "3181e9dd35e532f2e783f053fa7621962c9983fa",
+      "raw_sha256": "59e31e98d43edd23f1534498e777bac7e8bd84aa2a00ccba96e4b28871e9553f"
+    }
+  },
+  "git_state": [
+    {
+      "mode": "commit",
+      "case": "stage",
+      "exit": 0,
+      "required_checks_satisfied": true,
+      "before": {
+        "head": "eae5dda7b208c195a755c2e0c6b2b1919216ed85",
+        "tree": "db39c02bd46a887ab32d26c65ce5f6b5fa58dc20",
+        "worktree": "",
+        "staged": "planning/baseline-review.md\nplanning/change-impact.md\nsrc/app.py"
+      },
+      "after": {
+        "head": "eae5dda7b208c195a755c2e0c6b2b1919216ed85",
+        "tree": "bb635716a7042b4b418212e26afbf323b19c8ea7",
+        "worktree": "",
+        "staged": "planning/baseline-review.md\nplanning/change-impact.md\nsrc/app.py"
+      },
+      "errors": [],
+      "subsequent_commit_source": "CHANGED_DURING_CHECK = True"
+    },
+    {
+      "mode": "commit",
+      "case": "unstaged",
+      "exit": 0,
+      "required_checks_satisfied": true,
+      "before": {
+        "head": "63c019cdc4f87d5f62561b731913f6cef0637a10",
+        "tree": "42874d01ca5fb5dfad3eb787808f920efffa986e",
+        "worktree": "",
+        "staged": "planning/baseline-review.md\nplanning/change-impact.md\nsrc/app.py"
+      },
+      "after": {
+        "head": "63c019cdc4f87d5f62561b731913f6cef0637a10",
+        "tree": "42874d01ca5fb5dfad3eb787808f920efffa986e",
+        "worktree": "src/app.py",
+        "staged": "planning/baseline-review.md\nplanning/change-impact.md\nsrc/app.py"
+      },
+      "errors": []
+    },
+    {
+      "mode": "commit",
+      "case": "head",
+      "exit": 0,
+      "required_checks_satisfied": true,
+      "before": {
+        "head": "6e7f5fc5709f743378ecacba77b82c0be3c158f3",
+        "tree": "55dbb3cd0a757b0d7aa6772f6908c2b165a1f2c5",
+        "worktree": "",
+        "staged": "planning/baseline-review.md\nplanning/change-impact.md\nsrc/app.py"
+      },
+      "after": {
+        "head": "c779b2992e3aa620f8535d55ab5bf6c509f2750a",
+        "tree": "55dbb3cd0a757b0d7aa6772f6908c2b165a1f2c5",
+        "worktree": "",
+        "staged": ""
+      },
+      "errors": []
+    },
+    {
+      "mode": "commit",
+      "case": "restore",
+      "exit": 0,
+      "required_checks_satisfied": true,
+      "before": {
+        "head": "b98e2f96b3182e016505dfe58bb312bfdde6780b",
+        "tree": "4ebf046eb80918ce945ac7b38ebfdcbdd9536b69",
+        "worktree": "",
+        "staged": "planning/baseline-review.md\nplanning/change-impact.md\nsrc/app.py"
+      },
+      "after": {
+        "head": "b98e2f96b3182e016505dfe58bb312bfdde6780b",
+        "tree": "4ebf046eb80918ce945ac7b38ebfdcbdd9536b69",
+        "worktree": "",
+        "staged": "planning/baseline-review.md\nplanning/change-impact.md\nsrc/app.py"
+      },
+      "errors": [],
+      "transient_change_observed": true
+    },
+    {
+      "mode": "committed",
+      "case": "stage",
+      "exit": 0,
+      "required_checks_satisfied": true,
+      "before": {
+        "head": "06bae2ac43a804813b85513ad83da34256691e85",
+        "tree": "742ed9487ccb976a0bf2f0b1b5697734e152388e",
+        "worktree": "",
+        "staged": ""
+      },
+      "after": {
+        "head": "06bae2ac43a804813b85513ad83da34256691e85",
+        "tree": "6a110713af438d4f93e07f2c3b9c8eedc9a59cbe",
+        "worktree": "",
+        "staged": "src/app.py"
+      },
+      "errors": []
+    },
+    {
+      "mode": "committed",
+      "case": "unstaged",
+      "exit": 0,
+      "required_checks_satisfied": true,
+      "before": {
+        "head": "264582a24bdd296b9ec8df293551f8d78090ccae",
+        "tree": "6d762605f0b59f9bed64e44604608c9578d7162f",
+        "worktree": "",
+        "staged": ""
+      },
+      "after": {
+        "head": "264582a24bdd296b9ec8df293551f8d78090ccae",
+        "tree": "6d762605f0b59f9bed64e44604608c9578d7162f",
+        "worktree": "src/app.py",
+        "staged": ""
+      },
+      "errors": []
+    }
+  ],
+  "json": [
+    {
+      "case": "deep",
+      "bytes": 60002,
+      "exit": 1,
+      "structured_report": false,
+      "traceback": true,
+      "exception": "RecursionError: maximum recursion depth exceeded while decoding a JSON object from a unicode string"
+    },
+    {
+      "case": "root-array",
+      "bytes": 2,
+      "exit": 1,
+      "structured_report": false,
+      "traceback": true,
+      "exception": "AttributeError: 'list' object has no attribute 'get'"
+    },
+    {
+      "case": "root-null",
+      "bytes": 4,
+      "exit": 1,
+      "structured_report": false,
+      "traceback": true,
+      "exception": "AttributeError: 'NoneType' object has no attribute 'get'"
+    },
+    {
+      "case": "large-integer",
+      "bytes": 10010,
+      "exit": 1,
+      "structured_report": false,
+      "traceback": true,
+      "exception": "ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 10000 digits; use sys.set_int_max_str_digits() to increase the limit"
+    }
+  ],
+  "git_history_json": "RecursionError",
+  "process": {
+    "platform": "Windows",
+    "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "records": [
+      {
+        "case": "KeyboardInterrupt injected into checker main thread",
+        "interrupted": true,
+        "alive_before_cleanup": {
+          "direct": true,
+          "grandchild": true
+        },
+        "reader_threads_after_exception": 1,
+        "alive_after_cleanup": {
+          "direct": false,
+          "grandchild": false
+        }
+      },
+      {
+        "case": "Windows force-terminate checker CLI parent",
+        "alive_before_cleanup": {
+          "direct": true,
+          "grandchild": true
+        },
+        "alive_after_cleanup": {
+          "direct": false,
+          "grandchild": false
+        }
+      },
+      {
+        "case": "Windows timeout with ordinary grandchild",
+        "timed_out": true,
+        "reader_stalled": true,
+        "alive_before_cleanup": {
+          "direct": false,
+          "grandchild": true
+        },
+        "alive_after_cleanup": {
+          "direct": false,
+          "grandchild": false
+        }
+      }
+    ],
+    "reader_threads_after_all_cleanup": 0,
+    "posix_native_signals": "unverified; no WSL distribution or container runtime available"
+  },
+  "artifacts": {
+    "assess_process.py": "9f11d79d9cb2166c71b4724e3546ff451b7764a1860ead12af874c5b58590c7b",
+    "assess_state.py": "2581f11e16a2f532dbff9eea93dcf36f31d549451f3c7dccf460ccf6c92dca50",
+    "interrupt-family.json": "4549e1f94963b181833fd21b2854583463e880cfe3cdecea0b31ad083f2089c9",
+    "json-deep.log": "46857e276b47f1e96eec5945b72bbe56dab6bb6c8b5ebaf4c5a099e14e6ea989",
+    "json-large-integer.log": "480420f42332e2f73a9b6dc1d2bcdfe0115a5569fb2918e7aaa521aa70fa696c",
+    "json-root-array.log": "19016bbf4602a47b95be6bdd59801485ec4fc91e337b8f123412e76878986112",
+    "json-root-null.log": "1a76b89dcb2e38ad84b2da52723ba0003eca87476c37a7c9ecec1f59edff30b7",
+    "process-results.json": "2bcd8915e40ff8657097925f67bfd0ce164b09fb895e4618695a670bd171ea68",
+    "process_family.py": "aab15833d03af4b6891b2b5dffc123818f8de41b231f63974939ecc94ce1e9ba",
+    "report-commit-head.json": "aa10bc00b20eda12d55c679619c8b76b8bcb98d334935b2eaa48827d3cb36450",
+    "report-commit-restore.json": "d5800187ab1a901fe3bfd2d91b5f377cc3f83eb51eb57c80d59d6ef2bebbe487",
+    "report-commit-stage.json": "38dfcf534fa55e7ba49195373ad6924d3713f8e3ec81a9929a0ea30f6754b503",
+    "report-commit-unstaged.json": "b22b47520244e95c56a225cb6ab2e228695eb12204781869c4390f3466f02b06",
+    "report-committed-stage.json": "364e252128727891ac093b4d74c96088d0009b0b4828c983ec245168c1879b41",
+    "report-committed-unstaged.json": "4e2092e1efd7a18c9671c09647f75298ba3c4bd2dad69f649a1a717e1cca1d75",
+    "state-results.json": "d0225442b71068c40988fac17753be2037863c59aefa47a2fa9e834bec073bab",
+    "terminated-parent-family.json": "016e7944ba1206ec89e785bb00ae7b12a04e6faf69d7494436d365c47bf01654",
+    "timeout-family.json": "d41c3a810c14235263fe629ebf7152dca1935bab881134a8f242b1302c372de8"
+  },
+  "scope": "Assessment only; no implementation, issue mutation, publication, control-policy or version changes."
+}

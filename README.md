@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.6.3` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.6.4` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -230,3 +230,10 @@ python scripts/check_project.py --root . --manifest engineering-manifest.json --
 ## 源码辅助工具
 
 1.6.0增加可选源码清单、目录统计、完整紧凑阅读包、预算/遗漏和JS/TS/Rust引用证据，按需输出文字、关系表和Mermaid。调用/范围/安装及限制见[说明](references/source-context.md)。原工程阶段、审批和验证要求保持；引用不是运行时调用或业务事实。
+
+
+### 提交验证与取消（1.6.4）
+
+两种提交检查都会核对声明命令前后的HEAD、暂存区和工作树。检查命令留下源码或未忽略文件的变化会失败，工具保留修改供调查；有意生成的构建/测试产物应由项目审阅后配置Git忽略。成功报告的verified_tree可与实际提交树核对，不能替代独立CI或恶意代码隔离。
+
+深层JSON、解释器整数限制和错误manifest根类型会输出结构化配置错误。Ctrl-C/SIGTERM执行中断会清理拥有的普通进程家族并返回非成功，原检查/时限不变。Windows使用系统Job Object支持，无法建立约束时拒绝启动命令；POSIX强制SIGKILL等保证边界见[检查器说明](references/checker.md)。

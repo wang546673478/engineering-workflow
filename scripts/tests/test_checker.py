@@ -38,6 +38,8 @@ class CheckerTests(unittest.TestCase):
             target = self.root / path
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(content, encoding="utf-8")
+        # The execution marker is a deliberate generated artifact, not source drift.
+        (self.root / ".gitignore").write_text("command-ran.txt\n", encoding="utf-8")
         with closing(sqlite3.connect(self.root / "data.sqlite")) as con:
             con.execute("CREATE TABLE accounts(id INTEGER,value TEXT)")
             con.commit()

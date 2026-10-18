@@ -1,3 +1,14 @@
+# Current specification: SPEC-SAFE-19-21-01
+
+Confirmed by the 2026-10-19 user instruction adopting ASSESS-19-21-01 and requesting implementation, upload, replies and closure. Exact scope: [Task](../planning/issues-19-21-task.md). This batch preserves prior workflow/gate duties and freezes the following boundaries.
+
+- REQ-SAFE-19 / AT-SAFE-19: Both commit modes bind input HEAD/index tree and reject persistent post-command HEAD/index/worktree or nonignored-file drift. Successful reports expose the validated tree/base; preserve user changes on failure. Boundary snapshots do not establish sandboxing or prevent later hook races.
+- REQ-SAFE-20 / AT-SAFE-20: File/historical JSON parser limits and manifest root-type errors produce structured failures without executing declarations. Corrupt historical policy is distinct from absent policy; legitimate large shallow documents remain compatible.
+- REQ-SAFE-21 / AT-SAFE-21: Owned ordinary process families/readers are cleaned on normal, timeout and catchable cancellation paths; signal handlers are restored and interruption never passes. Windows uses suspended creation plus Job assignment/resume. POSIX SIGKILL and the pre-assignment Windows startup window remain outside an absolute same-process cleanup promise.
+- REQ-SAFE-DELIVERY / AT-SAFE-DELIVERY: Keep the original TEST/COMPILE/GUIDANCE-COMPILE and limits/review controls; publish verified 1.6.4 with linked facts/evidence, then factual replies and completed closure for #19/#20/#21. Hosted review/results remain independently bound to exact SHAs.
+
+## Prior specifications and evidence
+
 # Current specification: SPEC-UX-17-18-01
 
 Confirmed on 2026-10-19 by the user's instruction to implement the reviewed recommendations, publish, reply to and close #17/#18. The exact statement and boundaries are in [Task](../planning/issues-17-18-task.md). This revision freezes only the compatible issue-fix batch; prior requirements/review scope below remain historical.

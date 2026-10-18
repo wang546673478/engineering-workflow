@@ -1,4 +1,12 @@
+# Historical #17/#18 delivery and follow-up assessment
+
+Current implementation is [TASK-ISSUES-19-21](issues-19-21-task.md), selected by the manifest. The following history retains its original source and approval scope.
+
 # TASK-ISSUES-17-18：初始化默认排除与可选解析诊断
+
+## 当前后续：#19/#20/#21评估（2026-10-19）
+
+用户请求评估三个新issue及其建议；评估已完成，skill review、影响范围和验证记录见[ASSESS-19-21-01](issues-19-21-assessment.md)和[证据](issues-19-21-evidence.json)。结论为#19优先、#20小范围补齐、#21拆分正常取消与强杀保证。新问题仅获评估授权，未实施，不沿用下方旧发布批准。#17/#18交付保持已完成；源码基点871bda4，下一步呈现可审阅结论。
 
 ## 当前状态和授权
 

@@ -1,4 +1,14 @@
+# Current baseline: BASELINE-SAFE-19-21-01
+
+2026-10-19; input871bda427d3f46d114e568565dac10cca1395920 plus TASK-ISSUES-19-21 working tree. Current implementation binds pre/post Git verification state, handles JSON input limits/root errors and historical corruption, and owns command family/reader cleanup including catchable cancellation. Windows commands are assigned to a kill-on-close Job Object before resume; POSIX uses existing process groups. Prior ASSESS-19-21-01 describes pre-fix facts and remains historical. Current scope and fresh validation: [Task](issues-19-21-task.md), [fix evidence](issues-19-21-fix-evidence.json).
+
+Workflow stages, required command declarations/timeouts, existing exclusions and independent approval controls are unchanged. State checks are stricter after execution; corrupt historical policy and unavailable Windows lifecycle setup fail closed. No business database/adapter change applies. Hostile-code sandboxing, later-hook races, POSIX SIGKILL and Windows pre-assignment hard-kill windows remain limits, not completed features. Source implementation is in progress until fresh gates/publication evidence is recorded.
+
+## Prior baseline revisions and review scope
+
 # Current baseline: BASELINE-UX-17-18-01
+
+Known-defect supplement ASSESS-19-21-01 (2026-10-19, source871bda4): [assessment](issues-19-21-assessment.md) and [evidence](issues-19-21-evidence.json) confirm commit/committed state checks occur only before declared commands, leaving runtime index/worktree/HEAD drift undetected. File and historical JSON parsing can emit unstructured recursion errors; root-type/large-integer inputs expose related boundaries. Windows controlled interruption leaves descendants/readers alive, and timeout kills only the direct child. The intended consistency/cleanup goals remain unchanged; these are implementation gaps, not relaxed requirements. POSIX native signals and hostile-code sandboxing are not established by the Windows fixtures. Prior source hashes/tests/reviews retain their original limited scope; this assessment does not authorize fixes.
 
 2026-10-19; source base 0216e4cd341bee534ccc85a8824c83a40a7e9840 plus the TASK-ISSUES-17-18 working tree. Current implementation now generates explicit recursive node_modules exclusions in both profiles, surfaces parser reasons/setup diagnostics in relation status/CLI/text, retains partial references, and fails required parser fixture setup early with actionable guidance. Core collection, existing manifests, checker rules and CI gates are unchanged. Current verification/publication evidence belongs to [Task](issues-17-18-task.md) and [fix evidence](issues-17-18-fix-evidence.json); prior 163-test assessment reports are historical. No business database or metadata-adapter change applies.
 

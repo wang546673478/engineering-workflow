@@ -1,0 +1,136 @@
+{
+  "task": "TASK-ISSUES-19-21",
+  "source_base": "871bda427d3f46d114e568565dac10cca1395920",
+  "status": "implementation_complete_final_commit_verification_pending",
+  "checks": [
+    {
+      "mode": "change",
+      "report": "work/issues-19-21/fix-change-01.json",
+      "required_checks_satisfied": true,
+      "scope": "Working tree before final equivalent Git/queue optimization and signal-entry restoration; historical diagnostic, not final-source proof.",
+      "report_sha256": "09f8f3eeddf9b209e40db16bd8a5bbb470d81ba90e041349e6b4a5789c21ce8d",
+      "commands": [
+        {
+          "rule_id": "TEST",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 114.516,
+            "output_bytes": 604,
+            "output_sha256": "2ac750a3cf8d0a9b07c2435bf804e38bdc7427e56c51e433d390c174360a95e4",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.219,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.218,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        }
+      ]
+    }
+  ],
+  "test_cases": 184,
+  "environment": {
+    "os": "Windows",
+    "python": "3.13.5",
+    "node": "24.21.0",
+    "tree_sitter": "0.25.2",
+    "tree_sitter_rust": "0.24.2",
+    "typescript": "6.0.3"
+  },
+  "focused": {
+    "state_and_input": 8,
+    "lifecycle": 6
+  },
+  "source_sha256": {
+    "scripts/check_project.py": "f57f1e50b022d4d8d6f3761b0c58ac7988ec8b637b2037e176587970d51f0558",
+    "scripts/tests/test_checker.py": "142cbcfc948e155e5651d1da69a51f2c13a38e42cab9434dbcc6d49b20fe9dad",
+    "scripts/tests/test_checker_state.py": "d610fe6b788dd0b1d1c8415534f1055052ded0a7af7530f0f2aa35ceb9c12cf6",
+    "scripts/tests/test_checker_lifecycle.py": "541bb96c103b2cb7064252cea3f12192837e308bf51f23ed2acffd6639079152"
+  },
+  "package_validation": "passed",
+  "policy": {
+    "original_required_commands_timeouts_unchanged": true,
+    "protected_paths_approval_unchanged": true,
+    "existing_exclusions_unchanged": true,
+    "CI_unchanged": true,
+    "post_state_guard_is_required": true
+  },
+  "diagnostic_history": [
+    {
+      "report": "checker-initial.log",
+      "result": "Old execution marker became nonignored drift under the new contract; fixture now explicitly ignores its generated marker, with a separate nonignored-file rejection test."
+    },
+    {
+      "report": "state-focused-1.log",
+      "result": "Initial historical-input assertions expected errors[] rather than structured unsupported check; amended to assert non-success, specific JSON/policy reason and no command execution. Removed imported TestCase discovery duplication."
+    }
+  ],
+  "publication": {
+    "state": "pending"
+  },
+  "issue_replies": {
+    "state": "pending"
+  },
+  "limits": [
+    "Boundary-state checks are not hostile-code sandboxing or an atomic later commit.",
+    "POSIX native signals await existing hosted Ubuntu validation.",
+    "Windows force-termination cleanup is established after job assignment; the pre-assignment startup window and POSIX SIGKILL remain outside absolute guarantees."
+  ]
+}
