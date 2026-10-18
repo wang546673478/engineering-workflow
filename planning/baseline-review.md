@@ -1,6 +1,6 @@
 # Current Engineering Workflow Baseline
 
-Current revision: `BASELINE-CONTEXT-05` (2026-10-18), based on c21e715 and the source-helper working tree. Current facts include unchanged engineering stages/checker policy and local collection, JS/TS/Rust module evidence and selectable views. Exact coverage, current source hashes, two-corpus comparison and validation are in [Task](source-context-task.md) and [evidence](source-context-evidence.json). User authorization covers implementing/selecting/uploading the helper batch, not certification of target-project business behavior.
+Current revision: `BASELINE-CONTEXT-06` (2026-10-18), based on a407b112 and the source-helper working tree. Current facts include unchanged engineering stages and checker commands, local collection/JS/TS/Rust module evidence, selectable views, and a corrected protected-CI result contract: diagnostic reruns cannot replace the original required checker outcome. Exact scope and validation are in [Task](source-context-task.md) and [evidence](source-context-evidence.json). User authorization covers the CI correction and upload; it does not certify target-project business behavior.
 
 ## Historical 1.5.0 baseline (original evidence/review scope)
 
@@ -61,3 +61,8 @@ The 1.6.1 hosted-report review additionally isolates checker/initializer test fi
 ### BASELINE-CONTEXT-05: hosted test environment finding
 
 Actual protected-run artifacts showed a test fixture inherited the parent task ID, making temporary projects run against the main manifest task. Isolating task/approval variables at fixture setup fixes only test setup; checker behavior and declared checks are unchanged. The original hosted artifacts remain failed history; the current correction has passed the same full command with those parent variables present. See [current Task](source-context-task.md) and machine evidence.
+
+
+### BASELINE-CONTEXT-06: reviewed CI result integrity
+
+Run `39110935645` showed that the original Windows TEST report failed while the diagnostic rerun passed; the workflow then marked the reviewed job successful. Both reviewed and manual-reviewed finalizers used the diagnostic rerun as an alternate success condition, so the aggregate quality job could report success without the original required checker passing. The finalizer now treats the original checker outcome as authoritative on both paths. The verbose rerun remains available for diagnosis and cannot recover a failed required check. Existing command definitions, test scope, 120-second timeout, protected environment, and approval duties remain unchanged. Implementation and new regression evidence are tracked in [the current Task](source-context-task.md).

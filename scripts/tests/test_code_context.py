@@ -280,8 +280,8 @@ class ContextCollectorTests(unittest.TestCase):
         self.assertNotIn("OUTSIDE_SENTINEL", result["pack"])
 
     def test_reparse_directory_without_junction_api_is_not_followed(self):
-        target = self.root / "linked"
         self.write("linked/secret.txt", "DO_NOT_FOLLOW")
+        target = (self.root / "linked").resolve()
         original = Path.lstat
 
         def lstat(path, *args, **kwargs):

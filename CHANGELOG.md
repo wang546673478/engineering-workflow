@@ -1,3 +1,9 @@
+# 1.6.2 / 2026-10-18
+
+- Keep the original required checker outcome authoritative in reviewed and manually reviewed CI jobs, even when a diagnostic test rerun passes.
+- Add a shared finalizer and regression coverage for both successful and failed checker outcomes; retain the diagnostic rerun for failure investigation.
+- Keep required commands, test coverage, 120-second timeout, protected environment and approval duties unchanged.
+
 # 1.6.1 / 2026-10-18
 
 - Fix source collection on Windows Python3.11 by recognizing directory reparse points before traversal, including source/output ancestors.

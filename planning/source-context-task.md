@@ -1,13 +1,14 @@
-# TASK-CONTEXT-RELEASE-01：双项目组合/顺序比较与1.6.0发布
+# TASK-CONTEXT-RELEASE-01：来源辅助功能交付与受保护 CI 判定修复
 
 ## 当前状态和用户授权
 
-- 2026-10-18T16:14:06.009955+08:00；1.6.0与1.6.1代码修复已上传；Windows目录兼容及CI fixture隔离本地修复complete。官方Python3.11/3.13带真实CI外层变量完整160 tests通过，原声明提交门禁通过。当前阶段：精确committed核验后提交本批Task/文档回执、上传，并复核新精确SHA的hosted原始artifact。旧run39109363841已获用户审批，但其原TEST失败artifact保留历史，不以诊断重跑代替原门禁。来源：本机工程skill1.6.1/c6c3b2f；本批release基点该提交。
+- 2026-10-18恢复实施：远程 `main` 仍为已发布的1.6.1提交 `a407b112410e8717511d62fda8eead66d18cf043`。用户授权按全局根因修复并上传。当前确认 reviewed 与 manual-reviewed 两路会在原始 checker 失败后重跑测试，并允许诊断成功覆盖原始失败；这会让汇总 job 误报通过。当前批次修正这两条最终判定路径，诊断仍保留用于定位；旧命令、测试范围、120秒时限和人工批准职责不变。保留未提交的 Windows reparse fixture 路径规范化修正并纳入本批验证。SPEC-CONTEXT-03不变，候选发布版本1.6.2 PATCH。Task保持 `in_progress`，直到精确提交、本地门禁、上传及可核验的托管结果更新完毕。
+- 下一步：将已通过门禁的暂存树提交，随后运行 committed 检查；上传后核对新 SHA 的原始 hosted artifacts。新 SHA 的环境人工审批不能从旧 run 继承。
+- 历史暂停记录（2026-10-18T16:32+08:00）：当时尚未完成Windows fixture follow-up 验证；暂停状态只适用于此前回合。run39110935645 的 Ubuntu 原 TEST artifact 通过、Windows 160 项中1项失败，JSON回执污染已从备份恢复；这些历史失败保留，不作为当前版本通过证据。旧run39109363841原TEST失败artifact也保留；诊断重跑成功不替代原始门槛。
 - 用户原话：“这样你把多测试几个功能组合和排序,这几个功能都是需要只不过要完善使用规则,应该怎么组合,然后进行测试,E:\pi-main和D:\agent-harness-research\codex 这几个应该够你测试了,你找出最优,在不改变skill流程的情况下,把最优的上传github”。明确授权比较、完善规则、在已讨论辅助功能内择优正式实现并提交上传；不要求额外同范围批准。排序限辅助能力的调用/展示顺序，原阶段/需求确认/方案批准/门槛职责不变。
 - 保留七项组合：盘点、树/统计、完整紧凑阅读包、限额/遗漏、引用分析、出处/图校验、图/文字/表格与源码定位；Token计量仅实验，Notebook/增量缓存/云模型链不引入。
 - 本轮原清单/研究文档有未提交工作，完整备份在外部primary-original。发布从干净远程基点构建，只带本批实现/文档/摘要证据；保留旧评估原文件，不把它们混作新审批。
 - 两个目标仅作只读语料；不运行其产品/模型/依赖安装、不改Git状态或源码。初始hash和实际Git状态在外部evidence，按每项目规则读取适用文件。
-- 下一步：提交前检查当前所有文档/index/版本与原流程保护，再以精确commit SHA执行原committed门槛和上传；新的hosted环境需对新SHA重新审批后核对Windows/Ubuntu直接artifact。
 
 ## 规格和验收（SPEC-CONTEXT-01）
 
@@ -126,3 +127,39 @@ CI变更只增加Node22准备、script-disabled npm ci和固定Python解析依�
 - 已在真实外层变量`ENGINEERING_TASK_ID=TASK-CONTEXT-RELEASE-01`及`ENGINEERING_CONTROL_PLANE_APPROVED=1`下运行原160项TEST：官方Windows Python3.11.9为64.596秒，Python3.13.5为73.842秒，均全部通过。checker原commit门禁使用同一变量/原TEST命令与120秒时限，required_checks_satisfied=true；TEST67.485秒，COMPILE及GUIDANCE-COMPILE均通过，保护与commit-scope通过。未删测试、未降门槛。
 - 修改只是在checker与initializer单测setUp隔离这两个由fixture拥有的变量，并以addCleanup恢复外层环境。显式的task ID环境变量优先级测试仍自设任务并通过。旧run39109363841的原checker artifact记录TEST fail；之后诊断重跑成功不等于原artifact通过，现作为失败历史保留。
 - 当前Baseline/Plan更新至BASELINE-CONTEXT-05/PLAN-CONTEXT-05；SPEC-CONTEXT-03及需求范围不变。下一步以当前精确提交重跑committed并推送同一1.6.1批次；新的protected run需对精确SHA人工审批后才能验证两平台直接artifact。
+
+
+### Windows reparse fixture path normalization follow-up
+
+- 2026-10-18T16:24:58.110504+08:00：新Actions run39110935645 的Ubuntu原artifact直接通过；Windows报告TEST fail1/160，唯一失败test_reparse_directory_without_junction_api_is_not_followed，原始日志保存在外部experiment。原因是fixture target使用临时目录原路径，而采集器root已resolve，Windows路径别名下两Path不相等，模拟lstat未命中。
+- 不改产品逻辑。fixture先创建目录再resolve target，只规范化测试比较的目标。已在本机以真实Windows短路径root运行两项reparse-focused用例通过；接下来在完整WindowsPython3.11和真实CI环境变量下执行160项及提交门禁，并以新提交重新取hosted artifacts。
+
+
+## 受保护 CI 判定修复（1.6.2）
+
+### 当前决定、范围和授权
+
+- 用户原话：“那就进行修复然后上传github”。该指令承接此前“从全局看流程是否有疏漏”的根因调查，授权修正已展示的保护 CI 判定缺陷并上传；实现范围为 reviewed 与 manual-reviewed 两路的最终结果规则、共享终结脚本、针对性回归和直接受影响的权威文档。
+- Run `39110935645` 的原 Windows checker artifact 为 `TEST=fail`，诊断重跑为成功，而 job 为 success。两路 finalize 的条件均允许 `CHECK_OUTCOME=failure` 时只要 `DIAGNOSE_OUTCOME=success` 就成功；aggregate 因而把诊断结果当作原始必需检查结果。
+- 采用统一的 Python finalizer，并由两条受保护路径调用。只有原始 checker 成功才成功；原始失败无论诊断重跑成功或失败都保持失败。诊断步骤继续输出详细错误以便调查，不改变原 TEST 的职责。
+- 不改 Spec、阶段顺序、审核/批准门槛、checker 声明命令、测试范围或120秒超时；不新增依赖。恢复并保留先前未提交的 Windows reparse fixture 规范路径修正；测试目标项目仍只读。
+- 版本从1.6.1升到1.6.2 PATCH：修复已发布的 CI 结果判定行为，不新增用户功能或改变兼容接口。同步 SKILL/README/agents/VERSION/CHANGELOG。
+- 影响视图：治理流程、CI 合约、模块地图、Baseline、Plan、Task、Traceability 与机器证据。SPEC-CONTEXT-03、REQ-CONTEXT-01..05 和原测试义务保持不变。
+- 对受保护 workflow/helper、manifest/CODEOWNERS、checker contract、版本元数据和 CHANGELOG 的本批授权来自上述用户指令；人工托管环境审批只对新精确 SHA 生效，不能继承旧 SHA 的批准。
+
+### Skill review 与实现计划
+
+- 检查来源：当前会话 Skills catalog，检查时间2026-10-18T16:50:42+08:00；采用当前发布副本的 engineering-workflow 1.6.1，并重读其 SKILL.md、AGENTS、manifest、活动 Task、checker、implementation-workflow、baseline-linked-artifacts、Baseline/Spec/Plan及受影响治理视图。
+- engineering-workflow：adopted，授权范围内修复并按提交/committed/托管证据闭环。
+- skill-creator：adopted；已读 SKILL.md 与 `references/openai_yaml.md`，用于同步1.6.2版本元数据并执行 package validator；不调整 invocation/UI 结构。
+- PL-CI-01：修复两个受保护 finalizer 并防止逻辑分叉；PL-CI-02：验证脚本及 Windows/Ubuntu 运行兼容；PL-CI-03：完整跑原 TEST/COMPILE/GUIDANCE-COMPILE 和精确提交门禁；PL-CI-04：上传后按新 SHA 逐平台核验原始 artifact 与总 job。
+
+### 验证与发布状态
+
+- focused finalizer regressions：3/3通过；覆盖原始检查成功/失败与诊断跳过/成功/失败组合。
+- Python 3.13.5 task-local isolated environment下原 TEST 命令163项通过，用时73.313秒，低于120秒；初次裸Python3.13运行因缺少锁定tree-sitter依赖4项失败，确认后复用已准备的隔离环境完整重跑通过，不修改产品源码或测试期望。Python3.11本机无安装，后续由 hosted Actions 的原Python3.11环境复核。
+- Skill Creator `quick_validate.py` 在UTF-8模式下通过；workflow YAML由PyYAML解析通过，两个受保护job都调用同一finalizer；新文件Python编译与 `git diff --check` 通过。
+- 第三次 commit 门禁通过：`required_checks_satisfied=true`；TEST 163项/72.78秒、COMPILE 0.11秒、GUIDANCE-COMPILE 0.12秒，control-plane 与 commit-scope 均通过。调用的是原声明命令，任务/批准变量仅在本次子进程中存在；为让Windows子进程可见锁定解析依赖，本地 `PYTHONPATH` 指向任务隔离环境。
+- 两次未通过的准备报告保留：首次因 `.github/CODEOWNERS` 未被声明为文档影响路径而阻止检查执行；补上路径后，第二次因嵌套 Python 子进程解析到缺少解析依赖的基础环境而TEST失败。定位后通过任务局部 `PYTHONPATH` 重跑，未修改原命令、超时或测试范围。
+- committed 报告：待提交后运行；受保护变更仅在此次本地检查子进程使用经用户授权的短时外部批准变量。
+- GitHub 上传和远程 SHA：待执行。新 push 会触发新的 protected run；若环境要求人工批准，等待用户批准后再读原始 Ubuntu/Windows checker artifact 和 job 结果。

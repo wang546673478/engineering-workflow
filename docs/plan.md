@@ -1,11 +1,11 @@
 # Source Context Technical Plan
 
-Revision PLAN-CONTEXT-05, based on unchanged SPEC-CONTEXT-03 and input BASELINE-CONTEXT-04/c6c3b2f. User authorizes comparison, scoped integration and upload; exact wording in [Task](../planning/source-context-task.md). Output BASELINE-CONTEXT-05.
+Revision PLAN-CONTEXT-06, based on unchanged SPEC-CONTEXT-03 and input BASELINE-CONTEXT-05/a407b112. The current user instruction authorizes the evidenced hosted-CI correction and upload; exact scope and wording are in [Task](../planning/source-context-task.md). Output BASELINE-CONTEXT-06.
 
-1. Retain original workflow body/meaning and checker controls; add a short route and focused reference.
+1. Preserve existing engineering stages and checker controls; require the original checker result to pass on both protected review paths, keeping diagnostic reruns for evidence only.
 2. Reuse safe path/glob primitives; provide complete source packs with explicit omitted states, per-run discovery reuse and optional syntax adapters.
 3. Compare P1..P4 in the Task on both frozen corpora; prefer scoped task-first execution unless evidence justifies reference-led expansion; output one appropriate view.
-4. Preserve original required checks, add new behavior tests and script-disabled optional dependency setup for repository CI.
+4. Preserve original required checks and timeouts. Make the original checker outcome authoritative in reviewed and manual-reviewed paths; keep diagnostic reruns for evidence only and cover finalization behavior with regression tests.
 5. Reconcile current views/version/evidence, then staged/committed checks, authorized upload and independent hosted-status evidence.
 
 ## Historical plan (original scope retained)

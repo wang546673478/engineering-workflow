@@ -1873,6 +1873,79 @@
       "scripts/tests/test_checker.py": "3ce3cfbd7c9bdd5316fa5fec80539001c921e5c87c4746ba00a524a41fab0625",
       "scripts/tests/test_init.py": "754e02794c36b3e56aa8781121ec3d34f10506f9add508f0996404f63d47b169"
     },
-    "hosted_39109363841": "Original Ubuntu and Windows checker artifacts inspected; Ubuntu original TEST failed, then diagnostic suite succeeded. Windows initial artifact also failed; both are historical and not the final verification."
+    "hosted_39109363841": "Original Ubuntu and Windows checker artifacts inspected; Ubuntu original TEST failed, then diagnostic suite succeeded. Windows initial artifact also failed; both are historical and not the final verification.",
+    "windows_path_alias_followup": {
+      "run": "https://github.com/wang546673478/engineering-workflow/actions/runs/39110935645",
+      "direct_result": "Windows TEST failed one fixture in 160; Ubuntu direct artifact pass",
+      "test": "test_reparse_directory_without_junction_api_is_not_followed",
+      "cause": "Test path used temp root spelling while collector resolves source root; lstat mock target comparison missed Windows alias.",
+      "fix": "Resolve the created linked directory before comparing Path.lstat argument.",
+      "local_short_root_focused": {
+        "tests": 2,
+        "result": "pass",
+        "log": "external evidence/ci-reparse-shortpath-focused.log"
+      },
+      "full_ci_environment": {
+        "python": "3.13.5 task-local isolated environment with pinned tree-sitter dependencies",
+        "tests": 163,
+        "result": "pass",
+        "seconds": 73.313,
+        "required_timeout_seconds": 120,
+        "command": "python -m unittest discover -s scripts/tests -q",
+        "ci_environment_variables": [
+          "ENGINEERING_TASK_ID=TASK-CONTEXT-RELEASE-01",
+          "ENGINEERING_CONTROL_PLANE_APPROVED=1"
+        ]
+      }
+    },
+    "protected_ci_finalization": {
+      "change": "The original checker outcome gates both reviewed and manual-reviewed workflow jobs; diagnostic reruns cannot convert a failure to success.",
+      "shared_finalizer": ".github/scripts/finalize_reviewed_quality.py",
+      "focused_regressions": {
+        "tests": 3,
+        "result": "pass",
+        "cases": [
+          "diagnostic success does not recover a failed required check",
+          "failed required check remains failed when diagnostics fail",
+          "successful required check passes when diagnostics are skipped"
+        ]
+      },
+      "local_commit_gate": {
+        "required_checks_satisfied": true,
+        "report": "work/ci-global-repair-commit-r3.json",
+        "control_plane": "pass",
+        "commit_scope": "pass",
+        "checks": {
+          "TEST": {
+            "status": "pass",
+            "tests": 163,
+            "seconds": 72.78,
+            "timeout_seconds": 120
+          },
+          "COMPILE": {
+            "status": "pass",
+            "seconds": 0.11
+          },
+          "GUIDANCE-COMPILE": {
+            "status": "pass",
+            "seconds": 0.12
+          }
+        },
+        "runtime": "Python 3.13.5; task-local venv site-packages exposed to nested base-interpreter commands via process-only PYTHONPATH"
+      },
+      "precheck_findings": [
+        {
+          "result": "commit-scope blocked",
+          "cause": ".github/CODEOWNERS was missing from the current task documentation_impact paths",
+          "correction": "Declared the protected CODEOWNERS path and reran the full gate"
+        },
+        {
+          "result": "TEST failed before required checks completed",
+          "cause": "A nested Windows python command resolved to the base interpreter without the locked tree-sitter packages",
+          "correction": "Kept the original command and supplied the task-local isolated site-packages via PYTHONPATH; the subsequent full gate passed"
+        }
+      ],
+      "spec_revision": "SPEC-CONTEXT-03; no requirement scope change"
+    }
   }
 }

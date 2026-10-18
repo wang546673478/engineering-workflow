@@ -2,11 +2,11 @@
 
 Status: `current`
 
-Current revision `SPEC-CONTEXT-03` (2026-10-18): user-authorized local source helpers and two-corpus optimization/publication, preserving the original workflow. Exact authorization and scope are in [Task](../planning/source-context-task.md). Historical specifications and approvals below retain their own scope.
+Current revision `SPEC-CONTEXT-03` (2026-10-18): user-authorized local source helpers and two-corpus optimization/publication, preserving the original workflow and requiring the original result of every declared check to remain authoritative. Diagnostic reruns may provide evidence but cannot replace a failed required check. Exact authorization and scope are in [Task](../planning/source-context-task.md). Historical specifications and approvals below retain their own scope.
 
 - REQ-CONTEXT-01 / AT-CONTEXT-01: Complete local inventory, compact full-source packs, explicit budgets/omissions and version-bound evidence.
 - REQ-CONTEXT-02 / AT-CONTEXT-02: Optional syntax/config JS/TS and Rust module references; directions, source lines/hashes and unknown conditions preserved.
-- REQ-CONTEXT-03 / AT-CONTEXT-03: Choose analysis/view invocation by actual task; derived summaries/tables/diagrams preserve the existing engineering phases and gates.
+- REQ-CONTEXT-03 / AT-CONTEXT-03: Choose analysis/view invocation by actual task; derived summaries/tables/diagrams preserve the existing engineering phases and gates. A diagnostic rerun never substitutes for the original required-check result.
 - REQ-CONTEXT-04 / AT-CONTEXT-04: Compare four helper orders across Pi and Codex read-only corpora, prioritizing coverage/correctness before measurable cost.
 - REQ-CONTEXT-05 / AT-CONTEXT-05: Synchronize versioned artifacts, exact local checks and authorized source publication; hosted CI evidence reported separately.
 

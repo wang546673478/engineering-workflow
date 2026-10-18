@@ -1,6 +1,14 @@
 # Current Impact Analysis Entry
 
-Current task: selected by workflow.active_task in [the manifest](../engineering-manifest.json). The current linked-artifact/greenfield impact analysis, scope, user authorization and validation are in [TASK-LINKED-ARTIFACTS-01](linked-artifact-model-task.md). This entry preserves the original 2026-10-14 record below; its approval and skill decisions are historical and do not apply to subsequent revisions.
+Current task: selected by workflow.active_task in [the manifest](../engineering-manifest.json). Current source-context scope, user authorization, decisions and validation are in [TASK-CONTEXT-RELEASE-01](source-context-task.md). This entry preserves the original 2026-10-14 record below; its approval and skill decisions are historical and do not apply to subsequent revisions.
+
+## Current 1.6.2 impact
+
+- Modules: governance and tests; the existing source-context Windows fixture correction is retained in the same delivery batch.
+- Control flow: reviewed and manual-reviewed finalization now requires the original checker to pass. Diagnostic retries remain diagnostic and cannot make a failed required check successful.
+- Contracts and evidence: update the protected CI contract, governance module map/flow, current Baseline/Plan/Spec/Task/traceability, and machine validation evidence.
+- Database and product API: no impact. Checker declarations, test command, timeout, approval environment and workflow stage order remain unchanged.
+- Validation: exercise the shared finalizer's success/failure cases, run the declared checks, then inspect exact-SHA per-platform hosted reports after any required environment approval.
 
 ## Historical 2026-10-14 record
 

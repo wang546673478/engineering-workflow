@@ -114,5 +114,9 @@ full/lite 都要求已链接的基线视图和追踪文档存在；不适用视�
 
 执行证据包含退出码、耗时、命令与输出摘要；为避免凭据泄露不展示原始参数/输出。常见测试 skip 汇总标记会成为 partial，但没有匹配标记不证明任何框架都没有跳过；人工仍需核对实际测试行为。历史报告不是本次执行证据。必需检查未执行、部分支持或失败都不得标为完成。
 
+## Hosted diagnostic and finalizer contract
+
+For protected reviewed and manually reviewed runs, the original committed checker invocation is authoritative. A verbose diagnostic rerun may run only after the report proves the control-plane and committed-scope checks passed and TEST alone failed. The rerun supplies debugging evidence; even when it passes, the finalizer and aggregate quality job must remain failed because the original required check failed. Only a successful original checker invocation satisfies that required check.
+
 SQLite 提取使用只读 immutable 快照和 table_xinfo，覆盖 main schema 的用户表、视图及隐藏/生成字段，附字段类型等详情；不读业务行、不写数据库。活跃 WAL、外部附加库和快照范围外状态不支持；使用项目自身受控的 checkpointed 测试快照，不能自动清空或修改真实库来满足检查。提取器默认只能创建新文件；目标已存在时必须显式使用 `--update`。更新模式仅接受包含匹配 `tool_version`、`kind=database` 且能解析为 JSON 的本工具快照，写入同目录临时文件并原子替换；普通 JSON、手工清单或数据库/sidecar 路径都会拒绝，失败不改变原文件。complete 仅指这个元数据范围，不含字段业务含义、触发器、索引约束、迁移与全系统读写关系。
 远程适配器同样只证明声明的元数据快照，没有证明实时数据库状态；快照不得包含连接密码、业务行、Redis key 或 value。

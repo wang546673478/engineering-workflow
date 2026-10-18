@@ -1,5 +1,6 @@
 # Control-plane changes require maintainer review before merge.
 /.github/workflows/quality.yml @wang546673478
+/.github/scripts/finalize_reviewed_quality.py @wang546673478
 /.github/CODEOWNERS @wang546673478
 /engineering-manifest.json @wang546673478
 /scripts/check_project.py @wang546673478

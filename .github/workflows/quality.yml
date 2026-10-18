@@ -174,17 +174,12 @@ jobs:
         run: |
           python -c "import json; data=json.load(open('work/ci-review.json', encoding='utf-8')); checks={c['rule_id']:c for c in data['checks']}; assert not data['errors'] and checks.get('control-plane',{}).get('status')=='pass' and checks.get('committed-scope',{}).get('status')=='pass'; assert all(c['status']=='pass' for c in data['checks'] if c['required'] and c['rule_id'] != 'TEST'); assert checks.get('TEST',{}).get('status')=='fail'"
           python -m unittest discover -s scripts/tests -v
-      - name: Finalize reviewed result
+      - name: Require original reviewed checker success
         if: always()
         env:
           CHECK_OUTCOME: ${{ steps.reviewed_check.outcome }}
           DIAGNOSE_OUTCOME: ${{ steps.reviewed_diagnose.outcome }}
-        shell: bash
-        run: |
-          if [[ "$CHECK_OUTCOME" != "success" && "$DIAGNOSE_OUTCOME" != "success" ]]; then
-            echo "Protected checker failed and diagnostic recovery did not pass" >&2
-            exit 1
-          fi
+        run: python .github/scripts/finalize_reviewed_quality.py
 
   manual_reviewed:
     name: manual reviewed (${{ matrix.os }})
@@ -241,17 +236,12 @@ jobs:
         run: |
           python -c "import json; data=json.load(open('work/ci-review.json', encoding='utf-8')); checks={c['rule_id']:c for c in data['checks']}; assert not data['errors'] and checks.get('control-plane',{}).get('status')=='pass' and checks.get('committed-scope',{}).get('status')=='pass'; assert all(c['status']=='pass' for c in data['checks'] if c['required'] and c['rule_id'] != 'TEST'); assert checks.get('TEST',{}).get('status')=='fail'"
           python -m unittest discover -s scripts/tests -v
-      - name: Finalize manual reviewed result
+      - name: Require original manual checker success
         if: always()
         env:
           CHECK_OUTCOME: ${{ steps.manual_check.outcome }}
           DIAGNOSE_OUTCOME: ${{ steps.manual_diagnose.outcome }}
-        shell: bash
-        run: |
-          if [[ "$CHECK_OUTCOME" != "success" && "$DIAGNOSE_OUTCOME" != "success" ]]; then
-            echo "Protected checker failed and diagnostic recovery did not pass" >&2
-            exit 1
-          fi
+        run: python .github/scripts/finalize_reviewed_quality.py
 
   quality:
     name: quality
