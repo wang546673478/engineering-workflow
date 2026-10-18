@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.6.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.6.1` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 

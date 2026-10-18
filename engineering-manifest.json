@@ -2065,8 +2065,8 @@
       },
       "skill_review": {
         "catalog_source": "Current session Skills catalog",
-        "checked_at": "2026-10-18",
-        "scope": "User-authorized source helper combinations, two read-only corpora and publication",
+        "checked_at": "2026-10-18T15:48:16.378745+08:00",
+        "scope": "Follow-up Windows Actions compatibility correction; original helper scope and workflow controls unchanged",
         "candidates": [
           {
             "id": "engineering-workflow",
@@ -2166,8 +2166,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "c21e715 input; current source-context 1.6.0 working tree, exact evidence in CONTEXT_TASK",
-    "scope": "BASELINE-CONTEXT-03: existing workflow preserved plus local source helpers and explicit optional parsers/views"
+    "source_revision": "21f9aa2 input; current 1.6.1 correction working tree, exact evidence in CONTEXT_TASK",
+    "scope": "BASELINE-CONTEXT-04: unchanged workflow plus Windows3.11 reparse compatibility correction"
   },
   "exclude_paths": [
     ".git",

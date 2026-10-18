@@ -1,3 +1,9 @@
+# 1.6.1 / 2026-10-18
+
+- Fix source collection on Windows Python3.11 by recognizing directory reparse points before traversal, including source/output ancestors.
+- Canonicalize the read-failure test target so Windows short-path aliases still trigger the intended PermissionError; keep unreadable-source exclusion assertions.
+- Add older-Python reparse/root behavior regressions. Existing workflow, checker, CI, required tests and timeouts remain unchanged.
+
 # 1.6.0 / 2026-10-18
 
 - Added optional local source inventory/tree/statistics, complete compact reading packs and explicit read budgets/omissions.

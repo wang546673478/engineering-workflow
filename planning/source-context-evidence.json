@@ -1340,7 +1340,7 @@
     "tree-sitter-rust": "0.24.2"
   },
   "source_hashes": {
-    "scripts/collect_code_context.py": "7556739dd796cbbead2c9611503fea670c17fbd38ec6c39c5ef998de5e85ff22",
+    "scripts/collect_code_context.py": "1f52b371f84aae3686330851c787173dbca3afca4b3b82fea8895e6608d127a5",
     "scripts/source_relations.py": "34b49fb8ced8eade2e3dfb69bdb271e6f4f71a3fc0a0d703c82f198b4803c25a",
     "scripts/analyze_references.mjs": "545bf0fbc4d3855257bf03140f0a038119445a2090d4c32093a46387e2e7acc6",
     "scripts/rust_references.py": "e6398d6271bd8077f5957290a9847091b8e53f2c7b54891470a9ee580ff11113"
@@ -1592,5 +1592,216 @@
         }
       ]
     }
+  },
+  "ci_windows_correction": {
+    "observed_at": "2026-10-18T15:49:24.422673+08:00",
+    "input_commit": "21f9aa23375b82866a35eea2c783da78eca63857",
+    "failed_run": "https://github.com/wang546673478/engineering-workflow/actions/runs/39076867717",
+    "ubuntu_result": "success",
+    "windows_result": "failure, two collector tests",
+    "reproductions": [
+      "Real outside junction on official Windows Python3.11.9: path_unavailable instead of link_or_junction",
+      "Windows real 8.3 target alias: permission mock not triggered, included instead of unreadable"
+    ],
+    "fix": [
+      "Collector-local reparse attribute recognition for older Python",
+      "Canonical read-failure fixture target"
+    ],
+    "focused_tests": 31,
+    "focused_result": "pass on Windows Python3.11.9",
+    "full_tests_expected": 160,
+    "full_gate": "pass, original staged commit gate on official Windows Python3.11.9; actual committed gate follows",
+    "version": "1.6.1",
+    "original_checker_ci_commands_timeouts": "unchanged",
+    "full_tests": 160,
+    "python313_tests": {
+      "result": "pass",
+      "tests": 160,
+      "seconds": 80.748,
+      "log": "external evidence/ci-fix-full-313.log"
+    },
+    "python311_commit_gate": {
+      "required_checks_satisfied": true,
+      "report": "work/ci-fix-commit-311.json",
+      "checks": [
+        {
+          "rule_id": "control-plane",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "baseline control-plane paths and submitted tree",
+          "evidence": {
+            "protected_paths": [
+              ".github/CODEOWNERS",
+              ".github/workflows/quality.yml",
+              "CHANGELOG.md",
+              "SKILL.md",
+              "VERSION",
+              "assets/templates/ci-committed.engineering",
+              "assets/templates/ci-committed.engineering.ps1",
+              "assets/templates/pre-commit.engineering",
+              "assets/templates/pre-commit.engineering.ps1",
+              "engineering-manifest.json",
+              "references/checker.md",
+              "scripts/check_project.py"
+            ],
+            "changed_paths": [
+              "CHANGELOG.md",
+              "SKILL.md",
+              "VERSION",
+              "engineering-manifest.json"
+            ],
+            "first_adoption": false,
+            "approval_variable": "ENGINEERING_CONTROL_PLANE_APPROVED",
+            "external_approval_present": true
+          },
+          "limitations": [
+            "Control-plane approval is intentionally supplied outside the repository; review the manifest and checker changes separately."
+          ]
+        },
+        {
+          "rule_id": "commit-scope",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "Git staged index including deletions and rename endpoints",
+          "evidence": {
+            "uncovered": [],
+            "excluded": [],
+            "allowed": [
+              "scripts/collect_code_context.py",
+              "scripts/source_relations.py",
+              "scripts/analyze_references.mjs",
+              "scripts/rust_references.py",
+              "scripts/reference-requirements.txt",
+              "scripts/context-runtime/package.json",
+              "scripts/context-runtime/package-lock.json",
+              "assets/licenses/gitingest-MIT.txt",
+              "assets/licenses/gitdiagram-MIT.txt",
+              "docs/module-map.md",
+              "SKILL.md",
+              "README.md",
+              "AGENTS.md",
+              "VERSION",
+              "CHANGELOG.md",
+              "LICENSE",
+              "scripts/install_agents_guidance.py",
+              "scripts/init_manifest.py",
+              "agents",
+              "assets",
+              "references",
+              "docs/module-map.md",
+              "scripts/tests",
+              "docs/module-map.md",
+              "engineering-manifest.json",
+              ".gitignore",
+              "docs",
+              "planning",
+              ".github",
+              "docs/module-map.md",
+              "planning/source-context-task.md",
+              "planning/baseline-review.md",
+              "docs/spec.md",
+              "docs/plan.md",
+              "docs/module-map.md",
+              "docs/contracts.md",
+              "docs/business-flow.md",
+              "planning/source-context-task.md",
+              "planning/source-context-evidence.json",
+              "planning/traceability.md",
+              "planning/baseline-review.md",
+              "docs/spec.md",
+              "docs/plan.md",
+              "docs/module-map.md",
+              "docs/contracts.md",
+              "docs/business-flow.md",
+              "planning/source-context-task.md",
+              "planning/source-context-evidence.json",
+              "planning/traceability.md"
+            ],
+            "documentation_gaps": []
+          },
+          "limitations": [
+            "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+          ]
+        },
+        {
+          "rule_id": "TEST",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 74.672,
+            "output_bytes": 603,
+            "output_sha256": "8918547250c25c86112cceb52f3889e77f63bbda127879b2874dab91531ce09c",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.125,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.125,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        }
+      ]
+    },
+    "benchmark_limit": "24-run combination/timing results remain historical 1.6.0 measurements; this patch changes link boundary handling, not the selected combination policy. No new timing claim."
+  },
+  "ci_patch_publication": {
+    "version": "1.6.1",
+    "status": "local checks passed; exact commit/push/hosted checks pending",
+    "observed_at": "2026-10-18T15:51:42.328831+08:00"
   }
 }

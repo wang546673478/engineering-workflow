@@ -17,11 +17,24 @@ import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import tempfile
 import time
 
 import check_project as guard
+
+
+def is_link(path: Path) -> bool:
+    if guard.is_link(path):
+        return True
+    # Path.is_junction is absent on Python 3.11; lstat does not follow the target.
+    try:
+        attributes = getattr(path.lstat(), "st_file_attributes", 0)
+    except FileNotFoundError:
+        return False
+    return bool(attributes & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400))
+
 
 VERSION = "0.2.0-fusion"
 PRUNED_NAMES = {
@@ -243,7 +256,7 @@ def scan(
                 "reason": None,
                 "selected": False,
             }
-            if guard.is_link(child):
+            if is_link(child):
                 entry.update(
                     kind="link",
                     scan_status="excluded",
@@ -333,6 +346,9 @@ def collect(
     discovery: dict | None = None,
 ) -> dict:
     started = time.perf_counter()
+    original_root = Path(root).absolute()
+    if any(is_link(parent) for parent in (original_root, *original_root.parents)):
+        raise guard.ConfigError("root traverses a symlink or junction")
     root = guard.safe_root(str(root))
     if not root.is_dir():
         raise ValueError("source_root_must_be_directory")
@@ -555,7 +571,7 @@ def write_result(result: dict, output: Path | str) -> None:
     if guard.is_under(output.resolve(), root):
         raise ValueError("output_must_be_outside_source")
     for parent in (output, *output.parents):
-        if parent.exists() and guard.is_link(parent):
+        if is_link(parent):
             raise ValueError("output_link_rejected")
     output.mkdir(parents=True, exist_ok=False)
     for name, body in [

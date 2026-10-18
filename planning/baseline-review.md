@@ -1,6 +1,6 @@
 # Current Engineering Workflow Baseline
 
-Current revision: `BASELINE-CONTEXT-03` (2026-10-18), based on c21e715 and the source-helper working tree. Current facts include unchanged engineering stages/checker policy and local collection, JS/TS/Rust module evidence and selectable views. Exact coverage, current source hashes, two-corpus comparison and validation are in [Task](source-context-task.md) and [evidence](source-context-evidence.json). User authorization covers implementing/selecting/uploading the helper batch, not certification of target-project business behavior.
+Current revision: `BASELINE-CONTEXT-04` (2026-10-18), based on c21e715 and the source-helper working tree. Current facts include unchanged engineering stages/checker policy and local collection, JS/TS/Rust module evidence and selectable views. Exact coverage, current source hashes, two-corpus comparison and validation are in [Task](source-context-task.md) and [evidence](source-context-evidence.json). User authorization covers implementing/selecting/uploading the helper batch, not certification of target-project business behavior.
 
 ## Historical 1.5.0 baseline (original evidence/review scope)
 
@@ -48,3 +48,8 @@ BASELINE-CONTEXT-03 (2026-10-18): preserved existing workflow plus local source 
 
 
 1.6.0 source publication: `502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b`, verified on origin/main on 2026-10-18. This receipt does not change implementation/approval scope; exact local gates are in [the current Task](source-context-task.md). Hosted CI is tracked separately.
+
+
+### Windows Python3.11 correction (1.6.1)
+
+The collector additionally checks lstat reparse attributes before scanning links and source/output ancestors; it does not depend on Path.is_junction being available. The permission-error fixture uses a canonical target to cover Windows short-path aliases. Existing checker source, workflow semantics/CI and required commands/timeouts stay unchanged. SPEC-CONTEXT-03/REQ-CONTEXT-01..05 remain applicable; current execution/evidence are in [Task](source-context-task.md). BASELINE-CONTEXT-04/PLAN-CONTEXT-04 cover this correction; 1.6.0 validation remains historical.

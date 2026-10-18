@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -215,7 +216,8 @@ class ContextCollectorTests(unittest.TestCase):
         self.assertEqual(result["inventory"]["issues"][0]["reason"], "entry_limit")
 
     def test_read_failure_is_recorded_and_not_exported(self):
-        target = self.write("blocked.ts", "SHOULD_NOT_EXPORT")
+        # The collector canonicalizes roots; Windows temp paths can be 8.3 aliases.
+        target = self.write("blocked.ts", "SHOULD_NOT_EXPORT").resolve()
         original = Path.open
 
         def opened(path, *args, **kwargs):
@@ -276,6 +278,38 @@ class ContextCollectorTests(unittest.TestCase):
         result = self.collect(all_text=True)
         self.assertEqual(self.entries(result)["linked"]["reason"], "link_or_junction")
         self.assertNotIn("OUTSIDE_SENTINEL", result["pack"])
+
+    def test_reparse_directory_without_junction_api_is_not_followed(self):
+        target = self.root / "linked"
+        self.write("linked/secret.txt", "DO_NOT_FOLLOW")
+        original = Path.lstat
+
+        def lstat(path, *args, **kwargs):
+            if path == target:
+                return SimpleNamespace(st_file_attributes=0x400)
+            return original(path, *args, **kwargs)
+
+        with patch.object(collector.guard, "is_link", return_value=False), patch.object(
+            Path, "lstat", new=lstat
+        ):
+            result = self.collect(all_text=True)
+        self.assertEqual(self.entries(result)["linked"]["reason"], "link_or_junction")
+        self.assertNotIn("linked/secret.txt", self.entries(result))
+        self.assertNotIn("DO_NOT_FOLLOW", result["pack"])
+
+    def test_reparse_source_root_without_junction_api_is_rejected(self):
+        original = Path.lstat
+
+        def lstat(path, *args, **kwargs):
+            if path == self.root:
+                return SimpleNamespace(st_file_attributes=0x400)
+            return original(path, *args, **kwargs)
+
+        with patch.object(collector.guard, "is_link", return_value=False), patch.object(
+            Path, "lstat", new=lstat
+        ):
+            with self.assertRaises(collector.guard.ConfigError):
+                self.collect()
 
     def test_notebook_conversion_is_not_part_of_fusion(self):
         self.write("demo.ipynb", json.dumps({"cells": [{"source": "print(42)"}]}))
