@@ -2370,7 +2370,7 @@
       "depends_on": [
         "TASK-ISSUES-17-18"
       ],
-      "status": "in_progress",
+      "status": "complete",
       "impact_document": "ISSUES_19_21_TASK",
       "required_checks": [
         "TEST",
@@ -2484,7 +2484,7 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "871bda427d3f46d114e568565dac10cca1395920 + TASK-ISSUES-19-21 working tree",
+    "source_revision": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd (1.6.4 implementation); receipt changes evidence/status only",
     "scope": "Existing workflow plus Git verification state binding, JSON errors and owned command lifecycle; BASELINE-SAFE-19-21-01"
   },
   "exclude_paths": [

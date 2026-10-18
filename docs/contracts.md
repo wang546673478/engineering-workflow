@@ -135,3 +135,6 @@ Both submitted-tree modes snapshot input HEAD/index tree before validation and r
 File/historical JSON parser limits and non-object manifest roots fail structurally; missing historical paths differ from corrupt/unavailable content. CLI cancellation produces a failed interrupted result and nonzero 128+signal exit (KeyboardInterrupt130); handlers are restored. Owned ordinary process families/readers are cleaned in finally. POSIX uses process groups; Windows suspended children enter a kill-on-close job before resume, with setup failures refusing command execution. POSIX SIGKILL and pre-assignment hard-kill windows remain limits. No original check, limit or review duty is relaxed.
 
 Current source/evidence: [TASK-ISSUES-19-21](../planning/issues-19-21-task.md). Earlier investigation remains in the linked assessment as historical facts.
+
+
+Published implementation5f9b3e1d54a0709241fb5f11173e13ce00af3ffd passed local184-test staged/exact-commit gates and original Windows/Ubuntu reports in approved run39157028881; source upload and #19/#20/#21 replies/completed closure were verified on 2026-10-19. Receipt-only updates do not change implementation, targets, limits or prior approval scope.

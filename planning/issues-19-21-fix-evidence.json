@@ -1,7 +1,7 @@
 {
   "task": "TASK-ISSUES-19-21",
   "source_base": "871bda427d3f46d114e568565dac10cca1395920",
-  "status": "implementation_complete_final_commit_verification_pending",
+  "status": "complete_published_and_issues_closed",
   "checks": [
     {
       "mode": "change",
@@ -83,6 +83,214 @@
           ]
         }
       ]
+    },
+    {
+      "mode": "commit",
+      "source_commit": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+      "report": "work/issues-19-21/fix-commit-01.json",
+      "report_sha256": "d560aa54570f9235c368f3df4936ea07552f94802882c4d9bb6cac82fa128ed5",
+      "required_checks_satisfied": true,
+      "verified_tree": "256d0076690b85b2633e6b433656de6e650feef3",
+      "verification_head": "871bda427d3f46d114e568565dac10cca1395920",
+      "commands": [
+        {
+          "rule_id": "TEST",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 107.669,
+            "output_bytes": 604,
+            "output_sha256": "6741fdec1bd575ebb30c5ba149a99367a7bb074ee9df571c3d5c252981dd95a0",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.219,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.216,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "verification-state",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "HEAD, index tree and worktree after declared checks",
+          "evidence": {
+            "before": {
+              "head": "871bda427d3f46d114e568565dac10cca1395920",
+              "tree": "256d0076690b85b2633e6b433656de6e650feef3"
+            },
+            "after": {
+              "head": "871bda427d3f46d114e568565dac10cca1395920",
+              "tree": "256d0076690b85b2633e6b433656de6e650feef3"
+            },
+            "index_paths": [],
+            "worktree_paths": []
+          },
+          "limitations": [
+            "Boundary snapshots detect persistent drift, not transient changes restored by hostile code, later hook races or sandbox escapes."
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "committed",
+      "source_commit": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+      "report": "work/issues-19-21/fix-committed-01.json",
+      "report_sha256": "dd3f4b852072570d925c378e1af3f358bc420eea958a79d7aea2a44ddddbbe51",
+      "required_checks_satisfied": true,
+      "verified_tree": "256d0076690b85b2633e6b433656de6e650feef3",
+      "verification_head": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+      "commands": [
+        {
+          "rule_id": "TEST",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 107.619,
+            "output_bytes": 604,
+            "output_sha256": "d5b349c187e36d9d57e7ee7f1a4e1165f5e1dd51d7338b11be98045a1c5be02e",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.219,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.22,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "verification-state",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "HEAD, index tree and worktree after declared checks",
+          "evidence": {
+            "before": {
+              "head": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+              "tree": "256d0076690b85b2633e6b433656de6e650feef3"
+            },
+            "after": {
+              "head": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+              "tree": "256d0076690b85b2633e6b433656de6e650feef3"
+            },
+            "index_paths": [],
+            "worktree_paths": []
+          },
+          "limitations": [
+            "Boundary snapshots detect persistent drift, not transient changes restored by hostile code, later hook races or sandbox escapes."
+          ]
+        }
+      ]
     }
   ],
   "test_cases": 184,
@@ -123,14 +331,126 @@
     }
   ],
   "publication": {
-    "state": "pending"
+    "sha": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+    "remote": "main",
+    "verified": true,
+    "published_at": "2026-10-18T19:08:09.943Z",
+    "version": "1.6.4",
+    "published_date": "2026-10-19"
   },
-  "issue_replies": {
-    "state": "pending"
-  },
+  "issue_replies": [
+    {
+      "number": 19,
+      "comment_url": "https://github.com/wang546673478/engineering-workflow/issues/19#issuecomment-6253939392",
+      "state": "closed",
+      "state_reason": "completed",
+      "closed_at": "2026-10-18T19:08:11Z"
+    },
+    {
+      "number": 20,
+      "comment_url": "https://github.com/wang546673478/engineering-workflow/issues/20#issuecomment-6253939733",
+      "state": "closed",
+      "state_reason": "completed",
+      "closed_at": "2026-10-18T19:08:13Z"
+    },
+    {
+      "number": 21,
+      "comment_url": "https://github.com/wang546673478/engineering-workflow/issues/21#issuecomment-6253940030",
+      "state": "closed",
+      "state_reason": "completed",
+      "closed_at": "2026-10-18T19:08:15Z"
+    }
+  ],
   "limits": [
-    "Boundary-state checks are not hostile-code sandboxing or an atomic later commit.",
-    "POSIX native signals await existing hosted Ubuntu validation.",
-    "Windows force-termination cleanup is established after job assignment; the pre-assignment startup window and POSIX SIGKILL remain outside absolute guarantees."
-  ]
+    "Boundary snapshots are not hostile-code sandboxing or atomic protection against later hooks/concurrent mutation.",
+    "POSIX native SIGINT/SIGTERM/process groups passed hosted Ubuntu; POSIX SIGKILL remains outside same-process cleanup.",
+    "Windows ordinary descendants and force termination after job assignment passed; the pre-assignment startup window is not an absolute containment guarantee.",
+    "Receipt-only later commits retain separate exact-SHA validation identities."
+  ],
+  "hosted_ci": {
+    "run": 39157028881,
+    "url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39157028881",
+    "sha": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+    "status": "completed",
+    "conclusion": "success",
+    "branch": "codex/issues-19-21",
+    "artifacts": [
+      {
+        "id": 12147621283,
+        "name": "reviewed-windows-latest",
+        "digest": "sha256:588bd80ecb5b1ddc83597f0e0d48fe63978b278ced29e1d038d1d9d68dff4a63"
+      },
+      {
+        "id": 12147381848,
+        "name": "reviewed-ubuntu-latest",
+        "digest": "sha256:3dff00b64486a703f745bec0bb6a4a0cfbd1cca089206a348f52599e62b5e8b7"
+      }
+    ],
+    "approvals": [
+      {
+        "state": "approved",
+        "user": "wang546673478",
+        "environments": [
+          "engineering-control-review",
+          "engineering-control-review"
+        ]
+      }
+    ],
+    "reports": [
+      {
+        "artifact": "reviewed-windows-latest",
+        "id": 12147621283,
+        "zip_sha256": "588bd80ecb5b1ddc83597f0e0d48fe63978b278ced29e1d038d1d9d68dff4a63",
+        "report_sha256": "bc911b40e931367e4410828907007bd15efeb5120a5585e751488606b77c48b9",
+        "required_checks_satisfied": true,
+        "verified_tree": "256d0076690b85b2633e6b433656de6e650feef3",
+        "verification_head": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+        "commands": [
+          {
+            "id": "TEST",
+            "status": "pass",
+            "seconds": 89.125
+          },
+          {
+            "id": "COMPILE",
+            "status": "pass",
+            "seconds": 0.125
+          },
+          {
+            "id": "GUIDANCE-COMPILE",
+            "status": "pass",
+            "seconds": 0.125
+          }
+        ]
+      },
+      {
+        "artifact": "reviewed-ubuntu-latest",
+        "id": 12147381848,
+        "zip_sha256": "3dff00b64486a703f745bec0bb6a4a0cfbd1cca089206a348f52599e62b5e8b7",
+        "report_sha256": "87bc5860a63d42b73f9a13381ac3145136ed7f918fbf85b552e2a6339fa8dda3",
+        "required_checks_satisfied": true,
+        "verified_tree": "256d0076690b85b2633e6b433656de6e650feef3",
+        "verification_head": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd",
+        "commands": [
+          {
+            "id": "TEST",
+            "status": "pass",
+            "seconds": 20.017
+          },
+          {
+            "id": "COMPILE",
+            "status": "pass",
+            "seconds": 0.101
+          },
+          {
+            "id": "GUIDANCE-COMPILE",
+            "status": "pass",
+            "seconds": 0.101
+          }
+        ]
+      }
+    ],
+    "original_reports_verified": true
+  },
+  "recorded_at": "2026-10-19T03:09:50.312041+08:00"
 }

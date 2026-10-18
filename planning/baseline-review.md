@@ -2,7 +2,7 @@
 
 2026-10-19; input871bda427d3f46d114e568565dac10cca1395920 plus TASK-ISSUES-19-21 working tree. Current implementation binds pre/post Git verification state, handles JSON input limits/root errors and historical corruption, and owns command family/reader cleanup including catchable cancellation. Windows commands are assigned to a kill-on-close Job Object before resume; POSIX uses existing process groups. Prior ASSESS-19-21-01 describes pre-fix facts and remains historical. Current scope and fresh validation: [Task](issues-19-21-task.md), [fix evidence](issues-19-21-fix-evidence.json).
 
-Workflow stages, required command declarations/timeouts, existing exclusions and independent approval controls are unchanged. State checks are stricter after execution; corrupt historical policy and unavailable Windows lifecycle setup fail closed. No business database/adapter change applies. Hostile-code sandboxing, later-hook races, POSIX SIGKILL and Windows pre-assignment hard-kill windows remain limits, not completed features. Source implementation is in progress until fresh gates/publication evidence is recorded.
+Workflow stages, required command declarations/timeouts, existing exclusions and independent approval controls are unchanged. State checks are stricter after execution; corrupt historical policy and unavailable Windows lifecycle setup fail closed. No business database/adapter change applies. Hostile-code sandboxing, later-hook races, POSIX SIGKILL and Windows pre-assignment hard-kill windows remain limits, not completed features. Current implementation5f9b3e1 is published and its original local/hosted gates are verified; receipt-only updates retain separate validation identities.
 
 ## Prior baseline revisions and review scope
 
@@ -92,3 +92,6 @@ Run `39110935645` showed that the original Windows TEST report failed while the 
 The implementation source 0040878f69450657bb65ee779b6cecda4697049d was published on 2026-10-19; the same source passed fresh 170-test change/commit/committed gates. #17/#18 replies and completed closure are verified. This receipt revises evidence/status only; hosted approval/results remain separate.
 
 Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.
+
+
+Published implementation5f9b3e1d54a0709241fb5f11173e13ce00af3ffd passed local184-test staged/exact-commit gates and original Windows/Ubuntu reports in approved run39157028881; source upload and #19/#20/#21 replies/completed closure were verified on 2026-10-19. Receipt-only updates do not change implementation, targets, limits or prior approval scope.

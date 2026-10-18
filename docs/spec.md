@@ -150,3 +150,6 @@ The 1.6.1 hosted-report review additionally isolates checker/initializer test fi
 Delivery receipt: all three REQ-UX / AT-UX boundaries were implemented in source 0040878 and locally verified with 170 tests; upload and both issue replies/closure were verified on 2026-10-19. Frozen targets above are unchanged; hosted verification is recorded separately.
 
 Implementation-source hosted receipt: exact source 0040878 passed the original Windows/Ubuntu committed reports in run39151794183 after recorded environment approval. Receipt-only later commits retain separate validation identities.
+
+
+Published implementation5f9b3e1d54a0709241fb5f11173e13ce00af3ffd passed local184-test staged/exact-commit gates and original Windows/Ubuntu reports in approved run39157028881; source upload and #19/#20/#21 replies/completed closure were verified on 2026-10-19. Receipt-only updates do not change implementation, targets, limits or prior approval scope.

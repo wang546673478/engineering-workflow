@@ -2,11 +2,11 @@
 
 ## 当前状态与授权
 
-- 2026-10-19 Asia/Shanghai；阶段：本地实现完成，提交与跨平台验证；基点871bda427d3f46d114e568565dac10cca1395920 / 1.6.3；分支codex/issues-19-21。保留前轮评估、复现与事实校正，不丢弃既有工作。
+- 2026-10-19 Asia/Shanghai；阶段：交付完成，源码发布及issue闭环已核实；基点871bda427d3f46d114e568565dac10cca1395920 / 1.6.3；分支codex/issues-19-21。保留前轮评估、复现与事实校正，不丢弃既有工作。
 - 用户原话（不记录凭据）：“那就按照你建议修改然后回复issue,并关闭问题,然后上传GitHub”。明确采纳[ASSESS-19-21-01](issues-19-21-assessment.md)，授权下列方案、必要回归/元数据/文档、提交上传、对#19/#20/#21回复和关闭；独立托管环境审批仍由人类完成。
-- 需求状态confirmed；完整方案approved；实施状态in_progress。输入BASELINE-UX-17-18-01加ASSESS-19-21-01；冻结SPEC-SAFE-19-21-01；计划PLAN-SAFE-19-21-01；输出BASELINE-SAFE-19-21-01。
+- 需求状态confirmed；完整方案approved；实施状态complete。输入BASELINE-UX-17-18-01加ASSESS-19-21-01；冻结SPEC-SAFE-19-21-01；计划PLAN-SAFE-19-21-01；输出BASELINE-SAFE-19-21-01。
 - release impact：1.6.3→1.6.4 PATCH，修复既有一致性/错误处理/清理合同，不增加工作流阶段、放宽验证或承诺任意恶意代码沙箱。同步VERSION、SKILL、README、agents/openai.yaml和CHANGELOG；实际上传前Unreleased。
-- 下一步：最终暂存/精确提交门槛后先上传候选分支，核对Windows/Ubuntu原始CI产物，再将同一修复提交上传main、回复并关闭issue；最后集中保存一次发布回执。
+- 下一步：源码、原始跨平台验证和issue闭环已完成；仅回执按原门槛提交，后续新SHA的托管状态独立核对。
 
 ## 冻结规格和方案
 
@@ -14,8 +14,8 @@
 | --- | --- | --- | --- |
 | REQ-SAFE-19 / AT-SAFE-19 | SAFE-01 | 两种提交模式在读取验证输入前绑定HEAD/index tree，声明命令之后复核HEAD/index/worktree及未忽略新文件；漂移不得通过、不自动还原用户数据。成功报告输出verified_tree和verification_head；测试持久漂移、正常及忽略产物、真实提交绑定。前后恢复的恶意代码、hook后竞争和沙箱继续明确限制 | complete |
 | REQ-SAFE-20 / AT-SAFE-20 | SAFE-02 | 文件和Git历史共用JSON异常边界；深度/整数/根类型错误输出JSON配置错误且不执行命令；历史损坏不得静默降为首次接入。不加任意1MB限制、不提高解释器保护上限 | complete |
-| REQ-SAFE-21 / AT-SAFE-21 | SAFE-03 | finally清理拥有的进程组/树与读取线程，CLI可处理SIGINT/SIGTERM并恢复handler，中断非成功。Windows使用Job Object及挂起创建→赋予job→恢复，失败时拒绝执行并清理；验证普通子孙、超时和中断。POSIX不可捕获SIGKILL及Windows赋予job前的启动窗口不作绝对保证，强隔离仍延后 | local_verified_hosted_pending |
-| REQ-SAFE-DELIVERY / AT-SAFE-DELIVERY | SAFE-04..05 | 1.6.4版本/当前Baseline/Spec/Plan/Task/Trace与模块/合同/业务流同步；原门槛、精确上传、issue回复关闭及真实托管回执分别核对 | planned |
+| REQ-SAFE-21 / AT-SAFE-21 | SAFE-03 | finally清理拥有的进程组/树与读取线程，CLI可处理SIGINT/SIGTERM并恢复handler，中断非成功。Windows使用Job Object及挂起创建→赋予job→恢复，失败时拒绝执行并清理；验证普通子孙、超时和中断。POSIX不可捕获SIGKILL及Windows赋予job前的启动窗口不作绝对保证，强隔离仍延后 | complete |
+| REQ-SAFE-DELIVERY / AT-SAFE-DELIVERY | SAFE-04..05 | 1.6.4版本/当前Baseline/Spec/Plan/Task/Trace与模块/合同/业务流同步；原门槛、精确上传、issue回复关闭及真实托管回执分别核对 | complete |
 
 ## Skill review
 
@@ -44,3 +44,13 @@
 初始checker诊断发现旧marker产生未忽略文件，被新后置检查正确拒绝；fixture明确忽略其生成marker，并另测unexpected文件必定失败。初始历史JSON回归仅断言错误所在字段不当，已改为断言结构化非成功、具体原因和不执行命令；清理了导入TestCase导致重复发现的问题。未删除原回归或放宽任何规则。
 
 版本/package validator、原checks/时限、保护范围/批准变量/排除/CI不变、凭据模式扫描通过；源代码指纹和原始报告见[fix evidence](issues-19-21-fix-evidence.json)。前轮评估仅证明原缺陷，不当作新补丁通过。最终提交、托管及issue回执待完成。
+
+
+## 最终实现验证、发布与issue回执（2026-10-19）
+
+- 最终暂存门禁通过：TEST184项107.669秒，原COMPILE0.219秒、GUIDANCE-COMPILE0.216秒；实际提交树256d0076690b85b2633e6b433656de6e650feef3与报告verified_tree一致。
+- 精确实现提交5f9b3e1d54a0709241fb5f11173e13ce00af3ffd的committed门槛通过：TEST184项107.619秒，原两编译通过，verification-state通过且返回同一tree；原120秒未改。
+- 候选分支codex/issues-19-21先上传；[run39157028881](https://github.com/wang546673478/engineering-workflow/actions/runs/39157028881)获wang546673478的独立环境批准。两个原始committed报告均tool_version1.6.4、全部required通过，verification_head=该SHA、verified_tree=该tree；artifact下载SHA256与API digest一致。Windows TEST89.125秒，Ubuntu20.017秒，原编译均通过。实际覆盖POSIX SIGINT/SIGTERM及进程组收尾、Windows Job/普通后代与取消。
+- 两平台原始报告核验后，同一SHA非强制上传main并用API核对。实际发布日期（Asia/Shanghai）为2026-10-19，CHANGELOG由Unreleased改为真实日期；未创建Release/tag或改写远程历史。
+- 已回复并关闭为completed：[19回复](https://github.com/wang546673478/engineering-workflow/issues/19#issuecomment-6253939392)、[20回复](https://github.com/wang546673478/engineering-workflow/issues/20#issuecomment-6253939733)、[21回复](https://github.com/wang546673478/engineering-workflow/issues/21#issuecomment-6253940030)。回复含实际提交/CI证据，#21明确保留POSIX SIGKILL、Windows pre-assignment窗口及沙箱限制，未冒充实现强隔离。
+- 本次仅统一发布日期、完成状态、CI/上传/issue证据；源码指纹和验收不变，仍同批1.6.4，无需再升版。回执仍运行原commit/committed，原始文件为work/issues-19-21/receipt-commit-01.json、receipt-committed-01.json；其后新CI运行按精确SHA独立报告，不复用旧审批作新结果。

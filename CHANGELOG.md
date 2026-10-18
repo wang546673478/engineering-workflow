@@ -1,4 +1,4 @@
-# 1.6.4 / Unreleased
+# 1.6.4 / 2026-10-19
 
 - Bind commit/committed verification to HEAD and the index tree before reading inputs, reject post-check index/worktree/HEAD drift, and expose successful verified_tree/verification_head evidence.
 - Report deep JSON, integer parser limits and non-object manifests as structured configuration failures; damaged historical manifests fail closed instead of becoming missing policy.

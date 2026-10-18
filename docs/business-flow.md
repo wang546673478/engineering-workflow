@@ -136,3 +136,6 @@ Implementation-source hosted receipt: exact source 0040878 passed the original W
 Read safe root -> snapshot HEAD/index for submitted-tree modes -> decode/type-check manifest and historical policy -> existing structure/scope/control approval -> launch owned command family (Windows suspended/job/resume, POSIX session) -> bounded output/wait -> finally cleanup/handler restoration -> verify final HEAD/index/worktree -> overall required result and successful verified_tree/base -> new report and hook/CI consumption. Invalid/cancelled/drifted paths remain non-success, preserve user changes and never manufacture a pass through diagnostics. Strong external sandbox/SIGKILL guarantees remain separate.
 
 Scope and evidence: [TASK-ISSUES-19-21](../planning/issues-19-21-task.md).
+
+
+Published implementation5f9b3e1d54a0709241fb5f11173e13ce00af3ffd passed local184-test staged/exact-commit gates and original Windows/Ubuntu reports in approved run39157028881; source upload and #19/#20/#21 replies/completed closure were verified on 2026-10-19. Receipt-only updates do not change implementation, targets, limits or prior approval scope.
