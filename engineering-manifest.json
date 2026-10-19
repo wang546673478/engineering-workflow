@@ -4,7 +4,7 @@
     "active_baseline": "BASELINE",
     "active_spec": "SPEC",
     "active_plan": "PLAN",
-    "active_task": "TASK-ISSUES-19-21"
+    "active_task": "TASK-ADOPTION-LIFECYCLE-01"
   },
   "documents": [
     {
@@ -160,6 +160,24 @@
     {
       "id": "ISSUES_19_21_FIX_EVIDENCE",
       "path": "planning/issues-19-21-fix-evidence.json",
+      "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "ADOPTION_TASK",
+      "path": "planning/adoption-lifecycle-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ADOPTION_IMPACT",
+      "path": "planning/adoption-lifecycle-impact.md",
+      "kind": "impact",
+      "required": true
+    },
+    {
+      "id": "ADOPTION_VERIFICATION",
+      "path": "planning/adoption-lifecycle-verification.json",
       "kind": "verification",
       "required": true
     }
@@ -373,6 +391,36 @@
       "id": "REQ-SAFE-DELIVERY",
       "document": "SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "REQ-ADOPTION-01",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ADOPTION-02",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ADOPTION-03",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ADOPTION-04",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ADOPTION-05",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ADOPTION-PARITY",
+      "document": "SPEC",
+      "index": "TRACE"
     }
   ],
   "acceptance": [
@@ -584,6 +632,36 @@
       "id": "AT-SAFE-DELIVERY",
       "document": "SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "AT-ADOPTION-01",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ADOPTION-02",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ADOPTION-03",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ADOPTION-04",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ADOPTION-05",
+      "document": "SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ADOPTION-PARITY",
+      "document": "SPEC",
+      "index": "TRACE"
     }
   ],
   "modules": [
@@ -600,11 +678,16 @@
         "scripts/init_manifest.py",
         "agents",
         "assets",
-        "references"
+        "references",
+        "scripts/adopt_project.py"
       ],
       "document": "MAP",
-      "depends_on": [],
-      "allowed_dependencies": []
+      "depends_on": [
+        "checker"
+      ],
+      "allowed_dependencies": [
+        "checker"
+      ]
     },
     {
       "id": "checker",
@@ -736,7 +819,8 @@
         "-m",
         "py_compile",
         "scripts/install_agents_guidance.py",
-        "scripts/init_manifest.py"
+        "scripts/init_manifest.py",
+        "scripts/adopt_project.py"
       ],
       "required": true,
       "timeout_seconds": 30
@@ -2413,9 +2497,49 @@
         "recheck": "Reread adopted workflow and linked artifacts after implementation/publication scope approval."
       },
       "documentation_impact": {
-        "implementation": {
+        "adoption-guidance": {
           "when_paths": [
-            "scripts/check_project.py",
+            "SKILL.md",
+            "README.md",
+            "agents",
+            "references",
+            "assets/templates",
+            "scripts/init_manifest.py",
+            "scripts/install_agents_guidance.py",
+            "scripts/adopt_project.py",
+            "VERSION",
+            "CHANGELOG.md"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ADOPTION_TASK",
+            "ADOPTION_IMPACT",
+            "TRACE"
+          ]
+        },
+        "lifecycle-checker": {
+          "when_paths": [
+            "scripts/check_project.py"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ADOPTION_TASK",
+            "ADOPTION_IMPACT",
+            "TRACE"
+          ]
+        },
+        "regressions": {
+          "when_paths": [
             "scripts/tests"
           ],
           "document_ids": [
@@ -2425,19 +2549,13 @@
             "MAP",
             "CONTRACT",
             "FLOW",
-            "ISSUES_19_21_TASK",
-            "ISSUES_19_21_FIX_EVIDENCE",
+            "ADOPTION_TASK",
+            "ADOPTION_IMPACT",
             "TRACE"
           ]
         },
-        "guidance-governance": {
+        "governance": {
           "when_paths": [
-            "SKILL.md",
-            "README.md",
-            "VERSION",
-            "CHANGELOG.md",
-            "agents",
-            "references/checker.md",
             "engineering-manifest.json",
             "docs",
             "planning"
@@ -2446,14 +2564,205 @@
             "BASELINE",
             "SPEC",
             "PLAN",
-            "MAP",
-            "CONTRACT",
-            "FLOW",
-            "ISSUES_19_21_TASK",
-            "ISSUES_19_21_FIX_EVIDENCE",
+            "ADOPTION_TASK",
+            "ADOPTION_IMPACT",
             "TRACE"
           ]
         }
+      }
+    },
+    {
+      "id": "TASK-ADOPTION-LIFECYCLE-01",
+      "requirement_ids": [
+        "REQ-ADOPTION-01",
+        "REQ-ADOPTION-02",
+        "REQ-ADOPTION-03",
+        "REQ-ADOPTION-04",
+        "REQ-ADOPTION-05",
+        "REQ-ADOPTION-PARITY"
+      ],
+      "acceptance_ids": [
+        "AT-ADOPTION-01",
+        "AT-ADOPTION-02",
+        "AT-ADOPTION-03",
+        "AT-ADOPTION-04",
+        "AT-ADOPTION-05",
+        "AT-ADOPTION-PARITY"
+      ],
+      "module_ids": [
+        "checker",
+        "tests",
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-LINKED-ARTIFACTS-01",
+        "TASK-STAGES-01",
+        "TASK-ISSUES-19-21"
+      ],
+      "status": "in_progress",
+      "impact_document": "ADOPTION_IMPACT",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/adoption-lifecycle-task.md"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "SPEC",
+        "plan": "PLAN",
+        "task": "ADOPTION_TASK",
+        "traceability": "TRACE"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and repository inventory",
+        "checked_at": "2026-10-19T22:33:23+08:00",
+        "scope": "Original-workflow scenario tests/correction; exact GitHub upload and preserving local skill upgrade",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.6.4 / 3c1cb36",
+            "decision": "adopted",
+            "reason": "User explicitly requested repair of this skill repository; repository rules are authoritative",
+            "evidence": [
+              "SKILL.md",
+              "references/requirements-interview.md",
+              "references/project-documentation.md",
+              "references/baseline-linked-artifacts.md",
+              "references/checker.md",
+              "references/implementation-workflow.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "The task modifies an existing skill and its CLI resources; preserve structure and validate observable behavior",
+            "evidence": [
+              "SKILL.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Prior task used behavior-first regressions; current continuation adds CLI invariants and original checks without adopting a separate test-first workflow.",
+            "evidence": [
+              "SKILL.md"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The repository manifest, Spec, Plan, Task and traceability are the single planning authority",
+            "evidence": [
+              "Current repository workflow artifacts"
+            ]
+          }
+        ],
+        "evidence": "planning/adoption-lifecycle-task.md",
+        "recheck": "Resumed in worktree 11f0; repository SKILL 1.6.4 and skill-creator reread; existing adopted TDD historical, no new TDD workflow; local repair only, no external project or installation changes."
+      },
+      "documentation_impact": {
+        "adoption-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "agents",
+            "references",
+            "assets/templates",
+            "scripts/init_manifest.py",
+            "scripts/install_agents_guidance.py",
+            "scripts/adopt_project.py",
+            "VERSION",
+            "CHANGELOG.md",
+            "AGENTS.md"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ADOPTION_TASK",
+            "ADOPTION_IMPACT",
+            "TRACE"
+          ]
+        },
+        "lifecycle-checker": {
+          "when_paths": [
+            "scripts/check_project.py"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ADOPTION_TASK",
+            "ADOPTION_IMPACT",
+            "TRACE"
+          ]
+        },
+        "regressions": {
+          "when_paths": [
+            "scripts/tests"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ADOPTION_TASK",
+            "ADOPTION_IMPACT",
+            "TRACE"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "docs",
+            "planning"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "ADOPTION_TASK",
+            "ADOPTION_IMPACT",
+            "TRACE"
+          ]
+        }
+      },
+      "implementation_status": "workflow_parity_corrected",
+      "verification_status": "205_local_tests_and_scenarios_passed",
+      "delivery_status": "exact_submission_validation_next",
+      "verification_evidence": "planning/adoption-lifecycle-verification.json",
+      "workflow_parity_review": {
+        "checked_at": "2026-10-19T23:04:21+08:00",
+        "status": "corrected_original_rules_and_exceptions_verified",
+        "constraint": "Preserve original skill workflow, applicable exceptions and authorization semantics; current turn requests explanation only",
+        "evidence": "planning/adoption-lifecycle-task.md"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE-ADOPTION-LIFECYCLE-02",
+        "spec": "SPEC-ADOPTION-LIFECYCLE-02",
+        "plan": "PLAN-ADOPTION-LIFECYCLE-02",
+        "task": "TASK-ADOPTION-LIFECYCLE-01"
       }
     }
   ],
@@ -2484,8 +2793,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "5f9b3e1d54a0709241fb5f11173e13ce00af3ffd (1.6.4 implementation); receipt changes evidence/status only",
-    "scope": "Existing workflow plus Git verification state binding, JSON errors and owned command lifecycle; BASELINE-SAFE-19-21-01"
+    "source_revision": "3c1cb36e22747fe134d4b9b0f64d5ca282227da9 plus TASK-ADOPTION-LIFECYCLE-01 working tree (1.7.0 Unreleased)",
+    "scope": "Original-flow-preserving adoption and declaration checks; BASELINE-ADOPTION-LIFECYCLE-02"
   },
   "exclude_paths": [
     ".git",

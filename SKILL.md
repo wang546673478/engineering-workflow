@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.6.4
+  version: 1.7.0
 ---
 
 # 代码工程工作流
@@ -14,6 +14,8 @@ metadata:
 在项目中启用本流程时，把[接入模板](assets/templates/AGENTS.engineering.md)合并到项目根部的 `AGENTS.md`；已启用但缺少入口的项目，在下次使用时补齐。保留现有规则，已有无标记同名段落时先人工合并，避免重复。可运行 `scripts/install_agents_guidance.py` 幂等更新管理区；它始终写 `AGENTS.md`，显式指定 `--file CLAUDE.md`、`--file GEMINI.md` 或其他原生规则文件时，仅增加指向它的薄引用。核对宿主实际文件格式和加载范围；不能只凭文件存在声称宿主已加载。
 
 `AGENTS.md` 保存稳定入口；项目已有清单和状态文件保存当前 Global Baseline、Spec、Plan、Task、决定、进度、影响分析、验证及交接，形成同一组可追踪的联动工件，允许合并记录但不能丢失层间关系。接入时填写实际 skill 来源和版本或 commit、当前任务与状态文件路径；安装器只维护规则入口，不替项目编造状态或完成证据。开始、恢复、接手、上下文压缩或不完整、切换 agent、范围变化时，按来源重新读取 skill 正文及本任务适用引用，同时重读任务状态并核对工作树。范围、交付物或技术类别变化时重新完成 `skill_review` 和影响分析。
+
+接入辅助工具可以用 `scripts/adopt_project.py` 一并生成清单骨架、维护入口并给出真实诊断，避免只写入口就误报完成；已有资料用文档映射复用。`install_agents_guidance.py` 仍可先维护入口，清单缺失时明确报告接入未完成；JSON参数只接收真实JSON，不能指向Markdown索引。工具字段只记录和核验下文已有规则，不新增用户审核轮次；空项目、小修复、有效基线及恢复时复用批准均按原适用规则处理。详见[接入工具与原流程映射](references/adoption-lifecycle.md)。
 
 ## 持续需求记录与模块审核
 
@@ -120,6 +122,7 @@ CHANGELOG 说明本批新增、修复、行为变化及适用的兼容/迁移影
 - 修改、恢复、变更、迁移与交付：[implementation-workflow.md](references/implementation-workflow.md)。
 - 项目必读规则及接入条款：[project-agents-clauses.md](references/project-agents-clauses.md)。
 - 清单、检查工具、结果与能力限制：[checker.md](references/checker.md)。
+- 接入工具、声明阶段及原流程例外映射：[adoption-lifecycle.md](references/adoption-lifecycle.md)。
 
 复用项目现有权威文件和格式，缺失时才调整[模板](assets/templates/spec-plan-task.md)。技能不保存具体项目业务数据，不授予发消息、部署、删除数据、改全局设置或绕过项目规则的额外权限。
 

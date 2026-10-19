@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -13,6 +14,34 @@ spec.loader.exec_module(guidance)
 
 
 class GuidanceTests(unittest.TestCase):
+    def write_manifest(self, root):
+        (root / "engineering-manifest.json").write_text(json.dumps({
+            "schema_version": 1,
+            "workflow": {"active_task": "TASK-01"},
+            "tasks": [{"id": "TASK-01"}],
+        }), encoding="utf-8")
+
+    def test_rejects_a_nonexistent_or_non_json_manifest_pointer(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs/tasks").mkdir(parents=True)
+            (root / "docs/tasks/README.md").write_text("task index", encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(SCRIPTS / "install_agents_guidance.py"),
+                 "--root", tmp, "--manifest", "docs/tasks/README.md"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2)
+            self.assertFalse((root / "AGENTS.md").exists())
+
+    def test_guidance_can_be_installed_before_manifest_without_claiming_complete_adoption(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = subprocess.run([sys.executable, str(SCRIPTS / "install_agents_guidance.py"), "--root", tmp], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue((root / "AGENTS.md").is_file())
+            self.assertFalse((root / "engineering-manifest.json").exists())
+            self.assertIn("guidance_only_incomplete", result.stdout)
+
     def test_creates_and_updates_only_managed_block(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -33,6 +62,7 @@ class GuidanceTests(unittest.TestCase):
     def test_cli_can_update_multiple_agent_files(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
+            self.write_manifest(root)
             command = [
                 sys.executable,
                 str(SCRIPTS / "install_agents_guidance.py"),
@@ -85,6 +115,7 @@ class GuidanceTests(unittest.TestCase):
         for invalid in (guidance.START, guidance.END + guidance.START, guidance.START * 2 + guidance.END, "## Engineering workflow\nmanual rules", "Example: `" + guidance.START + "` and `" + guidance.END + "` preserve me"):
             with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
+                self.write_manifest(root)
                 target = root / "CLAUDE.md"
                 target.write_text(invalid, encoding="utf-8")
                 result = guidance.main(["--root", tmp, "--file", "CLAUDE.md"])

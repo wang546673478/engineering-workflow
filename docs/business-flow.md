@@ -71,7 +71,7 @@ This repository's ordinary Actions path runs the submission gate before declared
 
 ## First-takeover stage flow
 
-Project rules and skill review → global discovery → reviewable current-system Baseline → user Baseline confirmation → detailed feature interview → Spec/Plan/Task proposal approval → implementation, Baseline refresh and verification. Basic goal clarification returns to discovery. Restore stage evidence on resumption; apply the small-fix, valid-baseline and no-existing-code exceptions from SKILL.md. This is an agent instruction, not an automated checker state machine.
+Project rules and skill review → global discovery → reviewable current-system Baseline → user Baseline confirmation → detailed feature interview → Spec/Plan/Task proposal approval → implementation, Baseline refresh and verification. Basic goal clarification returns to discovery. Restore stage evidence on resumption; apply the small-fix, valid-baseline and no-existing-code exceptions from SKILL.md. The agent still owns semantic discovery and authentic user review; manifests opting into the 1.7.0 lifecycle additionally receive the declared stage gates below.
 
 ## Continuous feature discussion flow
 
@@ -139,3 +139,11 @@ Scope and evidence: [TASK-ISSUES-19-21](../planning/issues-19-21-task.md).
 
 
 Published implementation5f9b3e1d54a0709241fb5f11173e13ce00af3ffd passed local184-test staged/exact-commit gates and original Windows/Ubuntu reports in approved run39157028881; source upload and #19/#20/#21 replies/completed closure were verified on 2026-10-19. Receipt-only updates do not change implementation, targets, limits or prior approval scope.
+
+## Complete adoption and workflow preservation (1.7.0)
+
+Actual loaded skill/version + project rules/authority → install a guidance-only entry with incomplete receipt, or adopt a mapped planned manifest plus entry → inspect read-only bootstrap → continue independent discovery → follow the original applicable review/implementation path. Tools do not claim that entry installation or a JSON scaffold completed global discovery.
+
+First takeover still needs global discovery and user baseline review. Greenfield records its empty start without asking to review a nonexistent system. Existing valid baselines/reviews are reused; bounded fixes follow known requirements and minimal impact. Full proposals for new/major work remain approved before implementation; a single explicit instruction can authorize that proposal and its implementation. Facts evolve without blanket reapproval, while invalidated premises reopen affected review. Delivery retains complete/approved baselines and original checks. Declared fields represent these rules and exceptions; they do not impose another workflow.
+
+Failed atomic migration preserves the original JSON. OS entry writes may be partial and are inspectable/idempotent. Legacy policy and history remain. Publication and preserving local-install upgrade are authorized by the current user only after scenario/full validation; neither migrates external adopted projects.

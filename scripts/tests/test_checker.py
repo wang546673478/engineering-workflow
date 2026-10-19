@@ -48,9 +48,19 @@ class CheckerTests(unittest.TestCase):
         self.manifest = {"schema_version":1,"documents":[{"id":i,"path":p,"kind":"spec" if i=="spec" else "other","required":True} for i,p in [("spec","docs/spec.md"),("module","docs/module.md"),("impact","docs/impact.md")]],"requirements":[{"id":"REQ-1","document":"spec"}],"acceptance":[{"id":"AT-1","document":"spec"}],"modules":[{"id":"core","source_paths":["src"],"document":"module","depends_on":[],"allowed_dependencies":[]}],"inventories":[{"id":"db","kind":"database","path":"inventory.json","documentation":"mapping.json","required":True}],"checks":[{"id":"unit","command":[sys.executable,"-c","print('ok')"],"required":True,"timeout_seconds":5}],"tasks":[{"id":"TASK-1","requirement_ids":["REQ-1"],"acceptance_ids":["AT-1"],"module_ids":["core"],"depends_on":[],"status":"complete","impact_document":"impact","required_checks":["unit"],"approval_required":True,"approval":{"status":"approved","evidence":"docs/approval.md"},"skill_review":{"catalog_source":"test fixture","scope":"test task","checked_at":"2026-10-13T00:00:00+08:00","candidates":[],"recheck":"none"}}],"baseline":{"status":"complete","evidence":"docs/baseline.md"},"exclude_paths":["manifest.json","inventory.json","mapping.json","data.sql","docs/spec.md","docs/baseline.md","docs/approval.md","docs/db.md"]}
         self.write()
         if shutil.which("git"):
-            self.git("init")
-            self.git("add", ".")
-            self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "baseline")
+            # Each fixture has the same initial bytes. Copy a real committed
+            # seed's complete .git directory, never shared worktree metadata
+            # or hardlinks, so later commits/config/object deletions are private.
+            seed = getattr(CheckerTests, "_repository_seed", None)
+            if seed is None:
+                self.git("init")
+                self.git("add", ".")
+                self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "baseline")
+                seed = tempfile.TemporaryDirectory(prefix="checker-git-seed-")
+                shutil.copytree(self.root / ".git", Path(seed.name) / ".git")
+                CheckerTests._repository_seed = seed
+            else:
+                shutil.copytree(Path(seed.name) / ".git", self.root / ".git")
     def git(self, *args):
         proc=subprocess.run(["git","-c","safe.directory="+str(self.root)]+list(args),cwd=self.root,capture_output=True)
         self.assertEqual(proc.returncode,0,proc.stderr)
@@ -77,6 +87,178 @@ class CheckerTests(unittest.TestCase):
         proc,result=self.cli("--mode","handoff","--run-checks")
         self.assertEqual(proc.returncode,0, result)
         self.assertTrue(result["required_checks_satisfied"])
+
+    def test_discovery_mode_allows_an_existing_incomplete_baseline_without_claiming_completion(self):
+        self.manifest["workflow"] = {
+            "active_task": "TASK-1", "stage": "takeover_discovery", "implementation_paths": ["src"],
+            "baseline_review": {"status": "pending", "evidence": None},
+            "proposal_approval": {"status": "pending", "evidence": None},
+        }
+        self.manifest["baseline"].update(status="partial", origin="existing", reason="Discovery is in progress",
+                                          source_revision="fixture-head", scope="src", implementation_paths=["src"])
+        self.manifest["tasks"][0]["status"] = "in_progress"
+        self.manifest["tasks"][0]["implementation_authorization"] = {"status": "pending", "task_id": "TASK-1"}
+        proc, result = self.cli("--mode", "discovery", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+        lifecycle = next(item for item in result["checks"] if item["rule_id"] == "workflow-lifecycle")
+        self.assertFalse(lifecycle["evidence"]["completion_ready"])
+        self.assertEqual(lifecycle["evidence"]["stage"], "takeover_discovery")
+
+    def test_implementation_scope_changes_are_blocked_before_separate_approvals(self):
+        self.manifest["workflow"] = {
+            "active_task": "TASK-1", "stage": "plan_confirmation", "implementation_paths": ["src"],
+            "baseline_review": {"status": "approved", "source_revision": "baseline-r1", "evidence": "docs/approval.md"},
+            "proposal_approval": {"status": "pending", "evidence": None},
+        }
+        self.manifest["baseline"].update(status="approved", source_revision="baseline-r1")
+        self.manifest["tasks"][0]["status"] = "in_progress"
+        self.manifest["tasks"][0]["implementation_authorization"] = {"status": "pending", "evidence": None, "task_id": "TASK-1"}
+        (self.root / "src/app.py").write_text("print('changed implementation')", encoding="utf-8")
+        proc, result = self.cli("--mode", "change", "--task", "TASK-1", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 1, result)
+        gate = next(item for item in result["checks"] if item["rule_id"] == "implementation-gate")
+        self.assertEqual(gate["status"], "fail")
+        self.assertIn("implementation", json.dumps(gate["evidence"]))
+
+    def test_implementation_scope_changes_pass_only_after_all_lifecycle_approvals(self):
+        self.manifest["workflow"] = {
+            "active_task": "TASK-1", "stage": "implementation", "implementation_paths": ["src"],
+            "baseline_review": {"status": "approved", "source_revision": "baseline-r1", "evidence": "docs/approval.md"},
+            "proposal_approval": {"status": "approved", "revision": "plan-r1", "evidence": "docs/approval.md"},
+        }
+        self.manifest["baseline"].update(status="approved", source_revision="baseline-r1")
+        self.manifest["tasks"][0]["status"] = "in_progress"
+        self.manifest["tasks"][0]["implementation_authorization"] = {"status": "approved", "plan_revision": "plan-r1", "evidence": "docs/approval.md", "task_id": "TASK-1"}
+        (self.root / "src/app.py").write_text("print('approved implementation')", encoding="utf-8")
+        proc, result = self.cli("--mode", "change", "--task", "TASK-1", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 0, result)
+        gate = next(item for item in result["checks"] if item["rule_id"] == "implementation-gate")
+        self.assertEqual(gate["status"], "pass")
+
+    def lifecycle_fixture(self):
+        self.manifest["workflow"] = {
+            "active_task": "TASK-1", "stage": "implementation", "implementation_paths": ["src"],
+            "baseline_review": {"status": "approved", "source_revision": "baseline-r1", "evidence": "docs/approval.md"},
+            "proposal_approval": {"status": "approved", "revision": "plan-r1", "evidence": "docs/approval.md"},
+        }
+        self.manifest["baseline"].update(status="approved", source_revision="baseline-r1")
+        self.manifest["tasks"][0]["status"] = "in_progress"
+        self.manifest["tasks"][0]["implementation_authorization"] = {
+            "status": "approved", "plan_revision": "plan-r1", "evidence": "docs/approval.md", "task_id": "TASK-1"}
+
+    def test_lifecycle_rejects_missing_approval_and_revision_or_task_mismatches(self):
+        self.lifecycle_fixture()
+        original = copy.deepcopy(self.manifest)
+        cases = [
+            ("baseline missing", lambda: self.manifest["workflow"]["baseline_review"].update(status="pending")),
+            ("proposal missing", lambda: self.manifest["workflow"]["proposal_approval"].update(status="pending")),
+            ("authorization missing", lambda: self.manifest["tasks"][0].pop("implementation_authorization")),
+            ("wrong task", lambda: self.manifest["tasks"][0]["implementation_authorization"].update(task_id="TASK-OTHER")),
+            ("wrong plan", lambda: self.manifest["tasks"][0]["implementation_authorization"].update(plan_revision="stale-plan")),
+            ("missing evidence", lambda: self.manifest["workflow"]["proposal_approval"].update(evidence="docs/missing.md")),
+            ("partial existing baseline", lambda: self.manifest["baseline"].update(status="partial", origin="existing", reason="unfinished", scope="src")),
+            ("invalidated reviewed baseline", lambda: self.manifest["workflow"]["baseline_review"].update(invalidated=True)),
+        ]
+        for label, mutation in cases:
+            with self.subTest(label=label):
+                self.manifest = copy.deepcopy(original)
+                mutation()
+                proc, report = self.cli("--mode", "baseline")
+                self.assertEqual(proc.returncode, 1, report)
+                self.assertFalse(report["required_checks_satisfied"])
+                self.assertTrue(any(c["required"] and c["status"] == "fail" for c in report["checks"]))
+
+    def test_both_commit_modes_block_implementation_before_authorization_without_running_commands(self):
+        self.lifecycle_fixture()
+        self.manifest["workflow"]["stage"] = "plan_confirmation"
+        self.manifest["tasks"][0]["implementation_authorization"]["status"] = "pending"
+        self.manifest["checks"][0]["command"] = [sys.executable, "-c", "from pathlib import Path; Path('command-ran.txt').touch()"]
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "declared lifecycle")
+        (self.root / "src/app.py").write_text("print('unapproved implementation')", encoding="utf-8")
+        self.git("add", "src/app.py")
+        for mode in ("commit", "committed"):
+            with self.subTest(mode=mode):
+                if mode == "committed":
+                    self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "fixture unapproved code")
+                extra = ["--commit-ref", "HEAD"] if mode == "committed" else []
+                proc, report = self.cli("--mode", mode, "--run-checks", *extra)
+                self.assertEqual(proc.returncode, 1, report)
+                gate = next(c for c in report["checks"] if c["rule_id"] == "implementation-gate")
+                self.assertEqual(gate["status"], "fail")
+                self.assertFalse((self.root / "command-ran.txt").exists())
+
+    def test_absolute_implementation_scope_is_also_blocked_during_discovery(self):
+        self.lifecycle_fixture()
+        self.manifest["workflow"].update(stage="takeover_discovery", implementation_paths=[str(self.root / "src")])
+        (self.root / "src/app.py").write_text("print('changed')", encoding="utf-8")
+        proc, report = self.cli("--mode", "change", "--base", "HEAD")
+        self.assertEqual(proc.returncode, 1, report)
+        self.assertEqual(next(c for c in report["checks"] if c["rule_id"] == "implementation-gate")["status"], "fail")
+
+    def test_handoff_accepts_completed_implementation_without_an_extra_stage(self):
+        self.lifecycle_fixture()
+        self.manifest["tasks"][0]["status"] = "complete"
+        proc, report = self.cli("--mode", "handoff", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        self.assertEqual(next(c for c in report["checks"] if c["rule_id"] == "workflow-lifecycle")["status"], "pass")
+
+    def test_greenfield_interview_and_implementation_do_not_require_a_fictitious_baseline_approval(self):
+        self.lifecycle_fixture()
+        (self.root / "src/app.py").unlink()
+        self.manifest["baseline"].update(status="not_applicable", origin="greenfield", reason="Empty implementation inspected",
+                                           scope="src", implementation_paths=["src"])
+        self.manifest["workflow"]["baseline_review"] = {"status": "not_applicable", "reason": "No preexisting system to review", "evidence": "docs/baseline.md"}
+        self.manifest["workflow"]["stage"] = "requirements_interview"
+        self.manifest["workflow"]["proposal_approval"]["status"] = "pending"
+        self.manifest["tasks"][0]["implementation_authorization"]["status"] = "pending"
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        self.manifest["workflow"]["stage"] = "implementation"
+        self.manifest["workflow"]["proposal_approval"]["status"] = "approved"
+        self.manifest["tasks"][0]["implementation_authorization"]["status"] = "approved"
+        proc, report = self.cli("--mode", "change", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+
+    def test_known_small_fix_uses_established_scope_and_one_existing_instruction(self):
+        self.lifecycle_fixture()
+        task = self.manifest["tasks"][0]
+        task["workflow_kind"] = "small_fix"
+        self.manifest["workflow"]["proposal_approval"] = {"status": "not_applicable", "revision": "fix-scope-r1",
+            "reason": "Known defect under existing accepted requirements; minimal impact recorded", "evidence": "docs/approval.md"}
+        task["implementation_authorization"].update(plan_revision="fix-scope-r1", evidence="docs/approval.md")
+        (self.root / "src/app.py").write_text("print('bounded fix')", encoding="utf-8")
+        proc, report = self.cli("--mode", "change", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        self.assertEqual(task["approval"]["evidence"], task["implementation_authorization"]["evidence"])
+        task["workflow_kind"] = "major_change"
+        proc, report = self.cli("--mode", "change", "--base", "HEAD")
+        self.assertEqual(proc.returncode, 1, report)
+        self.assertIn("small_fix", str(next(c for c in report["checks"] if c["rule_id"] == "workflow-lifecycle")))
+
+    def test_resumption_reuses_valid_review_after_factual_baseline_refresh(self):
+        self.lifecycle_fixture()
+        self.manifest["workflow"]["stage"] = "requirements_interview"
+        self.manifest["baseline"]["source_revision"] = "updated-factual-baseline-r2"
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        self.assertEqual(self.manifest["workflow"]["baseline_review"]["source_revision"], "baseline-r1")
+        self.manifest["workflow"]["baseline_review"]["invalidated"] = True
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 1, report)
+
+    def test_completed_greenfield_delivery_accepts_complete_factual_baseline(self):
+        self.lifecycle_fixture()
+        self.manifest["baseline"].update(status="complete", origin="greenfield", source_revision="delivered-slice-r2")
+        self.manifest["workflow"]["stage"] = "complete"
+        self.manifest["workflow"]["baseline_review"] = {"status": "not_applicable", "reason": "Original empty start; implemented facts now complete", "evidence": "docs/baseline.md"}
+        self.manifest["tasks"][0]["status"] = "complete"
+        proc, report = self.cli("--mode", "handoff", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        self.manifest["baseline"]["origin"] = "existing"
+        proc, report = self.cli("--mode", "handoff", "--run-checks")
+        self.assertEqual(proc.returncode, 1, report)
 
     def test_unknown_manifest_active_task_blocks_baseline(self):
         self.manifest["workflow"] = {"active_task": "TASK-MISSING"}

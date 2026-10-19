@@ -1,5 +1,17 @@
 # Current Impact Analysis Entry
 
+## Current adoption lifecycle impact
+
+Task: [TASK-ADOPTION-LIFECYCLE-01](adoption-lifecycle-task.md); input `BASELINE-SAFE-19-21-01` / source `3c1cb36`; target `SPEC-ADOPTION-LIFECYCLE-01` and `PLAN-ADOPTION-LIFECYCLE-01`.
+
+- Scope: `scripts/adopt_project.py`, `scripts/init_manifest.py`, `scripts/install_agents_guidance.py`, `scripts/check_project.py`, their tests, workflow guidance/templates and linked governance documents.
+- Control flow: complete adoption creates a planned manifest and records exact skill provenance; lifecycle checker gates implementation paths until baseline/proposal/implementation approvals are independently recorded.
+- Compatibility: old manifests without `workflow.stage` remain on the existing declaration path; new manifests receive lifecycle fields and must be completed through evidence.
+- Database/API: no impact. This repository has no business database or product API; metadata adapters remain unchanged.
+- Release: 1.6.4 → 1.7.0 MINOR; Unreleased until publication. No external project migration is included.
+
+## Historical records
+
 Current task: selected by workflow.active_task in [the manifest](../engineering-manifest.json). Current source-context scope, user authorization, decisions and validation are in [TASK-CONTEXT-RELEASE-01](source-context-task.md). This entry preserves the original 2026-10-14 record below; its approval and skill decisions are historical and do not apply to subsequent revisions.
 
 ## Current 1.6.2 impact

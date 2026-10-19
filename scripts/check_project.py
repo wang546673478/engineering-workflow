@@ -23,6 +23,10 @@ MAX_CHECK_OUTPUT_BYTES = 8 * 1024 * 1024
 OUTPUT_READ_CHUNK_BYTES = 64 * 1024
 STATES = {"pass", "fail", "partial", "unsupported", "skipped", "error"}
 GLOB_CHARS = frozenset("*?[")
+WORKFLOW_STAGES = ("takeover_discovery", "baseline_review", "requirements_interview", "plan_confirmation", "implementation", "verification", "complete")
+EARLY_WORKFLOW_STAGES = {"takeover_discovery", "baseline_review"}
+IMPLEMENTATION_WORKFLOW_STAGES = {"implementation", "verification"}
+WORKFLOW_APPROVALS = ("baseline_review", "proposal_approval")
 
 class ConfigError(ValueError):
     pass
@@ -279,6 +283,143 @@ def cycle(graph):
 def output_check(rule, status, scope, evidence, required=True, limitations=None):
     return {"rule_id": rule, "status": status, "required": required,
             "checked_scope": scope, "evidence": evidence, "limitations": limitations or []}
+
+
+def workflow_lifecycle_gaps(root, workflow, baseline, selected_task, task_id, mode):
+    """Validate explicit adoption-stage and approval state when a manifest opts in."""
+    stage = workflow.get("stage")
+    if stage not in WORKFLOW_STAGES:
+        return ["workflow.stage must be one of: " + ", ".join(WORKFLOW_STAGES)]
+    gaps = []
+    authorization = selected_task.get("implementation_authorization") if isinstance(selected_task, dict) else None
+    if not isinstance(authorization, dict) or authorization.get("status") not in ("pending", "approved"):
+        gaps.append("selected task implementation_authorization must record pending or approved status")
+    implementation_paths = workflow.get("implementation_paths")
+    if not isinstance(implementation_paths, list) or not implementation_paths:
+        gaps.append("workflow.implementation_paths must declare reviewed implementation scopes")
+    else:
+        for raw in implementation_paths:
+            if has_glob_magic(normalize_manifest_path(raw)):
+                gaps.append("workflow.implementation_paths must be literal paths: " + str(raw))
+                continue
+            try:
+                if not relative_scope(root, raw):
+                    gaps.append("workflow.implementation_paths cannot include project root")
+            except (ConfigError, TypeError):
+                gaps.append("workflow.implementation_paths contains an unsafe path: " + str(raw))
+
+    approvals = {}
+    for key in WORKFLOW_APPROVALS:
+        record = workflow.get(key)
+        if not isinstance(record, dict):
+            gaps.append("workflow." + key + " approval record is missing")
+            approvals[key] = None
+            continue
+        status = record.get("status")
+        if status not in ("pending", "approved", "not_applicable"):
+            gaps.append("workflow." + key + ".status must be pending, approved or evidenced not_applicable")
+        if record.get("invalidated") is True:
+            gaps.append("workflow." + key + " approval was invalidated; affected review must be reopened")
+        evidence = record.get("evidence")
+        if status in ("approved", "not_applicable"):
+            if not isinstance(evidence, str) or not evidence.strip():
+                gaps.append("workflow." + key + " approval evidence is missing")
+            else:
+                try:
+                    if not safe_path(root, evidence).is_file():
+                        gaps.append("workflow." + key + " approval evidence does not exist")
+                except ConfigError:
+                    gaps.append("workflow." + key + " approval evidence path is unsafe")
+        approvals[key] = record
+
+    baseline_status = baseline.get("status") if isinstance(baseline, dict) else None
+    baseline_review = approvals.get("baseline_review")
+    baseline_approved = isinstance(baseline_review, dict) and baseline_review.get("status") == "approved"
+    if baseline_approved and (not isinstance(baseline_review.get("source_revision"), str)
+                              or not baseline_review["source_revision"].strip()):
+        gaps.append("baseline review approval must identify the reviewed source_revision")
+    greenfield_progress = baseline.get("origin") == "greenfield" and baseline_status in ("not_applicable", "partial", "complete", "approved")
+    baseline_exempt = isinstance(baseline_review, dict) and baseline_review.get("status") == "not_applicable"
+    if baseline_exempt and (not greenfield_progress or not isinstance(baseline_review.get("reason"), str) or not baseline_review["reason"].strip()):
+        gaps.append("baseline review not_applicable requires evidenced greenfield origin and reason")
+    baseline_reviewable = baseline_status in ("complete", "approved") or greenfield_progress
+    proposal = approvals.get("proposal_approval")
+    proposal_exempt = isinstance(proposal, dict) and proposal.get("status") == "not_applicable"
+    if proposal_exempt and (not isinstance(selected_task, dict) or selected_task.get("workflow_kind") != "small_fix"
+                            or not isinstance(proposal.get("reason"), str) or not proposal["reason"].strip()):
+        gaps.append("proposal not_applicable requires an evidenced small_fix under established requirements")
+    if stage == "baseline_review" and not baseline_reviewable:
+        gaps.append("baseline_review stage requires a complete factual baseline before user review")
+    if stage in {"requirements_interview", "plan_confirmation", "implementation", "verification", "complete"}:
+        if not (baseline_approved or (baseline_exempt and greenfield_progress)):
+            gaps.append("later stages require valid baseline review or the evidenced greenfield exception")
+        if stage in {"requirements_interview", "plan_confirmation"} and not baseline_reviewable:
+            gaps.append("later stages require a complete factual baseline or evidenced greenfield start")
+        # A factual revision is maintained throughout implementation. Reusing a
+        # still-valid prior review does not require approving every new revision.
+        # Mark invalidated reviews explicitly; a checker cannot infer semantics.
+    if stage in IMPLEMENTATION_WORKFLOW_STAGES | {"complete"}:
+        proposal = approvals.get("proposal_approval")
+        if not isinstance(proposal, dict) or proposal.get("status") not in ("approved", "not_applicable"):
+            gaps.append("implementation requires recorded Spec/Plan approval or evidenced small-fix scope")
+        elif not isinstance(proposal.get("revision"), str) or not proposal["revision"].strip():
+            gaps.append("proposal approval must identify the approved Spec/Plan revision")
+        authorization = selected_task.get("implementation_authorization") if isinstance(selected_task, dict) else None
+        if not isinstance(authorization, dict) or authorization.get("status") != "approved":
+            gaps.append("implementation requires separate task implementation authorization")
+        else:
+            if not isinstance(authorization.get("evidence"), str) or not authorization["evidence"].strip():
+                gaps.append("implementation authorization evidence is missing")
+            else:
+                try:
+                    if not safe_path(root, authorization["evidence"]).is_file():
+                        gaps.append("implementation authorization evidence does not exist")
+                except ConfigError:
+                    gaps.append("implementation authorization evidence path is unsafe")
+            if task_id and authorization.get("task_id") != task_id:
+                gaps.append("implementation authorization must name the selected task")
+            proposal = approvals.get("proposal_approval")
+            if isinstance(proposal, dict) and authorization.get("plan_revision") != proposal.get("revision"):
+                gaps.append("implementation authorization must match the approved Spec/Plan revision")
+    if stage == "complete":
+        if baseline_status not in ("complete", "approved"):
+            gaps.append("complete stage requires a complete or approved factual baseline")
+        if not isinstance(selected_task, dict) or selected_task.get("status") != "complete":
+            gaps.append("complete stage requires the selected task to be complete")
+    if mode == "discovery" and stage not in EARLY_WORKFLOW_STAGES:
+        gaps.append("discovery mode is only available during takeover_discovery or baseline_review")
+    return gaps
+
+
+def implementation_gate(root, manifest, paths, task_id):
+    workflow = manifest.get("workflow")
+    if not isinstance(workflow, dict) or "stage" not in workflow:
+        return None
+    scopes = workflow.get("implementation_paths", [])
+    if not isinstance(scopes, list):
+        return output_check("implementation-gate", "fail", "declared implementation scopes",
+                            {"gaps": ["workflow.implementation_paths is not an array"]}, required=True)
+    scopes = [relative_scope(root, scope) for scope in scopes]
+    changed = [path for path in paths if any(covered(path, scope) for scope in scopes)]
+    if not changed:
+        return output_check("implementation-gate", "pass", "declared implementation scopes", [],
+                            limitations=["Only workflow.implementation_paths are classified as implementation; review scope accuracy."])
+    stage = workflow.get("stage")
+    gaps = []
+    if stage not in IMPLEMENTATION_WORKFLOW_STAGES | {"complete"}:
+        gaps.append("implementation-scope changes are not allowed in stage " + str(stage))
+    task = next((item for item in manifest.get("tasks", []) if isinstance(item, dict) and item.get("id") == task_id), None)
+    authorization = task.get("implementation_authorization") if isinstance(task, dict) else None
+    if not isinstance(authorization, dict) or authorization.get("status") != "approved":
+        gaps.append("selected task has no separate implementation authorization")
+    evidence = authorization.get("evidence") if isinstance(authorization, dict) else None
+    if not isinstance(evidence, str) or not evidence.strip():
+        gaps.append("implementation authorization evidence is missing")
+    return output_check("implementation-gate", "fail" if gaps else "pass",
+                        "changed paths under declared implementation scopes",
+                        {"changed_implementation_paths": changed, "stage": stage, "gaps": gaps or ["implementation authorization recorded"]},
+                        required=True,
+                        limitations=["The checker enforces declared scopes and evidence references; it cannot authenticate a human approval or discover undeclared source paths."])
 
 def relative_scope(root, raw):
     """Normalize a manifest path so it can be compared with Git paths."""
@@ -625,18 +766,22 @@ def validate(root, manifest, mode, task_id):
     if not isinstance(baseline, dict):
         raise ConfigError("baseline must be an object")
     baseline_status = baseline.get("status")
-    provisional = baseline_status in ("not_applicable", "partial")
+    provisional = baseline_status in ("not_applicable", "partial", "planned")
+    workflow_stage = workflow.get("stage") if isinstance(workflow, dict) else None
+    discovery_stage = mode == "discovery" and workflow_stage in EARLY_WORKFLOW_STAGES
     lifecycle_gaps = []
     if provisional:
-        if baseline.get("origin") != "greenfield":
+        if baseline.get("origin") != "greenfield" and not (discovery_stage and baseline.get("origin") == "existing"):
             lifecycle_gaps.append("provisional baseline requires origin=greenfield; existing code needs discovery")
+        if baseline_status == "planned" and not discovery_stage:
+            lifecycle_gaps.append("planned baselines may only be checked in discovery mode")
         for field in ("reason", "source_revision", "scope"):
             if not isinstance(baseline.get(field), str) or not baseline[field].strip():
                 lifecycle_gaps.append("provisional baseline missing " + field)
         implementation_paths = baseline.get("implementation_paths")
-        if not isinstance(implementation_paths, list) or not implementation_paths:
+        if baseline.get("origin") == "greenfield" and (not isinstance(implementation_paths, list) or not implementation_paths):
             raise ConfigError("provisional baseline.implementation_paths must be a non-empty path array")
-        for raw in implementation_paths:
+        for raw in implementation_paths or []:
             if has_glob_magic(normalize_manifest_path(raw)) or not relative_scope(root, raw):
                 raise ConfigError("baseline.implementation_paths must be literal non-root paths")
             path = safe_path(root, raw, file_only=False)
@@ -653,10 +798,10 @@ def validate(root, manifest, mode, task_id):
             lifecycle_gaps.append("completed task requires a complete or approved factual baseline")
     elif baseline_status not in ("complete", "approved"):
         fault("baseline not complete")
-    if provisional or baseline.get("origin") == "greenfield":
+    if provisional or baseline.get("origin") == "greenfield" or discovery_stage:
         results.append(output_check(
             "baseline-lifecycle", "fail" if lifecycle_gaps else "pass",
-            "declared greenfield baseline lifecycle",
+            "declared baseline lifecycle",
             {"status": baseline_status, "completion_ready": baseline_status in ("complete", "approved"),
              "gaps": lifecycle_gaps}, required=True,
             limitations=["Provisional success permits ongoing work, not delivery. Only declared implementation paths are inspected; project origin and semantics require review."]))
@@ -672,6 +817,19 @@ def validate(root, manifest, mode, task_id):
                 fault("baseline references unknown document: " + document_id)
             elif not safe_path(root, docs[document_id]["path"]).is_file():
                 fault("baseline references missing document: " + document_id)
+    lifecycle_errors = workflow_lifecycle_gaps(root, workflow, baseline, tasks.get(task_id) if task_id else None, task_id, mode) if isinstance(workflow, dict) and "stage" in workflow else []
+    if mode == "discovery" and not (isinstance(workflow, dict) and "stage" in workflow):
+        lifecycle_errors.append("discovery mode requires an explicit workflow.stage; legacy manifests keep the compatibility path")
+    if isinstance(workflow, dict) and "stage" in workflow:
+        results.append(output_check(
+            "workflow-lifecycle", "fail" if lifecycle_errors else "pass", "declared takeover stage and approval evidence",
+            {"stage": workflow.get("stage"), "completion_ready": workflow.get("stage") == "complete" and baseline_status == "approved", "gaps": lifecycle_errors or ["lifecycle fields are consistent"]},
+            required=True,
+            limitations=["Approval records are declarations: the checker cannot authenticate a human or prove semantic completeness, user understanding, host loading, or undiscovered dependencies."]))
+    else:
+        results.append(output_check("workflow-lifecycle", "partial", "legacy manifest without stage lifecycle", "existing compatibility path retained", required=False,
+                                    limitations=["This manifest does not receive automatic takeover-stage or implementation authorization gates until lifecycle fields are adopted."]))
+    faults.extend(lifecycle_errors)
     results.append(output_check("manifest", "fail" if faults else "pass", "declared IDs, references, graph and baseline", faults or ["manifest validated"],
                                 limitations=["Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."]))
     for ident, entry in inventories.items():
@@ -681,7 +839,9 @@ def validate(root, manifest, mode, task_id):
             raise ConfigError("a known --task is required")
         task = tasks[task_id]
         gating = []
-        if task["approval_required"]:
+        approval_required_now = mode in ("handoff", "commit", "committed") or (
+            mode == "change" and (workflow_stage is None or workflow_stage in IMPLEMENTATION_WORKFLOW_STAGES | {"complete"}))
+        if task["approval_required"] and approval_required_now:
             approval = task.get("approval")
             if not isinstance(approval, dict) or approval.get("status") != "approved":
                 gating.append("approval absent or not approved")
@@ -1301,7 +1461,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".")
     parser.add_argument("--manifest", required=True)
-    parser.add_argument("--mode", required=True, choices=("baseline", "change", "handoff", "commit", "committed"))
+    parser.add_argument("--mode", required=True, choices=("discovery", "baseline", "change", "handoff", "commit", "committed"))
     parser.add_argument("--base")
     parser.add_argument("--commit-ref")
     parser.add_argument("--task")
@@ -1334,6 +1494,9 @@ def main(argv=None):
             try:
                 report["changed_paths"], check = change_check(root, manifest, docs, modules, tasks, task_id, args.base)
                 report["checks"].append(check)
+                gate = implementation_gate(root, manifest, report["changed_paths"], task_id)
+                if gate is not None:
+                    report["checks"].append(gate)
             except (ConfigError, OSError, subprocess.TimeoutExpired):
                 report["checks"].append(output_check("change-scope", "unsupported", "Git change discovery", "Git or requested base unavailable"))
         elif args.mode == "commit":
@@ -1343,6 +1506,9 @@ def main(argv=None):
                 control_check = control_plane_check(root, manifest, args.manifest, args.mode,
                                                     report["changed_paths"], allow=args.allow_control_plane_change)
                 report["checks"].append(control_check)
+                gate = implementation_gate(root, manifest, report["changed_paths"], task_id)
+                if gate is not None:
+                    report["checks"].append(gate)
                 unstaged = unstaged_git_paths(root)
                 if unstaged:
                     check["status"] = "fail"
@@ -1372,6 +1538,9 @@ def main(argv=None):
                                                     report["changed_paths"], commit_ref=args.commit_ref,
                                                     allow=args.allow_control_plane_change)
                 report["checks"].append(control_check)
+                gate = implementation_gate(root, manifest, report["changed_paths"], task_id)
+                if gate is not None:
+                    report["checks"].append(gate)
                 unstaged = unstaged_git_paths(root)
                 staged = staged_git_paths(root)
                 if unstaged or staged:
@@ -1410,7 +1579,10 @@ def main(argv=None):
     if report["required_checks_satisfied"] and snapshot is not None:
         report["verified_tree"] = snapshot["tree"]
         report["verification_head"] = snapshot["head"]
-    report["summary"] = "required checks satisfied" if report["required_checks_satisfied"] else "required checks not satisfied"
+    if args.mode == "discovery" and report["required_checks_satisfied"]:
+        report["summary"] = "discovery checks satisfied; this does not mean the Global Baseline is complete or approved"
+    else:
+        report["summary"] = "required checks satisfied" if report["required_checks_satisfied"] else "required checks not satisfied"
     if args.report:
         try:
             report_path = safe_path(safe_root(args.root), args.report)

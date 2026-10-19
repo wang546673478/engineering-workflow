@@ -6,9 +6,9 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 ## Module: instructions
 
 - Responsibility and owner: Agent workflow instructions, references, templates, public usage guide and managed project-guidance installation; owned by this repository.
-- Entrypoints/public interfaces: `SKILL.md`, `README.md`, `AGENTS.md`, `VERSION`, `CHANGELOG.md`, `LICENSE`, `agents/openai.yaml`, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, referenced Markdown files, JSON templates, hook templates.
+- Entrypoints/public interfaces: `SKILL.md`, `README.md`, `AGENTS.md`, `VERSION`, `CHANGELOG.md`, `LICENSE`, `agents/openai.yaml`, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, `scripts/adopt_project.py`, referenced Markdown files, JSON templates, hook templates.
 - Callers: Skill selection, feature-change discussions and engineering tasks using the skill, including follow-up answers in an adopted project's active task; maintainers explicitly invoke the installer for a project. Other agents can follow a thin native-entry reference to `AGENTS.md` when the host loads that entry.
-- Direct dependencies and reason: The instructions route to references and templates; the installer renders the managed template and uses the Python standard library.
+- Direct dependencies and reason: The instructions route to references and templates; the installer renders the managed template, and adoption calls the bundled checker for read-only diagnostics.
 - Dependents: `checker` uses manifest and task conventions defined here; `tests` verifies the installer.
 - Files read or written: The installer reads its template and project instruction files, then updates only its managed section in `AGENTS.md` and any explicitly selected thin adapter files. Plans and task state are maintained separately in project files. No database access.
 - Current state: Skill guidance and the persistence installer are implemented. The 1.5.0 linked-artifact implementation adds an explicit Baseline → Spec → Plan → Task chain, revision pointers, and evidence-driven Baseline correction; current scope and verification belong to [TASK-LINKED-ARTIFACTS-01](../planning/linked-artifact-model-task.md).
@@ -18,7 +18,7 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 ## Module: checker
 
 - Responsibility and owner: Validate project manifests, inventories, task gates, documentation impact, staged commits, and committed trees.
-- Entrypoints/public interfaces: `scripts/check_project.py`; `baseline`, `change`, `handoff`, `commit`, and `committed` modes.
+- Entrypoints/public interfaces: `scripts/check_project.py`; `discovery`, `baseline`, `change`, `handoff`, `commit`, and `committed` modes.
 - Callers: Project hooks, CI, and maintainers.
 - Direct dependencies and reason: Python standard library, manifest documents, and adapter metadata validators.
 - Dependents: Project-specific hook and CI templates.
@@ -63,7 +63,7 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 ## Dependency rules
 
-Allowed direction: `checker -> adapters`; tests may exercise checker, adapters and the installer in `instructions`. The installer reads the maintained guidance template. Project-specific state stays in the project, while governance documents describe this repository.
+Allowed direction: `instructions -> checker -> adapters` for read-only adoption diagnostics; tests may exercise checker, adapters and the installer in `instructions`. The installer reads the maintained guidance template. Project-specific state stays in the project, while governance documents describe this repository.
 
 Forbidden or risky dependencies: adapters must not read business rows; checker must not silently connect to remote databases; instructions must not override project rules.
 
@@ -134,3 +134,9 @@ Scope and evidence: [TASK-ISSUES-19-21](../planning/issues-19-21-task.md).
 
 
 Published implementation5f9b3e1d54a0709241fb5f11173e13ce00af3ffd passed local184-test staged/exact-commit gates and original Windows/Ubuntu reports in approved run39157028881; source upload and #19/#20/#21 replies/completed closure were verified on 2026-10-19. Receipt-only updates do not change implementation, targets, limits or prior approval scope.
+
+## Complete adoption and declared stage gates (1.7.0)
+
+The instructions module owns `adopt_project.py`, the initializer, shared guidance-target preflight and `references/adoption-lifecycle.md`. Adoption imports the bundled checker for a read-only bootstrap diagnostic; the checker does not import adoption or execute its helpers. This adds instructions → checker → adapters as allowed dependencies, with no reverse edge. The command creates a planned manifest and managed guidance, maps existing document paths, and records actual skill/checker provenance. Explicit legacy upgrades preserve policy/documents/history and use a same-directory atomic replacement; reruns preserve lifecycle state.
+
+The checker maps original workflow stages, evidenced greenfield/small-fix exceptions, valid prior-review reuse, proposal/task authorization and implementation scopes without adding review rounds. Complete/approved delivery and guidance-first adoption remain available. Existing manifests without stage retain compatibility and explicitly lack these new gates. Tests exercise real CLI scaffolds, failure preservation, stage/revision/task mismatches, absolute scopes and refusal to execute commands in blocked commit modes. Runtime database adapters and application data are unaffected. Current boundaries and evidence: [Task](../planning/adoption-lifecycle-task.md).

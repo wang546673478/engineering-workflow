@@ -1,3 +1,19 @@
+# Current Adoption Lifecycle Traceability
+
+Revision `TRACE-ADOPTION-LIFECYCLE-02`: `BASELINE-ADOPTION-LIFECYCLE-02` → `SPEC-ADOPTION-LIFECYCLE-02` → `PLAN-ADOPTION-LIFECYCLE-02` → `TASK-ADOPTION-LIFECYCLE-01`.
+
+| Requirement / acceptance | Plan / execution | Evidence and affected views |
+| --- | --- | --- |
+| REQ-ADOPTION-01 / AT-ADOPTION-01 | ADOPT-01 | adoption CLI, guidance tests, contracts and Task |
+| REQ-ADOPTION-02 / AT-ADOPTION-02 | ADOPT-02 | initializer/manifest fixtures, Baseline, contracts and Task |
+| REQ-ADOPTION-03 / AT-ADOPTION-03 | ADOPT-03 | checker stage fixtures, module/flow/contract views and Task |
+| REQ-ADOPTION-04 / AT-ADOPTION-04 | ADOPT-04 | SKILL/README/references, Baseline and Task limits |
+| REQ-ADOPTION-05 / AT-ADOPTION-05 | ADOPT-05 | [verification](adoption-lifecycle-verification.json): 205 tests/109.390s, compile/package checks; 1.7.0 Unreleased |
+
+REQ-ADOPTION-PARITY / AT-ADOPTION-PARITY → original-flow scenarios in checker/guidance tests and current verification; same core SKILL sections plus preserved local installation rehearsal.
+
+## Prior traceability
+
 # Current Source Context Traceability
 
 Revision TRACE-CONTEXT-05: BASELINE-CONTEXT-06 → SPEC-CONTEXT-03 → PLAN-CONTEXT-06 → TASK-CONTEXT-RELEASE-01.

@@ -3,6 +3,7 @@
 检查器仅依赖 Python 标准库。默认只读，`--report` 仅创建新报告文件，拒绝覆盖；`--run-checks` 才执行项目明确声明的命令。命令是非空参数数组，使用 `shell=False`，不解释管道或命令拼接，运行前需核对项目命令与授权。
 
 ```text
+python <skill-dir>/scripts/check_project.py --root <project> --manifest engineering-manifest.json --mode discovery --run-checks
 python <skill-dir>/scripts/check_project.py --root <project> --manifest engineering-manifest.json --mode baseline
 python <skill-dir>/scripts/check_project.py --root <project> --manifest engineering-manifest.json --mode change --base <commit> --task TASK-01
 python <skill-dir>/scripts/check_project.py --root <project> --manifest engineering-manifest.json --mode handoff --base <commit> --task TASK-01 --run-checks --report new-handoff-report.json
@@ -16,7 +17,7 @@ python <skill-dir>/scripts/extract_database.py postgresql --url-env ENGINEERING_
 python <skill-dir>/scripts/extract_database.py redis --url-env ENGINEERING_DATABASE_URL --output new-database-inventory.json
 ```
 
-baseline 核对声明结构和资料；change/handoff 必须提供 Git base 和任务，包含删除、重命名前后路径及未跟踪文件。base 先解析为 commit OID，不能传 Git 选项。handoff 还核对批准、前置任务、完成状态与本次实际验证。基线不要求 Git；首版无 Git 项目无法完成自动变更范围核对，保持未验证，不以基线检查替代完整交付。
+discovery 检查首次接管中的不完整事实基线，明确返回 `completion_ready=false`；它不是基线批准。baseline 核对声明结构和资料；change/handoff 必须提供 Git base 和任务，包含删除、重命名前后路径及未跟踪文件。base 先解析为 commit OID，不能传 Git 选项。handoff 还核对批准、前置任务、完成状态与本次实际验证。基线不要求 Git；首版无 Git 项目无法完成自动变更范围核对，保持未验证，不以基线检查替代完整交付。
 
 `commit` 是本地提交门禁：验证输入读取前绑定HEAD和index tree；声明检查结束后新增必需的verification-state，拒绝HEAD/index/工作树和未忽略新文件的持久漂移，失败不自动还原用户修改。只读取当前 Git index 中已暂存的路径，拒绝空暂存区和任何未暂存的工作树差异，防止从工作区读取到与提交内容不一致的文档或清单。它会将源代码路径与 `task.documentation_impact` 中的触发路径关联，源代码变更未声明门槛也会失败；遗漏任一文档时退出失败。初始提交使用空树比较，删除和重命名同时检查旧路径与新路径。任务 ID 可用 `--task` 指定，也可通过 `ENGINEERING_TASK_ID` 提供；命令行参数优先。
 
@@ -132,3 +133,9 @@ SQLite 提取使用只读 immutable 快照和 table_xinfo，覆盖 main schema �
 - 此合同不是全平台SIGKILL保证：POSIX SIGKILL无法捕获，Windows赋予job前的启动窗口及恶意同权限攻击也不作绝对保证；更强生命周期需要外部监督/OS约束。导入函数调用者自行管理信号策略，CLI只在主线程临时注册handler。
 
 历史缺陷和原始复现保留在[ASSESS-19-21-01](../planning/issues-19-21-assessment.md)；当前实现、测试与发布证据见[TASK-ISSUES-19-21](../planning/issues-19-21-task.md)。原工作流、TEST/编译命令、120秒和审批职责保持。
+
+## 接入和原流程声明（1.7.0）
+
+可选stage及基线/方案/实施授权字段核验原流程，不能创造额外审核轮次。空项目的baseline_review可带证据not_applicable；小修任务可用带既定需求/影响证据的proposal_approval=not_applicable；有效旧审阅保留原revision可复用，失效时显式pending/invalidated；完整方案与实施可共用明确覆盖二者的原话。complete/handoff继续允许complete/approved事实基线，不增加handoff阶段。
+
+原必需任务批准、依赖、影响文档、控制面和实际检查门槛保持。discovery支持不完整基线调查但不代表完成；change/handoff/commit/committed拒绝未授权实现路径，两个提交模式失败不执行声明命令。字段与场景见[adoption-lifecycle.md](adoption-lifecycle.md)。

@@ -4,7 +4,22 @@
     "active_baseline": "BASELINE",
     "active_spec": "SPEC",
     "active_plan": "PLAN",
-    "active_task": "TASK-01"
+    "active_task": "TASK-01",
+    "stage": "takeover_discovery",
+    "implementation_paths": [
+      "backend",
+      "frontend"
+    ],
+    "baseline_review": {
+      "status": "pending",
+      "source_revision": null,
+      "evidence": null
+    },
+    "proposal_approval": {
+      "status": "pending",
+      "revision": null,
+      "evidence": null
+    }
   },
   "documents": [
     {
@@ -229,6 +244,12 @@
             "IMPACT"
           ]
         }
+      },
+      "implementation_authorization": {
+        "status": "pending",
+        "plan_revision": null,
+        "task_id": "TASK-01",
+        "evidence": "planning/approval.md"
       }
     }
   ],
@@ -244,7 +265,8 @@
     ],
     "source_revision": "record-before-review",
     "scope": "record reviewed modules and limits",
-    "origin": "existing"
+    "origin": "existing",
+    "reason": "Existing code requires global discovery; no completion or review is inferred"
   },
   "exclude_paths": [
     ".git",

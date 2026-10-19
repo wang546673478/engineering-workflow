@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 from pathlib import Path
 import re
@@ -45,6 +46,23 @@ def safe_relative(root: Path, raw: str) -> Path:
             raise ValueError(f"symlink or junction target is not allowed: {raw}")
     if not path.resolve().is_relative_to(root):
         raise ValueError(f"path escapes project root: {raw}")
+    return path
+
+
+def validate_manifest(root: Path, raw: str) -> Path:
+    path = safe_relative(root, raw)
+    if path.suffix.lower() != ".json":
+        raise ValueError("--manifest must point to a JSON manifest, not a prose state file")
+    if not path.exists():
+        return None  # Guidance may be installed first; report incomplete adoption.
+    if not path.is_file():
+        raise ValueError("--manifest must point to a JSON file")
+    try:
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, ValueError, RecursionError) as exc:
+        raise ValueError("--manifest is not readable valid JSON") from exc
+    if not isinstance(data, dict) or type(data.get("schema_version")) is not int or data["schema_version"] != 1:
+        raise ValueError("--manifest must be an engineering-workflow schema_version 1 object")
     return path
 
 
@@ -96,6 +114,22 @@ def update(path: Path, content: str) -> bool:
     return True
 
 
+def prepare_targets(root, manifest, state_dir, skill, files):
+    """Preflight all destinations, including a manifest that will be created later."""
+    manifest_path = safe_relative(root, manifest)
+    safe_relative(root, state_dir)
+    canonical = root / "AGENTS.md"
+    rendered = block(manifest, state_dir, skill)
+    pending = {}
+    for raw in ["AGENTS.md", *files]:
+        path = safe_relative(root, raw)
+        if path == manifest_path:
+            raise ValueError("guidance target cannot replace the JSON manifest")
+        content = rendered if path == canonical else adapter_block(path, canonical)
+        pending[path] = prepare(path, content)
+    return pending
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".")
@@ -106,15 +140,8 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         root = project_root(args.root)
-        safe_relative(root, args.manifest)
-        safe_relative(root, args.state_dir)
-        canonical = root / "AGENTS.md"
-        rendered = block(args.manifest, args.state_dir, args.skill)
-        pending = {}
-        for raw in ["AGENTS.md", *args.file]:
-            path = safe_relative(root, raw)
-            content = rendered if path == canonical else adapter_block(path, canonical)
-            pending[path] = prepare(path, content)
+        manifest_path = validate_manifest(root, args.manifest)
+        pending = prepare_targets(root, args.manifest, args.state_dir, args.skill, args.file)
         # Validate every target before writing any. OS write failures may leave
         # earlier files updated; report them and allow an idempotent rerun.
         for path, updated in pending.items():
@@ -123,6 +150,8 @@ def main(argv=None):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(updated)
             print(path.relative_to(root).as_posix())
+        if manifest_path is None:
+            print("guidance_only_incomplete: JSON manifest is not present; finish adoption and discovery before claiming completion")
     except (OSError, UnicodeError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

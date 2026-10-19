@@ -1,3 +1,17 @@
+# Current plan: PLAN-ADOPTION-LIFECYCLE-02
+
+Input `BASELINE-SAFE-19-21-01` / source `3c1cb36`; specification `SPEC-ADOPTION-LIFECYCLE-02`; output baseline `BASELINE-ADOPTION-LIFECYCLE-01`; execution: [Task](../planning/adoption-lifecycle-task.md).
+
+1. ADOPT-01: Add a complete adoption CLI that preserves existing manifests, offers an explicit additive legacy migration with atomic replacement, writes a planned provenance-bound scaffold and guidance, and emits actual bundled read-only bootstrap diagnostics.
+2. ADOPT-02: Extend initializer output with document overrides, lifecycle stage, implementation paths, independent approval placeholders and skill provenance fields.
+3. ADOPT-03: Validate lifecycle invariants and block implementation-scope changes in discovery/review/interview/proposal stages while preserving legacy manifests without lifecycle fields.
+4. ADOPT-04: Synchronize public guidance, templates, checker contract, module map, business flow, Baseline and traceability; distinguish skill source/version from host loading.
+5. ADOPT-05: Run focused adoption/lifecycle regressions plus TEST, COMPILE, GUIDANCE-COMPILE and skill validation; record version 1.7.0 Unreleased and exact evidence.
+
+Original-flow parity correction: guidance can precede manifest with an incomplete receipt; greenfield/small-fix not_applicable records require evidence; valid historical reviews remain reusable; a single explicit instruction may cover proposal plus implementation; complete/approved and original handoff requirements remain. Test real CLI/Git scenarios, retain original limits, upload exact tested source, rehearse a preserved-dirty-install upgrade, then update the existing global installation. No external adopted project or business data changes apply.
+
+## Prior plans and evidence
+
 # Current plan: PLAN-SAFE-19-21-01
 
 Input BASELINE-UX-17-18-01 / 871bda427d3f46d114e568565dac10cca1395920 plus ASSESS-19-21-01; specification SPEC-SAFE-19-21-01; output BASELINE-SAFE-19-21-01. Implementation/status: [Task](../planning/issues-19-21-task.md).

@@ -95,6 +95,7 @@ class InitManifestTests(unittest.TestCase):
                     path = root / doc["path"]
                     path.parent.mkdir(parents=True, exist_ok=True)
                     path.write_text("REQ-BOOTSTRAP-01 AT-BOOTSTRAP-01\nNo implementation yet; target belongs in Plan.", encoding="utf-8")
+                (root / "planning/approval.md").write_text("fixture approval record", encoding="utf-8")
                 data["checks"][0]["command"] = [sys.executable, "-c", "print('fixture verification')"]
                 command = [sys.executable, str(SCRIPTS / "check_project.py"), "--root", str(root),
                            "--manifest", "engineering-manifest.json", "--mode", "baseline", "--run-checks"]
@@ -141,8 +142,12 @@ class InitManifestTests(unittest.TestCase):
                         report = json.loads(proc.stdout)
                         self.assertEqual(proc.returncode, expected, report)
                         return report
-                    change(1)  # Still requires actual task approval.
+                    change(1)  # Implementation remains blocked in takeover discovery.
                     data["tasks"][0]["approval"] = {"status":"approved", "evidence":"planning/task.md"}
+                    data["workflow"]["stage"] = "implementation"
+                    data["workflow"]["baseline_review"] = {"status":"approved", "source_revision":data["baseline"]["source_revision"], "evidence":"planning/baseline-review.md"}
+                    data["workflow"]["proposal_approval"] = {"status":"approved", "revision":"PLAN-01", "evidence":"planning/approval.md"}
+                    data["tasks"][0]["implementation_authorization"] = {"status":"approved", "plan_revision":"PLAN-01", "evidence":"planning/approval.md", "task_id":"TASK-01"}
                     for doc in data["documents"]:
                         path = root / doc["path"]
                         path.write_text(path.read_text(encoding="utf-8") + "\nUpdated first-slice evidence.", encoding="utf-8")
@@ -150,7 +155,9 @@ class InitManifestTests(unittest.TestCase):
                     report = change(0)
                     self.assertEqual(next(item for item in report["checks"] if item["rule_id"] == "change-scope")["status"], "pass")
                     data["tasks"][0]["status"] = "complete"
-                    data["baseline"]["status"] = "complete"
+                    data["baseline"].update(status="approved", source_revision="final-baseline-r1")
+                    data["workflow"]["stage"] = "complete"
+                    data["workflow"]["baseline_review"]["source_revision"] = "final-baseline-r1"
                     data["tasks"][0]["skill_review"].update(catalog_source="fixture skills", scope="first slice", recheck="none")
                     manifest_path.write_text(json.dumps(data), encoding="utf-8")
                     handoff_command = change_command.copy()

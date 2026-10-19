@@ -1,3 +1,10 @@
+# 1.7.0 / Unreleased
+
+- Added complete project adoption: real manifest plus managed guidance, existing document mapping, actual skill/checker provenance, and read-only bootstrap diagnostics that keep unfinished work visible.
+- Added optional declaration checks for the original stages and approval meanings, including evidenced empty-project/small-fix exceptions, prior-review reuse and shared explicit authorization; complete/approved delivery remains. Blocked commit checks do not execute project commands.
+- Guidance installation rejects Markdown-as-JSON and target collisions while retaining guidance-first setup with an explicit incomplete receipt. Explicit legacy upgrades preserve existing policy/history and use atomic manifest replacement; old manifests retain compatibility until migrated.
+- Updated skill guidance, templates and linked engineering views. No external project migration or automatic approval is performed. Local installation is updated separately under user authorization.
+
 # 1.6.4 / 2026-10-19
 
 - Bind commit/committed verification to HEAD and the index tree before reading inputs, reject post-check index/worktree/HEAD drift, and expose successful verified_tree/verification_head evidence.

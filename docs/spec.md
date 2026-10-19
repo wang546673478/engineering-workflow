@@ -1,3 +1,17 @@
+# Current specification: SPEC-ADOPTION-LIFECYCLE-02
+
+Revision 02 incorporates the user constraint to preserve the original workflow and the instruction to test, upload passing source to GitHub, and update the local skill. Revision 01 is retained in Task history; new acceptance adds original-flow exceptions and no new review rounds. Exact scope and implementation state: [Task](../planning/adoption-lifecycle-task.md). This compatible revision adds a complete adoption entrypoint and lifecycle gates; it does not modify external adopted projects.
+
+- REQ-ADOPTION-01 / AT-ADOPTION-01: Complete adoption creates a persistent project entry and a reviewable manifest without overwriting an existing manifest; guidance-only installation is explicitly incomplete.
+- REQ-ADOPTION-02 / AT-ADOPTION-02: New manifests record active artifact pointers, current stage, implementation paths, independent baseline/proposal/implementation approvals, and the exact skill source/version checked at adoption.
+- REQ-ADOPTION-03 / AT-ADOPTION-03: The checker validates lifecycle consistency and rejects implementation-scope changes before baseline review, proposal approval, and implementation authorization. Legacy manifests without lifecycle fields retain their compatibility path.
+- REQ-ADOPTION-04 / AT-ADOPTION-04: Adoption and lifecycle checks report declaration-based limits and never claim to prove semantic completeness, user understanding, host loading, or dynamic dependencies.
+- REQ-ADOPTION-05 / AT-ADOPTION-05: Guidance, templates, contracts, module/flow views, traceability, version metadata and regression evidence describe the same 1.7.0 behavior.
+
+REQ-ADOPTION-PARITY / AT-ADOPTION-PARITY: Preserve guidance-first adoption, evidenced greenfield baseline-review exemption, bounded small-fix scope, valid prior-review reuse, combined proposal/implementation instruction, and complete/approved delivery without new human rounds. Scenario checks must cover both valid exceptions and refusal of unsupported exemptions. Publish only after declared checks, then upgrade the local installation while preserving all existing changes.
+
+## Prior specifications and evidence
+
 # Current specification: SPEC-SAFE-19-21-01
 
 Confirmed by the 2026-10-19 user instruction adopting ASSESS-19-21-01 and requesting implementation, upload, replies and closure. Exact scope: [Task](../planning/issues-19-21-task.md). This batch preserves prior workflow/gate duties and freezes the following boundaries.

@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.6.4` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.7.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -33,7 +33,7 @@ git clone https://github.com/wang546673478/engineering-workflow.git `
 
 ## 项目接入与持久化
 
-项目决定采用本流程时，先把持久化入口写入项目根部的 `AGENTS.md`。保留项目已有规则，只加入带 `engineering-workflow:start/end` 标记的管理区：
+项目决定采用本流程时，可以先维护根部 `AGENTS.md` 的持久入口；需要同时建立工程清单骨架时使用下方接入命令。保留已有规则，仅维护标记管理区：
 
 ```powershell
 python <skill-dir>/scripts/install_agents_guidance.py --root <project>
@@ -41,7 +41,16 @@ python <skill-dir>/scripts/install_agents_guidance.py --root <project>
 
 `AGENTS.md` 保存共享规则；项目现有清单和状态文件保存联动的 Global Baseline、Spec、Plan、Task、决定、进度、影响分析、验证及交接。新清单通过活动指针和任务 `artifact_links` 连接这些工件。安装器始终更新 `AGENTS.md`；显式追加 `--file CLAUDE.md` 或 `--file .github/copilot-instructions.md` 时，只写指向它的相对链接。其他 agent 按实际规则文件格式和加载范围接入；Cursor 等宿主可能需要专有文件扩展名或前言，普通 Markdown 引用不代表自动加载。不要把规则目录作为 `--file` 传入。
 
-安装器只处理规则入口；接入 agent 还需在项目现有状态中记录 skill 来源/版本和当前任务路径，可用 `--skill` 指定可定位的来源描述、`--manifest` 与 `--state-dir` 指向实际位置。开始、恢复、接手、上下文压缩或不完整、切换 agent、范围变化时，重新读取 skill 正文、适用引用与状态文件，并核对工作树；范围变化还要重新做 `skill_review` 和影响分析。小修复复用现有记录，避免重复建档。
+安装器只处理规则入口；清单尚缺时明确报告接入未完成。adoption helper 可一并生成真实 JSON manifest 和入口，Markdown 任务索引不能作为 JSON manifest。接入时记录 skill/checker 来源、版本和当前任务路径；开始、恢复、接手、上下文压缩或不完整、切换 agent、范围变化时，重新读取 skill 正文、适用引用与状态文件，并核对工作树；范围变化还要重新做 `skill_review` 和影响分析。小修复复用现有记录，避免重复建档。
+
+完整接入示例：
+
+```powershell
+python <skill-dir>/scripts/adopt_project.py --root <project> `
+  --skill-source <skill-dir>/SKILL.md --skill-version 1.7.0 --profile lite
+```
+
+命令创建 `initialized_incomplete` 的接入骨架，并返回实际 bootstrap 诊断；不会执行项目检查命令、完成基线或批准实现。已有 manifest 默认保留，显式 `--upgrade-legacy-manifest` 才补生命周期字段；原文档、检查和历史保持。用重复的 `--document ID=path` 映射已有工件，完成映射后运行 `check_project.py --mode discovery --run-checks`。基线审阅、Spec/Plan 批准和实施授权按原规则分别记录，可复用仍有效的原话，不增加审核轮次；空项目、小修等例外与字段、迁移和退出码见[完整接入与阶段门禁](references/adoption-lifecycle.md)。
 
 首次接入可以先生成可审阅的清单骨架：
 
@@ -49,7 +58,7 @@ python <skill-dir>/scripts/install_agents_guidance.py --root <project>
 python <skill-dir>/scripts/init_manifest.py --root <project> --profile lite
 ```
 
-`lite` 省略源清单并使用影响记录，`full` 额外登记可选数据库/契约清单和跨层文档门槛。两种配置都要求联动的 Baseline、Spec、Plan、Task、追踪和基线视图文档存在；不适用视图记录原因。生成结果仍处于 `planned`，必须补齐实际路径、权威验证命令、skill review、基线和批准记录；默认不会覆盖已有清单。
+`lite` 省略源清单并使用影响记录，`full` 额外登记可选数据库/契约清单和跨层文档门槛。两种配置都要求联动的 Baseline、Spec、Plan、Task、追踪和基线视图文档存在；不适用视图记录原因。生成结果仍处于 `planned`/`takeover_discovery`，必须补齐实际路径、权威验证命令、skill review、基线和批准记录；默认不会覆盖已有清单。初始化器用于底层骨架，完整采用优先使用上面的 adoption helper。
 
 从零开始的新项目显式使用 `--project-kind greenfield`，例如：
 
@@ -175,6 +184,7 @@ references/                      分阶段工作流说明
 scripts/check_project.py         项目清单与提交门禁检查器
 scripts/install_agents_guidance.py  幂等更新 AGENTS.md 管理区
 scripts/init_manifest.py             生成 full/lite 清单骨架
+scripts/adopt_project.py             安装 managed guidance 与生命周期清单
 scripts/extract_database.py      MySQL、PostgreSQL、Redis 元数据适配器
 scripts/extract_sqlite.py        SQLite 元数据提取器
 scripts/tests/                   检查器和适配器测试

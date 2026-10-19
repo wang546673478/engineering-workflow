@@ -4,7 +4,7 @@
 
 
 - Input: project root, manifest path, mode, task ID, and optional base or commit reference.
-- Modes: `baseline`, `change`, `handoff`, `commit`, `committed`.
+- Modes: `discovery`, `baseline`, `change`, `handoff`, `commit`, `committed`.
 - Output: JSON containing `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, `errors`, and nullable `verified_tree`/`verification_head`.
 - `tool_version` is read from the repository-root `VERSION` file beside the checker package.
 - Exit codes: `0` required checks passed; `1` a declared check or validation requirement failed (including an output limit); `2` malformed configuration, unavailable environment, or unsupported capability before a check can run.
@@ -138,3 +138,11 @@ Current source/evidence: [TASK-ISSUES-19-21](../planning/issues-19-21-task.md). 
 
 
 Published implementation5f9b3e1d54a0709241fb5f11173e13ce00af3ffd passed local184-test staged/exact-commit gates and original Windows/Ubuntu reports in approved run39157028881; source upload and #19/#20/#21 replies/completed closure were verified on 2026-10-19. Receipt-only updates do not change implementation, targets, limits or prior approval scope.
+
+## Complete adoption and original-workflow mapping (1.7.0)
+
+Adoption creates an initialized_incomplete scaffold, managed entry and actual bundled bootstrap report without executing project commands. Outer exit 0 describes scaffold writing, not completion. Existing documents and policy remain; explicit legacy migration adds declarations without replacing evidence or approvals. Guidance-only installation remains available before a manifest and reports incomplete adoption; an existing manifest argument must reference real schema-version-1 JSON, never Markdown.
+
+Declared stages record the original current phase, not new mandatory user review rounds. Evidenced greenfield baseline-review and established small-fix proposal exceptions are accepted; mismarked exceptions fail. Prior valid reviews retain their reviewed revision when factual views evolve; invalidated records fail. Proposal and implementation authorization may share one explicit user instruction while retaining separate meanings, task and revision bindings. Completion/handoff accepts complete or approved factual baselines with original task/validation requirements; no extra handoff stage or blanket reapproval applies.
+
+Change and both submit modes reject unauthorized implementation-scope paths; submit failures never execute project commands. Legacy manifests retain their original path until explicit migration. Exact schema and limits: [adoption-lifecycle](../references/adoption-lifecycle.md). These checks do not authenticate review meaning, semantic completeness, dynamic dependencies or undeclared scopes.
