@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.7.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.7.1` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -47,7 +47,7 @@ python <skill-dir>/scripts/install_agents_guidance.py --root <project>
 
 ```powershell
 python <skill-dir>/scripts/adopt_project.py --root <project> `
-  --skill-source <skill-dir>/SKILL.md --skill-version 1.7.0 --profile lite
+  --skill-source <skill-dir>/SKILL.md --skill-version 1.7.1 --profile lite
 ```
 
 命令创建 `initialized_incomplete` 的接入骨架，并返回实际 bootstrap 诊断；不会执行项目检查命令、完成基线或批准实现。已有 manifest 默认保留，显式 `--upgrade-legacy-manifest` 才补生命周期字段；原文档、检查和历史保持。用重复的 `--document ID=path` 映射已有工件，完成映射后运行 `check_project.py --mode discovery --run-checks`。基线审阅、Spec/Plan 批准和实施授权按原规则分别记录，可复用仍有效的原话，不增加审核轮次；空项目、小修等例外与字段、迁移和退出码见[完整接入与阶段门禁](references/adoption-lifecycle.md)。

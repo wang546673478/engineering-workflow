@@ -1,10 +1,13 @@
 # TASK-ADOPTION-LIFECYCLE-01：完整接入与阶段门禁
 
 日期：2026-10-19（Asia/Shanghai）
-任务 ID：`TASK-ADOPTION-LIFECYCLE-01`；输入基线：`BASELINE-SAFE-19-21-01` / source `3c1cb36`；当前阶段：原流程场景验收与修正；通过后提交上传并更新本地安装。
+任务 ID：`TASK-ADOPTION-LIFECYCLE-01`；输入基线：`BASELINE-SAFE-19-21-01` / source `3c1cb36`；当前阶段：原流程修正已验证、源码已上传、本地安装已更新；托管结果待核查。
 
 ## 当前状态与范围
 
+- 最新发现：run39277812120的Ubuntu原报告通过，Windows原TEST失败；下载artifact摘要一致，Windows原报告与job日志已核对，不能将诊断重跑或静态waiting状态当作通过。根因是initializer库函数直接接收Windows短名/非规范化root，子目录resolve后相对未resolve的root比较导致误判越界。正在修复同一入口的root规范化并补真实alias回归；已发布/安装1.7.0保留为历史，下一外部修正版本1.7.1 PATCH。
+- 当前请求结果：原流程场景与205项全量测试、原commit/committed门禁通过；源码已上传main，本地skill已更新1.7.0并保留全部原工作。当前回执准备提交；托管原报告仍未返回，仅记录真实人工批准，不伪报通过。Task实施/本地验收/上传安装为complete；远程调度状态独立保留。
+- 当前交付：源码c15b94397314b8e84b3ee94877267f8245c3351c已非强制上传GitHub main并核对；本地skill已更新1.7.0，13个已有修改/未跟踪文件及6个评估任务保留；结构校验、清单核验和实际接入CLI烟测通过。GitHub run39277812120已获wang546673478真实环境批准，等待原双平台结果。后续条目为过程历史，不覆盖本行当前事实。
 - 本轮进度：原流程场景修正已实现，主SKILL原有核心章节与1.6.4逐段完全一致；205项全量测试及原编译门槛通过（TEST109.390秒，原120秒不变）。下一步为暂存/精确提交门禁、安装副本合并演练、上传及实际更新。前轮“未获上传/安装授权”和“保持性未满足”记录保留为历史，已由本轮明确授权和修正取代。
 - 最新授权：用户“这样你做一下测试,我看你说的是你打的是补丁,我担心补丁不好用,你先做测试,测试没问题上传github,然后更新本地的skill”。本轮以保持原流程/例外为验收，允许必要修正、测试、提交上传及更新现有安装；不再等待重复发布许可。已明确的托管环境独立人类审批仍不代办。旧保持性不满足记录保留为历史，不当作已解决。
 - 当前结论（2026-10-19T23:04:21+08:00）：用户明确“还不能动skill的流程”，要求先回答是否全局修复且流程不变。本次复核确认：跨接入/清单/checker/文档联动已做，原主线阶段顺序未改；但新增强制JSON接入条件、阶段/审批字段及complete/handoff机械条件实际收紧了流程，且未完整核对小修/已有有效基线/恢复复用批准/空实现项目例外。因此不能继续宣称满足“流程不变”的修复完成；原200项程序测试通过不等于流程等价性通过。当前仅核查及记录，暂停按本补丁交付，不改实现、不回滚、不发布。
@@ -134,3 +137,20 @@
 - 本地安装备份：`work/adoption-validation/local-install-backup`记录原HEAD a407b11、状态、13个修改/未跟踪文件的逐文件SHA256和完整tracked binary patch；尚未改动安装。升级需先在副本演练合并及版本/CLI验证，实际更新后再次核对。
 
 暂存预检首次正确拒绝遗漏的AGENTS文档影响映射，已补入与模板相同的adoption-guidance门槛；未执行的声明检查保持skipped，失败原报告parity-commit-01保留。
+
+## 精确源码发布和实际安装记录
+
+- staged门禁parity-commit-02：TEST205项106.828秒，COMPILE0.235秒，GUIDANCE-COMPILE0.234秒；verified_tree=02c669a7065b8086502bbbf5907e7694c54589df。源码提交c15b94397314b8e84b3ee94877267f8245c3351c的committed门禁全部通过，TEST106.907秒，两编译0.328/0.219秒，返回同一tree。原120秒及其他控制不变。
+- 同一源码先上传codex/adoption-workflow-parity，再非强制上传main，git ls-remote核对同SHA。真实源码发布日期Asia/Shanghai2026-10-19；CHANGELOG由Unreleased改为该真实日期。不创建tag/Release、不重写远程历史。
+- 本地升级演练先从新源码构建独立副本，合并原始13个文件；JSON按ID保留全部新增任务/文档/需求/验收，当前事实基线元数据跟随新版，旧值原字节保留在备份。首次trace索引文本合并漏了新版ID被checker拒绝；改为新版权威索引加独立历史本地索引完整快照，再通过所有ID/链接检查和实际CLI烟测。
+- 实际安装：保留全量文件备份、原binary patch及Git stash97c9f5b5e3d1c5b87b08aa8867a5298bea29dd9e，快进到已上传源码并应用演练过的保留overlay。实际VERSION1.7.0，SKILL/checker/adoption/initializer/installer/openai.yaml与上传源码逐字节规范化一致；所有原修改/未跟踪文件与演练overlay一致。再次运行真实安装路径的quick_validate（UTF-8）、manifest链接/ID验证和完整adoption CLI烟测通过。局部备份/安装回执见work/adoption-validation/local-install-backup与local-install-receipt.json。
+- 用户回复“已在GitHub批准”；只读API approvals核实wang546673478批准工程控制环境，对应本次精确c15b943。agent未使用API代批、未改required-reviewer设置。原报告未返回前不宣称托管通过。
+- 本轮回执仅刷新真实发布日期、状态和验证/安装证据，不改变实现内容，同批1.7.0无需再升版。回执提交继续执行原commit/committed门槛；新SHA托管状态单独报告，不冒用源码SHA的批准或报告。
+
+Publication receipt (2026-10-19): implementation c15b94397314b8e84b3ee94877267f8245c3351c passed original local staged/exact-commit gates with 205 tests and the unchanged 120-second limit, was uploaded to main, and was installed as 1.7.0 with prior local work preserved. GitHub run39277812120 has a verified human environment approval but original platform reports are still pending; no hosted pass is claimed. This receipt changes evidence/status only, not source behavior or acceptance.
+
+## Windows托管失败与修正（1.7.1）
+
+- source c15b943、run39277812120：Ubuntu原committed报告全部required通过；Windows原TEST失败63.454秒，输出2835bytes；两个新增legacy升级fixture在直接调用init_manifest.manifest时误判implementation path越界。job118146513170日志中的诊断重跑仍2 errors/205 tests49.848秒；不用于覆盖原失败。run摘要接口仍显示waiting，但原artifact和具体job日志已返回，按原报告核验而非仅凭摘要。
+- 根因：库函数与CLI入口不一致。CLI先project_root.resolve，直接库调用未规范化root；Windows TEMP短名/长名别名导致candidate.resolve().is_relative_to(root)错误。修正集中在manifest函数开头复用project_root，保留原越界/非根/glob约束；新增lexical-root-alias允许及真实越界拒绝断言。不是放宽路径校验，也不修改skill流程。
+- 1.7.0已实际上传/安装，修正另升PATCH1.7.1；原1.7.0真实日期和失败证据保留，五处版本/CHANGELOG同步。该修正属于用户已授权测试中发现的问题，继续本任务验证/发布/安装；新的托管环境审批只对新SHA由人类操作。

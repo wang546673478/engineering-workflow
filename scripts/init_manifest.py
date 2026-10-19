@@ -60,6 +60,9 @@ def manifest(root: Path, profile: str, project_kind: str = "existing", implement
              skill_source: str = "record actual skill source and version", skill_version: str = "not provided",
              checker_source: str = "scripts/check_project.py", task_id: str = "TASK-01",
              document_overrides=None) -> dict:
+    # Direct library callers can supply Windows short-name or lexical aliases,
+    # just like the CLI. Compare scopes against the same canonical root.
+    root = project_root(root)
     if not state_dir.strip() or Path(state_dir).is_absolute() or Path(state_dir) == Path(".") or ".." in Path(state_dir).parts:
         raise ValueError("--state-dir must be a project-relative path")
     state_dir = Path(state_dir.replace("\\", "/")).as_posix().strip("/") or "."

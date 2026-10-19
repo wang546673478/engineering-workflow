@@ -1,4 +1,9 @@
-# 1.7.0 / Unreleased
+# 1.7.1 / Unreleased
+
+- Normalize the initializer library's project root before validating source scopes, matching the CLI and supporting Windows short-name/lexical aliases without weakening project-boundary checks.
+- Add a root-alias regression; preserve the original workflow and every prior check. This corrects the Windows hosted failure found while validating 1.7.0.
+
+# 1.7.0 / 2026-10-19
 
 - Added complete project adoption: real manifest plus managed guidance, existing document mapping, actual skill/checker provenance, and read-only bootstrap diagnostics that keep unfinished work visible.
 - Added optional declaration checks for the original stages and approval meanings, including evidenced empty-project/small-fix exceptions, prior-review reuse and shared explicit authorization; complete/approved delivery remains. Blocked commit checks do not execute project commands.

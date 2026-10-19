@@ -99,6 +99,16 @@ class AdoptionTests(unittest.TestCase):
         path.write_text(json.dumps(data), encoding="utf-8")
         return path, data
 
+    def test_initializer_library_accepts_a_root_alias_without_escaping_its_scope(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "backend").mkdir()
+            (root / "alias-parent").mkdir()
+            data = init_manifest.manifest(root / "alias-parent" / "..", "lite")
+            self.assertEqual(data["workflow"]["implementation_paths"], ["backend"])
+            with self.assertRaises(ValueError):
+                init_manifest.manifest(root, "lite", implementation_paths=["../outside"])
+
     def test_explicit_legacy_upgrade_preserves_existing_policy_documents_and_history(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
