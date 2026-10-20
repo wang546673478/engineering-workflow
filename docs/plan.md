@@ -1,5 +1,7 @@
 # Current Technical Plan: PLAN-ISSUE22-ENHANCEMENT-01
 
+Source upload receipt (2026-10-20T17:52:35.783179+08:00): completed Plan r2 implementation 5b8013c9b67debff0b080da563781a39f6e69f74 is verified on origin/main after the original staged/exact-commit gates. This update is publication evidence only; full audit remains deferred and hosted CI is separate.
+
 当前交付（2026-10-20）：Plan r2的三项增强已实现，原检查与手工场景完成，全局视图及1.7.2 Unreleased元数据同步。全量上游审读按用户决定延后，不再是本批依赖；下文原r1顺序和准备记录为历史。实际结果及失败修正见当前Task/evidence。
 
 ## Earlier continuation records (historical)

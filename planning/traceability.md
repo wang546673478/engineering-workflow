@@ -1,5 +1,7 @@
 # Issue 22 enhancement Spec traceability (current)
 
+Source upload receipt (2026-10-20T17:52:35.783179+08:00): REQ/AT-ISSUE22-E01..E10 local implementation 5b8013c9b67debff0b080da563781a39f6e69f74 is uploaded and exact-tree local checks pass. Full SOURCE audit remains incomplete/deferred; receipt-only updates do not extend semantic or hosted-validation scope.
+
 当前实现：BASELINE-ISSUE22-02 ← 原Spec r1 / Plan r2的三项增强已完成，E01..E10按所列S22场景与原门槛核对通过。SOURCE全量审读依最新用户指令延后，与本批交付范围分开；不冒称已审。
 
 历史状态（阶段性报告时，2026-10-20）：用户明确当前文件读完即先报告。全量SOURCE审读暂缓且未完成；已有证据支持三项兼容增强建议，但E01..E10均尚未实施或验收。本次阶段性结论见[assessment](issue-22-assessment.md)，不冒充原完整调查完成。

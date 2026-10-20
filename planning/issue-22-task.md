@@ -6,7 +6,7 @@
 - 实际完成范围：原实施指引的缺陷证据、原交付收敛的差异分类与回流、原访谈指引的可选EARS/Given–When–Then示例，以及两个原模板、短入口和B/M/C/F/追踪/版本同步。
 - 授权原话：“那就按照这个增强的文档去实施”。结合此前“不要全部读完了，先看看哪些可以借鉴”，全量上游审读继续暂缓，不再作为本批依赖；它没有被标为完成。原更早的“先审后改”顺序保留为历史。
 - 当前链路：输入BASELINE-ISSUE22-01 / source868e496 → 冻结SPEC-ISSUE22-ENHANCEMENT-01 r1 → PLAN-ISSUE22-ENHANCEMENT-01 r2 → T22-01及T22-08..16 → 当前BASELINE-ISSUE22-02。
-- 当前下一步：用户已明确“提交到githb”；本批内容冻结，运行原commit/committed门禁后推送现有GitHub仓库main。全局安装、标签/Release、Issue回复和完整审读不在本次提交范围。
+- 当前下一步：向用户交付本次GitHub源提交回执；源码已上传main，托管CI独立记录，完整审读及全局安装继续暂缓。
 
 ## 实现与验收
 
@@ -212,3 +212,9 @@ REQ-ISSUE22-E01..E10 / AT-ISSUE22-E01..E10的逐项关系见[traceability](trace
 
 - 2026-10-20T17:45:26.764834+08:00：暂存检查发现原未跟踪Spec/Plan顶部的Markdown硬换行尾空格；已只移除尾空格，修正前后按空白规范化的文本tokens完全一致，需求/验收及审批语义不变。Spec r1原审核全文和原SHA保留在evidence.spec_format_correction，当前格式SHA单独登记，不谎称原始字节哈希未变。
 - 已取消旧暂存检查，随后对修正后的真实暂存树重新运行原提交门禁；未降低git diff --check或任何原必需命令。
+
+## GitHub源提交回执
+
+- 2026-10-20T17:52:35.783179+08:00：1.7.2增强源码已普通推送到现有main，远程查询确认source `5b8013c9b67debff0b080da563781a39f6e69f74`，tree `7c0c112192ea337ab4515113c4c342375924e497`。
+- [GitHub提交](https://github.com/wang546673478/engineering-workflow/commit/5b8013c9b67debff0b080da563781a39f6e69f74)；原staged与exact committed门禁全部通过，且verified_tree与实际Git tree一致。报告及hash保留在evidence.github_submission.receipt；没有复用历史任务批准。
+- 托管CI状态不由本地检查担保；没有创建标签/Release、安装全局skill或恢复完整上游审读。本次回执只改记录与状态，交付内容/版本未变，不再升版。

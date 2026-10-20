@@ -104,7 +104,7 @@
       "status": "deferred_by_user_interim_report"
     }
   ],
-  "status": "local_three_enhancements_complete_upstream_audit_deferred",
+  "status": "three_enhancements_uploaded_source_verified_ci_separate",
   "upstream_project_code_executed": false,
   "upstream_runtime_tests": "not_run",
   "full_semantic_review": "not_complete",
@@ -1367,7 +1367,7 @@
       "engineering-manifest.json task/impact/authorization records"
     ],
     "policy_effect": "No change to required commands/timeouts, control-plane protection, schema, stages, exception paths or approval meanings; task impact gates cover actual guidance paths",
-    "status": "authorized_preparing_submission",
+    "status": "source_uploaded_to_main",
     "formatting_correction": "Spec r1/Plan whitespace cleanup only; reviewed Spec text/hash archived in evidence, normalized text tokens identical",
     "staging_preflight": {
       "changed_paths": 24,
@@ -1376,6 +1376,30 @@
       "original_required_policy": "unchanged",
       "guidance_fingerprint": "unchanged",
       "spec_semantics": "unchanged; reviewed bytes archived"
+    },
+    "receipt": {
+      "recorded_at": "2026-10-20T17:52:35.783179+08:00",
+      "source_commit": "5b8013c9b67debff0b080da563781a39f6e69f74",
+      "source_tree": "7c0c112192ea337ab4515113c4c342375924e497",
+      "remote_main": "5b8013c9b67debff0b080da563781a39f6e69f74",
+      "url": "https://github.com/wang546673478/engineering-workflow/commit/5b8013c9b67debff0b080da563781a39f6e69f74",
+      "staged_check": {
+        "path": "work/issue-22-review/github-staged-check-v2.json",
+        "sha256": "c0f00fec290458308478cf9c4a2ffc02f04eb79bc517f7d36100c55f50361a5a",
+        "required_checks_satisfied": true,
+        "verified_tree": "7c0c112192ea337ab4515113c4c342375924e497"
+      },
+      "committed_check": {
+        "path": "work/issue-22-review/github-committed-check.json",
+        "sha256": "0dd414ca9ab8438a03118045f7669d85fd81cb664a8f710d0a4c48097bcd37c0",
+        "required_checks_satisfied": true,
+        "verified_tree": "7c0c112192ea337ab4515113c4c342375924e497",
+        "verification_head": "5b8013c9b67debff0b080da563781a39f6e69f74"
+      },
+      "hosted_ci": "not_certified_by_local_checks",
+      "release_or_tag_created": false,
+      "global_installation_updated": false,
+      "receipt_only_no_version_bump": "Publication evidence and current status only; delivered guidance/metadata unchanged"
     }
   },
   "spec_format_correction": {

@@ -1,5 +1,7 @@
 # Current specification for review: SPEC-ISSUE22-ENHANCEMENT-01
 
+Source upload receipt (2026-10-20T17:52:35.783179+08:00): the unchanged three-enhancement scope is uploaded as 5b8013c9b67debff0b080da563781a39f6e69f74. The original reviewed Spec bytes/hash and the formatting-only current copy are linked in Task/evidence; no goal or acceptance change and no new version for this receipt.
+
 当前交付（2026-10-20）：Spec r1正文冻结，用户明确授权实施三项增强，现已实现并完成原本地检查及有界手工场景；版本1.7.2 / Unreleased，现状BASELINE-ISSUE22-02。全量来源审读延后，不转为完成；原Spec草稿状态及早期顺序在下文保留为历史，当前批准/完成证据见Task/manifest。
 
 ## Earlier continuation records (historical)
