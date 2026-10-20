@@ -44,6 +44,31 @@ Keep the whole-system baseline review and the complete implementation proposal a
 
 Baseline review accepts the source/worktree version, scope, main findings and stated limits. The agent owns technical and semantic investigation; do not ask the user to guarantee field-level facts or production correctness. The baseline stays current after acceptance: evidence-based factual corrections proceed autonomously, while invalidated product decisions or implementation premises reopen only the affected review under [project-documentation.md](project-documentation.md#continuous-correction).
 
+## Optional requirement and acceptance examples
+
+EARS can help make a requirement's conditions and observable response explicit. Use it when it improves an entry, or keep the project's existing prose, Chinese, tables and other formats. Historical requirements need no conversion, and English keywords such as SHALL are not required. These synthetic examples explain notation only; their product rules are candidates until actually confirmed for the project:
+
+| EARS type | Chinese equivalent and example |
+| --- | --- |
+| Ubiquitous / 始终型 | 系统应当……；例如：系统应以 UTF-8 编码保存文本记录。 |
+| Event-driven / 事件型 | 当……发生时，系统应当……；例如：当用户提交空输入时，系统应显示校验提示。 |
+| State-driven / 状态型 | 在……状态期间，系统应当……；例如：在只读状态期间，系统应禁用保存操作。 |
+| Unwanted behavior / 异常型 | 如果……异常发生，那么系统应当……；例如：如果保存时网络中断，那么系统应保留当前输入并提示重试。 |
+| Optional feature / 可选型 | 在启用……能力的情况下，系统应当……；例如：在启用导出能力的情况下，系统应提供导出入口。 |
+| Combined / 组合型 | 明确组合的条件与响应；例如：在启用批量导入能力且处于编辑状态期间，当用户提交空文件时，系统应显示校验提示。 |
+
+The ubiquitous form legitimately has no separate trigger. A well-formed sentence does not prove that a rule is complete, correct or approved. Retain the entry's source, candidate/confirmed/deferred state and the existing review/implementation distinction.
+
+Given–When–Then can describe acceptance as a precondition, action and observable result. For a project-confirmed empty-input rule, an illustrative entry using that project's own requirement/acceptance IDs could read:
+
+> Given / 已知：当前输入为空，且尚未保存记录。
+>
+> When / 当：用户提交输入。
+>
+> Then / 那么：显示校验提示，不新增无效记录。
+
+Link the acceptance entry to its existing requirement ID; keep the original IDs, status and traceability. The example's “do not save” rule must also have a confirmed basis before adoption. This notation is readable acceptance, not an installed runner, executable test or passing result. It introduces no parser, lint gate, testing framework or mandatory record structure.
+
 ## Record
 
 Keep the current requirements and interview log in the project's existing planning artifacts, linking one authoritative location for each fact or decision. Do not put credentials, secrets, or private user data in them. When an answer changes scope, carry it into the affected Spec, Plan and Tasks before dependent implementation; keep target requirements separate from the current-system baseline.

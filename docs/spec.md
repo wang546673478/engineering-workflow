@@ -1,4 +1,32 @@
-# Current specification: SPEC-ADOPTION-LIFECYCLE-02
+# Current specification for review: SPEC-ISSUE22-ENHANCEMENT-01
+
+当前交付（2026-10-20）：Spec r1正文冻结，用户明确授权实施三项增强，现已实现并完成原本地检查及有界手工场景；版本1.7.2 / Unreleased，现状BASELINE-ISSUE22-02。全量来源审读延后，不转为完成；原Spec草稿状态及早期顺序在下文保留为历史，当前批准/完成证据见Task/manifest。
+
+## Earlier continuation records (historical)
+
+当前实现（2026-10-20）：Spec r1正文冻结，用户明确“那就按照这个增强的文档去实施”。三项增强现已写入原指引/模板，验证待完成；全量审读继续暂缓。现状见BASELINE-ISSUE22-02及当前Task，下文旧状态为历史。
+
+当前执行更新（2026-10-20）：用户要求当前文件读完先给阶段性结果，外部全量审读暂缓。Spec r1正文及原执行授权保留；三项增强尚未实施。当前范围与真实状态见[Task](../planning/issue-22-task.md)和[阶段性结论](../planning/issue-22-assessment.md)。下文保留原批准及顺序记录。
+
+The current review draft is [Spec：现有工程流程的三项增强](../planning/issue-22-spec.md), r1 / requirement basis for the explicitly authorized complete Plan execution, 2026-10-20. It defines defect evidence guidance, clearer existing delivery convergence and optional requirements/acceptance notation, with explicit preservation of the original workflow and applicable exceptions. Its ten requirements and acceptance entries are authoritative in that file, not duplicated here.
+
+The earlier Spec-preparation statement accepted the direction and requested a Spec for review; that statement did not approve the then-unseen draft, an implementation plan or publication. Source remains `868e4967512c2cd400307368d924291a3d4d8eef` / 1.7.1, input `BASELINE-ISSUE22-01`. Complete review of the five upstream repositories remains unfinished and independently recorded in [Task](../planning/issue-22-task.md). This draft does not certify or waive that work.
+
+Planning continuation: the subsequent request “写plan和task吧,对照全局基线” uses this exact Spec r1 to prepare [PLAN-ISSUE22-ENHANCEMENT-01](../planning/issue-22-plan.md) and T22-01..16. The Spec正文 and SHA256 remain unchanged; planning authorization is recorded in Task and does not silently approve implementation or alter requirement/acceptance boundaries.
+
+Implementation continuation: the user explicitly instructed “开始实现吧” for the presented complete Plan r1. The original SKILL treats this instruction as approval to execute its linked Spec r1 scope; there is no fabricated separate paragraph-by-paragraph review. Exact statement, scope and frozen-content hashes are recorded in the current Task/evidence. Upstream semantic review remains a prerequisite; publication is not authorized. The Spec body is preserved as the originally presented r1, including its historical draft-time status; current approval authority is this continuation and Task/manifest.
+
+## Prior assessment scope (retained)
+
+# Assessment scope: SPEC-ISSUE22-REVIEW-01
+
+2026-10-20; [Task](../planning/issue-22-task.md), [assessment](../planning/issue-22-assessment.md), factual input `BASELINE-ISSUE22-01` / source `868e496` / 1.7.1. User requests a whole-system judgment on Issue 22 while preserving the original workflow, and explicitly selects full review of all five referenced repositories by this agent alone. This authorizes investigation and its records. Proposed new features, checker modes and control changes are candidates until a concrete proposal is reviewed; historical adoption approval is not transferred.
+
+Requirements and acceptance `REQ-ISSUE22-REVIEW` / `AT-ISSUE22-REVIEW`, `REQ-ISSUE22-PARITY` / `AT-ISSUE22-PARITY`, `REQ-ISSUE22-SOURCE` / `AT-ISSUE22-SOURCE`, `REQ-ISSUE22-DECISION` / `AT-ISSUE22-DECISION` are authoritative in the Task. Full semantic upstream review remains in progress; inventory and AST coverage do not satisfy that requirement. No implementation specification is silently frozen from an Issue suggestion.
+
+## Prior implementation specification
+
+# Specification: SPEC-ADOPTION-LIFECYCLE-02
 
 Revision 02 incorporates the user constraint to preserve the original workflow and the instruction to test, upload passing source to GitHub, and update the local skill. Revision 01 is retained in Task history; new acceptance adds original-flow exceptions and no new review rounds. Exact scope and implementation state: [Task](../planning/adoption-lifecycle-task.md). This compatible revision adds a complete adoption entrypoint and lifecycle gates; it does not modify external adopted projects.
 

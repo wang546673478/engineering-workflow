@@ -1,5 +1,9 @@
 # Engineering Workflow Contracts
 
+## Issue 22 guidance compatibility
+
+The 1.7.2 guidance clarifies existing defect records and delivery checks, with optional EARS/Given–When–Then examples. It uses existing Task/Issue/impact/Spec records and IDs, preserving old formats and valid approvals. A sentence, template or structural check is not evidence of business correctness. It adds no CLI, schema field, stage, verdict protocol, approval round or required report; required checks retain their failure/skip/unsupported meanings. The command, installer, adapter, Git-state and control-plane contracts below are unchanged. Source-audit deferral is this maintenance task's user decision, not a new exception granted to other projects.
+
 ## Checker CLI
 
 

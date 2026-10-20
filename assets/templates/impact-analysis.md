@@ -37,6 +37,8 @@ Existing callers/consumers and reusable behavior:
 
 Validation, timeout, retry, duplicate request, partial failure, rollback, and recovery behavior:
 
+If this is a defect, optionally reference existing reproduction/environment/revision, cause evidence or hypotheses, fix scope and preserved behavior, before/after results and remaining verification limits. Use the skill's [defect evidence prompts](../../references/implementation-workflow.md#defect-evidence-within-the-existing-task) as applicable; no separate BUG file or completed form is required. When copying this template, point to the adopted skill's actual source for guidance.
+
 ## Plan
 
 Implementation owner and dependency direction:

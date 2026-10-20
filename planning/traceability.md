@@ -1,4 +1,42 @@
-# Current Adoption Lifecycle Traceability
+# Issue 22 enhancement Spec traceability (current)
+
+当前实现：BASELINE-ISSUE22-02 ← 原Spec r1 / Plan r2的三项增强已完成，E01..E10按所列S22场景与原门槛核对通过。SOURCE全量审读依最新用户指令延后，与本批交付范围分开；不冒称已审。
+
+历史状态（阶段性报告时，2026-10-20）：用户明确当前文件读完即先报告。全量SOURCE审读暂缓且未完成；已有证据支持三项兼容增强建议，但E01..E10均尚未实施或验收。本次阶段性结论见[assessment](issue-22-assessment.md)，不冒充原完整调查完成。
+
+2026-10-20; `BASELINE-ISSUE22-01` → [SPEC-ISSUE22-ENHANCEMENT-01](issue-22-spec.md)（r1正文保持）→ [PLAN-ISSUE22-ENHANCEMENT-01](issue-22-plan.md)（r1，按用户请求编写）→ [TASK-ISSUE-22-REVIEW / T22-01..16](issue-22-task.md#可执行任务与进度)。用户最新明确“那就按照这个增强的文档去实施”，按Plan r2完成三项本地增强及原验证；完整外部审读延后。
+
+| Requirement | Acceptance | Plan / Task | Current evidence / status |
+| --- | --- | --- | --- |
+| REQ-ISSUE22-E01 | AT-ISSUE22-E01 | P22-01,03..07 / T22-01,08..13 | 原阶段、审批、例外、授权、验证合同保持；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E02 | AT-ISSUE22-E02 | P22-03,06 / T22-08,11,13 | 原记录中的按需缺陷证据；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E03 | AT-ISSUE22-E03 | P22-03,07 / T22-08,13 | 修复结论对应真实证据及限制；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E04 | AT-ISSUE22-E04 | P22-03,07 / T22-08,13 | 按影响验证，复用测试与小修边界；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E05 | AT-ISSUE22-E05 | P22-04,06 / T22-09,11..13 | 本批双向核对，未来/延后范围保持；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E06 | AT-ISSUE22-E06 | P22-04,07 / T22-09,13 | 差异回流 Baseline/Plan/Task/Spec 的原归属；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E07 | AT-ISSUE22-E07 | P22-05,06 / T22-10,11,13 | 可选 EARS 与中文/旧格式兼容；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E08 | AT-ISSUE22-E08 | P22-05,06 / T22-10,11,13 | 可选验收句式、保留原 ID/追踪；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E09 | AT-ISSUE22-E09 | P22-01..02,06..08 / T22-01..07,11..16 | 全局接入、旧工件及工具合同兼容；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+| REQ-ISSUE22-E10 | AT-ISSUE22-E10 | P22-01..02,06..08 / T22-01..07,11..16 | 实际受影响资料与验证一致；已实施；对应S22手工场景核对与原正式检查通过，范围/局限见Task |
+
+外部来源独立任务：REQ/AT-ISSUE22-SOURCE → P22-02 / T22-02..06；REQ/AT-ISSUE22-DECISION → P22-02,08 / T22-07,16。全部调查不因Plan编写改为完成。场景S22-01..10与B22-01..10依据见Plan，不额外新建需求或验收体系。
+
+## Prior assessment traceability (investigation incomplete)
+
+# Issue 22 assessment traceability
+
+2026-10-20; `BASELINE-ISSUE22-01` → `SPEC-ISSUE22-REVIEW-01` → `PLAN-ISSUE22-REVIEW-01` → [TASK-ISSUE-22-REVIEW](issue-22-task.md) → [assessment](issue-22-assessment.md). Source `868e496` / 1.7.1. Prior implementation rows below retain their original scope.
+
+| Requirement | Acceptance | Plan action | Current evidence / status |
+| --- | --- | --- | --- |
+| REQ-ISSUE22-REVIEW | AT-ISSUE22-REVIEW | 1, 3 | Open Issue retrieved; local source/critical upstream claims checked; absence claims corrected |
+| REQ-ISSUE22-PARITY | AT-ISSUE22-PARITY | 3, 4 | Candidate preserves original nodes/exceptions; no new gate or skill change implemented |
+| REQ-ISSUE22-SOURCE | AT-ISSUE22-SOURCE | 2 | All 3,601 tracked files inventoried; 3,543 complete text files collected; full per-file semantic review incomplete |
+| REQ-ISSUE22-DECISION | AT-ISSUE22-DECISION | 4, 5 | Source-bound provisional assessment exists; final adoption decision depends on remaining semantic review |
+
+## Prior task traceability
+
+# Adoption Lifecycle Traceability
 
 Revision `TRACE-ADOPTION-LIFECYCLE-02`: `BASELINE-ADOPTION-LIFECYCLE-02` → `SPEC-ADOPTION-LIFECYCLE-02` → `PLAN-ADOPTION-LIFECYCLE-02` → `TASK-ADOPTION-LIFECYCLE-01`.
 

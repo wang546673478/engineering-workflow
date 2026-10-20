@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.7.1
+  version: 1.7.2
 ---
 
 # 代码工程工作流
@@ -69,7 +69,7 @@ Global Baseline、Spec、Technical Plan 和 Task 是一组有版本边界的联�
 
 1. **先探索。** 查启动入口、依赖、路由、迁移、接口、测试、后台任务与项目规则。恢复已有 Spec、架构、模块地图、契约、数据字典、进度和当前 Plan/Task。
 2. **先检查可用 skills。** 每个任务开始时读取宿主提供的可用 skill 清单（例如会话 Skills catalog、插件/工具注册表或项目规定的清单），按任务目标筛选候选，阅读候选的 `SKILL.md` 及其适用的引用资料。把候选的名称/标识、来源路径或 URI、可见版本或发布日期、检查时间、采用或不采用的决定和理由写入 Task 的 `skill_review`；没有适用候选、清单不可用或 skill 不可读取时也要记录范围和证据。技能清单变化或任务范围变化时重新检查。
-3. **按规模进入。** 先判断上述接管阶段是否适用，再进入新项目与重大功能的完整访谈和规划；小修复按既定需求进行影响分析；跨层修改追踪全链，但不重开已解决的访谈。缺陷先复现并定位。中断后继续记录的阶段。
+3. **按规模进入。** 先判断上述接管阶段是否适用，再进入新项目与重大功能的完整访谈和规划；小修复按既定需求进行影响分析；跨层修改追踪全链，但不重开已解决的访谈。缺陷先复现并定位，按[原任务中的缺陷证据](references/implementation-workflow.md#defect-evidence-within-the-existing-task)连接原因、保持行为与前后验证，不新增固定表单或诊断批准。中断后继续记录的阶段。
 4. **每次只问一个问题。** 只问源码和资料无法回答的产品决策，根据最新回答追问。把“95%”落实为目标、用户、范围、规则、数据关系、失败行为、约束和验收清楚，无高影响未决问题；不声称测得理解概率。
 5. **规划先于编码。** 形成或更新联动的 Baseline、Spec、Plan、Task。新项目与重大功能由用户确认完整方案后编码；明确要求实施已给出的完整计划即为批准，不重复询问。首次接管缺文档项目的全局基线须在深入功能访谈前完成并经用户审阅确认，不能拖到编码前才补。实际模式与模型由宿主控制，本技能不能切换 Plan Mode。
 6. **改前分析。** 追踪页面/客户端操作 → 接口契约 → 后端权限与业务处理 → 数据库/缓存/事件 → 消费者及页面更新。检索现有能力，明确负责模块和读写权威，再决定扩展或替换。记录权限、表字段、迁移、兼容、恢复、测试和文档影响。
@@ -116,9 +116,9 @@ CHANGELOG 说明本批新增、修复、行为变化及适用的兼容/迁移影
 
 ## 按阶段读取
 
-- 访谈与准备标准：[requirements-interview.md](references/requirements-interview.md)。
+- 访谈与准备标准，以及可选 EARS / Given–When–Then 示例：[requirements-interview.md](references/requirements-interview.md)。
 - 全局文档、前后端联动、逐表逐字段与现状/目标区分：[project-documentation.md](references/project-documentation.md)。
-- 全局基线与 Spec/Plan/Task 版本、引用、回流和收敛：[baseline-linked-artifacts.md](references/baseline-linked-artifacts.md)。
+- 全局基线与 Spec/Plan/Task 版本、引用、回流，以及本批差异的收敛核对：[baseline-linked-artifacts.md](references/baseline-linked-artifacts.md)。
 - 修改、恢复、变更、迁移与交付：[implementation-workflow.md](references/implementation-workflow.md)。
 - 项目必读规则及接入条款：[project-agents-clauses.md](references/project-agents-clauses.md)。
 - 清单、检查工具、结果与能力限制：[checker.md](references/checker.md)。

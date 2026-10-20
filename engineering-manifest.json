@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "SPEC",
-    "active_plan": "PLAN",
-    "active_task": "TASK-ADOPTION-LIFECYCLE-01"
+    "active_spec": "ISSUE22_SPEC",
+    "active_plan": "ISSUE22_PLAN",
+    "active_task": "TASK-ISSUE-22-REVIEW"
   },
   "documents": [
     {
@@ -179,6 +179,36 @@
       "id": "ADOPTION_VERIFICATION",
       "path": "planning/adoption-lifecycle-verification.json",
       "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "ISSUE22_TASK",
+      "path": "planning/issue-22-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ISSUE22_ASSESSMENT",
+      "path": "planning/issue-22-assessment.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "ISSUE22_EVIDENCE",
+      "path": "planning/issue-22-evidence.json",
+      "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "ISSUE22_SPEC",
+      "path": "planning/issue-22-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "ISSUE22_PLAN",
+      "path": "planning/issue-22-plan.md",
+      "kind": "plan",
       "required": true
     }
   ],
@@ -421,6 +451,62 @@
       "id": "REQ-ADOPTION-PARITY",
       "document": "SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE22-REVIEW",
+      "document": "ISSUE22_TASK"
+    },
+    {
+      "id": "REQ-ISSUE22-PARITY",
+      "document": "ISSUE22_TASK"
+    },
+    {
+      "id": "REQ-ISSUE22-SOURCE",
+      "document": "ISSUE22_TASK"
+    },
+    {
+      "id": "REQ-ISSUE22-DECISION",
+      "document": "ISSUE22_TASK"
+    },
+    {
+      "id": "REQ-ISSUE22-E01",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E02",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E03",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E04",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E05",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E06",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E07",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E08",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E09",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE22-E10",
+      "document": "ISSUE22_SPEC"
     }
   ],
   "acceptance": [
@@ -662,6 +748,62 @@
       "id": "AT-ADOPTION-PARITY",
       "document": "SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE22-REVIEW",
+      "document": "ISSUE22_TASK"
+    },
+    {
+      "id": "AT-ISSUE22-PARITY",
+      "document": "ISSUE22_TASK"
+    },
+    {
+      "id": "AT-ISSUE22-SOURCE",
+      "document": "ISSUE22_TASK"
+    },
+    {
+      "id": "AT-ISSUE22-DECISION",
+      "document": "ISSUE22_TASK"
+    },
+    {
+      "id": "AT-ISSUE22-E01",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E02",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E03",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E04",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E05",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E06",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E07",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E08",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E09",
+      "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE22-E10",
+      "document": "ISSUE22_SPEC"
     }
   ],
   "modules": [
@@ -2765,6 +2907,975 @@
         "task": "TASK-ADOPTION-LIFECYCLE-01"
       },
       "hosted_status": "ubuntu_original_pass_windows_original_fail"
+    },
+    {
+      "id": "TASK-ISSUE-22-REVIEW",
+      "requirement_ids": [
+        "REQ-ISSUE22-REVIEW",
+        "REQ-ISSUE22-PARITY",
+        "REQ-ISSUE22-DECISION",
+        "REQ-ISSUE22-E01",
+        "REQ-ISSUE22-E02",
+        "REQ-ISSUE22-E03",
+        "REQ-ISSUE22-E04",
+        "REQ-ISSUE22-E05",
+        "REQ-ISSUE22-E06",
+        "REQ-ISSUE22-E07",
+        "REQ-ISSUE22-E08",
+        "REQ-ISSUE22-E09",
+        "REQ-ISSUE22-E10"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUE22-REVIEW",
+        "AT-ISSUE22-PARITY",
+        "AT-ISSUE22-DECISION",
+        "AT-ISSUE22-E01",
+        "AT-ISSUE22-E02",
+        "AT-ISSUE22-E03",
+        "AT-ISSUE22-E04",
+        "AT-ISSUE22-E05",
+        "AT-ISSUE22-E06",
+        "AT-ISSUE22-E07",
+        "AT-ISSUE22-E08",
+        "AT-ISSUE22-E09",
+        "AT-ISSUE22-E10"
+      ],
+      "module_ids": [
+        "instructions",
+        "checker",
+        "tests",
+        "governance",
+        "source-context"
+      ],
+      "depends_on": [],
+      "status": "complete",
+      "impact_document": "ISSUE22_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": false,
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "ISSUE22_SPEC",
+        "plan": "ISSUE22_PLAN",
+        "task": "ISSUE22_TASK",
+        "traceability": "TRACE",
+        "assessment": "ISSUE22_ASSESSMENT",
+        "verification": "ISSUE22_EVIDENCE",
+        "spec_index": "SPEC",
+        "plan_index": "PLAN"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and repository AGENTS.md",
+        "checked_at": "2026-10-20T17:37:14.093570+08:00",
+        "scope": "Submit the already implemented and validated local1.7.2 changes to GitHub; no new implementation scope",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.7.1 / 868e496",
+            "decision": "adopted",
+            "reason": "Explicit user invocation; authoritative project workflow and continuity",
+            "evidence": [
+              "SKILL.md",
+              "planning/issue-22-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Evaluate changes to existing skill without expanding its workflow",
+            "evidence": [
+              "planning/issue-22-task.md"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Existing manifest and linked artifacts are the single authority",
+            "evidence": [
+              "planning/issue-22-task.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No runtime program change or test-first request; guidance/template changes use planned scenarios and unchanged required regressions",
+            "evidence": [
+              "planning/issue-22-task.md"
+            ]
+          }
+        ],
+        "recheck": "Read current repository engineering-workflow1.7.2, checker/implementation submission contracts, active Task/Plan/Baseline and current host catalog. Engineering-workflow remains applicable; skill-creator guidance retained for the unchanged delivered skill. No new skill or delegation needed for Git submission.",
+        "evidence": "planning/issue-22-task.md"
+      },
+      "documentation_impact": {
+        "assessment-record": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "docs",
+            "planning"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "TRACE",
+            "ISSUE22_TASK"
+          ]
+        },
+        "enhancement-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "references/implementation-workflow.md",
+            "references/baseline-linked-artifacts.md",
+            "references/requirements-interview.md",
+            "assets/templates/spec-plan-task.md",
+            "assets/templates/impact-analysis.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents/openai.yaml"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "TRACE",
+            "ISSUE22_TASK"
+          ]
+        }
+      },
+      "implementation_status": "complete_for_authorized_three_enhancements",
+      "verification_status": "required_checks_pass_and_manual_scenarios_bounded",
+      "delivery_status": "github_submission_authorized_checks_pending",
+      "verification_evidence": "planning/issue-22-evidence.json",
+      "artifact_revisions": {
+        "baseline": "BASELINE-ISSUE22-02",
+        "spec": "SPEC-ISSUE22-ENHANCEMENT-01",
+        "plan": "PLAN-ISSUE22-ENHANCEMENT-01",
+        "task": "TASK-ISSUE-22-REVIEW"
+      },
+      "requirement_state": "spec_r1_basis_approved_by_explicit_complete_plan_implementation_instruction",
+      "spec_review": {
+        "status": "approved",
+        "revision": "SPEC-ISSUE22-ENHANCEMENT-01",
+        "draft": "r1",
+        "evidence": "planning/issue-22-task.md",
+        "scope": "Implement the three enhancements in the presented interim assessment and Spec r1 / Plan technical scope; exhaustive audit remains deferred and is not a prerequisite for this delivery slice",
+        "previous_status": "pending",
+        "recorded_at": "2026-10-20T16:55:18.904703+08:00",
+        "user_statement": "那就按照这个增强的文档去实施",
+        "basis": "SKILL.md: 明确要求实施已给出的完整计划即为批准，不重复询问",
+        "history": [
+          {
+            "status": "approved",
+            "revision": "SPEC-ISSUE22-ENHANCEMENT-01",
+            "draft": "r1",
+            "evidence": "planning/issue-22-task.md",
+            "scope": "Execute presented Plan r1 locally in dependency order, including single-agent full upstream review before guidance/template edits, original checks and factual/version synchronization",
+            "previous_status": "pending",
+            "recorded_at": "2026-10-20T14:51:42.551740+08:00",
+            "user_statement": "开始实现吧",
+            "basis": "SKILL.md: 明确要求实施已给出的完整计划即为批准，不重复询问"
+          }
+        ]
+      },
+      "implementation_authorization": {
+        "status": "approved",
+        "evidence": "planning/issue-22-task.md",
+        "scope": "Implement the three enhancements in the presented interim assessment and Spec r1 / Plan technical scope; exhaustive audit remains deferred and is not a prerequisite for this delivery slice",
+        "plan_revision": "PLAN-ISSUE22-ENHANCEMENT-01",
+        "previous_status": "pending",
+        "recorded_at": "2026-10-20T16:55:18.904703+08:00",
+        "user_statement": "那就按照这个增强的文档去实施",
+        "basis": "SKILL.md: 明确要求实施已给出的完整计划即为批准，不重复询问",
+        "history": [
+          {
+            "status": "approved",
+            "evidence": "planning/issue-22-task.md",
+            "scope": "Execute presented Plan r1 locally in dependency order, including single-agent full upstream review before guidance/template edits, original checks and factual/version synchronization",
+            "plan_revision": "PLAN-ISSUE22-ENHANCEMENT-01",
+            "previous_status": "pending",
+            "recorded_at": "2026-10-20T14:51:42.551740+08:00",
+            "user_statement": "开始实现吧",
+            "basis": "SKILL.md: 明确要求实施已给出的完整计划即为批准，不重复询问"
+          }
+        ]
+      },
+      "plan_review": {
+        "status": "approved",
+        "revision": "PLAN-ISSUE22-ENHANCEMENT-01",
+        "draft": "r2",
+        "evidence": "planning/issue-22-task.md",
+        "scope": "Implement the three enhancements in the presented interim assessment and Spec r1 / Plan technical scope; exhaustive audit remains deferred and is not a prerequisite for this delivery slice",
+        "previous_status": "pending",
+        "recorded_at": "2026-10-20T16:55:18.904703+08:00",
+        "user_statement": "那就按照这个增强的文档去实施",
+        "basis": "SKILL.md: 明确要求实施已给出的完整计划即为批准，不重复询问",
+        "history": [
+          {
+            "status": "approved",
+            "revision": "PLAN-ISSUE22-ENHANCEMENT-01",
+            "draft": "r1",
+            "evidence": "planning/issue-22-task.md",
+            "scope": "Execute presented Plan r1 locally in dependency order, including single-agent full upstream review before guidance/template edits, original checks and factual/version synchronization",
+            "previous_status": "pending",
+            "recorded_at": "2026-10-20T14:51:42.551740+08:00",
+            "user_statement": "开始实现吧",
+            "basis": "SKILL.md: 明确要求实施已给出的完整计划即为批准，不重复询问"
+          }
+        ]
+      },
+      "plan_items": [
+        {
+          "id": "P22-01",
+          "baseline_facts": [
+            "B22-01",
+            "B22-02",
+            "B22-03",
+            "B22-04",
+            "B22-05",
+            "B22-06",
+            "B22-07",
+            "B22-08",
+            "B22-09"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "evidence": "planning/issue-22-plan.md"
+        },
+        {
+          "id": "P22-02",
+          "baseline_facts": [
+            "B22-10"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "evidence": "planning/issue-22-plan.md"
+        },
+        {
+          "id": "P22-03",
+          "baseline_facts": [
+            "B22-02",
+            "B22-07"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E02",
+            "REQ-ISSUE22-E03",
+            "REQ-ISSUE22-E04"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E02",
+            "AT-ISSUE22-E03",
+            "AT-ISSUE22-E04"
+          ],
+          "evidence": "planning/issue-22-plan.md"
+        },
+        {
+          "id": "P22-04",
+          "baseline_facts": [
+            "B22-03",
+            "B22-08"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E05",
+            "REQ-ISSUE22-E06"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E05",
+            "AT-ISSUE22-E06"
+          ],
+          "evidence": "planning/issue-22-plan.md"
+        },
+        {
+          "id": "P22-05",
+          "baseline_facts": [
+            "B22-04"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E07",
+            "REQ-ISSUE22-E08"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E07",
+            "AT-ISSUE22-E08"
+          ],
+          "evidence": "planning/issue-22-plan.md"
+        },
+        {
+          "id": "P22-06",
+          "baseline_facts": [
+            "B22-01",
+            "B22-02",
+            "B22-03",
+            "B22-04",
+            "B22-05",
+            "B22-06",
+            "B22-07",
+            "B22-08"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E02",
+            "REQ-ISSUE22-E05",
+            "REQ-ISSUE22-E07",
+            "REQ-ISSUE22-E08",
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E02",
+            "AT-ISSUE22-E05",
+            "AT-ISSUE22-E07",
+            "AT-ISSUE22-E08",
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "evidence": "planning/issue-22-plan.md"
+        },
+        {
+          "id": "P22-07",
+          "baseline_facts": [
+            "B22-01",
+            "B22-02",
+            "B22-03",
+            "B22-04",
+            "B22-05",
+            "B22-06",
+            "B22-07",
+            "B22-08"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E02",
+            "REQ-ISSUE22-E03",
+            "REQ-ISSUE22-E04",
+            "REQ-ISSUE22-E05",
+            "REQ-ISSUE22-E06",
+            "REQ-ISSUE22-E07",
+            "REQ-ISSUE22-E08",
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E02",
+            "AT-ISSUE22-E03",
+            "AT-ISSUE22-E04",
+            "AT-ISSUE22-E05",
+            "AT-ISSUE22-E06",
+            "AT-ISSUE22-E07",
+            "AT-ISSUE22-E08",
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "evidence": "planning/issue-22-plan.md"
+        },
+        {
+          "id": "P22-08",
+          "baseline_facts": [
+            "B22-07",
+            "B22-09"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "evidence": "planning/issue-22-plan.md"
+        }
+      ],
+      "execution_steps": [
+        {
+          "id": "T22-01",
+          "plan_item": "P22-01",
+          "depends_on": [],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": false,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation"
+        },
+        {
+          "id": "T22-08",
+          "plan_item": "P22-03",
+          "depends_on": [
+            "T22-01"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E02",
+            "REQ-ISSUE22-E03",
+            "REQ-ISSUE22-E04"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E02",
+            "AT-ISSUE22-E03",
+            "AT-ISSUE22-E04"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation",
+          "original_depends_on": [
+            "T22-07"
+          ]
+        },
+        {
+          "id": "T22-09",
+          "plan_item": "P22-04",
+          "depends_on": [
+            "T22-01"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E05",
+            "REQ-ISSUE22-E06"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E05",
+            "AT-ISSUE22-E06"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation",
+          "original_depends_on": [
+            "T22-07"
+          ]
+        },
+        {
+          "id": "T22-10",
+          "plan_item": "P22-05",
+          "depends_on": [
+            "T22-01"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E07",
+            "REQ-ISSUE22-E08"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E07",
+            "AT-ISSUE22-E08"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation",
+          "original_depends_on": [
+            "T22-07"
+          ]
+        },
+        {
+          "id": "T22-11",
+          "plan_item": "P22-06",
+          "depends_on": [
+            "T22-08",
+            "T22-09",
+            "T22-10"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E02",
+            "REQ-ISSUE22-E05",
+            "REQ-ISSUE22-E07",
+            "REQ-ISSUE22-E08",
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E02",
+            "AT-ISSUE22-E05",
+            "AT-ISSUE22-E07",
+            "AT-ISSUE22-E08",
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation"
+        },
+        {
+          "id": "T22-12",
+          "plan_item": "P22-06",
+          "depends_on": [
+            "T22-08",
+            "T22-09",
+            "T22-10",
+            "T22-11"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E02",
+            "REQ-ISSUE22-E05",
+            "REQ-ISSUE22-E07",
+            "REQ-ISSUE22-E08",
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E02",
+            "AT-ISSUE22-E05",
+            "AT-ISSUE22-E07",
+            "AT-ISSUE22-E08",
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation"
+        },
+        {
+          "id": "T22-13",
+          "plan_item": "P22-07",
+          "depends_on": [
+            "T22-11",
+            "T22-12"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E01",
+            "REQ-ISSUE22-E02",
+            "REQ-ISSUE22-E03",
+            "REQ-ISSUE22-E04",
+            "REQ-ISSUE22-E05",
+            "REQ-ISSUE22-E06",
+            "REQ-ISSUE22-E07",
+            "REQ-ISSUE22-E08",
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E01",
+            "AT-ISSUE22-E02",
+            "AT-ISSUE22-E03",
+            "AT-ISSUE22-E04",
+            "AT-ISSUE22-E05",
+            "AT-ISSUE22-E06",
+            "AT-ISSUE22-E07",
+            "AT-ISSUE22-E08",
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation"
+        },
+        {
+          "id": "T22-14",
+          "plan_item": "P22-08",
+          "depends_on": [
+            "T22-12",
+            "T22-13"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation"
+        },
+        {
+          "id": "T22-15",
+          "plan_item": "P22-08",
+          "depends_on": [
+            "T22-13",
+            "T22-14"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation"
+        },
+        {
+          "id": "T22-16",
+          "plan_item": "P22-08",
+          "depends_on": [
+            "T22-08",
+            "T22-09",
+            "T22-10",
+            "T22-11",
+            "T22-12",
+            "T22-13",
+            "T22-14",
+            "T22-15"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10"
+          ],
+          "status": "complete",
+          "implementation_authorization_required": true,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": "planning/issue-22-evidence.json#enhancement_implementation",
+          "original_depends_on": [
+            "T22-07",
+            "T22-08",
+            "T22-09",
+            "T22-10",
+            "T22-11",
+            "T22-12",
+            "T22-13",
+            "T22-14",
+            "T22-15"
+          ]
+        }
+      ],
+      "plan_basis": {
+        "baseline_revision": "BASELINE-ISSUE22-01",
+        "source_revision": "868e4967512c2cd400307368d924291a3d4d8eef",
+        "spec_revision": "SPEC-ISSUE22-ENHANCEMENT-01",
+        "spec_sha256": "00e44fc739266776bd98e7d8e59908b4362f2ae4ab16c48d318c14f52fa7a457",
+        "remaining_upstream_files": 3177,
+        "upstream_review_complete": false,
+        "execution_revision": "r2",
+        "source_audit_required_for_current_delivery": false,
+        "spec_formatted_sha256": "9c7e6cf768e53e3f6884fe53d9c61144d6cac83e2cff0e995cd665ac9f1ee1ac"
+      },
+      "source_review_progress": {
+        "checked_at": "2026-10-20T17:27:04.644555+08:00",
+        "active_step": "local_enhancement_delivery_complete",
+        "source_reading_status": "deferred_by_user",
+        "body_reviewed_files": 366,
+        "remaining_text_files": 3177,
+        "full_semantic_review_complete": false,
+        "guidance_edits_started": true,
+        "next_action": "Deliver the local 1.7.2 changes; keep full audit deferred, global installation and publication unchanged"
+      },
+      "execution_order_confirmation": {
+        "recorded_at": "2026-10-20T15:09:26.329215+08:00",
+        "user_statement": "保持原顺序，先审完五仓库再实现",
+        "scope": "Complete all five repositories by single agent before enhancement edits; no reduced scope or sequence waiver",
+        "evidence": "planning/issue-22-task.md"
+      },
+      "current_execution_directive": {
+        "recorded_at": "2026-10-20T16:55:18.904703+08:00",
+        "user_statement": "那就按照这个增强的文档去实施",
+        "scope": "Implement the three enhancements in the presented interim assessment and Spec r1 / Plan technical scope; exhaustive audit remains deferred and is not a prerequisite for this delivery slice",
+        "spec_revision": "SPEC-ISSUE22-ENHANCEMENT-01 / r1",
+        "plan_revision": "PLAN-ISSUE22-ENHANCEMENT-01 / r2",
+        "source_revision": "868e4967512c2cd400307368d924291a3d4d8eef",
+        "single_agent": true,
+        "publication_or_global_installation_authorized": false,
+        "before_snapshot": "work/issue-22-review/before-enhancement",
+        "spec_sha256": "00e44fc739266776bd98e7d8e59908b4362f2ae4ab16c48d318c14f52fa7a457"
+      },
+      "delivery_slice": {
+        "scope": "three compatible guidance enhancements only",
+        "implementation": "complete",
+        "verification": "pass_with_recorded_limits",
+        "full_upstream_audit": "deferred_by_user_not_completed",
+        "version": "1.7.2 / Unreleased"
+      },
+      "deferred_requirement_ids": [
+        "REQ-ISSUE22-SOURCE"
+      ],
+      "deferred_acceptance_ids": [
+        "AT-ISSUE22-SOURCE"
+      ],
+      "deferred_execution_steps": [
+        {
+          "id": "T22-02",
+          "plan_item": "P22-02",
+          "depends_on": [
+            "T22-01"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-SOURCE"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-SOURCE"
+          ],
+          "status": "in_progress",
+          "implementation_authorization_required": false,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": null,
+          "execution_disposition": "deferred_by_user_interim_report_first"
+        },
+        {
+          "id": "T22-03",
+          "plan_item": "P22-02",
+          "depends_on": [
+            "T22-01"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-SOURCE"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-SOURCE"
+          ],
+          "status": "pending",
+          "implementation_authorization_required": false,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": null,
+          "execution_disposition": "deferred_by_user_interim_report_first"
+        },
+        {
+          "id": "T22-04",
+          "plan_item": "P22-02",
+          "depends_on": [
+            "T22-01"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-SOURCE"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-SOURCE"
+          ],
+          "status": "pending",
+          "implementation_authorization_required": false,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": null,
+          "execution_disposition": "deferred_by_user_interim_report_first"
+        },
+        {
+          "id": "T22-05",
+          "plan_item": "P22-02",
+          "depends_on": [
+            "T22-01"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-SOURCE"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-SOURCE"
+          ],
+          "status": "pending",
+          "implementation_authorization_required": false,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": null,
+          "execution_disposition": "deferred_by_user_interim_report_first"
+        },
+        {
+          "id": "T22-06",
+          "plan_item": "P22-02",
+          "depends_on": [
+            "T22-01"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-SOURCE"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-SOURCE"
+          ],
+          "status": "pending",
+          "implementation_authorization_required": false,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": null,
+          "execution_disposition": "deferred_by_user_interim_report_first"
+        },
+        {
+          "id": "T22-07",
+          "plan_item": "P22-02",
+          "depends_on": [
+            "T22-02",
+            "T22-03",
+            "T22-04",
+            "T22-05",
+            "T22-06"
+          ],
+          "requirement_ids": [
+            "REQ-ISSUE22-E09",
+            "REQ-ISSUE22-E10",
+            "REQ-ISSUE22-DECISION"
+          ],
+          "acceptance_ids": [
+            "AT-ISSUE22-E09",
+            "AT-ISSUE22-E10",
+            "AT-ISSUE22-DECISION"
+          ],
+          "status": "pending",
+          "implementation_authorization_required": false,
+          "owner": "single_agent",
+          "affected_baseline_views": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW"
+          ],
+          "detail_document": "planning/issue-22-task.md",
+          "completion_evidence": null,
+          "execution_disposition": "deferred_by_user_interim_report_first"
+        }
+      ],
+      "publication_authorization": {
+        "recorded_at": "2026-10-20T17:37:14.093570+08:00",
+        "user_statement": "提交到githb",
+        "scope": "Commit the delivered local1.7.2 three-enhancement changes and supporting records, run original staged/exact-commit gates and push to the existing GitHub repository main; do not install globally, tag a release or message issues",
+        "basis": "Explicit submission instruction immediately after completed 1.7.2 delivery summary and reviewable local diff/Task",
+        "reviewed_delivery_sha256": "aa0ba37fbfa345c10f48ee2c815205f60b312f14bea19f2f2f4404efce3e5221",
+        "target": "https://github.com/wang546673478/engineering-workflow.git",
+        "target_ref": "refs/heads/main",
+        "remote_main_at_start": "868e4967512c2cd400307368d924291a3d4d8eef",
+        "changed_protected_content": [
+          "SKILL.md guidance entry/metadata",
+          "VERSION",
+          "CHANGELOG.md",
+          "engineering-manifest.json task/impact/authorization records"
+        ],
+        "policy_effect": "No change to required commands/timeouts, control-plane protection, schema, stages, exception paths or approval meanings; task impact gates cover actual guidance paths",
+        "status": "authorized_preparing_submission",
+        "formatting_correction": "Spec r1/Plan whitespace cleanup only; reviewed Spec text/hash archived in evidence, normalized text tokens identical"
+      }
     }
   ],
   "control_plane": {
@@ -2794,8 +3905,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "c15b94397314b8e84b3ee94877267f8245c3351c (1.7.0 implementation); receipt updates evidence/status only",
-    "scope": "Original-flow-preserving adoption and declaration checks; BASELINE-ADOPTION-LIFECYCLE-02"
+    "source_revision": "868e496 + 1.7.2 Unreleased working tree; delivery_sha256 aa0ba37fbfa345c10f48ee2c815205f60b312f14bea19f2f2f4404efce3e5221",
+    "scope": "BASELINE-ISSUE22-02: local guidance/template implementation, original required checks and bounded manual scenarios complete; upstream full audit deferred, not certified"
   },
   "exclude_paths": [
     ".git",

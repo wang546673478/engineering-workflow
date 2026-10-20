@@ -12,6 +12,24 @@ Read global architecture, module-map summary, active Baseline/Spec/Plan/Task poi
 
 Follow the continuous records and module review in [requirements-interview.md](requirements-interview.md) for functional change discussions, including short follow-up answers in an enabled task. Before dependent design or implementation, revisit deferred items and resolve blocking questions, check the requirement state and the separate implementation authorization, and update affected Baseline/Spec/Plan/Task and impact records. A recorded or confirmed requirement is not evidence that code exists or that implementation was authorized.
 
+## Defect evidence within the existing task
+
+For a defect, use the project's existing Task, Issue or impact record to connect the reported symptom to the proposed change and its verification. Reuse links to evidence already recorded. Select the information needed for the actual impact; the following questions are prompts, not a mandatory form or a requirement for a separate BUG document:
+
+| Question | Useful evidence |
+| --- | --- |
+| What happened? | Report/source, expected versus actual behavior, affected users or operations |
+| Under which conditions? | Source/worktree revision, relevant environment and input/state, original reproduction steps and result |
+| Why? | Confirmed cause with source/test/runtime evidence; distinguish remaining hypotheses |
+| What should change or stay the same? | Cause-related fix scope, affected callers/data/permissions, behavior the fix must preserve |
+| What was observed afterward? | Before/after results for the original symptom, relevant regression or other suitable checks, remaining unverified conditions and risks |
+
+Keep “reproduced,” “not reproduced,” “cannot run,” a cause hypothesis and a confirmed cause distinct in the project's vocabulary. Failure to reproduce does not invalidate the report. Diagnosis does not authorize a fix; an already authorized fix does not require another diagnosis approval. Continue the original small-fix or larger-change path according to impact.
+
+Before claiming the fix works, connect its result to the original symptom and affected behavior. Prefer an existing test or check that can observe the defect. Add a regression when needed to detect that failure and protect affected behavior; do not impose TDD or a new test on every reversible wording/link adjustment. For a documentation change, use relevant content, links or scenario checks. If using a controlled equivalent of the original environment, state what it covers and the material differences; uncovered critical conditions remain unverified.
+
+A completed template, matching documentation and code, a larger test count or unrelated passing tests do not establish a fix. Required checks that fail, skip, lack tools or are unsupported remain unsatisfied under the existing rules. If investigation instead establishes a baseline error, a wrong test expectation or a changed requirement, reconcile it with the authoritative evidence and confirmed intent before changing that layer; do not weaken an assertion or rewrite the approved goal to conceal a defect.
+
 ## Isolated investigation environments
 
 Within the authorized investigation and project rules, prepare necessary runtimes, locked dependencies, databases and caches autonomously. Inspect available project tooling first, then choose a task-local installation, portable instance, virtual environment or already available container runtime. Install missing local dependencies, start isolated instances and run applicable migrations and tests; absence from PATH is an investigation step, not by itself a user task.
@@ -64,7 +82,7 @@ For a greenfield project, [move the baseline through its lifecycle](baseline-lin
 
 After a workflow change, reconcile existing authoritative documents under [the migration rules](baseline-linked-artifacts.md#既有文档整理), including stale current summaries, revision/basis links and historical approval scope. Preserve evidence rather than rewriting old reviews as approval of new content.
 
-Run the project's declared checks and relevant focused tests. Record actual commands/results and distinguish passed, failed, partial, skipped, unsupported, and unverified behavior. Update the affected Baseline views and reconcile Spec/Plan/Task references, statuses and revisions before marking done. Declare and satisfy documentation-impact gates: module or cross-layer connectivity changes must update the module map, business flow, and affected contract; migration/schema changes must update the database dictionary and business flow. Re-run impact checks after late changes.
+Run the project's declared checks and relevant focused tests. Record actual commands/results and distinguish passed, failed, partial, skipped, unsupported, and unverified behavior. Update the affected Baseline views and reconcile Spec/Plan/Task references, statuses and revisions before marking done, using the existing [delivery convergence](baseline-linked-artifacts.md#交付前收敛) to place discrepancies in their authoritative layer. Declare and satisfy documentation-impact gates: module or cross-layer connectivity changes must update the module map, business flow, and affected contract; migration/schema changes must update the database dictionary and business flow. Re-run impact checks after late changes.
 
 Before marking a task complete, verify that its `skill_review` is present and complete, including the catalog source/time, candidate paths and versions/dates, decisions, reasons, and any recheck triggered by scope changes. A missing or stale skill review leaves the task incomplete even when code and tests pass.
 

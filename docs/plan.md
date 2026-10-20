@@ -1,4 +1,49 @@
-# Current plan: PLAN-ADOPTION-LIFECYCLE-02
+# Current Technical Plan: PLAN-ISSUE22-ENHANCEMENT-01
+
+当前交付（2026-10-20）：Plan r2的三项增强已实现，原检查与手工场景完成，全局视图及1.7.2 Unreleased元数据同步。全量上游审读按用户决定延后，不再是本批依赖；下文原r1顺序和准备记录为历史。实际结果及失败修正见当前Task/evidence。
+
+## Earlier continuation records (historical)
+
+当前实现（2026-10-20）：执行Plan r2，保留原技术范围并取消暂缓全量审读对本批的依赖。三项正文/模板及全局视图已写入，正式验证待完成；当前Task记录实际结果。
+
+当前执行更新（2026-10-20）：按用户最新明确指令，已读完当前文件并先交付阶段性借鉴结论；不继续全量审读，也不标其完成。原三项增强的设计与授权保留，尚未实现；当前指令覆盖下文原审读顺序，见[Plan](../planning/issue-22-plan.md)。
+
+The authoritative implementation design is [Technical Plan：工程流程增强，复用现有节点](../planning/issue-22-plan.md), r1, prepared at the user's request to write Plan and Task against the global baseline. Basis: `BASELINE-ISSUE22-01` / source `868e4967512c2cd400307368d924291a3d4d8eef` / 1.7.1 and unchanged `SPEC-ISSUE22-ENHANCEMENT-01` r1. Execution: [T22-01..16 in the current Task](../planning/issue-22-task.md#可执行任务与进度).
+
+P22-01..08 cover baseline preservation, the unfinished five-repository source investigation, existing defect/convergence/requirements guidance, short routing and optional templates, linked-view synchronization, scenario verification and original version/check contracts. The subsequent explicit instruction “开始实现吧” authorizes execution of this presented complete Plan r1 under the original SKILL rule. Execution starts with its single-agent upstream-review prerequisites; commit, push, publication and global installation remain outside this authorization. Actual review/authorization states remain separately recorded, with no fabricated approval or new review round.
+
+Full upstream semantic review remains an authorized unfinished part of this task, not a new rule for every skill user. The design does not claim that collected files or AST traversals completed it. Target content remains in Plan until actually implemented and evidenced in Baseline.
+
+## Prior Spec preparation plan (prepared; history retained)
+
+# Spec preparation plan: PLAN-ISSUE22-SPEC-PREP-01
+
+Basis: `BASELINE-ISSUE22-01`, draft [SPEC-ISSUE22-ENHANCEMENT-01](../planning/issue-22-spec.md), source `868e4967512c2cd400307368d924291a3d4d8eef` / 1.7.1. User accepted the enhancement direction and requested a globally scoped Spec for review. This plan covers drafting and authority synchronization only; it is not the implementation Technical Plan.
+
+1. SPEC22-01: Define the three enhancements as observable requirements at the existing investigation, implementation/verification, delivery and interview nodes. Separate them from existing source facts and unfinished external-source adoption decisions.
+2. SPEC22-02: Make original-stage/approval/small-fix/greenfield/recovery/authorization/check contracts explicit acceptance boundaries; optional notation/templates cannot become mandatory entry conditions.
+3. SPEC22-03: Publish one authoritative review draft with REQ/AT pairs and restore its Baseline/Spec/Plan/Task/traceability links. Record direction approval separately from pending Spec review and unstarted implementation.
+4. SPEC22-04: Verify document links, IDs, metadata, scope and diff hygiene, then present r1 for the user's requested review. No skill behavior, CLI, templates, check declarations, version or installed copy is changed in this preparation step.
+
+The earlier complete upstream-source investigation remains authorized and incomplete. The review draft defines independently reviewable enhancement goals; it neither adopts outside implementations nor marks their unreviewed files complete. Once the Spec has a reviewed scope, the implementation plan follows the existing rules for the actual task size and applicable exceptions; this record adds no blanket approval round.
+
+## Prior assessment plan (investigation remains open)
+
+# Assessment plan: PLAN-ISSUE22-REVIEW-01
+
+Basis: `BASELINE-ISSUE22-01`, `SPEC-ISSUE22-REVIEW-01`, source `868e496` / 1.7.1. Execution and evidence: [Task](../planning/issue-22-task.md); candidate adaptation and limits: [assessment](../planning/issue-22-assessment.md).
+
+1. Restore rules and existing linked artifacts, retrieve the open Issue, and separate its claims from verified current capabilities.
+2. Pin and inventory all five selected repositories; inspect their complete text/source structure and perform per-file semantic review. Keep collection/AST coverage separate from actual semantic review, preserve unreviewed coverage, and do not execute external project code as part of static collection.
+3. Compare real end-to-end behavior and tests with current skill stages, small-fix/recovery exceptions, frozen Spec rules, traceability, command contract and control protections.
+4. Produce source-bound adopt/reject decisions and a concrete integration proposal. Existing investigation/implementation/verification/convergence nodes own any compatible enhancement; new gates are not treated as workflow-neutral.
+5. Validate state links and current evidence, then deliver the conclusion with actual coverage and limits. Full upstream semantic review is not yet complete; no external implementation is imported.
+
+This batch changes assessment records only. Prior release/implementation plans retain their own approval and verification identities.
+
+## Prior implementation plan
+
+# Plan: PLAN-ADOPTION-LIFECYCLE-02
 
 Input `BASELINE-SAFE-19-21-01` / source `3c1cb36`; specification `SPEC-ADOPTION-LIFECYCLE-02`; output baseline `BASELINE-ADOPTION-LIFECYCLE-01`; execution: [Task](../planning/adoption-lifecycle-task.md).
 

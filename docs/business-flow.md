@@ -2,6 +2,13 @@
 
 Status: `current`; the manifest's active task owns current implementation and review status.
 
+## Issue 22 guidance through the existing flow
+
+1. During the existing requirement discussion, optionally use the examples in requirements-interview; preserve source, IDs, candidate/confirmed/deferred state and module review.
+2. During existing defect investigation and authorized repair, connect symptoms/reproduction, cause evidence, fix scope, preserved behavior and before/after results in the original Task/Issue/impact record. Investigation and implementation authorization keep their original meanings.
+3. During the existing delivery check, trace this batch's goals to implementation/evidence and changes back to their basis. Classify missing, partial, conflicting, unowned or stale/unverified findings; route facts to Baseline, technical changes to Plan, execution to Task and changed goals/acceptance to a new Spec revision.
+4. Refresh affected views, run the original checks and keep failures/unverified scope explicit. This uses the original stages; future/deferred requirements are not automatically added to the batch. No runtime engine, hook or additional report drives this flow.
+
 ## Checker path and documentation flow
 
 1. The checker reads manifest paths and normalizes `/` and `\\` separators at the safety boundary; foreign drive/UNC paths on POSIX, root escapes and link traversal fail before validation continues.

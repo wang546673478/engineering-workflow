@@ -44,6 +44,8 @@ In scope / out of scope:
 
 Requirements and acceptance IDs:
 
+Optional expression help: [EARS / Given–When–Then examples](../../references/requirements-interview.md#optional-requirement-and-acceptance-examples). Keep existing IDs, source and state; existing formats remain valid. These links locate guidance in this skill; when copying the template, reference the adopted skill's actual source rather than creating project-local copies of its rules.
+
 Current requirement entries (facts / candidates / confirmed decisions / deferred discussion; sources and requirement state using project vocabulary; link existing entries):
 
 Business rules, permissions, data owners, constraints:
@@ -109,7 +111,11 @@ Implementation owner and old-path replacement:
 
 Impact analysis:
 
+If this is a defect, optionally link existing symptom/reproduction, cause evidence versus hypotheses, fix/preserved behavior and before/after checks; use the [existing-task evidence prompts](../../references/implementation-workflow.md#defect-evidence-within-the-existing-task) as needed, without a separate required document or fixed form.
+
 Acceptance scenarios and exact checks:
+
+Within the existing [delivery convergence](../../references/baseline-linked-artifacts.md#交付前收敛), record any in-scope missing/partial/conflicting behavior, changes without an established basis or stale/unverified evidence and its authoritative destination. Keep future/deferred scope separate; no additional report or approval is required.
 
 Release impact (policy/source; bump required or exemption and reason; old/target version; PATCH/MINOR/MAJOR or project equivalent; affected packages and synchronization paths; CHANGELOG/equivalent notes; Unreleased/published status; checks and publication evidence):
 

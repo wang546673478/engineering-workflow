@@ -5,6 +5,8 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 ## Module: instructions
 
+- Issue 22 current guidance (1.7.2): implementation-workflow owns defect evidence, baseline-linked-artifacts owns delivery discrepancy classification and routing, requirements-interview owns optional EARS/Given–When–Then examples. SKILL/README route to these original owners; the two existing templates offer optional prompts. Task/impact/Spec remain project-owned records. No new module, executable dependency or automatic migration is added; current evidence is in [Task](../planning/issue-22-task.md).
+
 - Responsibility and owner: Agent workflow instructions, references, templates, public usage guide and managed project-guidance installation; owned by this repository.
 - Entrypoints/public interfaces: `SKILL.md`, `README.md`, `AGENTS.md`, `VERSION`, `CHANGELOG.md`, `LICENSE`, `agents/openai.yaml`, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, `scripts/adopt_project.py`, referenced Markdown files, JSON templates, hook templates.
 - Callers: Skill selection, feature-change discussions and engineering tasks using the skill, including follow-up answers in an adopted project's active task; maintainers explicitly invoke the installer for a project. Other agents can follow a thin native-entry reference to `AGENTS.md` when the host loads that entry.

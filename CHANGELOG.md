@@ -1,3 +1,10 @@
+# 1.7.2 / Unreleased
+
+- Clarify defect evidence in existing tasks: original reproduction, confirmed cause versus hypotheses, preserved behavior, before/after results and proportionate regression checks.
+- Make the existing delivery convergence concrete with missing/partial/conflicting behavior, changes without an established basis, stale evidence and their authoritative destinations.
+- Add optional EARS examples in Chinese and Given–When–Then acceptance guidance, linked from existing templates. Existing records and formats remain valid.
+- Preserve workflow stages, approval meanings, small-fix/greenfield/recovery paths and all required commands, timeouts and control-plane protections. No new CLI, schema, dependencies, mandatory reports or automatic project migration.
+
 # 1.7.1 / Unreleased
 
 - Normalize the initializer library's project root before validating source scopes, matching the CLI and supporting Windows short-name/lexical aliases without weakening project-boundary checks.

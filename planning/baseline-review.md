@@ -1,4 +1,30 @@
-# Current baseline: BASELINE-ADOPTION-LIFECYCLE-02
+# Current factual baseline: BASELINE-ISSUE22-02
+
+2026-10-20; input BASELINE-ISSUE22-01 / source `868e4967512c2cd400307368d924291a3d4d8eef`, plus the 1.7.2 Unreleased working-tree guidance changes. The three enhancements are now implemented in the original implementation-workflow, baseline-linked-artifacts and requirements-interview references, with short SKILL/README routes and optional prompts in the original spec-plan-task/impact-analysis templates. Current verification and source hashes are owned by [Task](issue-22-task.md) and [evidence](issue-22-evidence.json); the original local required checks and bounded same-agent manual scenarios have passed there; initial failed checks and environment correction remain in that evidence.
+
+Responsibilities and information flow are reflected in [module map](../docs/module-map.md), [contracts](../docs/contracts.md) and [business flow](../docs/business-flow.md). There is no new CLI/schema/runtime module or product database; the original checker/adoption/source-context/adapters, required checks/timeouts, stage/approval/exception and control policies remain unchanged. Database-view non-applicability was rechecked against docs/database.md and unchanged adapter source. Existing records/formats remain valid; examples do not establish approval or test execution.
+
+The user explicitly instructed “那就按照这个增强的文档去实施” after requesting an interim result and stopping exhaustive reading. This authorizes these local enhancements based on the bounded conclusions; full upstream semantic review remains incomplete and deferred (366 reviewed, 3,177 unread). This baseline covers the local skill changes and does not certify unreviewed upstream behavior, global installation, publication or hosted CI. Earlier approvals and evidence remain tied to their original content.
+
+## Prior factual supplement: BASELINE-ISSUE22-01
+
+当前执行更新（2026-10-20）：最新用户指令要求当前文件读完即先交阶段性结果，全量审读暂缓。当前本地skill事实和1.7.1源码未变；三项增强仍未实施。已读范围及限制见[assessment](issue-22-assessment.md)，原本地完整基线不扩大到未读上游。
+
+Spec review update (2026-10-20): the user accepted the three enhancement directions and explicitly requested a globally scoped Spec while retaining the current workflow. [SPEC-ISSUE22-ENHANCEMENT-01](issue-22-spec.md) is a draft, not implemented behavior or transferred approval. This does not change the source facts or complete the independent upstream semantic review described below.
+
+Plan/Task continuation (2026-10-20): [PLAN-ISSUE22-ENHANCEMENT-01](issue-22-plan.md) binds ten source-based facts B22-01..10 to existing B/M/C/D/F views and Spec requirements; [Task](issue-22-task.md) records the executable T22-01..16 dependencies. No enhancement target is promoted to implemented fact. Source and existing checker/adoption/adapter/source-context dependencies remain unchanged. The five-repository semantic gap stays open; this planning record does not extend the scope of a complete local implementation baseline to unreviewed upstreams.
+
+2026-10-20; source `868e496` / 1.7.1, initially clean worktree. Current task is [TASK-ISSUE-22-REVIEW](issue-22-task.md), with [source assessment](issue-22-assessment.md). The existing implementation baseline below remains bounded to its original revisions and tests; prior adoption/publication approval does not approve Issue 22 enhancements.
+
+Current source already specifies defect reproduction/localization, continuous correction and six-step delivery convergence. The checker verifies declared IDs/references/scopes, lifecycle exceptions and command outcomes; it does not infer behavioral correctness or execute a general code-to-requirements proof. `documents.kind` is a nonempty string, while `workflow_kind=small_fix` preserves a specific existing exception. These facts correct the Issue's absence claims without changing skill behavior.
+
+All five user-selected upstream repositories are pinned and fully inventoried. Whole-file collection/AST inspection and reviewed critical chains are separate from full per-file semantic review, which is still incomplete. This supplement is not acceptance of unreviewed upstream behavior or certification of the 1.7.1 hosted results. No skill/CLI/template/test changes are made in this assessment batch; database, contracts and module dependencies retain their implementation scope.
+
+Execution continuation (2026-10-20): the user explicitly authorized the complete Plan r1 with “开始实现吧”. Its source-review dependencies remain; targets have not become current implementation facts. Authorization does not recertify upstream coverage or hosted results and does not authorize publication. The current Task/manifest carry the actual approval and execution state.
+
+## Prior implementation baseline and approval scope
+
+# Baseline: BASELINE-ADOPTION-LIFECYCLE-02
 
 Current parity correction: original core SKILL sections have been restored unchanged; tooling now supports guidance-first incomplete setup, evidenced greenfield/small-fix exceptions, valid prior-review reuse, shared explicit authorization and complete/approved completion. The earlier finding below is historical; new source passed 205 local tests and original compile gates; exact submission/commit validation and installation rehearsal follow before publication. User has authorized testing, GitHub upload on success and preserving the existing local installation. No external adopted project changes apply.
 

@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.7.1` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.7.2` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -47,7 +47,7 @@ python <skill-dir>/scripts/install_agents_guidance.py --root <project>
 
 ```powershell
 python <skill-dir>/scripts/adopt_project.py --root <project> `
-  --skill-source <skill-dir>/SKILL.md --skill-version 1.7.1 --profile lite
+  --skill-source <skill-dir>/SKILL.md --skill-version 1.7.2 --profile lite
 ```
 
 命令创建 `initialized_incomplete` 的接入骨架，并返回实际 bootstrap 诊断；不会执行项目检查命令、完成基线或批准实现。已有 manifest 默认保留，显式 `--upgrade-legacy-manifest` 才补生命周期字段；原文档、检查和历史保持。用重复的 `--document ID=path` 映射已有工件，完成映射后运行 `check_project.py --mode discovery --run-checks`。基线审阅、Spec/Plan 批准和实施授权按原规则分别记录，可复用仍有效的原话，不增加审核轮次；空项目、小修等例外与字段、迁移和退出码见[完整接入与阶段门禁](references/adoption-lifecycle.md)。
@@ -80,6 +80,8 @@ Skill 会引导 Agent：
 4. 在模块讨论结束时集中核对需求及关联影响，再交用户审核；完整实施方案仍按既有门槛确认。
 5. 分析页面、接口、业务逻辑、数据库、事件和消费者之间的影响链，在实现后刷新受影响 Baseline，并同步 Spec/Plan/Task 的引用和状态。
 6. 运行项目检查，并记录通过、失败、跳过、未支持和未验证状态。
+
+三项指引在这些原节点中使用：[缺陷证据](references/implementation-workflow.md#defect-evidence-within-the-existing-task)连接原复现、根因、修复前后结果与回归；[交付前收敛](references/baseline-linked-artifacts.md#交付前收敛)具体核对本批缺失、部分、矛盾、无归属实现和过期证据；[可选需求/验收示例](references/requirements-interview.md#optional-requirement-and-acceptance-examples)提供 EARS 中文等价句式及 Given–When–Then。沿用原记录与格式，不增加阶段、审批、必填报告或验证命令，也不要求旧项目迁移历史文档。
 
 ## 自主调查与动态基线
 
