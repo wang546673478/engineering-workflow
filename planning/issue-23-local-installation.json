@@ -1,0 +1,83 @@
+{
+  "status": "complete",
+  "completed_at": "2026-10-21T14:44:26.651289+08:00",
+  "user_statement": "那就把本地安装目录下的skill也更新了",
+  "scope": "Existing shared installation update with preservation of all local records; no external adopted-project migration",
+  "installed_path": "C:\\Users\\54667\\.codex\\skills\\engineering-workflow",
+  "previous_version": "1.7.2",
+  "installed_version": "1.8.0",
+  "previous_head": "d214021d8c462d5b7733d0cb3f04a26f8f3bb35b",
+  "installed_head": "a3129db61b7b1d5d1410efd2836b17ba03fbd91e",
+  "backup_path": "C:\\Users\\54667\\.codex\\backups\\engineering-workflow\\20261021-143910-1.7.2-to-1.8.0",
+  "backup_file_count": 112,
+  "original_local_modified_count": 11,
+  "original_untracked_count": 8,
+  "exact_nonoverlap_preserved_count": 14,
+  "merge_plan": {
+    "docs/plan.md": "Markdown three-way merge; historical fragments: 1",
+    "docs/spec.md": "Markdown three-way merge; historical fragments: 1",
+    "engineering-manifest.json": "JSON three-way merge by stable IDs",
+    "planning/baseline-review.md": "Markdown three-way merge; historical fragments: 1",
+    "planning/issue-22-evidence.json": "exact local bytes preserved",
+    "planning/issue-22-task.md": "exact local bytes preserved",
+    "planning/skill-review.md": "exact local bytes preserved",
+    "planning/source-context-evidence.json": "exact local bytes preserved",
+    "planning/source-context-task.md": "exact local bytes preserved",
+    "planning/traceability.md": "Markdown three-way merge; historical fragments: 1",
+    "planning/version-policy-task.md": "exact local bytes preserved",
+    "planning/baseline-autonomy-assessment-task.md": "exact local bytes preserved",
+    "planning/gitdiagram-assessment-evidence.json": "exact local bytes preserved",
+    "planning/gitdiagram-assessment-task.md": "exact local bytes preserved",
+    "planning/gitingest-assessment-evidence.json": "exact local bytes preserved",
+    "planning/gitingest-assessment-task.md": "exact local bytes preserved",
+    "planning/skill-fusion-assessment-task.md": "exact local bytes preserved",
+    "planning/software-engineering-guidance-assessment-task.md": "exact local bytes preserved",
+    "planning/software-quality-pilot-task.md": "exact local bytes preserved"
+  },
+  "json_conflicts": [],
+  "stash_retained": "e1489e6caf38908f6cdf731ff77102eb92542e75",
+  "rehearsal": {
+    "verified_at": "2026-10-21T14:40:37.916115+08:00",
+    "version": "1.8.0",
+    "managed_files_match_target": 59,
+    "exact_local_files_preserved": 14,
+    "local_entities_preserved": {
+      "tasks": 22,
+      "documents": 42,
+      "requirements": 77,
+      "acceptance": 77
+    },
+    "baseline_errors": [],
+    "baseline_exit": 1,
+    "baseline_required_checks_satisfied": false,
+    "baseline_required_skipped": [
+      "TEST",
+      "COMPILE",
+      "GUIDANCE-COMPILE"
+    ],
+    "quick_validate": "pass",
+    "compile": "pass",
+    "limits": "Structural baseline report skips original commands, not an overall gate pass. Runtime identity matches already validated exact GitHub source; no reimplementation."
+  },
+  "verification": {
+    "verified_at": "2026-10-21T14:42:19.581538+08:00",
+    "head": "a3129db61b7b1d5d1410efd2836b17ba03fbd91e",
+    "version": "1.8.0",
+    "managed_files_match_target_git_objects": 59,
+    "all19_overlay_files_match_rehearsal": true,
+    "no_merge_index_conflicts": true,
+    "quick_validate": "pass",
+    "compile": "pass",
+    "actual_adoption_cli": "pass; default diagnostic, pending approvals, uses installed checker1.8.0",
+    "require_approval_contract_option": "recognized; fresh empty-project missing documents correctly remain incomplete",
+    "existing_source_ci": "GitHub run39553982933 Linux/Windows/quality pass for exacta3129db",
+    "full_tests_repeated": false,
+    "reason": "No runtime implementation change;59 Git object identities match the already validated source. Structural/installation smoke scope only."
+  },
+  "release_impact": "Installation and evidence only; content already1.8.0 Unreleased, no extra version bump/tag/Release/push",
+  "limits": [
+    "Original full tests not repeated; managed runtime matches exact already-passed Linux/Windows CI commit.",
+    "Existing-root structural baseline check skips required commands and is not an overall gate pass.",
+    "On-disk install verified; no claim about the prompt already loaded in any other active chat."
+  ]
+}

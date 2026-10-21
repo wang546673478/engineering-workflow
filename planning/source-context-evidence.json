@@ -2088,6 +2088,69 @@
         }
       ],
       "spec_revision": "SPEC-CONTEXT-03; no requirement scope change"
+    },
+    "publication": {
+      "version": "1.6.1",
+      "final_commit": "a407b112410e8717511d62fda8eead66d18cf043",
+      "verified_origin_main": "a407b112410e8717511d62fda8eead66d18cf043",
+      "observed_at": "2026-10-18T16:20:37.642034+08:00",
+      "committed_report": "release/work/ci-fix-final-env-committed-311.json",
+      "committed_required_checks_satisfied": true,
+      "tests": 160,
+      "run": {
+        "id": 39110935645,
+        "url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39110935645",
+        "status": "in_progress",
+        "observed_jobs": {
+          "detect protected paths": "success",
+          "reviewed (ubuntu-latest)": "success",
+          "reviewed (windows-latest)": "in_progress"
+        },
+        "ubuntu original artifact": "direct committed check passed; diagnostic retry skipped",
+        "windows original artifact": "running; download and verify when available"
+      }
+    },
+    "committed_gate": {
+      "required_checks_satisfied": true,
+      "tests": 160,
+      "checks": [
+        {
+          "rule_id": "control-plane",
+          "status": "pass",
+          "seconds": null
+        },
+        {
+          "rule_id": "committed-scope",
+          "status": "pass",
+          "seconds": null
+        },
+        {
+          "rule_id": "TEST",
+          "status": "pass",
+          "seconds": 70.906
+        },
+        {
+          "rule_id": "COMPILE",
+          "status": "pass",
+          "seconds": 0.125
+        },
+        {
+          "rule_id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "seconds": 0.125
+        }
+      ]
     }
+  },
+  "historical_local_1_6_0_delivery": {
+    "publication": {
+      "source_commit": "502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b",
+      "verified_origin_main": "502fd69a16ffcd0a32dc0acbffb32bf8ccf1109b",
+      "observed_at": "2026-10-18T06:41:11.316319+08:00",
+      "hosted_CI": "source run awaiting existing protected engineering-control-review human approval",
+      "run_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39076043405"
+    },
+    "installed_receipt": null,
+    "committed_gate": null
   }
 }

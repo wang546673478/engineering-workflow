@@ -4,11 +4,11 @@
 
 - 日期：2026-10-21（Asia/Shanghai）。输入源码：`d214021`，engineering-workflow `1.7.2`；开始时工作树干净。
 - 本轮授权：在已展示完整Plan r1及兼容性影响说明之后，用户于2026-10-21T10:38:03+08:00明确“那就开始实施吧”，授权本地实现和验证。最初“需要你拿出方案，把细节写清楚”是前序调查范围，已由后续指令推进。
-- 当前阶段：本地实施与验证完成；用户批准范围内T23-01..08完成，版本1.8.0 / Unreleased。最终实现原门禁required_checks_satisfied=true；源码已上传GitHub main，全局安装/外部项目迁移未执行。
+- 当前阶段：本地实施、源码上传及共享安装更新完成；用户批准范围内T23-01..08完成，版本1.8.0 / Unreleased。最终实现原门禁required_checks_satisfied=true；源码已上传GitHub main，全局安装/外部项目迁移未执行。
 - 输入：[Issue #23](https://github.com/wang546673478/engineering-workflow/issues/23)，创建时间 2026-10-21 03:24:00+08:00；最新目标会话 `01a15a6d-3a4a-7713-94c6-4b2e757294f6`，读取时仍 active，已读三个 turn。本结论绑定读取快照，不推断之后的行为。
 - 已证实：需求选择后直接开始实现；目标项目仍引用旧任务/旧 Plan 的授权；当前检查器对启用生命周期的清单已有证据文件存在性校验，但未验证原话、时间、范围，legacy 无 stage 不启用生命周期门槛。
 - 当前链路：BASELINE-ISSUE23-02 → [SPEC-ISSUE23-01](issue-23-spec.md) → [PLAN-ISSUE23-01 r1](issue-23-plan.md) → 本Task / T23-01、02 → [调查证据](issue-23-evidence.json)。
-- 当前结果：按用户“上传github”完成原暂存区及提交门槛，实现源9723921已上传origin/main并核对一致；当前补源上传回执。全局安装、目标项目迁移、tag/Release未执行。
+- 当前结果：最终源a3129db已上传origin/main，Linux/Windows/quality均成功；本次共享安装已更新1.8.0并保留所有本地工作。外部项目迁移和tag/Release未执行。
 
 ## skill_review
 
@@ -117,3 +117,20 @@
 - 原实现源9723921已上传且本地/双平台CI通过；上传回执原门禁重复超时，所有失败保持。当前同批补充：control-plane与approval-policy-history在一次CLI调用内复用已安全读取的同一历史manifest，缓存每次main新建，跨调用/仓库不共享；各原Git历史/浅克隆/损坏策略检查仍先执行。
 - 静态批准合同测试复用原公开main入口，保留同样用例/断言；真实commit/committed仍用独立CLI/Git仓库。原checks、120/30/30秒、控制面和业务边界不变。该修正仅缩减重复技术工作，不变Spec用户行为，不新增审核；按既有同批开发规则保持1.8.0 Unreleased。
 - 本次两个源码摘要已改变，原报告保留为9723921历史证据；新源码必须重新通过原commit/committed门槛才提交和推送，不能沿用旧通过。
+
+
+## 本地共享安装升级 / 当前执行
+
+- 2026-10-21T14:39:10.002282+08:00，用户原话：“那就把本地安装目录下的skill也更新了”。明确授权把共享安装从1.7.2/d214021更新到已上传并经双平台CI验证的1.8.0/a3129db，保留所有本地工作；无外部采用项目状态迁移。
+- 原目录main包含11份修改文件及8份未跟踪规划/证据；5处与新版文档重叠，运行源/引用/模板无本地改动。先完整文件与binary/index patch备份，在独立副本合并演练；JSON按ID三方合并，Markdown只将确有冲突的旧本地片段留作历史，不转移原审阅到新内容。
+- 再验证版本/受管理资源对照目标Git对象、原本地资料保留、清单ID/文档关系及实际CLI烟测后更新原目录。原source精确CI成功证据复用；本轮无实现变化，不另升版或重复未受影响225项全量回归；不把跳过必需命令的结构诊断当整体门禁通过。
+- skill review：engineering-workflow本仓库1.8.0/a3129db与已安装1.7.2/d214021、skill-creator（当前系统路径，未提供版本）适用；复用原Task/manifest，不新增台账，不委派。skill-installer首装脚本不适合已有含用户修改的Git安装目录，因此不采用。
+
+
+### 本地共享安装完成 / 2026-10-21T14:44:26.651289+08:00
+
+- C:\Users\54667\.codex\skills\engineering-workflow 已从d214021/1.7.2快进到a3129db/1.8.0；VERSION、SKILL、README、agents元数据与CHANGELOG均为1.8.0。59份受管理资源的Git对象与已通过Linux/Windows CI的a3129db完全一致。
+- 完整备份104份跟踪文件和8份未跟踪资料至 `C:\Users\54667\.codex\backups\engineering-workflow\20261021-143910-1.7.2-to-1.8.0`，原binary/index patch、逐文件SHA及stash e1489e6caf38908f6cdf731ff77102eb92542e75保留。19项原本地工作全部恢复：14份不重叠文件字节一致，5份文档/清单按演练结果合并；JSON中的原任务/需求/文档/验收条目未丢失，冲突的本地Markdown片段保留原审阅范围为历史。
+- 副本及真实目录quick_validate/编译通过，清单引用检查errors=[]；实际安装adopt CLI使用1.8.0 checker、默认diagnostic、批准仍pending，require-approval-contract新参数可识别。安装保留旧项目兼容状态，未自动启用strict，未更新外部产品项目。
+- 根清单结构诊断仍因未执行原必需命令而非整体pass；本次无运行源变化，复用已核对的精确源码CI身份，不重复未受影响的225项全量回归，也不将跳过写成通过。完整安装回执：[installation](issue-23-local-installation.json)。
+- 此次只安装已发布源码及记录本机状态，不另升版，不创建tag/Release，不自动再次上传安装回执；其他活动会话已加载的提示不在本次磁盘验证范围。

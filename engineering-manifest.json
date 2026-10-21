@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "ISSUE23_SPEC",
-    "active_plan": "ISSUE23_PLAN",
-    "active_task": "TASK-ISSUE-23-PROPOSAL"
+    "active_spec": "ISSUE23_RI_SPEC",
+    "active_plan": "ISSUE23_RI_PLAN",
+    "active_task": "TASK-ISSUE23-RECORD-INTEGRITY-01"
   },
   "documents": [
     {
@@ -239,6 +239,90 @@
       "id": "ISSUE23_SESSION",
       "path": "planning/issue-23-session-evidence.json",
       "kind": "research-evidence",
+      "required": true
+    },
+    {
+      "id": "GITDIAGRAM_ASSESS_TASK",
+      "path": "planning/gitdiagram-assessment-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "GITDIAGRAM_ASSESS_EVIDENCE",
+      "path": "planning/gitdiagram-assessment-evidence.json",
+      "kind": "research-evidence",
+      "required": true
+    },
+    {
+      "id": "GITINGEST_ASSESS_TASK",
+      "path": "planning/gitingest-assessment-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "GITINGEST_ASSESS_EVIDENCE",
+      "path": "planning/gitingest-assessment-evidence.json",
+      "kind": "research-evidence",
+      "required": true
+    },
+    {
+      "id": "QUALITY_PILOT_TASK",
+      "path": "planning/software-quality-pilot-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "SOFTWARE_GUIDANCE_ASSESS_TASK",
+      "path": "planning/software-engineering-guidance-assessment-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "BASELINE_AUTONOMY_ASSESS_TASK",
+      "path": "planning/baseline-autonomy-assessment-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "FUSION_ASSESS_TASK",
+      "path": "planning/skill-fusion-assessment-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_INSTALLATION",
+      "path": "planning/issue-23-local-installation.json",
+      "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_RI_SPEC",
+      "path": "planning/issue-23-record-integrity-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_RI_PLAN",
+      "path": "planning/issue-23-record-integrity-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_RI_TASK",
+      "path": "planning/issue-23-record-integrity-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ARCHIVE_SCRIPT",
+      "path": "scripts/task_archive.py",
+      "kind": "source",
+      "required": true
+    },
+    {
+      "id": "ARCHIVE_TEST",
+      "path": "scripts/tests/test_task_archive.py",
+      "kind": "verification",
       "required": true
     }
   ],
@@ -569,6 +653,107 @@
     {
       "id": "REQ-ISSUE23-08",
       "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "REQ-GITDIAGRAM-ASSESS-01",
+      "document": "GITDIAGRAM_ASSESS_TASK"
+    },
+    {
+      "id": "REQ-GITINGEST-ASSESS-01",
+      "document": "GITINGEST_ASSESS_TASK"
+    },
+    {
+      "id": "REQ-QUALITY-PILOT-01",
+      "document": "QUALITY_PILOT_TASK"
+    },
+    {
+      "id": "REQ-QUALITY-PILOT-02",
+      "document": "QUALITY_PILOT_TASK"
+    },
+    {
+      "id": "REQ-QUALITY-PILOT-03",
+      "document": "QUALITY_PILOT_TASK"
+    },
+    {
+      "id": "REQ-SOFTWARE-GUIDANCE-ASSESS-01",
+      "document": "SOFTWARE_GUIDANCE_ASSESS_TASK"
+    },
+    {
+      "id": "REQ-BASELINE-AUTONOMY-ASSESS-01",
+      "document": "BASELINE_AUTONOMY_ASSESS_TASK"
+    },
+    {
+      "id": "REQ-BASELINE-DYNAMIC-01",
+      "document": "BASELINE_AUTONOMY_ASSESS_TASK"
+    },
+    {
+      "id": "REQ-FUSION-ASSESS-01",
+      "document": "FUSION_ASSESS_TASK"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-01",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-02",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-03",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-04",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-05",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-06",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-07",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-08",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-09",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-10",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-11",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-12",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-13",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
     }
   ],
   "acceptance": [
@@ -898,6 +1083,152 @@
     {
       "id": "AT-ISSUE23-08",
       "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "AT-GITDIAGRAM-ASSESS-01",
+      "document": "GITDIAGRAM_ASSESS_TASK"
+    },
+    {
+      "id": "AT-GITINGEST-ASSESS-01",
+      "document": "GITINGEST_ASSESS_TASK"
+    },
+    {
+      "id": "AT-QUALITY-PILOT-01",
+      "document": "QUALITY_PILOT_TASK"
+    },
+    {
+      "id": "AT-QUALITY-PILOT-02",
+      "document": "QUALITY_PILOT_TASK"
+    },
+    {
+      "id": "AT-QUALITY-PILOT-03",
+      "document": "QUALITY_PILOT_TASK"
+    },
+    {
+      "id": "AT-SOFTWARE-GUIDANCE-ASSESS-01",
+      "document": "SOFTWARE_GUIDANCE_ASSESS_TASK"
+    },
+    {
+      "id": "AT-BASELINE-AUTONOMY-ASSESS-01",
+      "document": "BASELINE_AUTONOMY_ASSESS_TASK"
+    },
+    {
+      "id": "AT-BASELINE-DYNAMIC-01",
+      "document": "BASELINE_AUTONOMY_ASSESS_TASK"
+    },
+    {
+      "id": "AT-FUSION-ASSESS-01",
+      "document": "FUSION_ASSESS_TASK"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-01",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-02",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-03",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-04",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-05",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-06",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-07",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-08",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-09",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE23-RI-10",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-01",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-02",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-03",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-04",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-05",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-06",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-07",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-08",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-09",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-10",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-11",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE23-RI-12",
+      "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
     }
   ],
   "modules": [
@@ -3063,8 +3394,8 @@
       },
       "skill_review": {
         "catalog_source": "Current session Skills catalog and repository AGENTS.md",
-        "checked_at": "2026-10-20T17:37:14.093570+08:00",
-        "scope": "Submit the already implemented and validated local1.7.2 changes to GitHub; no new implementation scope",
+        "checked_at": "2026-10-20T18:28:51.231602+08:00",
+        "scope": "Verify original GitHub Actions reports for source/receipt commits and update existing shared skill installation to the verified1.7.2 commit while preserving all pre-existing local work; no per-project automatic migration",
         "candidates": [
           {
             "id": "engineering-workflow",
@@ -3105,6 +3436,26 @@
             "reason": "No runtime program change or test-first request; guidance/template changes use planned scenarios and unchanged required regressions",
             "evidence": [
               "planning/issue-22-task.md"
+            ]
+          },
+          {
+            "id": "skill-installer",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-installer/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Install/update explicitly requested shared skill; helper aborts an existing destination, so preserve the existing dirty Git checkout with a verified backup and fast-forward instead of creating/replacing a directory",
+            "evidence": [
+              "planning/issue-22-task.md"
+            ]
+          },
+          {
+            "id": "openai-docs",
+            "source": "C:/Users/54667/.codex/skills/.system/openai-docs/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Verify skill reload and shared availability guidance from the fetched official skills page; direct search capability unavailable, direct official page used, no manual or broad synthesis",
+            "evidence": [
+              "https://developers.openai.com/codex/skills/"
             ]
           }
         ],
@@ -3151,7 +3502,7 @@
       },
       "implementation_status": "complete_for_authorized_three_enhancements",
       "verification_status": "required_checks_pass_and_manual_scenarios_bounded",
-      "delivery_status": "source_uploaded_to_github_main",
+      "delivery_status": "source_uploaded_hosted_pass_shared1.7.2_installed",
       "verification_evidence": "planning/issue-22-evidence.json",
       "artifact_revisions": {
         "baseline": "BASELINE-ISSUE22-02",
@@ -3993,6 +4344,139 @@
         "release_or_tag_created": false,
         "global_installation_updated": false,
         "receipt_only_no_version_bump": "Publication evidence and current status only; delivered guidance/metadata unchanged"
+      },
+      "installation_authorization": {
+        "recorded_at": "2026-10-20T18:28:51.231602+08:00",
+        "user_statement": "看看github actions然后更新本地的版本,让其他项目也能用到新版本",
+        "scope": "Verify original GitHub Actions reports for source/receipt commits and update existing shared skill installation to the verified1.7.2 commit while preserving all pre-existing local work; no per-project automatic migration",
+        "target": "C:/Users/54667/.codex/skills/engineering-workflow",
+        "target_commit": "d214021d8c462d5b7733d0cb3f04a26f8f3bb35b",
+        "old_version": "1.7.1",
+        "version": "1.7.2",
+        "status": "authorized_backing_up_and_updating",
+        "ci": "both Quality runs success and all four original Ubuntu/Windows checker reports verified against exact source and tree"
+      },
+      "hosted_status": "source_and_receipt_original_ubuntu_windows_pass",
+      "installation_status": "shared1.7.2_installed_with_original_local_work_preserved",
+      "local_installation_receipt": {
+        "status": "complete",
+        "installed_root": "C:\\Users\\54667\\.codex\\skills\\engineering-workflow",
+        "old_version": "1.7.1",
+        "version": "1.7.2",
+        "old_head": "868e4967512c2cd400307368d924291a3d4d8eef",
+        "installed_head": "d214021d8c462d5b7733d0cb3f04a26f8f3bb35b",
+        "backup": "C:\\Users\\54667\\.codex\\backups\\engineering-workflow\\20261020-182851-1.7.1-to-1.7.2",
+        "backed_up_files": 107,
+        "preserved_original_modified_files": [
+          "engineering-manifest.json",
+          "planning/source-context-evidence.json",
+          "planning/source-context-task.md",
+          "planning/traceability.md",
+          "planning/version-policy-task.md"
+        ],
+        "preserved_original_untracked_files": [
+          "planning/baseline-autonomy-assessment-task.md",
+          "planning/gitdiagram-assessment-evidence.json",
+          "planning/gitdiagram-assessment-task.md",
+          "planning/gitingest-assessment-evidence.json",
+          "planning/gitingest-assessment-task.md",
+          "planning/skill-fusion-assessment-task.md",
+          "planning/software-engineering-guidance-assessment-task.md",
+          "planning/software-quality-pilot-task.md"
+        ],
+        "manifest_additions_preserved": {
+          "acceptance": 9,
+          "tasks": 6,
+          "documents": 8,
+          "requirements": 9
+        },
+        "trace_suffix_preserved_bytes": 8005,
+        "verified_delivery_files": {
+          "SKILL.md": {
+            "worktree_sha256": "346246cfeebddc684c30cbe36eb56d8315b4fc40f7149cc54fd619facf31a33f",
+            "git_blob_sha256": "bd20812a8e4ef5033eb5bfc8b92f22aa9a915e8beac16765ed44d7037b1ecdb1",
+            "canonical_content_matches_target": true
+          },
+          "VERSION": {
+            "worktree_sha256": "a5b65f183ed1fd45e41d63003f09f1c1e95e09c74d5ae53468859d8e878a32c8",
+            "git_blob_sha256": "e6b7255e251fae180891178dc54e93117e0e522c67cd10145600f71c36216ee9",
+            "canonical_content_matches_target": true
+          },
+          "README.md": {
+            "worktree_sha256": "a7698c2345666d8f0cf58280f2377f07512820ccbd00ed09860d7a27ac9aa367",
+            "git_blob_sha256": "f903373bf7353d0f4be0871b968307bd1e7ee5698ea68bf56ab13eef6bf2deb2",
+            "canonical_content_matches_target": true
+          },
+          "CHANGELOG.md": {
+            "worktree_sha256": "b55b04c5bc3e889133541b6ee8629bd6663eeda53dbe4fa3edb043f5daff47e3",
+            "git_blob_sha256": "cb0fb0d7b6f16808221607fc2897c76b1db3b5317f3d7bdf98a6f7814aefbdd1",
+            "canonical_content_matches_target": true
+          },
+          "agents/openai.yaml": {
+            "worktree_sha256": "3e2ad2e80cae4e984ae57f231c0d825afff016b059724659bd13ee97f4d8c1fb",
+            "git_blob_sha256": "22559ae3ce4feac5c9dbf0be7b29c2ce97db68fe68f8a727c809c5214251518a",
+            "canonical_content_matches_target": true
+          },
+          "references/implementation-workflow.md": {
+            "worktree_sha256": "f5d5e200aab78f578ed43a61d41574aa6eebae20d686c8a9daa069d57d3b7c04",
+            "git_blob_sha256": "ed235390158f8fa94b68487723ffc8e55a9e380f077a88f2db603556bd53a1a4",
+            "canonical_content_matches_target": true
+          },
+          "references/baseline-linked-artifacts.md": {
+            "worktree_sha256": "251eec253dac941cf413bc6dbb65b7fdbb0f3bfeb11667b2aa49dc261d23b5d2",
+            "git_blob_sha256": "f1342b634d8cb0dd01b47db972f5df41666fb48fcc1f443f2c951097f3567038",
+            "canonical_content_matches_target": true
+          },
+          "references/requirements-interview.md": {
+            "worktree_sha256": "7e4adf5d5ab8e4f3e528f11de3a4fe5e6646f147067feb0e52ecb12207ddb00d",
+            "git_blob_sha256": "3b866f6ff1bf9b5939e77010533e736d45c79b926d47b11959fc703774b943f5",
+            "canonical_content_matches_target": true
+          },
+          "assets/templates/spec-plan-task.md": {
+            "worktree_sha256": "04c433771f531c3d926d17b7239fe5d4c22c294a1cf32dd042dedf22309bcfc7",
+            "git_blob_sha256": "78295b8244c78f51b5cb2bc6a097ade4a7fcb965e6d5adb50124346a100528b8",
+            "canonical_content_matches_target": true
+          },
+          "assets/templates/impact-analysis.md": {
+            "worktree_sha256": "6f4c92a1cd3444171feaaf65187c5a9fd01cc5a00a4eba1a3498e1236b2e5bbf",
+            "git_blob_sha256": "64387ca3a0d7572d25d152f8eac760f6770ad5720591f7f6735a69c5d2ca391d",
+            "canonical_content_matches_target": true
+          }
+        },
+        "index_clean": true,
+        "ignored_files_and_runtime_directories": "Retained, except the two obsolete same-name skill backup directories moved intact outside the discovery roots",
+        "archived_duplicate_skill_backups": [
+          {
+            "old_path": "C:\\Users\\54667\\.codex\\skills\\engineering-workflow\\work\\publish-1.5.0-primary-backup",
+            "new_path": "C:\\Users\\54667\\.codex\\backups\\engineering-workflow\\20261020-182851-1.7.1-to-1.7.2\\archived-skill-backups\\primary-1.5.0",
+            "files_verified": 36
+          },
+          {
+            "old_path": "C:\\Users\\54667\\.codex\\skills\\engineering-workflow\\work\\release-1.4.4\\before-primary-sync\\files",
+            "new_path": "C:\\Users\\54667\\.codex\\backups\\engineering-workflow\\20261020-182851-1.7.1-to-1.7.2\\archived-skill-backups\\pre-sync-1.4.4-files",
+            "files_verified": 26
+          }
+        ],
+        "completed_at": "2026-10-20T18:44:37.427693+08:00",
+        "single_engineering_workflow_entry": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+        "validation": {
+          "skill_quick_validate": "pass",
+          "canonical_delivered_files_match_hosted_verified_commit": true,
+          "hosted_original_reports": 4,
+          "hosted_original_required_checks": "all pass",
+          "installed_baseline_structure": "pass; local full commands intentionally not repeated for unchanged hosted-verified runtime",
+          "installed_structure_report": "C:\\Users\\54667\\.codex\\skills\\engineering-workflow\\work\\issue-22-upgrade\\baseline-check.json",
+          "preserved_original_local_data": "verified",
+          "duplicate_backup_entrypoints": "two archived intact outside the skill search roots"
+        },
+        "official_guidance": {
+          "url": "https://developers.openai.com/codex/skills/",
+          "observed": "Codex detects changes automatically; restart if an update does not appear",
+          "availability": "Next turn can read the updated shared source; existing project state is not automatically migrated"
+        },
+        "all_other_tracked_files_match_target_before_installation_receipts": true,
+        "current_runtime_and_guidance_match_target": true,
+        "current_metadata_differences": "Pre-existing local research overlays and explicit local CI/installation receipts; delivered runtime/guidance unchanged"
       }
     },
     {
@@ -4039,7 +4523,8 @@
         "task": "ISSUE23_TASK",
         "traceability": "TRACE",
         "verification": "ISSUE23_EVIDENCE",
-        "session_evidence": "ISSUE23_SESSION"
+        "session_evidence": "ISSUE23_SESSION",
+        "installation_receipt": "ISSUE23_INSTALLATION"
       },
       "artifact_revisions": {
         "baseline": "BASELINE-ISSUE23-02",
@@ -4092,8 +4577,8 @@
       },
       "skill_review": {
         "catalog_source": "Current session Skills catalog plus repository AGENTS.md",
-        "checked_at": "2026-10-21T13:35:58.671837+08:00",
-        "scope": "Submit already implemented Issue23 1.8.0 to GitHub; no new implementation scope",
+        "checked_at": "2026-10-21T14:44:26.651289+08:00",
+        "scope": "Update existing shared dirty checkout to exact published1.8.0 source, preserve all local records and verify installation",
         "candidates": [
           {
             "id": "engineering-workflow",
@@ -4137,7 +4622,7 @@
             ]
           }
         ],
-        "recheck": "2026-10-21 upload authorized. Re-read repository SKILL1.8.0, AGENTS, active Task/Plan/Baseline, checker submission and implementation references, and current Skills catalog. Engineering-workflow remains adopted; no new skill, code or delegation needed.",
+        "recheck": "2026-10-21 explicitly authorized installation. Read current1.8.0 and installed1.7.2 sources, rules, Task/Plan and implementation/adoption guidance plus skill-creator. Backup112 files, rehearse ID-aware/text three-way merges, preserve19 local changes, verify59 managed Git objects and actual installed CLI. No new runtime implementation, additional skill or agent delegation.",
         "evidence": "planning/issue-23-task.md"
       },
       "documentation_impact": {
@@ -4209,7 +4694,7 @@
         "receipt_no_bump_reason": "Submission/publication records do not change the delivered 1.8.0 content."
       },
       "verification_status": "required_checks_pass_with_declared_optional_partials",
-      "delivery_status": "source_uploaded_to_github_main",
+      "delivery_status": "github_source_uploaded_and_shared_installation_updated",
       "verification_evidence": "planning/issue-23-evidence.json",
       "execution_steps": [
         {
@@ -4272,7 +4757,717 @@
         "remote_main": "9723921ceac69db363fb4b655d761bc61b956e0f",
         "verified_at": "2026-10-21T13:42:38.686116+08:00",
         "evidence": "planning/issue-23-evidence.json"
+      },
+      "local_installation": {
+        "status": "complete",
+        "user_statement": "那就把本地安装目录下的skill也更新了",
+        "completed_at": "2026-10-21T14:44:26.651289+08:00",
+        "version": "1.8.0",
+        "source_commit": "a3129db61b7b1d5d1410efd2836b17ba03fbd91e",
+        "target": "C:\\Users\\54667\\.codex\\skills\\engineering-workflow",
+        "backup": "C:\\Users\\54667\\.codex\\backups\\engineering-workflow\\20261021-143910-1.7.2-to-1.8.0",
+        "evidence": "planning/issue-23-local-installation.json"
       }
+    },
+    {
+      "id": "TASK-GITDIAGRAM-ASSESS-01",
+      "requirement_ids": [
+        "REQ-GITDIAGRAM-ASSESS-01"
+      ],
+      "acceptance_ids": [
+        "AT-GITDIAGRAM-ASSESS-01"
+      ],
+      "module_ids": [
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-GITINGEST-ASSESS-01"
+      ],
+      "status": "complete",
+      "impact_document": "GITDIAGRAM_ASSESS_TASK",
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "GITDIAGRAM_ASSESS_TASK",
+        "plan": "GITDIAGRAM_ASSESS_TASK",
+        "task": "GITDIAGRAM_ASSESS_TASK",
+        "traceability": "TRACE"
+      },
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": false,
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-18",
+        "scope": "GitDiagram source research and controlled validation; no formal integration",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.5.0 / c21e715",
+            "decision": "adopted",
+            "reason": "Active project workflow and explicit research scope",
+            "evidence": [
+              "planning/gitdiagram-assessment-task.md"
+            ]
+          }
+        ],
+        "evidence": "planning/gitdiagram-assessment-task.md"
+      },
+      "documentation_impact": {
+        "research-record": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/gitdiagram-assessment-task.md",
+            "planning/gitdiagram-assessment-evidence.json",
+            "planning/traceability.md"
+          ],
+          "document_ids": [
+            "GITDIAGRAM_ASSESS_TASK",
+            "GITDIAGRAM_ASSESS_EVIDENCE",
+            "TRACE"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-GITINGEST-ASSESS-01",
+      "requirement_ids": [
+        "REQ-GITINGEST-ASSESS-01"
+      ],
+      "acceptance_ids": [
+        "AT-GITINGEST-ASSESS-01"
+      ],
+      "module_ids": [
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-LINKED-ARTIFACTS-01"
+      ],
+      "status": "complete",
+      "impact_document": "GITINGEST_ASSESS_TASK",
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "GITINGEST_ASSESS_TASK",
+        "plan": "GITINGEST_ASSESS_TASK",
+        "task": "GITINGEST_ASSESS_TASK",
+        "traceability": "TRACE"
+      },
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": false,
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-18T03:47:00+08:00",
+        "scope": "Gitingest source and isolated behavioral research; no formal skill integration",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.5.0 / c21e715",
+            "decision": "adopted",
+            "reason": "Explicit user invocation; authoritative research state and validation",
+            "evidence": [
+              "planning/gitingest-assessment-task.md"
+            ]
+          }
+        ],
+        "evidence": "planning/gitingest-assessment-task.md"
+      },
+      "documentation_impact": {
+        "assessment-record": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/gitingest-assessment-task.md",
+            "planning/gitingest-assessment-evidence.json",
+            "planning/traceability.md"
+          ],
+          "document_ids": [
+            "GITINGEST_ASSESS_TASK",
+            "GITINGEST_ASSESS_EVIDENCE",
+            "TRACE"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-QUALITY-PILOT-01",
+      "requirement_ids": [
+        "REQ-QUALITY-PILOT-01",
+        "REQ-QUALITY-PILOT-02",
+        "REQ-QUALITY-PILOT-03"
+      ],
+      "acceptance_ids": [
+        "AT-QUALITY-PILOT-01",
+        "AT-QUALITY-PILOT-02",
+        "AT-QUALITY-PILOT-03"
+      ],
+      "module_ids": [
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-SOFTWARE-GUIDANCE-ASSESS-01"
+      ],
+      "status": "complete",
+      "impact_document": "QUALITY_PILOT_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/software-quality-pilot-task.md"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "scope": "User-authorized isolated quality-rule fusion and paired behavioral/token benchmark; adoption remains a user decision",
+        "checked_at": "2026-10-17T04:07:06+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.4.4 current worktree",
+            "decision": "adopted",
+            "reason": "Explicit workflow and authoritative experiment state",
+            "evidence": [
+              "SKILL.md",
+              "references/implementation-workflow.md",
+              "planning/software-quality-pilot-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Isolated skill candidate, independent behavioral validation and structural checks",
+            "evidence": [
+              "planning/software-quality-pilot-task.md"
+            ]
+          },
+          {
+            "id": "openai-docs",
+            "source": "C:/Users/54667/.codex/skills/.system/openai-docs/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Official noninteractive usage fields and actual CLI JSON measurement",
+            "evidence": [
+              "planning/software-quality-pilot-task.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Read for behavior-test principles; no universal test-first product workflow is imposed",
+            "evidence": [
+              "planning/software-quality-pilot-task.md"
+            ]
+          }
+        ],
+        "recheck": "2026-10-17: isolated fusion, paired benchmark, one infrastructure retry, source/usage audit and static independent review complete; no official adoption or release. Recheck scope/version before an approved adoption."
+      },
+      "documentation_impact": {
+        "pilot-record": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/software-quality-pilot-task.md",
+            "planning/software-engineering-guidance-assessment-task.md"
+          ],
+          "document_ids": [
+            "QUALITY_PILOT_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-SOFTWARE-GUIDANCE-ASSESS-01",
+      "requirement_ids": [
+        "REQ-SOFTWARE-GUIDANCE-ASSESS-01"
+      ],
+      "acceptance_ids": [
+        "AT-SOFTWARE-GUIDANCE-ASSESS-01"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-BASELINE-01"
+      ],
+      "status": "complete",
+      "impact_document": "SOFTWARE_GUIDANCE_ASSESS_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": false,
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and user-provided attachment",
+        "scope": "Read-only assessment of reusable software-engineering guidance from a frontend source document; official skill unchanged",
+        "checked_at": "2026-10-17T03:58:13+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.4.4",
+            "decision": "adopted",
+            "reason": "Active workflow and dynamic baseline records govern this assessment",
+            "evidence": [
+              "SKILL.md",
+              "planning/software-engineering-guidance-assessment-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Assess generic skill scope, progressive disclosure and validation boundary",
+            "evidence": [
+              "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md"
+            ]
+          },
+          {
+            "id": "design-taste-frontend",
+            "source": "C:/Users/54667/.codex/skills/taste-skill/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No interface design is requested",
+            "evidence": []
+          },
+          {
+            "id": "design-an-interface",
+            "source": "C:/Users/54667/.agents/skills/design-an-interface/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No API/module interface design is requested",
+            "evidence": []
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Assessment only; no implementation or tests are added",
+            "evidence": []
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Reuse the engineering manifest and Task records",
+            "evidence": []
+          }
+        ],
+        "recheck": "If formal fusion is authorized, recheck frontend, backend, database, security, testing and release skills and implementation impact before editing."
+      },
+      "documentation_impact": {
+        "assessment-record": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/software-engineering-guidance-assessment-task.md"
+          ],
+          "document_ids": [
+            "SOFTWARE_GUIDANCE_ASSESS_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-BASELINE-AUTONOMY-ASSESS-01",
+      "requirement_ids": [
+        "REQ-BASELINE-AUTONOMY-ASSESS-01",
+        "REQ-BASELINE-DYNAMIC-01"
+      ],
+      "acceptance_ids": [
+        "AT-BASELINE-AUTONOMY-ASSESS-01",
+        "AT-BASELINE-DYNAMIC-01"
+      ],
+      "module_ids": [
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "complete",
+      "impact_document": "BASELINE_AUTONOMY_ASSESS_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": false,
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "scope": "Read-only diagnosis and local requirements records, including the user-confirmed dynamic baseline principle; formal behavior changes are not authorized",
+        "checked_at": "2026-10-17T03:23:42+08:00",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.4.3",
+            "decision": "adopted",
+            "reason": "User explicitly invoked the workflow for diagnosis; preserve current state and verification boundaries",
+            "evidence": [
+              "SKILL.md",
+              "references/requirements-interview.md",
+              "references/project-documentation.md",
+              "references/implementation-workflow.md",
+              "references/checker.md",
+              "planning/baseline-autonomy-assessment-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No skill behavior implementation is authorized or performed in this assessment"
+          }
+        ]
+      },
+      "documentation_impact": {
+        "assessment-record": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/baseline-autonomy-assessment-task.md"
+          ],
+          "document_ids": [
+            "BASELINE_AUTONOMY_ASSESS_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-FUSION-ASSESS-01",
+      "requirement_ids": [
+        "REQ-FUSION-ASSESS-01"
+      ],
+      "acceptance_ids": [
+        "AT-FUSION-ASSESS-01"
+      ],
+      "module_ids": [
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-CONTINUITY-01"
+      ],
+      "status": "complete",
+      "impact_document": "FUSION_ASSESS_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": false,
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and user-provided v3.0 proposal",
+        "scope": "Authorized isolated A/B/C behavior and token-cost pilot; official skill unchanged",
+        "checked_at": "2026-10-16",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md",
+            "version_or_release_date": "1.4.3",
+            "decision": "adopted",
+            "reason": "The repository's active workflow and checker limits are the comparison baseline",
+            "evidence": [
+              "SKILL.md",
+              "references/requirements-interview.md",
+              "references/project-documentation.md",
+              "references/checker.md",
+              "planning/skill-fusion-assessment-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "This task assesses a proposal but does not create or update skill behavior"
+          }
+        ]
+      },
+      "documentation_impact": {
+        "assessment-record": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/skill-fusion-assessment-task.md"
+          ],
+          "document_ids": [
+            "FUSION_ASSESS_TASK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TASK-ISSUE23-RECORD-INTEGRITY-01",
+      "requirement_ids": [
+        "REQ-ISSUE23-RI-01",
+        "REQ-ISSUE23-RI-02",
+        "REQ-ISSUE23-RI-03",
+        "REQ-ISSUE23-RI-04",
+        "REQ-ISSUE23-RI-05",
+        "REQ-ISSUE23-RI-06",
+        "REQ-ISSUE23-RI-07",
+        "REQ-ISSUE23-RI-08",
+        "REQ-ISSUE23-RI-09",
+        "REQ-ISSUE23-RI-10",
+        "REQ-ISSUE23-RI-11",
+        "REQ-ISSUE23-RI-12",
+        "REQ-ISSUE23-RI-13"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUE23-RI-01",
+        "AT-ISSUE23-RI-02",
+        "AT-ISSUE23-RI-03",
+        "AT-ISSUE23-RI-04",
+        "AT-ISSUE23-RI-05",
+        "AT-ISSUE23-RI-06",
+        "AT-ISSUE23-RI-07",
+        "AT-ISSUE23-RI-08",
+        "AT-ISSUE23-RI-09",
+        "AT-ISSUE23-RI-10",
+        "AT-ISSUE23-RI-11",
+        "AT-ISSUE23-RI-12"
+      ],
+      "module_ids": [
+        "instructions",
+        "checker",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-ISSUE-23-PROPOSAL"
+      ],
+      "status": "in_progress",
+      "impact_document": "ISSUE23_RI_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/issue-23-record-integrity-task.md",
+        "user_statement": "那就按照这样进行更改,只要原有流程不变就可以,1.8的流程已经很不错了",
+        "approved_at": "2026-10-22T02:00:00+08:00",
+        "recorded_at": "2026-10-22T02:00:00+08:00",
+        "scope": "Implement the optional local archive/recovery capability and linked documentation while preserving the existing 1.8 workflow stages, approval meanings, diagnostic/strict defaults, required checks and command timeouts. Host-level arbitrary shell/editor write blocking is unavailable and remains unsupported; no automatic migration, remote backup, commit, push or release.",
+        "task_id": "TASK-ISSUE23-RECORD-INTEGRITY-01",
+        "plan_revision": "PLAN-ISSUE23-RI-01 local archive slice"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "ISSUE23_RI_SPEC",
+        "plan": "ISSUE23_RI_PLAN",
+        "task": "ISSUE23_RI_TASK",
+        "traceability": "TRACE",
+        "prior_issue": "ISSUE23_TASK"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE-ISSUE23-02",
+        "spec": "SPEC-ISSUE23-RI-01 local recovery scope",
+        "plan": "PLAN-ISSUE23-RI-01 local archive slice",
+        "task": "TASK-ISSUE23-RECORD-INTEGRITY-01 1.9.0 Unreleased local archive"
+      },
+      "requirement_state": "user_confirmed_scope_workflow_preservation",
+      "implementation_status": "local_archive_detection_and_restore_implemented; host_write_blocking_unsupported; formal_gate_revalidation_pending",
+      "proposal_status": "approved_for_local_archive_scope",
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-22 Asia/Shanghai",
+        "scope": "Optional local immutable archive/recovery command, its tests and workflow-preserving docs; no host permission or 1.8 required-gate changes",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md and installed C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+            "version_or_release_date": "1.8.0 / a3129db",
+            "decision": "adopted",
+            "reason": "Explicit user authorization; keep original lifecycle/approval/check contracts while implementing record recovery"
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Skill guidance needs a minimal workflow route to the new local recovery tool"
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Observable archive CLI behaviors are verified by integration-style tests"
+          },
+          {
+            "id": "openai-docs",
+            "source": "C:/Users/54667/.codex/skills/.system/openai-docs/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No Codex product behavior claims or host configuration implementation; host write isolation is explicitly unsupported"
+          },
+          {
+            "id": "triage-issue",
+            "source": "C:/Users/54667/.agents/skills/triage-issue/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted_for_root_cause",
+            "reason": "The global diagnosis and behavior-based fix were carried into the approved local recovery slice"
+          },
+          {
+            "id": "openai-docs",
+            "source": "C:/Users/54667/.codex/skills/.system/openai-docs/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No host API or Codex product implementation is available in this workspace; direct documentation/web capability absent; host enforcement remains unsupported"
+          }
+        ],
+        "recheck": "Recheck applicable skills before any host-specific enforcement, external-project migration or remote backup scope."
+      },
+      "documentation_impact": {
+        "candidate-architecture": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/issue-23-record-integrity-spec.md",
+            "planning/issue-23-record-integrity-plan.md",
+            "planning/issue-23-record-integrity-task.md",
+            "planning/traceability.md"
+          ],
+          "document_ids": [
+            "ISSUE23_RI_SPEC",
+            "ISSUE23_RI_PLAN",
+            "ISSUE23_RI_TASK",
+            "TRACE"
+          ]
+        },
+        "implementation-if-authorized": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "AGENTS.md",
+            "references",
+            "scripts",
+            "assets",
+            "agents",
+            "VERSION",
+            "CHANGELOG.md",
+            "engineering-manifest.json",
+            ".github"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ISSUE23_RI_SPEC",
+            "ISSUE23_RI_PLAN",
+            "ISSUE23_RI_TASK",
+            "TRACE"
+          ]
+        },
+        "implementation": {
+          "when_paths": [
+            "scripts/task_archive.py",
+            "scripts/tests/test_task_archive.py",
+            "SKILL.md",
+            "README.md",
+            "references/checker.md",
+            "engineering-manifest.json",
+            "planning/issue-23-record-integrity-spec.md",
+            "planning/issue-23-record-integrity-plan.md",
+            "planning/issue-23-record-integrity-task.md",
+            "planning/traceability.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "planning/baseline-review.md",
+            "VERSION",
+            "agents/openai.yaml",
+            "CHANGELOG.md"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "ISSUE23_RI_SPEC",
+            "ISSUE23_RI_PLAN",
+            "ISSUE23_RI_TASK",
+            "TRACE",
+            "ARCHIVE_SCRIPT",
+            "ARCHIVE_TEST"
+          ]
+        }
+      },
+      "release_impact": {
+        "previous_version": "1.8.0",
+        "proposed_implementation_version": "1.9.0 / Unreleased",
+        "bump_required_this_batch": true,
+        "reason": "Backward-compatible optional local archive/recovery capability and user documentation",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ],
+        "publication_status": "local_unpublished",
+        "current_version": "1.9.0"
+      },
+      "user_decisions": [
+        {
+          "date": "2026-10-22 Asia/Shanghai",
+          "statement": "那就按照这样进行更改,只要原有流程不变就可以,1.8的流程已经很不错了",
+          "scope": "Implement a compatible optional local archive and recovery slice; keep 1.8 stage/approval/check flow unchanged. Host-level write blocking is unavailable and remains unsupported.",
+          "spec_revision": "SPEC-ISSUE23-RI-01",
+          "plan_revision": "PLAN-ISSUE23-RI-01 local recovery slice"
+        }
+      ],
+      "execution_steps": [
+        {
+          "id": "RI-01",
+          "status": "complete",
+          "detail": "Local external SQLite archive stores immutable revision/content digests outside the project workspace; project/manifest identity checked."
+        },
+        {
+          "id": "RI-02",
+          "status": "complete",
+          "detail": "CAS checkpoint with expected head and conflict refusal; all six synthetic integration tests pass."
+        },
+        {
+          "id": "RI-03",
+          "status": "complete",
+          "detail": "Restore as a new revision; unsaved workspace changes rejected; source history retained."
+        },
+        {
+          "id": "RI-04",
+          "status": "in_progress",
+          "detail": "Document workflow behavior, host bypass limitation, migration setup and version metadata; run original required checks."
+        },
+        {
+          "id": "RI-05",
+          "status": "unsupported",
+          "detail": "Host-level prevention of arbitrary shell/editor writes; current host exposes no write-policy API."
+        },
+        {
+          "id": "RI-06",
+          "status": "unsupported",
+          "detail": "Current host exposes no file-write policy boundary; arbitrary shell/editor writes cannot be blocked by this Skill repository."
+        }
+      ],
+      "verification_status": "commit_gate_task_gate_and_control_plane_pass; TEST_timeout_at_120.000s_on_Python3.12_and_120.011s_prior; COMPILE_and_GUIDANCE_COMPILE_pass; no_commit_or_push",
+      "delivery_status": "staged_local_worktree_not_published",
+      "verification_evidence": "work/issue-23-record-integrity-commit-py312-approved.json; work/issue-23-record-integrity-formal-rerun.json; scripts/tests/test_task_archive.py"
     }
   ],
   "control_plane": {
@@ -4302,8 +5497,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "d214021 + Issue23 1.8.0 Unreleased implementation worktree",
-    "scope": "BASELINE-ISSUE23-02: structured approval contract, diagnostic defaults/explicit strict, scope/reuse/sequence/history checks, migration/capability hooks and original checks; final validation in current Task"
+    "source_revision": "d214021 + Issue23 1.8.0 + Issue23-RI 1.9.0 Unreleased local archive implementation worktree",
+    "scope": "BASELINE-ISSUE23-RI-01: 1.8 workflow preserved; optional local archive detection/recovery, immutable revisions, expected-head checkpoint, restore-as-new-revision; host write blocking unsupported"
   },
   "exclude_paths": [
     ".git",

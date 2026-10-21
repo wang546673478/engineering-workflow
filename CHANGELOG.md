@@ -1,3 +1,8 @@
+# 1.9.0 / Unreleased
+
+- Add an optional local task archive command for manifest-declared engineering records: immutable SQLite revisions outside the project root, drift detection, expected-head checkpoints, history, and restore-as-new-revision.
+- Preserve the 1.8.0 workflow stages, approval meanings, diagnostic/strict defaults, required checks, command timeouts, and migration boundaries. Host-level blocking of arbitrary shell/editor writes remains explicitly unsupported when the host exposes unrestricted file access.
+
 # 1.8.0 / Unreleased
 
 - Reuse the already validated historical manifest within a single submission check and avoid repeated interpreter startup for static contract scenarios; retain all behavior assertions, independent commit/committed coverage and original time limits.

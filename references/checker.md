@@ -72,6 +72,28 @@ GitHub Actions 是可选的托管检查方式，不是每个使用本 skill 的�
 
 The JSON result contains `tool_version`, `mode`, `required_checks_satisfied`, `checks`, `summary`, `changed_paths`, `errors`, and nullable `verified_tree` / `verification_head`. Successful commit/committed results bind those fields to the index tree and pre-verification HEAD; other/failed results leave them null. `verification-state` records before/after IDs and drift paths after declared checks and before report-file creation. This evidence is not a signed attestation or an atomic final commit. Exit code 0 means every required check passed; 1 means a declared check or validation requirement failed, including an output-limit failure; 2 means malformed configuration, unavailable environment, or an unsupported capability before a check can run. `pass`, `fail`, `partial`, `unsupported`, `skipped`, and `error` are reported separately. Partial, skipped, or unsupported required checks cannot satisfy completion.
 
+## 本地工程记录归档与恢复
+
+`python <skill-dir>/scripts/task_archive.py --root <project> --manifest engineering-manifest.json --project-id <stable-local-id> --store <absolute-path-outside-project> init` 将工程 manifest 与其 `documents` 声明的文档按原始字节存入指定的本地 SQLite archive，创建初始 revision。工具拒绝把 archive 放在 project root 内；不会创建或清除 Git 状态，不会自动迁移其他项目。首次 init 前应检查工件清单与路径，并选择有本地访问控制/备份责任的外部目录。archive 不加密，不云同步，也不管理保留/清理策略。
+
+- `... check` 对比工作区与最新 revision，显示 missing/new/changed 文件。直接覆盖可被发现，但此动作不是持续监视，也不会拦截写入。
+- 审核当前内容后，以 `... check --save --expected-head <revision> --reason <reason>` 创建不可变 revision。期望 head 不匹配时拒绝，避免基于旧版本保存；checkpoint 本身不代表用户审批。
+- `... history` 列 revision、父版本、时间、操作者标签、原因与 restore 来源。
+- `... restore <revision> --reason <reason>` 只有工作区与当前 archive head 完全一致时才运行。它先保存新的 restore revision，再逐文件原子重建视图；失败可能报告 partial。`... restore --project-head` 可在工作区偏离时按当前 head 修复视图，也会记录新 restore revision。
+
+SQLite 事务保护 archive 内 revision/head 一致性；不保证外置磁盘不会损坏。工作区文件在 archive 记录后逐个重建，恢复中断可能留下 partial projection，重试 `restore --project-head` 可重建。archive 损坏/丢失时 fail closed，不会把未验证工作区自动写入历史。内容摘要用于检测字节变化，不认证操作者、语义或真实批准。
+
+project ID 必须在 archive 生命周期内稳定唯一；更换项目身份要创建新 archive。archive 保护显式列入 manifest 的 documents，不自动保存未声明文件、Git 状态、附件、数据库或宿主会话。首次 adoption 与计划检查点均由项目显式运行，不增加用户审核节点，也不影响 BASELINE → SPEC → PLAN → TASK → EVIDENCE 流程。当前宿主允许任意 shell/editor 写入，强制拒绝绕过入口为 unsupported。
+
+PowerShell 示例（将路径/ID 换成项目实际值）：
+
+```powershell
+python C:/path/to/engineering-workflow/scripts/task_archive.py --root C:/path/to/project --manifest engineering-manifest.json --project-id customer-app --store C:/Users/you/AppData/Local/EngineeringState/customer-app.sqlite init
+python C:/path/to/engineering-workflow/scripts/task_archive.py --root C:/path/to/project --manifest engineering-manifest.json --project-id customer-app --store C:/Users/you/AppData/Local/EngineeringState/customer-app.sqlite check
+```
+
+这些命令只读写显式指定的工程文档及本地 archive；不更改 OS 权限、不访问网络、不需要 API key。
+
 ## 项目清单字段
 
 从 [清单示例](../assets/templates/project-manifest.example.json) 调整实际路径；示例状态为 planned，直接复制不会被视为已完成。

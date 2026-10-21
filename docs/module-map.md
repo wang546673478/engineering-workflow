@@ -16,6 +16,10 @@ Existing checker lifecycle/file gates and legacy compatibility are unchanged. Th
 Status: `current`; active task and current evidence are selected by `workflow.active_task` in [the manifest](../engineering-manifest.json).
 Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
+## Optional local task record archive / 1.9.0 Unreleased
+
+`scripts/task_archive.py` snapshots manifest-declared engineering documents to an explicitly selected local SQLite file outside the project root. It owns archive revisions/checkpoints/history/restore; workspace Markdown/JSON remains readable and the 1.8 workflow/checker remains the approval and validation owner. The command is opt-in and is not integrated into existing check gates. The host currently does not block direct shell/editor writes, so drift detection and restore are supported but enforcement is unsupported. See the [archive contract](../references/checker.md#本地工程记录归档与恢复) and [RI Task](../planning/issue-23-record-integrity-task.md).
+
 ## Module: instructions
 
 - Issue 22 current guidance (1.7.2): implementation-workflow owns defect evidence, baseline-linked-artifacts owns delivery discrepancy classification and routing, requirements-interview owns optional EARS/Given–When–Then examples. SKILL/README route to these original owners; the two existing templates offer optional prompts. Task/impact/Spec remain project-owned records. No new module, executable dependency or automatic migration is added; current evidence is in [Task](../planning/issue-22-task.md).

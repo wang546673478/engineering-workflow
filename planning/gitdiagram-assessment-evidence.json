@@ -1,0 +1,1403 @@
+{
+  "kind": "research-evidence-not-implementation-or-production-certification",
+  "task": "TASK-GITDIAGRAM-ASSESS-01",
+  "observed_at": "2026-10-18T05:24:58.465744+08:00",
+  "upstream_metadata": {
+    "branch": {
+      "name": "main",
+      "sha": "310e2e696b1953cec0e76560cad5e9cd7ca5d964",
+      "date": "2026-10-14T01:20:09Z"
+    },
+    "repository": {
+      "full_name": "ahmedkhaleel2004/gitdiagram",
+      "default_branch": "main",
+      "pushed_at": "2026-10-14T01:20:21Z",
+      "archived": false,
+      "license": "MIT"
+    },
+    "observed_at": "2026-10-18T05:21:35.9723266+08:00"
+  },
+  "source_revision": "310e2e696b1953cec0e76560cad5e9cd7ca5d964",
+  "source_worktree_clean": true,
+  "package_version": "0.1.0",
+  "license": "MIT / Copyright (c) 2024 Ahmed Khaleel",
+  "environment": {
+    "os": "Windows",
+    "node": "24.21.0",
+    "bun": "1.3.14",
+    "upstream_CI_node": "22.x"
+  },
+  "test_summary": {
+    "success": true,
+    "numTotalTests": 208,
+    "numPassedTests": 208,
+    "numFailedTests": 0,
+    "numPendingTests": 0
+  },
+  "test_files": [
+    {
+      "path": "src/server/generate/architecture-output.test.ts",
+      "status": "passed",
+      "case_count": 4
+    },
+    {
+      "path": "src/server/generate/edge-evidence.test.ts",
+      "status": "passed",
+      "case_count": 4
+    },
+    {
+      "path": "src/server/generate/github.test.ts",
+      "status": "passed",
+      "case_count": 25
+    },
+    {
+      "path": "src/server/generate/graph-planner.test.ts",
+      "status": "passed",
+      "case_count": 1
+    },
+    {
+      "path": "src/server/generate/graph.test.ts",
+      "status": "passed",
+      "case_count": 22
+    },
+    {
+      "path": "src/server/generate/mermaid.test.ts",
+      "status": "passed",
+      "case_count": 12
+    },
+    {
+      "path": "src/server/generate/repository-context.test.ts",
+      "status": "passed",
+      "case_count": 30
+    },
+    {
+      "path": "src/server/generate/source-context.test.ts",
+      "status": "passed",
+      "case_count": 14
+    },
+    {
+      "path": "src/server/generate/source-excerpt.test.ts",
+      "status": "passed",
+      "case_count": 5
+    },
+    {
+      "path": "src/server/generate/source-references.test.ts",
+      "status": "passed",
+      "case_count": 9
+    },
+    {
+      "path": "src/server/mcp/format.test.ts",
+      "status": "passed",
+      "case_count": 20
+    },
+    {
+      "path": "src/components/generation/diagram-connections.test.tsx",
+      "status": "passed",
+      "case_count": 6
+    },
+    {
+      "path": "src/components/generation/diagram-export.test.tsx",
+      "status": "passed",
+      "case_count": 7
+    },
+    {
+      "path": "src/features/diagram/export.test.ts",
+      "status": "passed",
+      "case_count": 11
+    },
+    {
+      "path": "src/features/diagram/github-url.test.ts",
+      "status": "passed",
+      "case_count": 21
+    },
+    {
+      "path": "src/features/diagram/markdown.test.ts",
+      "status": "passed",
+      "case_count": 5
+    },
+    {
+      "path": "src/features/diagram/mermaid-security.test.ts",
+      "status": "passed",
+      "case_count": 5
+    },
+    {
+      "path": "src/features/diagram/readout.test.ts",
+      "status": "passed",
+      "case_count": 7
+    }
+  ],
+  "test_execution": {
+    "command": [
+      "C:/Program Files/nodejs/node.exe",
+      "C:\\Users\\54667\\.codex\\experiments\\gitdiagram-assessment-20261018\\upstream\\node_modules\\vitest\\vitest.mjs",
+      "run",
+      "--maxWorkers",
+      "2",
+      "--reporter=json",
+      "--outputFile=C:\\Users\\54667\\.codex\\experiments\\gitdiagram-assessment-20261018\\upstream-tests.json",
+      "src/server/generate/source-references.test.ts",
+      "src/server/generate/source-excerpt.test.ts",
+      "src/server/generate/repository-context.test.ts",
+      "src/server/generate/source-context.test.ts",
+      "src/server/generate/edge-evidence.test.ts",
+      "src/server/generate/graph.test.ts",
+      "src/server/generate/mermaid.test.ts",
+      "src/server/generate/architecture-output.test.ts",
+      "src/server/generate/graph-planner.test.ts",
+      "src/server/generate/github.test.ts",
+      "src/features/diagram/readout.test.ts",
+      "src/features/diagram/markdown.test.ts",
+      "src/features/diagram/mermaid-security.test.ts",
+      "src/features/diagram/github-url.test.ts",
+      "src/features/diagram/export.test.ts",
+      "src/components/generation/diagram-connections.test.tsx",
+      "src/components/generation/diagram-export.test.tsx",
+      "src/server/mcp/format.test.ts"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 8.365,
+    "scope": "Selected relevant upstream tests; network/model boundaries mocked by upstream tests, credentials removed",
+    "full_application_gate": "not run; no source changes or production certification"
+  },
+  "source_probe": {
+    "source_ref_fixtures": {
+      "literal_relative": [
+        "src/real.ts"
+      ],
+      "commented_import": [
+        "src/ghost.ts"
+      ],
+      "quoted_import": [
+        "src/ghost.ts"
+      ],
+      "arbitrary_tsconfig_alias": [],
+      "workspace_name_differs_from_folder": [],
+      "variable_dynamic_import": []
+    },
+    "evidence_limits": {
+      "reverse_evidence": {
+        "graph": {
+          "groups": [],
+          "nodes": [
+            {
+              "id": "real",
+              "label": "Real",
+              "type": "module",
+              "description": null,
+              "groupId": null,
+              "path": "src/real.ts",
+              "shape": null
+            },
+            {
+              "id": "ghost",
+              "label": "Ghost",
+              "type": "module",
+              "description": null,
+              "groupId": null,
+              "path": "src/ghost.ts",
+              "shape": null
+            }
+          ],
+          "edges": [
+            {
+              "from": "ghost",
+              "to": "real",
+              "label": "deletes every record",
+              "description": null,
+              "style": "solid",
+              "evidencePath": "src/real.ts"
+            }
+          ]
+        },
+        "strippedEvidenceCount": 0,
+        "filledEvidenceCount": 1
+      },
+      "unrelated_semantics_with_node_file": {
+        "graph": {
+          "groups": [],
+          "nodes": [
+            {
+              "id": "real",
+              "label": "Real",
+              "type": "module",
+              "description": null,
+              "groupId": null,
+              "path": "src/real.ts",
+              "shape": null
+            },
+            {
+              "id": "ghost",
+              "label": "Ghost",
+              "type": "module",
+              "description": null,
+              "groupId": null,
+              "path": "src/ghost.ts",
+              "shape": null
+            }
+          ],
+          "edges": [
+            {
+              "from": "ghost",
+              "to": "real",
+              "label": "deletes every record",
+              "description": null,
+              "style": "solid",
+              "evidencePath": "src/real.ts"
+            }
+          ]
+        },
+        "strippedEvidenceCount": 0,
+        "filledEvidenceCount": 0
+      },
+      "unread_readme_citation": {
+        "graph": {
+          "groups": [],
+          "nodes": [
+            {
+              "id": "real",
+              "label": "Real",
+              "type": "module",
+              "description": null,
+              "groupId": null,
+              "path": "src/real.ts",
+              "shape": null
+            },
+            {
+              "id": "ghost",
+              "label": "Ghost",
+              "type": "module",
+              "description": null,
+              "groupId": null,
+              "path": "src/ghost.ts",
+              "shape": null
+            }
+          ],
+          "edges": [
+            {
+              "from": "ghost",
+              "to": "real",
+              "label": "deletes every record",
+              "description": null,
+              "style": "solid",
+              "evidencePath": "README.md"
+            }
+          ]
+        },
+        "strippedEvidenceCount": 0,
+        "filledEvidenceCount": 0
+      }
+    },
+    "excerpt": {
+      "original_chars": 10817,
+      "output_chars": 1058,
+      "budget": 1400,
+      "has_omission_marker": true,
+      "tiny_budget": 5,
+      "tiny_output_chars": 27,
+      "tiny_output": "\n[remaining source omitted]"
+    },
+    "architecture_filter": {
+      "migration": false,
+      "test": false,
+      "env": false,
+      "lock": false,
+      "config": false,
+      "runtime": true
+    },
+    "pi": {
+      "observed_files": 1941,
+      "examples": [
+        {
+          "path": "packages/coding-agent/src/core/tools/read.ts",
+          "references": [
+            "packages/coding-agent/src/utils/image-process.ts",
+            "packages/coding-agent/src/utils/mime.ts",
+            "packages/coding-agent/src/core/extensions/types.ts",
+            "packages/coding-agent/src/core/tools/path-utils.ts",
+            "packages/coding-agent/src/core/tools/renderers/read.ts",
+            "packages/coding-agent/src/core/tools/tool-definition-wrapper.ts",
+            "packages/coding-agent/src/core/tools/truncate.ts"
+          ]
+        },
+        {
+          "path": "packages/coding-agent/src/cli/args.ts",
+          "references": [
+            "packages/coding-agent/src/config.ts",
+            "packages/coding-agent/src/core/extensions/types.ts",
+            "packages/coding-agent/src/core/settings-manager.ts"
+          ]
+        },
+        {
+          "path": "packages/agent/src/agent-loop.ts",
+          "references": [
+            "packages/agent/src/stream-fn.ts",
+            "packages/agent/src/types.ts"
+          ]
+        }
+      ],
+      "ranked_first_12": [
+        "packages/coding-agent/src/core/auth-storage.ts",
+        "package.json",
+        "packages/durable/src/testing/storage-conformance.ts",
+        "packages/durable/src/storage/sqlite/storage.ts",
+        "packages/durable/src/storage/jsonl/storage.ts",
+        "packages/chord/src/manager.ts",
+        "packages/coding-agent/src/package-manager-cli.ts",
+        "packages/env/daemon/src/main.rs",
+        "packages/durable/src/testing/storage-benchmark.ts",
+        "packages/coding-agent/src/utils/tools-manager.ts",
+        "packages/mcp/src/client.ts",
+        "packages/ai/src/api/openrouter-images.ts"
+      ],
+      "context_summary": {
+        "selected": [
+          "packages/coding-agent/src/core/auth-storage.ts",
+          "package.json",
+          "packages/durable/src/testing/storage-conformance.ts",
+          "packages/durable/src/storage/sqlite/storage.ts",
+          "packages/durable/src/storage/jsonl/storage.ts",
+          "packages/chord/src/manager.ts",
+          "packages/coding-agent/src/package-manager-cli.ts",
+          "packages/env/daemon/src/main.rs",
+          "packages/durable/src/testing/storage-benchmark.ts",
+          "packages/coding-agent/src/utils/tools-manager.ts",
+          "packages/mcp/src/client.ts",
+          "packages/ai/src/api/openrouter-images.ts"
+        ],
+        "reference_count": 28,
+        "listed_count": 20,
+        "tree_chars": 23984,
+        "tree_truncated": true
+      }
+    },
+    "limits": [
+      "No model call; fixture graph intentionally contains unsupported semantics to test validation boundaries",
+      "Pi references are observed outputs, not full precision/recall scores",
+      "Probe does not modify Pi or integrate code into workflow"
+    ]
+  },
+  "graph_probe": {
+    "graph_contract": {
+      "base_valid": {
+        "valid": true,
+        "issues": []
+      },
+      "duplicate_ids": {
+        "valid": false,
+        "issues": [
+          {
+            "category": "duplicate_node_id",
+            "path": "nodes.2.id",
+            "message": "Duplicate node id \"entry\"."
+          }
+        ]
+      },
+      "disconnected_accepted": {
+        "valid": true,
+        "issues": []
+      },
+      "cycle_accepted": {
+        "valid": true,
+        "issues": []
+      }
+    },
+    "missing_path": {
+      "initial": {
+        "valid": false,
+        "issues": [
+          {
+            "category": "missing_repository_path",
+            "path": "nodes.1.path",
+            "message": "Path \"nonexistent.ts\" does not exist in the repository file tree."
+          }
+        ]
+      },
+      "repairable": true,
+      "stripped_count": 1,
+      "repaired_graph": {
+        "groups": [],
+        "nodes": [
+          {
+            "id": "entry",
+            "label": "entry",
+            "type": "component",
+            "description": null,
+            "groupId": null,
+            "path": "src/entry.ts",
+            "shape": null
+          },
+          {
+            "id": "store",
+            "label": "store",
+            "type": "component",
+            "description": null,
+            "groupId": null,
+            "path": null,
+            "shape": null
+          }
+        ],
+        "edges": [
+          {
+            "from": "entry",
+            "to": "store",
+            "label": "calls",
+            "description": null,
+            "style": "solid",
+            "evidencePath": "src/entry.ts"
+          }
+        ]
+      },
+      "after": {
+        "valid": true,
+        "issues": []
+      }
+    },
+    "compiler": {
+      "syntax": {
+        "valid": true
+      },
+      "escaped_label_syntax": {
+        "valid": true
+      },
+      "output": "flowchart TD\n\nnode_entry[\"entry<br/>[entry.ts]\"]\nnode_store[\"store<br/>[store.ts]\"]\n\nnode_entry -->|\"calls\"| node_store\n\nclick node_entry \"https://github.com/example/fixture/blob/main/src/entry.ts\"\nclick node_store \"https://github.com/example/fixture/blob/main/src/store.ts\"\n\nclassDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a\nclassDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554\nclassDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f\nclassDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d\nclassDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337\nclassDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81\nclassDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a\nclass node_entry,node_store toneTeal",
+      "escaped_label_output": "flowchart TD\n\nnode_entry[\"A &quot; &lt;script&gt; &#35;35; &#96; &#91;x&#93; &#124; &#92;<br/>[entry.ts]\"]\nnode_store[\"store<br/>[store.ts]\"]\n\nnode_entry -->|\"calls\"| node_store\n\nclick node_entry \"https://github.com/example/fixture/blob/main/src/entry.ts\"\nclick node_store \"https://github.com/example/fixture/blob/main/src/store.ts\"\n\nclassDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a\nclassDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554\nclassDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f\nclassDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d\nclassDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337\nclassDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81\nclassDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a\nclass node_entry,node_store toneTeal",
+      "links_follow_named_branch": true
+    },
+    "relation_rows": [
+      {
+        "key": "0:entry:store",
+        "from": "entry",
+        "to": "store",
+        "label": "calls",
+        "evidencePath": "src/entry.ts",
+        "dashed": false
+      }
+    ],
+    "evidence_link": "https://github.com/example/fixture/blob/HEAD/src/entry.ts",
+    "compact_output": {
+      "input_bytes": 382,
+      "compact_graph_bytes": 287,
+      "expanded_contract_valid": true
+    },
+    "limits": [
+      "Graph validation is structural/path validation; it does not certify correctness of calls, data flow, ownership or approval",
+      "This fixture was constructed by the probe, not inferred by an AI model",
+      "No API keys or external model calls"
+    ]
+  },
+  "source_index": [
+    {
+      "path": "src/server/generate/architecture-output.ts",
+      "sha256": "bda35e0de628792dc0cd4ab556e10cf3209ba2641c7d5be889893c79e5ce0558",
+      "lines": 82,
+      "exports": [
+        "architectureOutputSchema",
+        "expandArchitectureGraph",
+        "readArchitectureProgress"
+      ]
+    },
+    {
+      "path": "src/server/generate/cancellation.ts",
+      "sha256": "7a87049ab7c0e7954c00414f421b34aceebcc80a7e1c828b5b533ad875ccd110",
+      "lines": 206,
+      "exports": [
+        "GENERATION_CANCELLATION_TTL_SECONDS",
+        "GENERATION_ACTIVE_TTL_SECONDS",
+        "GENERATION_PENDING_CANCELLATION_TTL_SECONDS",
+        "registerActiveGeneration",
+        "markGenerationCancelled",
+        "unregisterActiveGeneration",
+        "isGenerationCancelled",
+        "startGenerationCancellationPolling"
+      ]
+    },
+    {
+      "path": "src/server/generate/complimentary-gate.ts",
+      "sha256": "2870a8ac48fcb07f1de8f013dfb11733289281ce5f98bbbad4dd2399aafb9d32",
+      "lines": 291,
+      "exports": [
+        "ComplimentaryQuotaReservation",
+        "ComplimentaryAdmissionEstimate",
+        "ComplimentaryGenerationStage",
+        "isComplimentaryGateEnabled",
+        "getComplimentaryDailyLimitTokens",
+        "shouldApplyComplimentaryGate",
+        "modelMatchesComplimentaryFamily",
+        "getComplimentaryQuotaBucket",
+        "buildComplimentaryAdmissionTokens",
+        "buildComplimentaryStageTokenEstimate",
+        "readComplimentaryUsageToday",
+        "getComplimentaryDenialMessage",
+        "getComplimentaryProviderMismatchMessage",
+        "getComplimentaryModelMismatchMessage",
+        "admitComplimentaryQuota",
+        "finalizeComplimentaryQuota",
+        "markComplimentaryQuotaStarted"
+      ]
+    },
+    {
+      "path": "src/server/generate/cost-estimate.ts",
+      "sha256": "bbc74c06ce5b65d5c6c4fc6cb7bd9958ab312f5ebf6a1ed2b30092e15cb42893",
+      "lines": 247,
+      "exports": [
+        "GenerationEstimateResult",
+        "estimateGenerationCost"
+      ]
+    },
+    {
+      "path": "src/server/generate/edge-evidence.ts",
+      "sha256": "ab7cb29951e5cf85a68a2ec732451b5fb381d3ff7665a952c8be4e8e1e18e590",
+      "lines": 100,
+      "exports": [
+        "EdgeEvidenceContext",
+        "applyEdgeEvidence"
+      ]
+    },
+    {
+      "path": "src/server/generate/errors.ts",
+      "sha256": "b8d3a81cdf53f63b398fc79e4da18dec46069cf344680f11a959ca3f428c22f3",
+      "lines": 149,
+      "exports": [
+        "UpstreamProviderError",
+        "rethrowAsUpstreamProviderError",
+        "BYOK_UPSTREAM_ERROR_PREFIX",
+        "redactUpstreamProviderTextForSharedRecord",
+        "normalizeGenerationError"
+      ]
+    },
+    {
+      "path": "src/server/generate/final-cost.ts",
+      "sha256": "1c52e3c095adf6a2dc4ed36ee2e37ebe869c56255db65437f5b6c849b89bf895",
+      "lines": 81,
+      "exports": [
+        "createFinalGenerationCostSummary"
+      ]
+    },
+    {
+      "path": "src/server/generate/format.ts",
+      "sha256": "300a57118ee13ea53c8acfb945d8be9765023d6b79a4db6888bf405961bf999b",
+      "lines": 24,
+      "exports": [
+        "toTaggedMessage",
+        "extractTaggedSection"
+      ]
+    },
+    {
+      "path": "src/server/generate/generation-policy.ts",
+      "sha256": "8e7a90128a76237d05854a70eaa1ddcbf956bfffc4655314dfd3661f81e8dade",
+      "lines": 29,
+      "exports": [
+        "EXPLANATION_REASONING_EFFORT",
+        "ARCHITECTURE_SLOW_RETRY_MS",
+        "getArchitectureReasoningEffort",
+        "GRAPH_REASONING_EFFORT",
+        "EXPLANATION_TEXT_VERBOSITY",
+        "GRAPH_TEXT_VERBOSITY",
+        "EXPLANATION_ESTIMATED_OUTPUT_TOKENS",
+        "GRAPH_ESTIMATED_OUTPUT_TOKENS",
+        "GRAPH_RETRY_INPUT_BUFFER_TOKENS",
+        "MAX_GENERATION_INPUT_TOKENS"
+      ]
+    },
+    {
+      "path": "src/server/generate/github-errors.ts",
+      "sha256": "a65ad2feef28d3a8518d83ba79f869e8fcd99e1bed9bf26b99a7607fc21f3605",
+      "lines": 88,
+      "exports": [
+        "GitHubRequestError",
+        "classifyGitHubError"
+      ]
+    },
+    {
+      "path": "src/server/generate/github.ts",
+      "sha256": "1799914e0698243767da906fba818d623c251521a2e6dc67487ca48e6608b942",
+      "lines": 621,
+      "exports": [
+        "SourceBlob",
+        "GithubData",
+        "RepositoryPathType",
+        "REPOSITORY_TOO_LARGE_ERROR",
+        "REPOSITORY_NOT_FOUND_ERROR",
+        "EMPTY_REPOSITORY_ERROR",
+        "PRIVATE_REPOSITORY_AUTH_REQUIRED_ERROR",
+        "MAX_README_BYTES",
+        "GITHUB_REQUEST_TIMEOUT_MS",
+        "getGithubData"
+      ]
+    },
+    {
+      "path": "src/server/generate/graph-planner.ts",
+      "sha256": "9cf0f9dd52479417b62ad724983ae29d62adeffd6a20c0fd9602ac68019ddb72",
+      "lines": 285,
+      "exports": [
+        "GenerationUsageAccounting",
+        "ValidatedGraphResult",
+        "generateValidatedGraph"
+      ]
+    },
+    {
+      "path": "src/server/generate/graph.ts",
+      "sha256": "1d527706e4a02c59c52f08a40fa672dc773cd0b23a21ad8b5009622812a8f4f5",
+      "lines": 544,
+      "exports": [
+        "GraphValidationIssue",
+        "GraphValidationCategory",
+        "GraphValidationResult",
+        "buildFileTreeLookup",
+        "parseDiagramGraph",
+        "validateDiagramGraph",
+        "formatGraphValidationFeedback",
+        "stripUnknownGraphPaths",
+        "isRepairableWithoutRetry",
+        "toneClassForNode",
+        "normalizeKnownGraphPaths",
+        "compileDiagramGraph"
+      ]
+    },
+    {
+      "path": "src/server/generate/mermaid-validator.ts",
+      "sha256": "38a834e332c04628fc41248c6457d96f1561b51823469b36204a5fbe078ea729",
+      "lines": 343,
+      "exports": [
+        "MermaidValidationOptions",
+        "validateMermaidSyntax"
+      ]
+    },
+    {
+      "path": "src/server/generate/mermaid.ts",
+      "sha256": "1c900746d4525a07afeba399cb582eff4a6a00a59ffa9e23bc15c634439411b7",
+      "lines": 1,
+      "exports": []
+    },
+    {
+      "path": "src/server/generate/model-config.ts",
+      "sha256": "ef60692333d198f5a630baa2d68f456a4f44000abf92a7cfbf8902857a19b5d9",
+      "lines": 91,
+      "exports": [
+        "AIProvider",
+        "GenerationServiceTier",
+        "getProvider",
+        "getProviderLabel",
+        "supportsExactInputTokenCount",
+        "supportsTextVerbosity",
+        "getGenerationServiceTier",
+        "usesSinglePassArchitecture",
+        "shouldUseExactInputTokenCount",
+        "getModel"
+      ]
+    },
+    {
+      "path": "src/server/generate/openai.ts",
+      "sha256": "2f3b2fb6645997d5fc84f6c40692b7de3b1a87eee780304525ca15e66d42f8ae",
+      "lines": 463,
+      "exports": [
+        "ReasoningEffort",
+        "estimateTokens",
+        "streamCompletion",
+        "countInputTokens",
+        "generateStructuredOutput"
+      ]
+    },
+    {
+      "path": "src/server/generate/pricing.ts",
+      "sha256": "eabe5f56584cf18fe40d6ef8af2e37ddcfea7eec113e31c503f00032b45cb98a",
+      "lines": 347,
+      "exports": [
+        "ModelPricing",
+        "MODEL_PRICING_UNAVAILABLE_ERROR",
+        "ModelPricingUnavailableError",
+        "resolvePricingModel",
+        "assertModelPricingAvailable",
+        "estimateTextTokenCostUsd",
+        "normalizeGenerationUsage",
+        "sumGenerationUsage",
+        "createCostSummary",
+        "createEstimateCostSummary",
+        "combineCostSummaries"
+      ]
+    },
+    {
+      "path": "src/server/generate/prompts.ts",
+      "sha256": "1c41f3d7abdcf63b8958ab08ed240fdb5def18aba3180b52e349e76760856213",
+      "lines": 68,
+      "exports": [
+        "SYSTEM_FIRST_PROMPT",
+        "SYSTEM_GRAPH_PROMPT",
+        "SYSTEM_ARCHITECTURE_PROMPT"
+      ]
+    },
+    {
+      "path": "src/server/generate/rate-limit.ts",
+      "sha256": "058a0cdf5226fcd6bbb786973eaab15e4358cb96a296f6d49464a9a3673aa288",
+      "lines": 282,
+      "exports": [
+        "readEnvInt",
+        "getGenerationRateLimitMax",
+        "getGenerationRateLimitWindowSeconds",
+        "getGenerationInfrastructureRateLimitMax",
+        "toRateLimitBucket",
+        "buildGenerationRateLimitKey",
+        "buildGenerationInfrastructureRateLimitKey",
+        "getGenerationRateLimitMessage",
+        "getGenerationInfrastructureRateLimitMessage",
+        "GenerationRateLimitResult",
+        "consumeRateLimit",
+        "consumeGenerationRateLimit",
+        "consumeGenerationInfrastructureRateLimit",
+        "refundGenerationRateLimit",
+        "refundGenerationInfrastructureRateLimit"
+      ]
+    },
+    {
+      "path": "src/server/generate/repository-context.ts",
+      "sha256": "2a6a54c60da876865776ac050baf4b25e7f62d6916f486f61d6e8c5653339827",
+      "lines": 277,
+      "exports": [
+        "MAX_SOURCE_CHARACTERS",
+        "MAX_SOURCE_FILES",
+        "MAX_SOURCE_FILE_BYTES",
+        "MAX_REFERENCE_FILES",
+        "isManifestPath",
+        "isArchitectureSource",
+        "rankSourcePaths",
+        "selectSourcePaths",
+        "prepareRepositoryContext",
+        "selectAnalysisModel"
+      ]
+    },
+    {
+      "path": "src/server/generate/request-admission.ts",
+      "sha256": "fbe1b294915ff548190ed0fcc7c7e04cae5c424be6b57448f39d73e193fbae40",
+      "lines": 219,
+      "exports": [
+        "admitGenerationRequest"
+      ]
+    },
+    {
+      "path": "src/server/generate/session-audit.ts",
+      "sha256": "e0e57429df9e3e4dd1099d050e3db34b982993a3c83543b602388d5288923541",
+      "lines": 209,
+      "exports": [
+        "createGenerationSessionAudit",
+        "toTerminalSessionAudit",
+        "withTimelineEvent",
+        "withExplanation",
+        "withEstimatedCost",
+        "withFinalCost",
+        "withStageUsage",
+        "withGraphAttempt",
+        "withGraph",
+        "withCompiledDiagram",
+        "withFailure",
+        "withSuccess"
+      ]
+    },
+    {
+      "path": "src/server/generate/slow-request-retry.ts",
+      "sha256": "ad952ca6259d480730e67345adab439c016305a58df82fa0f1ef42e8a571e46a",
+      "lines": 35,
+      "exports": [
+        "withSlowRequestRetry"
+      ]
+    },
+    {
+      "path": "src/server/generate/source-context.ts",
+      "sha256": "0bb5c9ff284a3ddb6ac1d838a01187b8b8ce577ac6fe04910503cdc3c741caec",
+      "lines": 523,
+      "exports": [
+        "SourceContext",
+        "formatSourceIndex",
+        "fetchSourceContext"
+      ]
+    },
+    {
+      "path": "src/server/generate/source-excerpt.ts",
+      "sha256": "dbe53447f68f2438b47f854dc5cc17247bed5006f510738ceea7abdd49214f87",
+      "lines": 169,
+      "exports": [
+        "excerptSource"
+      ]
+    },
+    {
+      "path": "src/server/generate/source-references.ts",
+      "sha256": "5c284f8414d07581e402f472b2c198aa9e4368d29b845772fa52271dfca45490",
+      "lines": 406,
+      "exports": [
+        "MAX_REFERENCES_PER_FILE",
+        "ReferenceResolver",
+        "createReferenceResolver"
+      ]
+    },
+    {
+      "path": "src/server/generate/sse-writer.ts",
+      "sha256": "30de1639c8dafe9735c9c2bc9d1062a6bbb3cb7dabd8cb837040754d971fa2bb",
+      "lines": 117,
+      "exports": [
+        "GenerationStreamState",
+        "StreamWriteOptions",
+        "createGenerationSseWriter"
+      ]
+    },
+    {
+      "path": "src/server/generate/stream-buffer.ts",
+      "sha256": "5cb8728c35a612dc2c7158314bc92a7a315c969e1405bde2e50c558ffe03970e",
+      "lines": 138,
+      "exports": [
+        "canWriteStreamMessage",
+        "function"
+      ]
+    },
+    {
+      "path": "src/server/generate/stream-finalization.ts",
+      "sha256": "1ea5ad3bd9da2f685a354b1bfdbdb0499bae78709725051a2f5789f0085b5c2e",
+      "lines": 180,
+      "exports": [
+        "FinalizeGenerationStreamParams",
+        "finalizeGenerationStream",
+        "logGenerationFinished"
+      ]
+    },
+    {
+      "path": "src/server/generate/types.ts",
+      "sha256": "7e9da0528d919419f3e6f90c72b5b547240c993324e262bd7d45678db352cf9d",
+      "lines": 128,
+      "exports": [
+        "MAX_GENERATION_REQUEST_BYTES",
+        "githubUsernameSchema",
+        "githubRepoSchema",
+        "credentialSchema",
+        "generationSessionIdSchema",
+        "generationCancelTokenSchema",
+        "GenerateRequestParseResult",
+        "parseGenerateRequest",
+        "sseMessage"
+      ]
+    },
+    {
+      "path": "src/features/diagram/analytics.ts",
+      "sha256": "82c8aaac5517a9c26e1f097c773d9174739d51d3f6c64232365d0daae7d84f2b",
+      "lines": 34,
+      "exports": [
+        "DiagramEvent",
+        "reportableRepo",
+        "captureDiagramEvent"
+      ]
+    },
+    {
+      "path": "src/features/diagram/api.ts",
+      "sha256": "07fe3ed9cf63369cb83a45eb35194408de4d5ee6ae2a0b28eecb2a9641d8cb42",
+      "lines": 178,
+      "exports": [
+        "DiagramStreamHttpError",
+        "getDiagramState",
+        "streamDiagramGeneration"
+      ]
+    },
+    {
+      "path": "src/features/diagram/architecture-text.ts",
+      "sha256": "ef4edf88ab5b57401e3587bb9ddb61aee66ce1b739f93c714f256d242a6c620a",
+      "lines": 23,
+      "exports": [
+        "architectureText"
+      ]
+    },
+    {
+      "path": "src/features/diagram/cost.ts",
+      "sha256": "8e8b41eb4b2c927079985713a37957af55a729781e132fe2b70554f1be175d03",
+      "lines": 27,
+      "exports": [
+        "GenerationTokenUsage",
+        "GenerationCostSummary",
+        "GenerationStageUsage"
+      ]
+    },
+    {
+      "path": "src/features/diagram/export.ts",
+      "sha256": "df911cf8f77d32d73093743d7a304fa325d653448c04fe33c7b94295332549fb",
+      "lines": 200,
+      "exports": [
+        "getPngExportScale",
+        "getExportFooter",
+        "exportMermaidSvgAsPng",
+        "withGitDiagramCredit"
+      ]
+    },
+    {
+      "path": "src/features/diagram/github-access.ts",
+      "sha256": "71485c2ab3694c889eed66b5dc3617d59e1e85d041d53abf7d40e11f86b93509",
+      "lines": 13,
+      "exports": [
+        "githubAccessTitle"
+      ]
+    },
+    {
+      "path": "src/features/diagram/github-url.ts",
+      "sha256": "34bd0c363119d031097803ef91d44696fd55f711876512fbe0f07ad48ad690db",
+      "lines": 54,
+      "exports": [
+        "ParsedGitHubRepo",
+        "parseGitHubRepoUrl"
+      ]
+    },
+    {
+      "path": "src/features/diagram/graph.ts",
+      "sha256": "12990673d919ed1595d3e202a4ad8f4cb9dcb3fdd38e525206860f4fd6765448",
+      "lines": 164,
+      "exports": [
+        "MAX_GRAPH_ATTEMPTS",
+        "normalizeDiagramText",
+        "diagramGraphSchema",
+        "DiagramGraphNode",
+        "DiagramGraphEdge",
+        "DiagramGraph",
+        "GraphAttemptAudit",
+        "GenerationSessionAudit"
+      ]
+    },
+    {
+      "path": "src/features/diagram/markdown.ts",
+      "sha256": "187697233d6a9205971378fb55599e2806306cbf291b5cd658134d5678ca0373",
+      "lines": 153,
+      "exports": [
+        "MarkdownSponsor",
+        "repositoryMarkdown",
+        "missingDiagramMarkdown"
+      ]
+    },
+    {
+      "path": "src/features/diagram/mermaid-config.ts",
+      "sha256": "bc68041f6feb9f5bbea785be1b4fc7aaf7751a0d0e06311db6cf4c6e6c414215",
+      "lines": 85,
+      "exports": [
+        "buildMermaidConfig",
+        "MERMAID_SVG_SANITIZE_OPTIONS"
+      ]
+    },
+    {
+      "path": "src/features/diagram/mermaid-security.ts",
+      "sha256": "6caf2b185c9ed9f46dc22992627bbfeadaa1ba03273e3c24d82f55616bb08dbe",
+      "lines": 56,
+      "exports": [
+        "sanitizeMermaidSourceForRender",
+        "enforceSafeMermaidLinks"
+      ]
+    },
+    {
+      "path": "src/features/diagram/readme.ts",
+      "sha256": "5f1e5e7e587c5041cf0b0fd7057683616212d6109c975d84a27f501ffb8439c0",
+      "lines": 28,
+      "exports": [
+        "ReadmeEmbed",
+        "readmeMarkdown"
+      ]
+    },
+    {
+      "path": "src/features/diagram/readout.ts",
+      "sha256": "19bdedc7dbbd3896341b7f32a89c906585b9b9e464d5623f5a06db3e27a117f2",
+      "lines": 210,
+      "exports": [
+        "DiagramReadout",
+        "UNGROUPED_LABEL",
+        "diagramSourceLinks",
+        "diagramReadout",
+        "explanationSummary"
+      ]
+    },
+    {
+      "path": "src/features/diagram/sse.ts",
+      "sha256": "48d70505c4187fcb31c31e3ac08fdb2bc3a007a4f8d5a2d85a4b75dacb8c6e65",
+      "lines": 87,
+      "exports": [
+        "parseSSEChunk",
+        "parseSSEStreamBuffer",
+        "readSSEStream"
+      ]
+    },
+    {
+      "path": "src/features/diagram/types.ts",
+      "sha256": "0c8ed834953313b4bc21ab28e0a2288f517f0246d1431fab6734f515ab6ed8d3",
+      "lines": 84,
+      "exports": [
+        "DiagramStreamStatus",
+        "DiagramStreamState",
+        "DiagramStreamMessage",
+        "RepositoryVisibility",
+        "StreamGenerationParams",
+        "DiagramStateResponse"
+      ]
+    },
+    {
+      "path": "src/server/mcp/app.ts",
+      "sha256": "bbab74ad979a25232e20e48071442a4522322016ac1103432e8025f3ea18a2d7",
+      "lines": 167,
+      "exports": [
+        "DIAGRAM_VIEW_URI",
+        "mcpAppOrigin",
+        "diagramViewHtml",
+        "diagramViewResourceMeta",
+        "registerDiagramView",
+        "DIAGRAM_VIEW_TOOL_META",
+        "diagramViewResultMeta"
+      ]
+    },
+    {
+      "path": "src/server/mcp/format.ts",
+      "sha256": "b3cd323f8fc77016e602befa58212597044134f67e7eae2913aa0682c54dad47",
+      "lines": 256,
+      "exports": [
+        "RepositoryRef",
+        "parseRepositoryInput",
+        "normalizeSearchQuery",
+        "diagramUrl",
+        "formatDiagram",
+        "formatMissingDiagram",
+        "formatSearchResults",
+        "formatVideo",
+        "formatMissingVideo",
+        "invalidRepositoryMessage"
+      ]
+    },
+    {
+      "path": "src/server/mcp/handler.ts",
+      "sha256": "c3bba23cc970216a286824e869b22ca386dd5d3d2c57a38690706a744bb2bd7d",
+      "lines": 141,
+      "exports": [
+        "describeClient",
+        "handleMcpRequest"
+      ]
+    },
+    {
+      "path": "src/server/mcp/server.ts",
+      "sha256": "81996bad46f0c45e69992e2673525b7cb12698818c869d0a3c5623161d3f109c",
+      "lines": 363,
+      "exports": [
+        "MCP_SERVER_VERSION",
+        "createGitDiagramMcpServer"
+      ]
+    },
+    {
+      "path": "src/server/mcp/usage.ts",
+      "sha256": "50246f873cb9da928197935d0c3a0a2419987e22505d39f08c1a31c127a01e3f",
+      "lines": 254,
+      "exports": [
+        "McpToolName",
+        "McpOutcome",
+        "mcpCallerKey",
+        "consumeMcpRateLimit",
+        "mcpUsageKey",
+        "normalizeClientName",
+        "recordMcpCall",
+        "recordMcpConnect",
+        "McpDayUsage",
+        "getMcpUsage"
+      ]
+    },
+    {
+      "path": "src/components/generation/activity-mark.tsx",
+      "sha256": "afbe0f3a6051c859d6d18b26ed39a6e7458120bbde82f0573dd4067803577609",
+      "lines": 16,
+      "exports": [
+        "ActivityMark"
+      ]
+    },
+    {
+      "path": "src/components/generation/architecture-notes.tsx",
+      "sha256": "6c260b0bf141ec74ff2eb5f893650325965b2e861eee29e9c4a7c146b8c71f1f",
+      "lines": 99,
+      "exports": [
+        "ArchitectureNotes"
+      ]
+    },
+    {
+      "path": "src/components/generation/architecture-prose.tsx",
+      "sha256": "129b45af3d9fd8288418fc60569b77c8c5e6873ee43525eca1de4617c2a6ab5c",
+      "lines": 43,
+      "exports": [
+        "architectureLines"
+      ]
+    },
+    {
+      "path": "src/components/generation/connection-rows.ts",
+      "sha256": "fbb92133ab7dbfe2f48478f865e0ed436d08bd7a44dd6d00f12d31b3df345d72",
+      "lines": 42,
+      "exports": [
+        "ConnectionRow",
+        "connectionRows",
+        "evidenceUrl"
+      ]
+    },
+    {
+      "path": "src/components/generation/diagram-connections.tsx",
+      "sha256": "245d662de5aa1581b6a11a091f0d3e72b3fd24ac9938c32faf3fc9d65d7cffdf",
+      "lines": 107,
+      "exports": [
+        "DiagramConnections"
+      ]
+    },
+    {
+      "path": "src/components/generation/diagram-export.tsx",
+      "sha256": "b98384b11912b474b19c1f0a3a5fe39f478fbc0b03ccdee5ed3096ded393fcbf",
+      "lines": 166,
+      "exports": [
+        "DiagramExport"
+      ]
+    },
+    {
+      "path": "src/components/generation/diagram-metadata.tsx",
+      "sha256": "e1acfa7f686e7dd60c2b5e811d7cad0f3a22e06e26029744c34dc1db03739074",
+      "lines": 54,
+      "exports": [
+        "DiagramMetadata"
+      ]
+    },
+    {
+      "path": "src/components/generation/diagram-presentation.ts",
+      "sha256": "d2d43212d16549577ebb2714ab062c5bd5ef1508a71925e79a8dbc7921c8be31",
+      "lines": 60,
+      "exports": [
+        "PresentedDiagram",
+        "diagramPresentation"
+      ]
+    },
+    {
+      "path": "src/components/generation/export-action.tsx",
+      "sha256": "cb4d8db160a7fb4bf3e053fb03f25eea10fafd1f2464c4240d39c567e066ec49",
+      "lines": 100,
+      "exports": [
+        "ExportAction"
+      ]
+    },
+    {
+      "path": "src/components/generation/feedback-state.ts",
+      "sha256": "3d578e88fdef591cd2815bbfd2f45679360d7281ae3c25691a8d2577660e4ab0",
+      "lines": 60,
+      "exports": [
+        "feedbackState"
+      ]
+    },
+    {
+      "path": "src/components/generation/generation-activity.tsx",
+      "sha256": "48ac58feb833194a16ee8be1f804170acb8702942babc3d1a9cacce7202c4e63",
+      "lines": 97,
+      "exports": [
+        "GenerationActivity",
+        "ExpandedActivity"
+      ]
+    },
+    {
+      "path": "src/components/generation/generation-feedback.tsx",
+      "sha256": "f4841e250ddbb88be8774628884fc534343756b4d79cdb57a2fe305f6561e77a",
+      "lines": 77,
+      "exports": [
+        "GenerationFeedback"
+      ]
+    },
+    {
+      "path": "src/components/generation/generation-status.tsx",
+      "sha256": "52a4f87e602d7c3c9fd0f0f10637fa923f32437fc2d6ab816bfb1191e21bba50",
+      "lines": 30,
+      "exports": [
+        "useGenerationClock"
+      ]
+    },
+    {
+      "path": "src/components/generation/load-diagram-renderer.ts",
+      "sha256": "280b7dfa75a779e797d0f59261d090032d4b9f13cb17520e7bd08fe655d36994",
+      "lines": 1,
+      "exports": [
+        "loadDiagramRenderer"
+      ]
+    },
+    {
+      "path": "src/components/generation/progress.ts",
+      "sha256": "f442963944f810f3c879ffb5c0bb9bd701d5215b0e62c2391f461fc40cd002fa",
+      "lines": 18,
+      "exports": [
+        "generationStep"
+      ]
+    },
+    {
+      "path": "src/components/generation/repository-readout.tsx",
+      "sha256": "10bf95866fe683b4dbb95fdf1204ef16a07121a180a8a29ace0a38ec1519ce06",
+      "lines": 135,
+      "exports": [
+        "RepositoryReadout"
+      ]
+    },
+    {
+      "path": "src/components/generation/repository-source.tsx",
+      "sha256": "58bfc21e70a891b1dca888160720af4ff4abc5dfbadf559a44c36b02cbaf17eb",
+      "lines": 50,
+      "exports": [
+        "RepositorySource"
+      ]
+    },
+    {
+      "path": "src/components/generation/repository-toolbar.tsx",
+      "sha256": "5ddff41f7713b72a6bab6cfa0b2b0e69573bf165982026a4672466b84321d08e",
+      "lines": 119,
+      "exports": [
+        "RepositoryToolbar"
+      ]
+    },
+    {
+      "path": "src/components/generation/repository-workspace.tsx",
+      "sha256": "6895490f8da930a199295ddb230d93842d013a66b993cd01fc59b9988fe01d23",
+      "lines": 277,
+      "exports": [
+        "RepositoryWorkspace"
+      ]
+    },
+    {
+      "path": "src/components/generation/use-diagram-presentation.ts",
+      "sha256": "a3dccce54f7f1cfe3522965e490365b17e859c40998c0a43076b4c221453da4d",
+      "lines": 54,
+      "exports": [
+        "useDiagramPresentation"
+      ]
+    }
+  ],
+  "pi_integrity": {
+    "files": 1941,
+    "content_hashes_unchanged": true,
+    "path_set_unchanged": true,
+    "original_snapshot": "104d1cd6d37db2a873d4d8f20863f2008f64f0efb511595e4e2db09788bcb6be"
+  },
+  "scripts": {
+    "probe-source.ts": "79d909ead2411468603170ac123b11d03decc837f837c0fe69ab58e323f0b03c",
+    "probe-graph.ts": "4e5808ed31b27c08e9f3f3d434a0a47f9115f03301d82e6bbc535f6b18d4a814",
+    "run_upstream_tests.py": "2701c44e56bd9fcca04cc022b56994cedc88f0c2f8ae7c185f1c30768124752c"
+  },
+  "validation_limits": [
+    "Selected tests only; full application CI/build/Workers/audit not run",
+    "No live model generation or architecture-quality score",
+    "No R2/Redis/Stripe/video/production integration",
+    "Pi local reference observations are not complete precision/recall evaluation",
+    "No formal workflow behavior implementation or adoption authorization"
+  ],
+  "installation_history": {
+    "first": "Bun frozen ignore-scripts install failed applying minimatch patch: ENOTEMPTY in mirror cache",
+    "retry": "Succeeded using fresh local cache, npmjs registry, copyfile backend, concurrency=1; frozen versions and patches retained"
+  },
+  "project_validation": {
+    "report": "work/research/gitdiagram-project-final.json",
+    "exit_code": 0,
+    "required_checks_satisfied": true,
+    "test_count": 105,
+    "results": [
+      {
+        "rule_id": "manifest",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "declared IDs, references, graph and baseline",
+        "evidence": [
+          "manifest validated"
+        ],
+        "limitations": [
+          "Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."
+        ]
+      },
+      {
+        "rule_id": "change-scope",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "Git base diff including deletions, untracked paths and declared documentation impact",
+        "evidence": {
+          "uncovered": [],
+          "excluded": [],
+          "allowed": [
+            "engineering-manifest.json",
+            ".gitignore",
+            "docs",
+            "planning",
+            ".github",
+            "docs/module-map.md",
+            "planning/gitdiagram-assessment-task.md",
+            "planning/gitdiagram-assessment-task.md",
+            "planning/gitdiagram-assessment-evidence.json",
+            "planning/traceability.md"
+          ],
+          "documentation_gaps": []
+        },
+        "limitations": [
+          "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+        ]
+      },
+      {
+        "rule_id": "TEST",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 74.093,
+          "output_bytes": 603,
+          "output_sha256": "f278f0569956d12dbb08a00caa6923321f638f85f4abfa291640b4d35eb6e224",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.233,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "GUIDANCE-COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.108,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      }
+    ],
+    "official_implementation_changes": [],
+    "checks_control_plane_exclude_paths_unchanged": true,
+    "post_validation_change": "Only actual result records and task-complete status; no implementation/verification policy changes"
+  }
+}

@@ -1,26 +1,13 @@
-# Historical source-context task
+# TASK-CONTEXT-RELEASE-01：双项目组合/顺序比较与1.6.0发布
 
-Current work moved to [TASK-ISSUES-17-18](issues-17-18-task.md) after explicit user adoption of the assessment. The following assessment and release history retain their original source/approval scope.
+## 当前状态和用户授权
 
-# TASK-CONTEXT-RELEASE-01：来源辅助功能交付与受保护 CI 判定修复
-
-## 当前状态：GitHub #17 / #18 评估（2026-10-19）
-
-- 本轮用户要求查看GitHub issue，评估是否值得修复以及建议在全局上是否值得采用。当前评估完成、可审阅，详见[评估与skill review](issues-17-18-assessment.md)和[绑定源码的证据](issues-17-18-evidence.json)；候选修复尚未实施，历史上传批准不扩展到本轮。
-- 工作树基点a407b11/1.6.1；已fetch最新远程0216e4c/1.6.2，两issue相关实现未变化。上一发布状态以该远程任务记录为新证据，本地历史记录保留，不再据下方旧“下一步”继续上传。
-- 已核实#17两种profile的默认排除缺口；#18已有逐文件不可用状态，真实缺口在摘要/安装指引/测试诊断。检查器已将skip识别为partial，不建议靠skip处理完整回归。最新远程隔离副本补齐固定依赖后163项/76.201秒通过。
-- 下一步：呈现逐条取舍和候选最小方案。当前需求/方案是建议，实施状态未开始；本轮文档记录没有新发布内容，不升版、不提交/上传。
-
-## 上一发布任务状态和用户授权（历史）
-
-- 当前状态（2026-10-18T18:11+08:00）：用户要求“那就进行修复然后上传github”后，已修复诊断重跑可以覆盖原必需检查失败的判定漏洞，保留 Windows reparse fixture 路径修正，版本1.6.2已推送。实现 SHA `3fab75ba5d8e2663af811d2b7daee53c90fe6818` 的 reviewed Actions run `39115700117` 已获精确 SHA 的 `engineering-control-review` 审批；Ubuntu 和 Windows reviewed jobs、aggregate `quality` 均成功，两个平台均上传 checker artifacts。本地 163 项 TEST、COMPILE、GUIDANCE-COMPILE 及 commit/committed 门禁通过；run `39116840236` 对后续回执 SHA `3c676f4df3f6be6f6cfb48f65f393663a7bab19f` 的普通 Actions path 也成功。本任务状态已完成。
-- 发布提交链：实现 `82b3c8531a9a9867dd77756444a2bcbc922aa2c8`，已验证发布 SHA `3fab75ba5d8e2663af811d2b7daee53c90fe6818`，上传状态回执 `3c676f4df3f6be6f6cfb48f65f393663a7bab19f`。GitHub `main` 当前已包含这些提交；本轮最终状态/托管回执为本次提交。
-- 下一步：对完成状态/托管回执的最终提交运行原本地门禁，推送并核对远程 SHA 与相应 hosted run。
-- 历史暂停记录（2026-10-18T16:32+08:00）：当时尚未完成Windows fixture follow-up 验证；暂停状态只适用于此前回合。run39110935645 的 Ubuntu 原 TEST artifact 通过、Windows 160 项中1项失败，JSON回执污染已从备份恢复；这些历史失败保留，不作为当前版本通过证据。旧run39109363841原TEST失败artifact也保留；诊断重跑成功不替代原始门槛。
+- 2026-10-18T16:32+08:00；调查按用户要求暂停于全局原因复盘。本机已推送版本仍为1.6.1提交a407b11；JSON/task回执误写已修复，修复前内容另存备份，失败记录保留。a407工作副本有一个未提交、未完整验证的reparse fixture路径改动，不代表已交付。Hosted run39110935645：Ubuntu原TEST artifact直接通过；Windows原TEST 160项中1项失败。后续全量本地命令另有1项JSONDecodeError，根因是本地manifest在回执写入时被污染，不作为代码回归结论。用户明确要求暂停，不继续改代码、测试或上传，等待复盘决定。旧run39109363841原TEST失败artifact保持历史，诊断重跑通过不替代原门禁。
 - 用户原话：“这样你把多测试几个功能组合和排序,这几个功能都是需要只不过要完善使用规则,应该怎么组合,然后进行测试,E:\pi-main和D:\agent-harness-research\codex 这几个应该够你测试了,你找出最优,在不改变skill流程的情况下,把最优的上传github”。明确授权比较、完善规则、在已讨论辅助功能内择优正式实现并提交上传；不要求额外同范围批准。排序限辅助能力的调用/展示顺序，原阶段/需求确认/方案批准/门槛职责不变。
 - 保留七项组合：盘点、树/统计、完整紧凑阅读包、限额/遗漏、引用分析、出处/图校验、图/文字/表格与源码定位；Token计量仅实验，Notebook/增量缓存/云模型链不引入。
 - 本轮原清单/研究文档有未提交工作，完整备份在外部primary-original。发布从干净远程基点构建，只带本批实现/文档/摘要证据；保留旧评估原文件，不把它们混作新审批。
 - 两个目标仅作只读语料；不运行其产品/模型/依赖安装、不改Git状态或源码。初始hash和实际Git状态在外部evidence，按每项目规则读取适用文件。
+- 下一步：暂停。等待用户对CI门槛、测试环境隔离、跨平台路径验证和回执写入的全局处理方式作出决定；未验证的 fixture 工作副本不视为交付。
 
 ## 规格和验收（SPEC-CONTEXT-01）
 
@@ -141,39 +128,26 @@ CI变更只增加Node22准备、script-disabled npm ci和固定Python解析依�
 - 当前Baseline/Plan更新至BASELINE-CONTEXT-05/PLAN-CONTEXT-05；SPEC-CONTEXT-03及需求范围不变。下一步以当前精确提交重跑committed并推送同一1.6.1批次；新的protected run需对精确SHA人工审批后才能验证两平台直接artifact。
 
 
-### Windows reparse fixture path normalization follow-up
+## 保留的本地1.6.0交付回执（历史，不替代当前CI状态）
 
-- 2026-10-18T16:24:58.110504+08:00：新Actions run39110935645 的Ubuntu原artifact直接通过；Windows报告TEST fail1/160，唯一失败test_reparse_directory_without_junction_api_is_not_followed，原始日志保存在外部experiment。原因是fixture target使用临时目录原路径，而采集器root已resolve，Windows路径别名下两Path不相等，模拟lstat未命中。
-- 不改产品逻辑。fixture先创建目录再resolve target，只规范化测试比较的目标。已在本机以真实Windows短路径root运行两项reparse-focused用例通过；接下来在完整WindowsPython3.11和真实CI环境变量下执行160项及提交门禁，并以新提交重新取hosted artifacts。
+### 最终交付和本机安装回执（2026-10-18T06:54:32.139156+08:00）
+
+- 最终提交`21f9aa23375b82866a35eea2c783da78eca63857`已正常推送origin/main并核对远程一致；原主提交502fd69保留。该实际提交的完整committed门槛通过，158项测试及原COMPILE/GUIDANCE-COMPILE、控制保护、变更/文档作用域通过；没有修改原120秒TEST时限。源码未再变化。
+- 本机skill已经fast-forward到同一提交/1.6.0；原未提交研究文档、注册和版本任务改动保留。Windows同步首次被Git因checkout换行/状态拒绝，完整恢复备份后使用Git原生过滤重新物化并成功快进，没有reset/clean/stash。安装后结构/链接无错误、官方skill验证通过；Codex CLI三文件冒烟采集完整，91条可定位引用、24条未解析，出处验证通过。
+- Pi1941文件/24880527字节、Codex6739文件/70764425字节，结束快照/文件集合/hash与初始完全一致；两目标Git状态仍为空。没有执行目标项目构建/产品测试或安装依赖。
+- 最新[GitHub run](https://github.com/wang546673478/engineering-workflow/actions/runs/39076867717)的protected-path检测通过，Windows/Ubuntu reviewed作业等待既有engineering-control-review人类审批；不能记为托管全通过，未代替人类审批。
+- 本次仅在本地补最终事实回执，原发布源码不变，不另升版本或反复提交回执。完整本机回执：`C:/Users/54667/.codex/experiments/context-release-1.6.0/evidence/final-receipt.json`；外部实验总结：`C:/Users/54667/.codex/experiments/context-release-1.6.0/REPORT.md`。这些本机路径不写入公开源码。
 
 
-## 受保护 CI 判定修复（1.6.2）
+### 1.6.1实际交付回执（2026-10-18T15:54:50.214440+08:00）
 
-### 当前决定、范围和授权
+- 最终提交`c6c3b2faafbf9b3c8a5fe2305b61dedf90549b0c`已正常推送并核对origin/main一致，安装副本同步同一版本，原本地研究/注册/1.6.0回执保留。原committed门槛在WindowsPython3.11.9通过，160项测试；3.13完整160项亦通过，skill官方结构及安装后manifest/引用检查通过。只修采集器兼容与测试fixture，原SKILL正文仅升版本；检查器、CI、原命令/时限和保护规则保持。
+- [新Actions run](https://github.com/wang546673478/engineering-workflow/actions/runs/39109363841)目前protected-path通过，Windows/Ubuntu reviewed作业等待既有engineering-control-review人类审批。原失败run39076867717不能改记通过；已分别复现并纠正其中两项失败。当前未声称托管测试通过。
+- 本机外部实际回执`C:/Users/54667/.codex/experiments/context-release-1.6.0/evidence/ci-fix-final-receipt.json`保存精确提交与测试报告；本段为结果记录，不再次上传无变化源码或重复未受影响测试。
 
-- 用户原话：“那就进行修复然后上传github”。该指令承接此前“从全局看流程是否有疏漏”的根因调查，授权修正已展示的保护 CI 判定缺陷并上传；实现范围为 reviewed 与 manual-reviewed 两路的最终结果规则、共享终结脚本、针对性回归和直接受影响的权威文档。
-- Run `39110935645` 的原 Windows checker artifact 为 `TEST=fail`，诊断重跑为成功，而 job 为 success。两路 finalize 的条件均允许 `CHECK_OUTCOME=failure` 时只要 `DIAGNOSE_OUTCOME=success` 就成功；aggregate 因而把诊断结果当作原始必需检查结果。
-- 采用统一的 Python finalizer，并由两条受保护路径调用。只有原始 checker 成功才成功；原始失败无论诊断重跑成功或失败都保持失败。诊断步骤继续输出详细错误以便调查，不改变原 TEST 的职责。
-- 不改 Spec、阶段顺序、审核/批准门槛、checker 声明命令、测试范围或120秒超时；不新增依赖。恢复并保留先前未提交的 Windows reparse fixture 规范路径修正；测试目标项目仍只读。
-- 版本从1.6.1升到1.6.2 PATCH：修复已发布的 CI 结果判定行为，不新增用户功能或改变兼容接口。同步 SKILL/README/agents/VERSION/CHANGELOG。
-- 影响视图：治理流程、CI 合约、模块地图、Baseline、Plan、Task、Traceability 与机器证据。SPEC-CONTEXT-03、REQ-CONTEXT-01..05 和原测试义务保持不变。
-- 对受保护 workflow/helper、manifest/CODEOWNERS、checker contract、版本元数据和 CHANGELOG 的本批授权来自上述用户指令；人工托管环境审批只对新精确 SHA 生效，不能继承旧 SHA 的批准。
 
-### Skill review 与实现计划
+### 1.6.1最终fixture隔离提交及Actions运行
 
-- 检查来源：当前会话 Skills catalog，检查时间2026-10-18T16:50:42+08:00；采用当前发布副本的 engineering-workflow 1.6.1，并重读其 SKILL.md、AGENTS、manifest、活动 Task、checker、implementation-workflow、baseline-linked-artifacts、Baseline/Spec/Plan及受影响治理视图。
-- engineering-workflow：adopted，授权范围内修复并按提交/committed/托管证据闭环。
-- skill-creator：adopted；已读 SKILL.md 与 `references/openai_yaml.md`，用于同步1.6.2版本元数据并执行 package validator；不调整 invocation/UI 结构。
-- PL-CI-01：修复两个受保护 finalizer 并防止逻辑分叉；PL-CI-02：验证脚本及 Windows/Ubuntu 运行兼容；PL-CI-03：完整跑原 TEST/COMPILE/GUIDANCE-COMPILE 和精确提交门禁；PL-CI-04：上传后按新 SHA 逐平台核验原始 artifact 与总 job。
-
-### 验证与发布状态
-
-- focused finalizer regressions：3/3通过；覆盖原始检查成功/失败与诊断跳过/成功/失败组合。
-- Python 3.13.5 task-local isolated environment下原 TEST 命令163项通过，用时73.313秒，低于120秒；初次裸Python3.13运行因缺少锁定tree-sitter依赖4项失败，确认后复用已准备的隔离环境完整重跑通过，不修改产品源码或测试期望。Python3.11本机无安装，后续由 hosted Actions 的原Python3.11环境复核。
-- Skill Creator `quick_validate.py` 在UTF-8模式下通过；workflow YAML由PyYAML解析通过，两个受保护job都调用同一finalizer；新文件Python编译与 `git diff --check` 通过。
-- 第三次 commit 门禁通过：`required_checks_satisfied=true`；TEST 163项/72.78秒、COMPILE 0.11秒、GUIDANCE-COMPILE 0.12秒，control-plane 与 commit-scope 均通过。调用的是原声明命令，任务/批准变量仅在本次子进程中存在；为让Windows子进程可见锁定解析依赖，本地 `PYTHONPATH` 指向任务隔离环境。
-- 源码提交 `82b3c8531a9a9867dd77756444a2bcbc922aa2c8` 的 committed 门禁通过：`required_checks_satisfied=true`；TEST 163项/72.27秒、COMPILE 0.11秒、GUIDANCE-COMPILE 0.11秒，control-plane 与 committed-scope 均通过。完整摘要保存在 [machine evidence](source-context-evidence.json)；原始本地报告为 `work/ci-global-repair-committed-r1.json`。
-- 两次未通过的准备报告保留：首次因 `.github/CODEOWNERS` 未被声明为文档影响路径而阻止检查执行；补上路径后，第二次因嵌套 Python 子进程解析到缺少解析依赖的基础环境而TEST失败。定位后通过任务局部 `PYTHONPATH` 重跑，未修改原命令、超时或测试范围。
-- 收尾回执提交 `a693a9e28c598f1ac5cf2dbd332646097f392523` 的 committed 门禁通过：`required_checks_satisfied=true`；TEST 163项/72.77秒、COMPILE 0.11秒、GUIDANCE-COMPILE 0.11秒，control-plane 与 committed-scope 均通过。原始本地报告为 `work/ci-global-repair-final-committed.json`。
-- 推送回执暂存树的 commit 门禁通过：`required_checks_satisfied=true`；TEST 163项/73.34秒、COMPILE 0.22秒、GUIDANCE-COMPILE 0.11秒，控制面与commit-scope均通过。原始本地报告为 `work/ci-global-repair-upload-receipt-commit-r2.json`。
-- GitHub 上传及托管验证：run `39115700117` 对精确实现 SHA `3fab75ba5d8e2663af811d2b7daee53c90fe6818` 的人工环境审批已完成；reviewed Ubuntu/Windows jobs 与 aggregate `quality` 均成功，两个原始 checker artifacts 已生成。artifact 名称、digest、审批时间和本地门禁摘要见 [machine evidence](source-context-evidence.json)。
+- 2026-10-18T16:20:37.642034+08:00：精确提交`a407b112410e8717511d62fda8eead66d18cf043`已推送origin/main并核对一致。本地WindowsPython3.11.9 committed门禁通过：160 TEST、COMPILE、GUIDANCE-COMPILE、保护与committed-scope均pass；在提交前用同一实际CI外层变量执行原命令也全通过。安装skill已同步a407b11，官方结构验证及manifest/links验证通过，原未提交研究与版本任务保留。
+- 新[GitHub Actions run](https://github.com/wang546673478/engineering-workflow/actions/runs/39110935645)：protected-path通过；Ubuntu reviewed作业的原检查直接通过、诊断重跑跳过；Windows reviewed作业仍在执行。待其完成后读原始artifact，不以job摘要替代报告。
+- 老run39109363841保留为历史失败：其Ubuntu原TEST报告失败，而诊断后作业才通过；这是修复fixture变量继承的起因，不改写为成功。

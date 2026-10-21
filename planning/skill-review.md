@@ -1,5 +1,7 @@
 # Current Skill Applicability Review Entry
 
+Shared-installation review (2026-10-20T18:44:37.427693+08:00): current engineering-workflow1.7.2 and skill-installer adopted for an existing dirty checkout update; no first-install replacement or duplicate installation. Official skills documentation was fetched for reload behavior (search capability unavailable). Existing local data was backed up and preserved; no new feature implementation or subagent workflow.
+
 GitHub提交复核（2026-10-20T17:37:14.093570+08:00）：最新用户明确提交当前1.7.2成品。重读仓库SKILL1.7.2与checker/implementation提交规则、当前基线/Plan/Task和技能清单；沿用原工程流程，无新实现或工具类别，不引入其他skill或子agent。提交保护、命令/超时及全量审读延后范围保持。
 
 当前交付复核（2026-10-20）：同一agent完成三项原指令/模板增强及原回归。engineering-workflow输入1.7.1和system skill-creator适用，输出本地1.7.2；无子agent/TDD/新增运行依赖或全局安装变更。手工场景局限与完整审读延后分别记录，未转移历史批准。

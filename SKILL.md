@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.8.0
+  version: 1.9.0
 ---
 
 # 代码工程工作流
@@ -28,6 +28,8 @@ metadata:
 每个功能模块讨论收敛后，集中核对本模块需求、变更、遗漏、待定/延后及关联影响，再用通俗语言提交用户审核并保存所审版本、原话和范围。集中核对与用户审核合并在这个节点，不每轮另设集中门禁或反复请求审核；讨论中的记录持续进行。未通过则继续调整该模块，后续变化只重审受影响内容；实施前的完整方案批准和首次接管的基线审阅仍须满足。
 
 详细记录字段、状态和审核方式见 [requirements-interview.md](references/requirements-interview.md)；复用项目状态体系和文件，不另建重复台账。上述要求是行为指令，现有检查器不能自动发现尚未写入文件的聊天需求或证明用户理解与批准。
+
+需要本地恢复能力的项目可选择使用 [task archive](scripts/task_archive.py)：对 manifest 声明的工程文档建立工作区外快照、检查工作区漂移、列出历史及恢复旧版本。它不是必经门禁，不自动迁移，也不增加审核节点。当前宿主若允许任意 shell/editor 写入，它只能事后检测和恢复，不能拦截写操作；存储路径和保留策略由采用项目负责。使用方式见[Checker reference](references/checker.md#本地工程记录归档与恢复)。
 
 ## 选择工作流程
 

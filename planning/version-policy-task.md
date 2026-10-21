@@ -68,4 +68,16 @@
 - 对上述实际主提交的 committed 检查通过，报告 work/version-policy-release-committed.json：task-gate、control-plane、committed-scope、TEST、COMPILE、GUIDANCE-COMPILE 全部 pass，tool_version=1.4.2，required_checks_satisfied=true。
 - 主提交于 2026-10-15（Asia/Shanghai，约 19:34）通过 git push origin main 上传；随后远程 refs/heads/main 核对为该完整 SHA，当时工作树干净。CHANGELOG 据此从 Unreleased 改为 2026-10-15。
 - 此收尾仅补真实日期、状态和回执，未改变交付行为，因此版本保持 1.4.2；文档发布检查点同步后，收尾提交执行同等 commit/committed 检查再上传。最终收尾 SHA 与远程状态存于本地 work/version-policy-release-final-receipt.json，避免在提交中填写尚不存在的自身 SHA。
-- GitHub hosted CI 未验证，不把上传成功或本地通过当作远程 CI 通过；无新会话行为实测或其他项目集成测试。
+- 发布时 GitHub hosted CI 尚未验证；后续只读核对结果见下节。无新会话行为实测或其他项目集成测试。
+
+## 2026-10-15 Actions 只读核对
+
+- 用户要求“检查actions”。本次只查询仓库运行/作业/日志并做临时 fixture 的定向复现；不修改代码、workflow、远程运行状态或 GitHub 设置。凭据仅用于进程内请求，不写入任务、文件或配置。
+- Skill review 范围复核：沿用本仓库 engineering-workflow 1.4.2（SKILL.md），读取当前任务、实施引用、workflow 与测试入口；当前仅补发布验证证据，不修改 skill 或编写测试，skill-creator/tdd 不新增采用。
+- 最新收尾提交 `37344909ac69db84ba8a49791512f48c2d90b255`：[Quality 38728794265](https://github.com/wang546673478/engineering-workflow/actions/runs/38728794265) completed/success，Linux、Windows 和 quality 汇总均 success。
+- 1.4.2 主提交 `c08a783232762b0be556c4e3cfcb6a9c53ca9847`：[Quality 38728347179](https://github.com/wang546673478/engineering-workflow/actions/runs/38728347179) completed/success；1.4.1 的两个运行也已 success。
+- 最新收尾运行日志显示：两平台首轮 checker 的 TEST 均 returncode=1；规则/保护/提交范围及编译检查通过。后续诊断步骤各运行 95 项测试并 OK，因此 workflow 最终恢复成功。不能将该结果描述为首轮完整检查全部通过。
+- 已定位并复现：reviewed_check 步骤设置 ENGINEERING_TASK_ID=TASK-VERSION-01，测试子进程和 CheckerTests.cli 的子进程继承它；临时 fixture 只有 TASK-1，省略 CLI --task 的 active-task fallback 测试因此报 a known --task is required。诊断步骤未设置该步骤级变量，所以重跑通过。此现象具有确定性，不是已证明的瞬态失败。
+- 定向对照：同样的两项 active-task 测试，携带 CI 任务编号时 1 fail/1 pass；移除该变量后 2 tests OK。未更改测试断言或验证要求。
+- 原始日志仅在查询进程内读取；去除凭据的摘要证据保存在 work/actions-1.4.2-audit.json。建议后续修复测试环境隔离，并验证带外层任务编号的场景；当前请求为检查，修复尚未实施。
+- 本次仅补验证证据，不改交付行为，按版本规则保持 1.4.2；本地新增此核对记录，未提交/推送新的记录，也未重跑 Actions。

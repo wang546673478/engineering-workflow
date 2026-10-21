@@ -9,6 +9,10 @@
 Read original user decision and presented proposal -> preserve reviewed Spec/Plan section -> reference original approval evidence -> choose diagnostic or explicit strict -> validate record/current scope/reuse -> compare enabled historical policy -> existing implementation and change gates -> original declared commands -> original post-check tree validation -> report checker status separately from independent tests. New project initialization is diagnostic, legacy projects are not automatically migrated, and invalid strict evidence blocks commands. Current verification and remaining limits are in [Task](../planning/issue-23-task.md).
 
 
+## Optional local archive side flow / 1.9.0 Unreleased
+
+Project owner explicitly initializes a local archive -> ordinary engineering discussion/edits continue under existing rules -> optional drift check/checkpoint uses expected archive head -> on a recovery request, inspect history and resolve or checkpoint workspace drift -> restore records a new event then reconstructs the document view -> existing Spec/Plan/Task approval and required validation gates run at their original points. Archive revisions do not count as user reviews or implementation authorization; automatic migration and remote sync are off. If projection restore stops midway, `restore --project-head` reconstructs from the current archived head. Arbitrary direct-write blocking is unsupported by the current host.
+
 ## Issue 22 guidance through the existing flow
 
 1. During the existing requirement discussion, optionally use the examples in requirements-interview; preserve source, IDs, candidate/confirmed/deferred state and module review.

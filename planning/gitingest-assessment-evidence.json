@@ -1,0 +1,1687 @@
+{
+  "schema_version": 1,
+  "task": "TASK-GITINGEST-ASSESS-01",
+  "kind": "research-evidence-not-product-baseline",
+  "observed_at": "2026-10-18T03:59:07.319016+08:00",
+  "upstream": {
+    "observed_at": "2026-10-18T03:55:31.4875911+08:00",
+    "repository": {
+      "full_name": "coderamp-labs/gitingest",
+      "default_branch": "main",
+      "pushed_at": "2026-10-17T04:46:34Z",
+      "archived": false
+    },
+    "branch": {
+      "name": "main",
+      "sha": "4e259a02fe72115bee538271622f1234a81c8e1a",
+      "commit_date": "2025-08-16T01:30:46Z"
+    },
+    "latest_release": {
+      "tag_name": "v0.3.1",
+      "published_at": "2025-07-31T13:55:15Z",
+      "target_commitish": "45b068bd5e650ac99f99b26f0767c825f8c5ce95",
+      "html_url": "https://github.com/coderamp-labs/gitingest/releases/tag/v0.3.1"
+    }
+  },
+  "revision": "4e259a02fe72115bee538271622f1234a81c8e1a",
+  "published_tag_revision": "45b068bd5e650ac99f99b26f0767c825f8c5ce95",
+  "environment": {
+    "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "packages": {
+      "gitingest": "0.3.1",
+      "pathspec": "1.1.1",
+      "tiktoken": "0.14.0",
+      "pydantic": "2.14.1",
+      "gitpython": "3.2.1"
+    }
+  },
+  "workflow_input_revision": "c21e715545b629ef776f5d34223a0f7d6bb1a978",
+  "scope": "Local/mocked tests, public commit smoke, controlled fixtures and version-bound source inspection; no production/S3/private/platform certification",
+  "release_comparison": [
+    {
+      "path": "ingestion.py",
+      "same_text": true,
+      "main_sha256": "9ca1dcdf701660fc841d53763f8fc4c011d76e68f285ebcab5609769f36873c3",
+      "pypi_sha256": "c9e1fb791373aa2f18651ccd049061aafececa8581592fb9d2a7443dd9e595f1"
+    },
+    {
+      "path": "entrypoint.py",
+      "same_text": true,
+      "main_sha256": "839663e5427b2f6c476332fc59c34dcbdb5efedbb1af8c9295b0ef2e29ef6b9a",
+      "pypi_sha256": "31a2dae64a94f466fe66dfa468537fca9bb7521dcc551dbcb75c0faeae6c4997"
+    },
+    {
+      "path": "schemas/filesystem.py",
+      "same_text": true,
+      "main_sha256": "b7fbe3bf002178a62e214bf1ebd38f065e2b7d7c08d293826b74a89b47a88526",
+      "pypi_sha256": "1fa6dfff506b24d81091e5483fb454b2320f7fc08a4980c949ad16153b833eb6"
+    },
+    {
+      "path": "utils/ignore_patterns.py",
+      "same_text": true,
+      "main_sha256": "1c54384a587ff7736df09b8350137fe0f6d2322b52de04189fc1d1e91a089c17",
+      "pypi_sha256": "4b062d7d713b66c1bc66be23fce953d04fba03d92d035f735a766f00df2145d8"
+    },
+    {
+      "path": "utils/ingestion_utils.py",
+      "same_text": true,
+      "main_sha256": "706ab25bdecf42956427bdc0760cfba43c91c3f8af418a5e7b17c354ed1bbb10",
+      "pypi_sha256": "c784588bcd1ff6969137df25e81b36e2a9840b94a518cd0719f823623d6bd87c"
+    },
+    {
+      "path": "utils/notebook.py",
+      "same_text": true,
+      "main_sha256": "5aa89735a9a612258c7fad4780258dbfc055b2b82d0887d33e20fdc3abe93351",
+      "pypi_sha256": "3b4e0165ed4d749ea0eb7372fd4f7b51c48ed84e3b249b2d02cfcf68e536ffca"
+    },
+    {
+      "path": "output_formatter.py",
+      "same_text": true,
+      "main_sha256": "9c6cfae9a2a9e9b9f1012d13a84a739e70961f70f50110b4a5a770c8f45e733b",
+      "pypi_sha256": "be6276c88cc690fc3943b063c14d29dba54985f287b807c2c97033b3fb6ac3fa"
+    },
+    {
+      "path": "clone.py",
+      "same_text": false,
+      "main_sha256": "e84cacadfaab0b46625300c1c3b701fc8f77f56f97b73c70dd091cb023a56381",
+      "pypi_sha256": "ccdb84aac7bb54aedcb635e696643681b3ffe6a306930ea14c604e951ee85e7e"
+    },
+    {
+      "path": "utils/git_utils.py",
+      "same_text": false,
+      "main_sha256": "5a286c71729f84fdaa22d44e5d2b30afaf0c26a1be584d55d3f4de864e49ac35",
+      "pypi_sha256": "576f0ac603a43cca1162943737b8f56809d1c8b5eb02fd2292418cf615b9c359"
+    }
+  ],
+  "source_index": [
+    {
+      "path": "src/gitingest/clone.py",
+      "sha256": "3311b19624b7ca8b22b653204060e1641933282ac763ad74b376f9ba10ac91c3",
+      "lines": 176,
+      "imports": [
+        "__future__",
+        "git",
+        "gitingest.config",
+        "gitingest.schemas",
+        "gitingest.utils.git_utils",
+        "gitingest.utils.logging_config",
+        "gitingest.utils.os_utils",
+        "gitingest.utils.timeout_wrapper",
+        "pathlib",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "clone_repo",
+          "line": 32
+        },
+        {
+          "name": "_perform_post_clone_operations",
+          "line": 130
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/config.py",
+      "sha256": "f13f512bd7be723e4693699a45850267bf10584cb04aed26da108ec9acb1f0d5",
+      "lines": 14,
+      "imports": [
+        "pathlib",
+        "tempfile"
+      ],
+      "definitions": []
+    },
+    {
+      "path": "src/gitingest/entrypoint.py",
+      "sha256": "31a2dae64a94f466fe66dfa468537fca9bb7521dcc551dbcb75c0faeae6c4997",
+      "lines": 352,
+      "imports": [
+        "__future__",
+        "asyncio",
+        "contextlib",
+        "errno",
+        "gitingest.clone",
+        "gitingest.config",
+        "gitingest.ingestion",
+        "gitingest.query_parser",
+        "gitingest.schemas",
+        "gitingest.utils.auth",
+        "gitingest.utils.compat_func",
+        "gitingest.utils.ignore_patterns",
+        "gitingest.utils.logging_config",
+        "gitingest.utils.pattern_utils",
+        "gitingest.utils.query_parser_utils",
+        "pathlib",
+        "shutil",
+        "stat",
+        "sys",
+        "types",
+        "typing",
+        "urllib.parse"
+      ],
+      "definitions": [
+        {
+          "name": "ingest_async",
+          "line": 35
+        },
+        {
+          "name": "ingest",
+          "line": 151
+        },
+        {
+          "name": "_override_branch_and_tag",
+          "line": 225
+        },
+        {
+          "name": "_apply_gitignores",
+          "line": 262
+        },
+        {
+          "name": "_clone_repo_if_remote",
+          "line": 276
+        },
+        {
+          "name": "_handle_remove_readonly",
+          "line": 307
+        },
+        {
+          "name": "_write_output",
+          "line": 333
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/ingestion.py",
+      "sha256": "c9e1fb791373aa2f18651ccd049061aafececa8581592fb9d2a7443dd9e595f1",
+      "lines": 325,
+      "imports": [
+        "__future__",
+        "gitingest.config",
+        "gitingest.output_formatter",
+        "gitingest.schemas",
+        "gitingest.utils.ingestion_utils",
+        "gitingest.utils.logging_config",
+        "pathlib",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "ingest_query",
+          "line": 21
+        },
+        {
+          "name": "_process_node",
+          "line": 123
+        },
+        {
+          "name": "_process_symlink",
+          "line": 187
+        },
+        {
+          "name": "_process_file",
+          "line": 216
+        },
+        {
+          "name": "limit_exceeded",
+          "line": 276
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/output_formatter.py",
+      "sha256": "be6276c88cc690fc3943b063c14d29dba54985f287b807c2c97033b3fb6ac3fa",
+      "lines": 210,
+      "imports": [
+        "__future__",
+        "gitingest.schemas",
+        "gitingest.utils.compat_func",
+        "gitingest.utils.logging_config",
+        "requests.exceptions",
+        "ssl",
+        "tiktoken",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "format_node",
+          "line": 27
+        },
+        {
+          "name": "_create_summary_prefix",
+          "line": 65
+        },
+        {
+          "name": "_gather_file_contents",
+          "line": 105
+        },
+        {
+          "name": "_create_tree_structure",
+          "line": 129
+        },
+        {
+          "name": "_format_token_count",
+          "line": 181
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/query_parser.py",
+      "sha256": "7a7a1090411c7dad61eea204399a069582d2f6babdc5afc28bf5122a6e907ab3",
+      "lines": 190,
+      "imports": [
+        "__future__",
+        "gitingest.config",
+        "gitingest.schemas",
+        "gitingest.utils.git_utils",
+        "gitingest.utils.logging_config",
+        "gitingest.utils.query_parser_utils",
+        "pathlib",
+        "typing",
+        "uuid"
+      ],
+      "definitions": [
+        {
+          "name": "parse_remote_repo",
+          "line": 25
+        },
+        {
+          "name": "parse_local_dir_path",
+          "line": 122
+        },
+        {
+          "name": "_configure_branch_or_tag",
+          "line": 141
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/__init__.py",
+      "sha256": "e23f25dc98ae141a13749860860d00a26b519bb313c7dd2a184ae7ccaf7d8ff1",
+      "lines": 5,
+      "imports": [
+        "gitingest.entrypoint"
+      ],
+      "definitions": []
+    },
+    {
+      "path": "src/gitingest/__main__.py",
+      "sha256": "8546b7467134f17f8f0e1e077b2076b23d449d29a61352f018e65ad4785c590d",
+      "lines": 204,
+      "imports": [
+        "__future__",
+        "asyncio",
+        "click",
+        "gitingest.config",
+        "gitingest.entrypoint",
+        "gitingest.utils.logging_config",
+        "typing",
+        "typing_extensions"
+      ],
+      "definitions": [
+        {
+          "name": "_CLIArgs",
+          "line": 22
+        },
+        {
+          "name": "main",
+          "line": 79
+        },
+        {
+          "name": "_async_main",
+          "line": 117
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/schemas/cloning.py",
+      "sha256": "c6ad70915905776d31aca86f6996decc2965711aefef0e133f8507e77a6dd2ad",
+      "lines": 42,
+      "imports": [
+        "__future__",
+        "pydantic"
+      ],
+      "definitions": [
+        {
+          "name": "CloneConfig",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/schemas/filesystem.py",
+      "sha256": "1fa6dfff506b24d81091e5483fb454b2320f7fc08a4980c949ad16153b833eb6",
+      "lines": 161,
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "enum",
+        "gitingest.utils.compat_func",
+        "gitingest.utils.file_utils",
+        "gitingest.utils.notebook",
+        "os",
+        "pathlib",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "FileSystemNodeType",
+          "line": 20
+        },
+        {
+          "name": "FileSystemStats",
+          "line": 29
+        },
+        {
+          "name": "FileSystemNode",
+          "line": 37
+        },
+        {
+          "name": "sort_children",
+          "line": 53
+        },
+        {
+          "name": "content_string",
+          "line": 87
+        },
+        {
+          "name": "content",
+          "line": 107
+        },
+        {
+          "name": "_sort_key",
+          "line": 74
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/schemas/ingestion.py",
+      "sha256": "718e973daf6261698c378ba6ea6bcaf870ba36d2a4d3ab382ecf595e536d6c06",
+      "lines": 101,
+      "imports": [
+        "__future__",
+        "gitingest.config",
+        "gitingest.schemas.cloning",
+        "pathlib",
+        "pydantic",
+        "uuid"
+      ],
+      "definitions": [
+        {
+          "name": "IngestionQuery",
+          "line": 14
+        },
+        {
+          "name": "extract_clone_config",
+          "line": 74
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/schemas/__init__.py",
+      "sha256": "54ac1dcd96f38879fd1384f7027e7e5c3c75a8f56353056601ca806ee27c0344",
+      "lines": 7,
+      "imports": [
+        "gitingest.schemas.cloning",
+        "gitingest.schemas.filesystem",
+        "gitingest.schemas.ingestion"
+      ],
+      "definitions": []
+    },
+    {
+      "path": "src/gitingest/utils/auth.py",
+      "sha256": "f003c3ea35ac2d9d31bf7b8457ef7873ff3ce52d32bea7347e261355a57d4121",
+      "lines": 27,
+      "imports": [
+        "__future__",
+        "gitingest.utils.git_utils",
+        "os"
+      ],
+      "definitions": [
+        {
+          "name": "resolve_token",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/compat_func.py",
+      "sha256": "c31a016dcd372b73e7c3792be875d51f3be73b50dff2efa91f2f57acc8aef949",
+      "lines": 44,
+      "imports": [
+        "os",
+        "pathlib"
+      ],
+      "definitions": [
+        {
+          "name": "readlink",
+          "line": 7
+        },
+        {
+          "name": "removesuffix",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/compat_typing.py",
+      "sha256": "c51ddf368b65114f2e1bf51312ea76f268ea18ed54c5092cc8048c1af33e4d36",
+      "lines": 18,
+      "imports": [
+        "enum",
+        "strenum",
+        "typing",
+        "typing_extensions"
+      ],
+      "definitions": []
+    },
+    {
+      "path": "src/gitingest/utils/exceptions.py",
+      "sha256": "a94a84ed824f0e7337b756135413352094e498170ad47727a0cf8a597f7ec644",
+      "lines": 27,
+      "imports": [],
+      "definitions": [
+        {
+          "name": "AsyncTimeoutError",
+          "line": 4
+        },
+        {
+          "name": "InvalidNotebookError",
+          "line": 12
+        },
+        {
+          "name": "InvalidGitHubTokenError",
+          "line": 19
+        },
+        {
+          "name": "__init__",
+          "line": 15
+        },
+        {
+          "name": "__init__",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/file_utils.py",
+      "sha256": "1ab081a652ced138251acba3eba07bb97edc994c825f429fd9c5e5b0a5bc0505",
+      "lines": 77,
+      "imports": [
+        "__future__",
+        "locale",
+        "pathlib",
+        "platform",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "_get_preferred_encodings",
+          "line": 20
+        },
+        {
+          "name": "_read_chunk",
+          "line": 36
+        },
+        {
+          "name": "_decodes",
+          "line": 57
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/git_utils.py",
+      "sha256": "db6deb9175ecb603f00c3fd76b33bd71908e328a009a8b22f5cbc0b4a3cc46f5",
+      "lines": 531,
+      "imports": [
+        "__future__",
+        "asyncio",
+        "base64",
+        "contextlib",
+        "git",
+        "gitingest.schemas",
+        "gitingest.utils.compat_func",
+        "gitingest.utils.exceptions",
+        "gitingest.utils.logging_config",
+        "pathlib",
+        "re",
+        "sys",
+        "typing",
+        "urllib.parse"
+      ],
+      "definitions": [
+        {
+          "name": "is_github_host",
+          "line": 32
+        },
+        {
+          "name": "run_command",
+          "line": 50
+        },
+        {
+          "name": "ensure_git_installed",
+          "line": 86
+        },
+        {
+          "name": "check_repo_exists",
+          "line": 123
+        },
+        {
+          "name": "_parse_github_url",
+          "line": 149
+        },
+        {
+          "name": "fetch_remote_branches_or_tags",
+          "line": 187
+        },
+        {
+          "name": "create_git_repo",
+          "line": 246
+        },
+        {
+          "name": "create_git_auth_header",
+          "line": 286
+        },
+        {
+          "name": "create_authenticated_url",
+          "line": 317
+        },
+        {
+          "name": "git_auth_context",
+          "line": 357
+        },
+        {
+          "name": "validate_github_token",
+          "line": 381
+        },
+        {
+          "name": "checkout_partial_clone",
+          "line": 399
+        },
+        {
+          "name": "resolve_commit",
+          "line": 428
+        },
+        {
+          "name": "_resolve_ref_to_sha",
+          "line": 455
+        },
+        {
+          "name": "_pick_commit_sha",
+          "line": 499
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/ignore_patterns.py",
+      "sha256": "4b062d7d713b66c1bc66be23fce953d04fba03d92d035f735a766f00df2145d8",
+      "lines": 240,
+      "imports": [
+        "__future__",
+        "pathlib"
+      ],
+      "definitions": [
+        {
+          "name": "load_ignore_patterns",
+          "line": 171
+        },
+        {
+          "name": "_parse_ignore_file",
+          "line": 200
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/ingestion_utils.py",
+      "sha256": "c784588bcd1ff6969137df25e81b36e2a9840b94a518cd0719f823623d6bd87c",
+      "lines": 88,
+      "imports": [
+        "__future__",
+        "pathlib",
+        "pathspec",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "_should_include",
+          "line": 13
+        },
+        {
+          "name": "_should_exclude",
+          "line": 43
+        },
+        {
+          "name": "_relative_or_none",
+          "line": 69
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/logging_config.py",
+      "sha256": "f0a67a3abf68290ce6c587b0dd11956640d72da0f8f3719ad4656dfc1f454ff6",
+      "lines": 200,
+      "imports": [
+        "__future__",
+        "json",
+        "logging",
+        "loguru",
+        "os",
+        "sys",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "json_sink",
+          "line": 18
+        },
+        {
+          "name": "format_extra_fields",
+          "line": 54
+        },
+        {
+          "name": "extra_filter",
+          "line": 85
+        },
+        {
+          "name": "InterceptHandler",
+          "line": 105
+        },
+        {
+          "name": "configure_logging",
+          "line": 128
+        },
+        {
+          "name": "get_logger",
+          "line": 180
+        },
+        {
+          "name": "emit",
+          "line": 108
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/notebook.py",
+      "sha256": "3b4e0165ed4d749ea0eb7372fd4f7b51c48ed84e3b249b2d02cfcf68e536ffca",
+      "lines": 159,
+      "imports": [
+        "__future__",
+        "gitingest.utils.exceptions",
+        "gitingest.utils.logging_config",
+        "itertools",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "process_notebook",
+          "line": 19
+        },
+        {
+          "name": "_process_cell",
+          "line": 77
+        },
+        {
+          "name": "_extract_output",
+          "line": 128
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/os_utils.py",
+      "sha256": "f10480526e4b7d9c0e92eb74f0eb6deaf20f21fbf8211382174b4a7040362d66",
+      "lines": 24,
+      "imports": [
+        "pathlib"
+      ],
+      "definitions": [
+        {
+          "name": "ensure_directory_exists_or_create",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/pattern_utils.py",
+      "sha256": "3a082d709a17be37d8a1f25771543d39297ee85e7145095301832c724ebfea05",
+      "lines": 73,
+      "imports": [
+        "__future__",
+        "gitingest.utils.ignore_patterns",
+        "re",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "process_patterns",
+          "line": 13
+        },
+        {
+          "name": "_parse_patterns",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/query_parser_utils.py",
+      "sha256": "b92d0d01178ca851d445efc61801d60052dbe358e837a42ce0f90e9a42ab0599",
+      "lines": 243,
+      "imports": [
+        "__future__",
+        "gitingest.schemas",
+        "gitingest.utils.compat_typing",
+        "gitingest.utils.git_utils",
+        "gitingest.utils.logging_config",
+        "string",
+        "typing",
+        "urllib.parse"
+      ],
+      "definitions": [
+        {
+          "name": "PathKind",
+          "line": 31
+        },
+        {
+          "name": "_fallback_to_root",
+          "line": 40
+        },
+        {
+          "name": "_normalise_source",
+          "line": 65
+        },
+        {
+          "name": "_try_domains_for_user_and_repo",
+          "line": 101
+        },
+        {
+          "name": "_is_valid_git_commit_hash",
+          "line": 133
+        },
+        {
+          "name": "_validate_host",
+          "line": 154
+        },
+        {
+          "name": "_looks_like_git_host",
+          "line": 178
+        },
+        {
+          "name": "_validate_url_scheme",
+          "line": 199
+        },
+        {
+          "name": "_get_user_and_repo_from_path",
+          "line": 219
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/timeout_wrapper.py",
+      "sha256": "f56c5d03da18b17de21cc95cbf632e88750d345089f31252adf93369c26c26ba",
+      "lines": 46,
+      "imports": [
+        "asyncio",
+        "functools",
+        "gitingest.utils.compat_typing",
+        "gitingest.utils.exceptions",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "async_timeout",
+          "line": 14
+        },
+        {
+          "name": "decorator",
+          "line": 35
+        },
+        {
+          "name": "wrapper",
+          "line": 37
+        }
+      ]
+    },
+    {
+      "path": "src/gitingest/utils/__init__.py",
+      "sha256": "72eff0891dd34df59ba4ae50b817a755d99a574bc56ae0e2817e9f869fe13364",
+      "lines": 1,
+      "imports": [],
+      "definitions": []
+    },
+    {
+      "path": "src/server/form_types.py",
+      "sha256": "cbe87ad8333f18700644177bcd16694b51c4fc04f96e9031d018d762984e3f07",
+      "lines": 16,
+      "imports": [
+        "__future__",
+        "fastapi",
+        "gitingest.utils.compat_typing",
+        "typing"
+      ],
+      "definitions": []
+    },
+    {
+      "path": "src/server/main.py",
+      "sha256": "70d781e8105749ac11451c6a6d4ed6b30ed6a084eb3dee738d42f494e8f7a612",
+      "lines": 213,
+      "imports": [
+        "__future__",
+        "dotenv",
+        "fastapi",
+        "fastapi.responses",
+        "fastapi.staticfiles",
+        "gitingest.utils.logging_config",
+        "os",
+        "pathlib",
+        "sentry_sdk",
+        "server.metrics_server",
+        "server.routers",
+        "server.server_config",
+        "server.server_utils",
+        "slowapi.errors",
+        "starlette.middleware.trustedhost",
+        "threading"
+      ],
+      "definitions": [
+        {
+          "name": "health_check",
+          "line": 96
+        },
+        {
+          "name": "head_root",
+          "line": 108
+        },
+        {
+          "name": "robots",
+          "line": 124
+        },
+        {
+          "name": "llm_txt",
+          "line": 140
+        },
+        {
+          "name": "custom_swagger_ui",
+          "line": 156
+        },
+        {
+          "name": "openapi_json_get",
+          "line": 178
+        },
+        {
+          "name": "openapi_json",
+          "line": 195
+        }
+      ]
+    },
+    {
+      "path": "src/server/metrics_server.py",
+      "sha256": "7cbd6b9057d3f15356ffc40ecf9878968d69e314073ccdbea1bf850dc4a67e2d",
+      "lines": 68,
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "gitingest.utils.logging_config",
+        "prometheus_client",
+        "uvicorn"
+      ],
+      "definitions": [
+        {
+          "name": "metrics",
+          "line": 23
+        },
+        {
+          "name": "start_metrics_server",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "src/server/models.py",
+      "sha256": "f065f2ff19908a316f038f53414b5010c247a0debcc1281763d764184dc66b05",
+      "lines": 198,
+      "imports": [
+        "__future__",
+        "enum",
+        "gitingest.utils.compat_func",
+        "pydantic",
+        "server.form_types",
+        "server.server_config",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "PatternType",
+          "line": 18
+        },
+        {
+          "name": "IngestRequest",
+          "line": 25
+        },
+        {
+          "name": "IngestSuccessResponse",
+          "line": 65
+        },
+        {
+          "name": "IngestErrorResponse",
+          "line": 102
+        },
+        {
+          "name": "S3Metadata",
+          "line": 119
+        },
+        {
+          "name": "QueryForm",
+          "line": 138
+        },
+        {
+          "name": "validate_input_text",
+          "line": 51
+        },
+        {
+          "name": "validate_pattern",
+          "line": 60
+        },
+        {
+          "name": "as_form",
+          "line": 163
+        }
+      ]
+    },
+    {
+      "path": "src/server/query_processor.py",
+      "sha256": "991854826322d1c150d7b6b0bd566b4216b585a00dffd6777cde363299c4ac94",
+      "lines": 429,
+      "imports": [
+        "__future__",
+        "gitingest.clone",
+        "gitingest.ingestion",
+        "gitingest.query_parser",
+        "gitingest.schemas.cloning",
+        "gitingest.schemas.ingestion",
+        "gitingest.utils.git_utils",
+        "gitingest.utils.logging_config",
+        "gitingest.utils.pattern_utils",
+        "pathlib",
+        "server.models",
+        "server.s3_utils",
+        "server.server_config",
+        "shutil",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "_cleanup_repository",
+          "line": 35
+        },
+        {
+          "name": "_check_s3_cache",
+          "line": 46
+        },
+        {
+          "name": "_store_digest_content",
+          "line": 139
+        },
+        {
+          "name": "_generate_digest_url",
+          "line": 200
+        },
+        {
+          "name": "process_query",
+          "line": 229
+        },
+        {
+          "name": "_print_query",
+          "line": 345
+        },
+        {
+          "name": "_print_error",
+          "line": 373
+        },
+        {
+          "name": "_print_success",
+          "line": 402
+        }
+      ]
+    },
+    {
+      "path": "src/server/routers_utils.py",
+      "sha256": "b894f9cb869ecd04ceecf4137acd621b19130b262c36c04713014a37cf10bb87",
+      "lines": 57,
+      "imports": [
+        "__future__",
+        "fastapi",
+        "fastapi.responses",
+        "server.models",
+        "server.query_processor",
+        "typing"
+      ],
+      "definitions": [
+        {
+          "name": "_perform_ingestion",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "src/server/s3_utils.py",
+      "sha256": "6d098425a2a03a643e9f5417ed65e61290dff149a64731f0e4e175be0e2a5f86",
+      "lines": 561,
+      "imports": [
+        "__future__",
+        "boto3",
+        "botocore.client",
+        "botocore.exceptions",
+        "gitingest.utils.logging_config",
+        "hashlib",
+        "os",
+        "prometheus_client",
+        "server.models",
+        "typing",
+        "urllib.parse",
+        "uuid"
+      ],
+      "definitions": [
+        {
+          "name": "S3UploadError",
+          "line": 30
+        },
+        {
+          "name": "is_s3_enabled",
+          "line": 34
+        },
+        {
+          "name": "get_s3_config",
+          "line": 39
+        },
+        {
+          "name": "get_s3_bucket_name",
+          "line": 50
+        },
+        {
+          "name": "get_s3_alias_host",
+          "line": 55
+        },
+        {
+          "name": "generate_s3_file_path",
+          "line": 60
+        },
+        {
+          "name": "create_s3_client",
+          "line": 133
+        },
+        {
+          "name": "upload_to_s3",
+          "line": 149
+        },
+        {
+          "name": "upload_metadata_to_s3",
+          "line": 246
+        },
+        {
+          "name": "get_metadata_from_s3",
+          "line": 345
+        },
+        {
+          "name": "_build_s3_url",
+          "line": 389
+        },
+        {
+          "name": "_check_object_tags",
+          "line": 405
+        },
+        {
+          "name": "check_s3_object_exists",
+          "line": 415
+        },
+        {
+          "name": "get_s3_url_for_ingest_id",
+          "line": 486
+        }
+      ]
+    },
+    {
+      "path": "src/server/server_config.py",
+      "sha256": "c8acd18472dcd69cd53496ed34c7f3b6be2b2ccc985ebfccb43700e72a15d93d",
+      "lines": 56,
+      "imports": [
+        "__future__",
+        "fastapi.templating",
+        "os",
+        "pathlib"
+      ],
+      "definitions": [
+        {
+          "name": "get_version_info",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "path": "src/server/server_utils.py",
+      "sha256": "0538f22f879704a02c238bd6749e2b142b90f3625122745905b37fe04e25e8e4",
+      "lines": 73,
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "gitingest.utils.logging_config",
+        "slowapi",
+        "slowapi.errors",
+        "slowapi.util"
+      ],
+      "definitions": [
+        {
+          "name": "rate_limit_exception_handler",
+          "line": 18
+        },
+        {
+          "name": "Colors",
+          "line": 47
+        }
+      ]
+    },
+    {
+      "path": "src/server/__init__.py",
+      "sha256": "9d8b2ad146e0a2affb1671afb22fe46d54601856ad3f2819cc8357fb5619bc18",
+      "lines": 1,
+      "imports": [],
+      "definitions": []
+    },
+    {
+      "path": "src/server/__main__.py",
+      "sha256": "5c1ade1294e8322831273925191b3809f07ab4d828888f402847602134f81fff",
+      "lines": 32,
+      "imports": [
+        "gitingest.utils.logging_config",
+        "os",
+        "uvicorn"
+      ],
+      "definitions": []
+    },
+    {
+      "path": "src/server/routers/dynamic.py",
+      "sha256": "3fefd14488eb91c35ff54ee3db2658189a8372eca5a2fe18df98005c19def07b",
+      "lines": 39,
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "server.server_config"
+      ],
+      "definitions": [
+        {
+          "name": "catch_all",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "src/server/routers/index.py",
+      "sha256": "3b61cacf870e08d1bfbc473fb678814d90b12c3332b767c14af2a6292434d8bd",
+      "lines": 37,
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "server.server_config"
+      ],
+      "definitions": [
+        {
+          "name": "home",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "src/server/routers/ingest.py",
+      "sha256": "133b57270892a1a44f70f04c6cf6c0252054f63f257523334ed7a9d4c596c312",
+      "lines": 153,
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "gitingest.config",
+        "prometheus_client",
+        "server.models",
+        "server.routers_utils",
+        "server.s3_utils",
+        "server.server_config",
+        "server.server_utils",
+        "typing",
+        "uuid"
+      ],
+      "definitions": [
+        {
+          "name": "api_ingest",
+          "line": 24
+        },
+        {
+          "name": "api_ingest_get",
+          "line": 57
+        },
+        {
+          "name": "download_ingest",
+          "line": 98
+        }
+      ]
+    },
+    {
+      "path": "src/server/routers/__init__.py",
+      "sha256": "e6bb27d71c8b901f53202a8d542ed1bf14e57e191261aa941951f5f42bf3d283",
+      "lines": 7,
+      "imports": [
+        "server.routers.dynamic",
+        "server.routers.index",
+        "server.routers.ingest"
+      ],
+      "definitions": []
+    }
+  ],
+  "tests": {
+    "offline": {
+      "scope": [
+        "tests/test_ingestion.py",
+        "tests/test_gitignore_feature.py",
+        "tests/test_pattern_utils.py",
+        "tests/test_notebook_utils.py",
+        "tests/test_cli.py",
+        "tests/query_parser/test_query_parser.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 7.542
+    },
+    "clone_mocked": {
+      "scope": [
+        "tests/test_clone.py",
+        "tests/test_git_utils.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.575
+    },
+    "live_host_failure": {
+      "scope": [
+        "tests/test_ingestion.py",
+        "tests/test_gitignore_feature.py",
+        "tests/test_pattern_utils.py",
+        "tests/test_notebook_utils.py",
+        "tests/test_cli.py",
+        "tests/query_parser"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 11.989
+    },
+    "live_host_failure_reason": "Bitbucket fixture repository returned HTTP 403 after 27 passes; stopped at first failure",
+    "broad_attempt": "240 second timeout; no complete suite result; partial failures retained in ignored log",
+    "not_run": [
+      "Full remote summary suite",
+      "Server integration suite",
+      "Hosted CI",
+      "Multi-platform performance",
+      "Live S3/private credentials"
+    ]
+  },
+  "observations": {
+    "defaults": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\default\nFiles analyzed: 10\n\nEstimated tokens: 273",
+      "tree": "Directory structure:\n└── default/\n    ├── README.md\n    ├── credentials.json\n    ├── go.sum\n    ├── id_rsa\n    ├── openapi.json\n    ├── uv.lock\n    ├── .env.example\n    ├── .env.production\n    ├── migrations/\n    │   └── 001.sql\n    └── src/\n        └── app.py\n",
+      "content": "================================================\nFILE: README.md\n================================================\nExample research fixture only\n\n\n\n================================================\nFILE: credentials.json\n================================================\n{\"fixture\": \"SYNTHETIC_CREDENTIAL\"}\n\n\n================================================\nFILE: go.sum\n================================================\n# fixture\n\n\n================================================\nFILE: id_rsa\n================================================\nSYNTHETIC_PRIVATE_KEY_NOT_A_REAL_KEY\n\n\n================================================\nFILE: openapi.json\n================================================\n{\"openapi\":\"3.1.0\"}\n\n\n================================================\nFILE: uv.lock\n================================================\n# fixture\n\n\n================================================\nFILE: .env.example\n================================================\nSYNTHETIC_ENV_EXAMPLE\n\n\n================================================\nFILE: .env.production\n================================================\nSYNTHETIC_ENV_PRODUCTION\n\n\n================================================\nFILE: migrations/001.sql\n================================================\nCREATE TABLE sample(id INT);\n\n\n================================================\nFILE: src/app.py\n================================================\ndef run():\n    return 42\n\n\n",
+      "elapsed_seconds": 1.003
+    },
+    "include_lock_exact": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\default\nFiles analyzed: 1\n\nEstimated tokens: 27",
+      "tree": "Directory structure:\n└── default/\n    └── package-lock.json\n",
+      "content": "================================================\nFILE: package-lock.json\n================================================\n{}\n\n",
+      "elapsed_seconds": 0.0624
+    },
+    "include_gitignored": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\default\nFiles analyzed: 11\n\nEstimated tokens: 295",
+      "tree": "Directory structure:\n└── default/\n    ├── README.md\n    ├── credentials.json\n    ├── go.sum\n    ├── id_rsa\n    ├── ignored.txt\n    ├── openapi.json\n    ├── uv.lock\n    ├── .env.example\n    ├── .env.production\n    ├── migrations/\n    │   └── 001.sql\n    └── src/\n        └── app.py\n",
+      "content": "================================================\nFILE: README.md\n================================================\nExample research fixture only\n\n\n\n================================================\nFILE: credentials.json\n================================================\n{\"fixture\": \"SYNTHETIC_CREDENTIAL\"}\n\n\n================================================\nFILE: go.sum\n================================================\n# fixture\n\n\n================================================\nFILE: id_rsa\n================================================\nSYNTHETIC_PRIVATE_KEY_NOT_A_REAL_KEY\n\n\n================================================\nFILE: ignored.txt\n================================================\nIGNORED_MARKER\n\n\n================================================\nFILE: openapi.json\n================================================\n{\"openapi\":\"3.1.0\"}\n\n\n================================================\nFILE: uv.lock\n================================================\n# fixture\n\n\n================================================\nFILE: .env.example\n================================================\nSYNTHETIC_ENV_EXAMPLE\n\n\n================================================\nFILE: .env.production\n================================================\nSYNTHETIC_ENV_PRODUCTION\n\n\n================================================\nFILE: migrations/001.sql\n================================================\nCREATE TABLE sample(id INT);\n\n\n================================================\nFILE: src/app.py\n================================================\ndef run():\n    return 42\n\n\n",
+      "elapsed_seconds": 0.0997
+    },
+    "only_python": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\default\nFiles analyzed: 1\n\nEstimated tokens: 39",
+      "tree": "Directory structure:\n└── default/\n    └── src/\n        └── app.py\n",
+      "content": "================================================\nFILE: src/app.py\n================================================\ndef run():\n    return 42\n\n\n",
+      "elapsed_seconds": 0.0603
+    },
+    "nested_ignore": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\nested-scope-ignore\nFiles analyzed: 2\n\nEstimated tokens: 66",
+      "tree": "Directory structure:\n└── nested-scope-ignore/\n    ├── root.private\n    └── sub/\n        └── deep/\n            └── child.private\n",
+      "content": "================================================\nFILE: root.private\n================================================\nROOT_PRIVATE\n\n\n================================================\nFILE: sub/deep/child.private\n================================================\nDEEP_PRIVATE\n\n",
+      "elapsed_seconds": 0.0963
+    },
+    "anchored_ignore": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\anchored-ignore\nFiles analyzed: 0\n\nEstimated tokens: 9",
+      "tree": "Directory structure:\n└── anchored-ignore/\n",
+      "content": "",
+      "elapsed_seconds": 0.0264
+    },
+    "encodings": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\encodings\nFiles analyzed: 4\n\nEstimated tokens: 102",
+      "tree": "Directory structure:\n└── encodings/\n    ├── binary.dat\n    ├── utf16.txt\n    ├── utf8-normal.txt\n    └── utf8-split.txt\n",
+      "content": "================================================\nFILE: binary.dat\n================================================\n[Binary file]\n\n\n================================================\nFILE: utf16.txt\n================================================\n[Binary file]\n\n\n================================================\nFILE: utf8-normal.txt\n================================================\n正常中文 UTF8\n\n\n================================================\nFILE: utf8-split.txt\n================================================\n[Binary file]\n\n",
+      "elapsed_seconds": 0.0136
+    },
+    "per_file_limit": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\limits\nFiles analyzed: 2\n\nEstimated tokens: 67",
+      "tree": "Directory structure:\n└── limits/\n    ├── small.txt\n    └── deep/\n        └── a/\n            └── b/\n                └── c.txt\n",
+      "content": "================================================\nFILE: small.txt\n================================================\nSMALL\n\n\n================================================\nFILE: deep/a/b/c.txt\n================================================\nDEEP\n\n",
+      "elapsed_seconds": 0.0172
+    },
+    "total_file_limit": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\limits\nFiles analyzed: 1\n\nEstimated tokens: 48",
+      "tree": "Directory structure:\n└── limits/\n    └── deep/\n        └── a/\n            └── b/\n                └── c.txt\n",
+      "content": "================================================\nFILE: deep/a/b/c.txt\n================================================\nDEEP\n\n",
+      "elapsed_seconds": 0.0147
+    },
+    "depth_limit": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\limits\nFiles analyzed: 2\n\nEstimated tokens: 52",
+      "tree": "Directory structure:\n└── limits/\n    ├── large.txt\n    └── small.txt\n",
+      "content": "================================================\nFILE: large.txt\n================================================\nLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL\n\n\n================================================\nFILE: small.txt\n================================================\nSMALL\n\n",
+      "elapsed_seconds": 0.0103
+    },
+    "total_byte_limit": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\limits\nFiles analyzed: 2\n\nEstimated tokens: 67",
+      "tree": "Directory structure:\n└── limits/\n    ├── small.txt\n    └── deep/\n        └── a/\n            └── b/\n                └── c.txt\n",
+      "content": "================================================\nFILE: small.txt\n================================================\nSMALL\n\n\n================================================\nFILE: deep/a/b/c.txt\n================================================\nDEEP\n\n",
+      "elapsed_seconds": 0.0122
+    },
+    "notebook_default": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\notebook\nFiles analyzed: 1\n\nEstimated tokens: 59",
+      "tree": "Directory structure:\n└── notebook/\n    └── example.ipynb\n",
+      "content": "================================================\nFILE: example.ipynb\n================================================\n# Jupyter notebook converted to Python script.\n\n\"\"\"\n## Explanation\n\"\"\"\n\nprint(42)\n# Output:\n#   SYNTHETIC_NOTEBOOK_OUTPUT\n\n\n",
+      "elapsed_seconds": 0.0048
+    },
+    "ignore_negation_seeds": [
+      {
+        "seed": 1,
+        "patterns": [
+          "*.log",
+          "!important.log"
+        ],
+        "excluded": false
+      },
+      {
+        "seed": 2,
+        "patterns": [
+          "!important.log",
+          "*.log"
+        ],
+        "excluded": true
+      },
+      {
+        "seed": 3,
+        "patterns": [
+          "*.log",
+          "!important.log"
+        ],
+        "excluded": false
+      },
+      {
+        "seed": 4,
+        "patterns": [
+          "*.log",
+          "!important.log"
+        ],
+        "excluded": false
+      },
+      {
+        "seed": 5,
+        "patterns": [
+          "*.log",
+          "!important.log"
+        ],
+        "excluded": false
+      },
+      {
+        "seed": 6,
+        "patterns": [
+          "!important.log",
+          "*.log"
+        ],
+        "excluded": true
+      },
+      {
+        "seed": 7,
+        "patterns": [
+          "*.log",
+          "!important.log"
+        ],
+        "excluded": false
+      },
+      {
+        "seed": 8,
+        "patterns": [
+          "*.log",
+          "!important.log"
+        ],
+        "excluded": false
+      }
+    ],
+    "notebook_without_output": "# Jupyter notebook converted to Python script.\n\n\"\"\"\n## Explanation\n\"\"\"\n\nprint(42)\n",
+    "async_api": {
+      "two_results": 2,
+      "tuple_lengths": [
+        3,
+        3
+      ]
+    },
+    "cache_key": {
+      "key": "ingest/github.com/example/repo/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1b65b302efebb356/example-repo-8a5edab282632443.txt",
+      "max_file_size_parameter": "not_present",
+      "engine_version_parameter": "not_present",
+      "tenant_parameter": "not_present"
+    },
+    "junction_boundary": {
+      "is_symlink": false,
+      "is_junction": true,
+      "followed_outside_root": true
+    },
+    "workflow_default": {
+      "summary": "Directory: ${PROJECT_ROOT}\nFiles analyzed: 68\n\nEstimated tokens: 102.3k",
+      "elapsed_seconds": 0.7613,
+      "content_bytes_utf8": 438232,
+      "file_headers": 68
+    },
+    "workflow_checker_subset": {
+      "summary": "Directory: ${PROJECT_ROOT}\nFiles analyzed: 4\n\nEstimated tokens: 35.6k",
+      "elapsed_seconds": 0.7482,
+      "content_bytes_utf8": 148928,
+      "file_headers": 4
+    }
+  },
+  "edge_cases": {
+    "single_file_limit": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\extra-edges\\large.txt\nFile: large.txt\nLines: 1\n\nEstimated tokens: 42",
+      "body_contains_full_100_bytes": true
+    },
+    "image-only": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\extra-edges\\image-only.ipynb\nFile: image-only.ipynb\nLines: 1\n\nEstimated tokens: 27",
+      "content": "================================================\nFILE: .\n================================================\nError processing notebook: 'text/plain'\n\n"
+    },
+    "string-stream": {
+      "summary": "Directory: ${PROJECT_ROOT}\\work\\research\\fixtures\\extra-edges\\string-stream.ipynb\nFile: string-stream.ipynb\nLines: 9\n\nEstimated tokens: 55",
+      "content": "================================================\nFILE: .\n================================================\n# Jupyter notebook converted to Python script.\n\nprint(42)\n# Output:\n#   H\n#   E\n#   L\n#   L\n#   O\n\n\n"
+    }
+  },
+  "public_remote": {
+    "tree": {
+      "summary": "Repository: octocat/hello-world\nCommit: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d\nFiles analyzed: 1\n\nEstimated tokens: 29",
+      "tree": "Directory structure:\n└── octocat-hello-world/\n    └── README\n",
+      "content": "================================================\nFILE: README\n================================================\nHello World!\n\n\n"
+    },
+    "blob": {
+      "summary": "Repository: octocat/hello-world\nCommit: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d\nFile: README\nLines: 1\n\nEstimated tokens: 19",
+      "tree": "Directory structure:\n└── README\n",
+      "content": "================================================\nFILE: README\n================================================\nHello World!\n\n\n"
+    },
+    "branch_override": {
+      "parsed_commit": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+      "branch": "definitely-not-a-real-branch-for-research",
+      "resolved_commit_after_override": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+      "invalid_branch_still_resolves_original_commit": true
+    },
+    "remaining_checkout_files": []
+  },
+  "git_and_credential_oracles": {
+    "nested-scope-ignore": {
+      "git_check_ignore_exit": 0,
+      "ignored_by_git": [
+        "sub/top.private",
+        "sub/deep/child.private"
+      ]
+    },
+    "anchored-ignore": {
+      "git_check_ignore_exit": 0,
+      "ignored_by_git": [
+        "root-only.txt"
+      ]
+    },
+    "ordered-ignore": {
+      "git_check_ignore_exit": 0,
+      "ignored_by_git": [
+        "other.log"
+      ]
+    },
+    "published_credential_boundary": {
+      "module_source": "pypi031\\gitingest\\clone.py",
+      "reversible_synthetic_credential_in_log": true,
+      "synthetic_credential_in_forwarded_error": true,
+      "live_network_calls": 0,
+      "error_probe_limit": "Boundary failure stub formats arguments as published run_command does; no real token or clone failure used."
+    }
+  },
+  "probe_script_hashes": {
+    "probe_gitingest.py": "3065fe5a845486c72b760cbe75651150f89627f4922e38019f9cd19f08f7a11c",
+    "probe_remote.py": "cde2577127d924eb0729cbd4f40d94627080aa60c0cfd5f2c270ccfc4f94b715",
+    "probe_edges.py": "f288f37073ebaf4ddf5a8204cbfc498183cdedc64780d4579ac2842131f6c120",
+    "probe_oracles.py": "332aecdccd044e66c704dc2ee764202c38ace7bcb10df65ef7d549cd865fce25",
+    "run_upstream.py": "3643db4de448d3187e67b7f20fbc0849c96acfbcba311cf8d7440599c0d58529",
+    "run_focused.py": "bdc26bd26f306d3594b627aab823a7992b4127b75924c2b6657769b4b1a4a54e"
+  },
+  "original_artifacts": "Ignored work/research; portable core results retained here; fixture snippets/scenarios described in Task",
+  "limits": [
+    "No model output quality comparison",
+    "Token reduction measures different selected scopes",
+    "Credential test uses only synthetic token with boundary failure stub",
+    "Cache-key finding is source analysis, no S3 access",
+    "No integration authorization or implementation"
+  ],
+  "workflow_validation": {
+    "report": "work/research/project-final-check-v2.json",
+    "required_checks_satisfied": true,
+    "exit_code": 0,
+    "test_case_count": 105,
+    "python": "3.14.7",
+    "results": [
+      {
+        "rule_id": "manifest",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "declared IDs, references, graph and baseline",
+        "evidence": [
+          "manifest validated"
+        ],
+        "limitations": [
+          "Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."
+        ]
+      },
+      {
+        "rule_id": "change-scope",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "Git base diff including deletions, untracked paths and declared documentation impact",
+        "evidence": {
+          "uncovered": [],
+          "excluded": [],
+          "allowed": [
+            "engineering-manifest.json",
+            ".gitignore",
+            "docs",
+            "planning",
+            ".github",
+            "docs/module-map.md",
+            "planning/gitingest-assessment-task.md",
+            "planning/gitingest-assessment-task.md",
+            "planning/gitingest-assessment-evidence.json",
+            "planning/traceability.md"
+          ],
+          "documentation_gaps": []
+        },
+        "limitations": [
+          "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+        ]
+      },
+      {
+        "rule_id": "TEST",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 78.671,
+          "output_bytes": 603,
+          "output_sha256": "a0958f9d4ff1221b84562df28009a3bfd88d54485b660716efb15c0f424e0f6a",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.218,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      },
+      {
+        "rule_id": "GUIDANCE-COMPILE",
+        "status": "pass",
+        "required": true,
+        "checked_scope": "fresh invocation",
+        "evidence": {
+          "command_sha256": "83518a7236d5a295ebaee459567f5f98be0517166630c0e2318e5779330ddabd",
+          "working_directory": ".",
+          "returncode": 0,
+          "duration_seconds": 0.123,
+          "output_bytes": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_limit_bytes": 8388608,
+          "output_limit_exceeded": false,
+          "timed_out": false,
+          "reader_failed": false,
+          "reader_stalled": false,
+          "output_complete": true,
+          "cleanup_timed_out": false
+        },
+        "limitations": [
+          "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+        ]
+      }
+    ],
+    "post_validation_changes": "Only actual result records and research-complete status; no implementation/check policy changes"
+  }
+}
