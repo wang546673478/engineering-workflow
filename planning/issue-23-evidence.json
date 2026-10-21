@@ -1,0 +1,1017 @@
+{
+  "captured_at": "2026-10-21T03:31:31.852354+08:00",
+  "source_revision": "d214021",
+  "tool_version": "1.7.2",
+  "probe_sha256": "2b7ea039fb147257c6e0f35630009cc90c77301a78b8c64faba1241b3feb6949",
+  "checker_sha256": "01e0a77129c489bb2a6f62c6ae3e1d06e32ba065b36c01f62b1de3a91ce52ed9",
+  "method": "Current real CLI, existing isolated Git fixture, declared unit command executed; no source/checker changes",
+  "results": [
+    {
+      "case": "empty_evidence",
+      "exit_code": 0,
+      "required_checks_satisfied": true,
+      "checks": [
+        {
+          "rule_id": "workflow-lifecycle",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "manifest",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "task-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "implementation-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "unit",
+          "status": "pass",
+          "required": true
+        }
+      ],
+      "meaning": "Observed acceptance by current checker, not desired fixed behavior"
+    },
+    {
+      "case": "placeholder_only",
+      "exit_code": 0,
+      "required_checks_satisfied": true,
+      "checks": [
+        {
+          "rule_id": "workflow-lifecycle",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "manifest",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "task-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "implementation-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "unit",
+          "status": "pass",
+          "required": true
+        }
+      ],
+      "meaning": "Observed acceptance by current checker, not desired fixed behavior"
+    },
+    {
+      "case": "unbound_current_revision",
+      "exit_code": 0,
+      "required_checks_satisfied": true,
+      "checks": [
+        {
+          "rule_id": "workflow-lifecycle",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "manifest",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "task-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "implementation-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "unit",
+          "status": "pass",
+          "required": true
+        }
+      ],
+      "meaning": "Observed acceptance by current checker, not desired fixed behavior"
+    },
+    {
+      "case": "future_approval",
+      "exit_code": 0,
+      "required_checks_satisfied": true,
+      "checks": [
+        {
+          "rule_id": "workflow-lifecycle",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "manifest",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "task-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "implementation-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "unit",
+          "status": "pass",
+          "required": true
+        }
+      ],
+      "meaning": "Observed acceptance by current checker, not desired fixed behavior"
+    },
+    {
+      "case": "legacy_stale_authorization",
+      "exit_code": 0,
+      "required_checks_satisfied": true,
+      "checks": [
+        {
+          "rule_id": "workflow-lifecycle",
+          "status": "partial",
+          "required": false
+        },
+        {
+          "rule_id": "manifest",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "task-gate",
+          "status": "pass",
+          "required": true
+        },
+        {
+          "rule_id": "unit",
+          "status": "pass",
+          "required": true
+        }
+      ],
+      "meaning": "Observed acceptance by current checker, not desired fixed behavior"
+    }
+  ],
+  "limitations": [
+    "Controlled counterexamples do not authenticate human approval or prove target product correctness."
+  ],
+  "probe_script": "import copy\nimport hashlib\nimport importlib.util\nimport json\nfrom datetime import datetime, timezone, timedelta\nfrom pathlib import Path\n\nroot = Path(__file__).resolve().parents[2]\nspec = importlib.util.spec_from_file_location('issue23_fixture', root / 'scripts/tests/test_checker.py')\nfixture = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(fixture)\nresults = []\nfor case in ('empty_evidence', 'placeholder_only', 'unbound_current_revision', 'future_approval', 'legacy_stale_authorization'):\n    test = fixture.CheckerTests('test_implementation_scope_changes_pass_only_after_all_lifecycle_approvals')\n    test.setUp()\n    try:\n        test.lifecycle_fixture()\n        approval = test.root / 'docs/approval.md'\n        approval.write_text('' if case == 'empty_evidence' else 'approved', encoding='utf-8')\n        task = test.manifest['tasks'][0]\n        if case == 'unbound_current_revision':\n            task['artifact_revisions'] = {'plan': 'plan-r2-new-permissions'}\n        if case == 'future_approval':\n            task['implementation_authorization']['approved_at'] = '2099-01-01T00:00:00+08:00'\n        if case == 'legacy_stale_authorization':\n            test.manifest['workflow'].pop('stage')\n            task['implementation_authorization'].update(plan_revision='unrelated-old-plan', evidence='missing-authorization.md')\n        (test.root / 'src/app.py').write_text(\"print('new implementation')\", encoding='utf-8')\n        proc, report = test.cli('--mode', 'change', '--task', 'TASK-1', '--base', 'HEAD', '--run-checks')\n        results.append({'case': case, 'exit_code': proc.returncode,\n                        'required_checks_satisfied': report['required_checks_satisfied'],\n                        'checks': [{'rule_id': r['rule_id'], 'status': r['status'], 'required': r['required']}\n                                   for r in report['checks'] if r['rule_id'] in ('workflow-lifecycle', 'implementation-gate', 'manifest', 'task-gate', 'unit')],\n                        'meaning': 'Observed acceptance by current checker, not desired fixed behavior'})\n    finally:\n        test.tearDown()\n        test.doCleanups()\nevidence = {'captured_at': datetime.now(timezone(timedelta(hours=8))).isoformat(),\n            'source_revision': 'd214021', 'tool_version': fixture.checker.VERSION,\n            'probe_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),\n            'checker_sha256': hashlib.sha256((root / 'scripts/check_project.py').read_bytes()).hexdigest(),\n            'method': 'Current real CLI, existing isolated Git fixture, declared unit command executed; no source/checker changes',\n            'results': results, 'limitations': ['Controlled counterexamples do not authenticate human approval or prove target product correctness.']}\n(root / 'planning/issue-23-evidence.json').write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + '\\n', encoding='utf-8')\nprint(json.dumps({'probe_cases': results}, ensure_ascii=False))\n",
+  "target_snapshot": {
+    "captured_at": "2026-10-21T03:37:48.553751+08:00",
+    "head": "6cf0d90b5ff27f901697dddd61e0c28aba8efefc",
+    "active_task": "CORE234",
+    "workflow_stage_present": false,
+    "current_task_plan": "CORE234-PLAN-20261021.3",
+    "authorization_plan": "CORE234-PLAN-20261020.1-approved",
+    "scope_mismatch": "old menus/page-reuse/profit-report/Chat-control versus new managed-user identity and group relations",
+    "report_required_checks_satisfied": false,
+    "report_errors": [],
+    "snapshot_limits": "Target chat active; file digests bind inspected snapshots, not all uncommitted source or later behavior",
+    "file_snapshot_limits": "Each target file was independently read while the target chat was active; digests are not a whole-worktree consistent revision."
+  },
+  "inspected_file_sha256": {
+    "engineering-manifest.json": "2a023b410eceaa484de42f7a1b4678801dc9b28e0ad3af5fed943da06a9c4f31",
+    "planning/core-review-task.md": "7944d9c52859e663ed5bd4378f525031d330c681c5f2bc5ebcbac3b3800090f3",
+    "planning/core234-pricing-link-spec-plan-task.md": "e7caaba3b3e94af29d016bd1f83ff8f32452f0042562c079102905ce8127816d",
+    "planning/enterprise-key-group-engineering-20261021.json": "fbf1a375da4c23b7fea67a1b3cb5c93af914713b7f461b4f4a94f3af4842ff0a",
+    "planning/enterprise-key-group-delivery-20261021.json": "f7dd533d8123bbce436c7510d1031990abf6e2fa34077de5b05fed48a8342eca"
+  },
+  "issue": {
+    "url": "https://github.com/wang546673478/engineering-workflow/issues/23",
+    "created_at": "2026-10-21T03:24:00+08:00",
+    "comments_at_read": 0,
+    "transport": "public read-only GitHub API; no PAT used"
+  },
+  "proposal_validation": {
+    "checked_at": "2026-10-21T10:34:12.297641+08:00",
+    "command": "python scripts/check_project.py --root . --manifest engineering-manifest.json --mode change --base HEAD --task TASK-ISSUE-23-PROPOSAL --report work/issue-23-review/impact-confirm.json",
+    "exit_code": 1,
+    "required_checks_satisfied": false,
+    "errors": [],
+    "nonpassing_checks": [
+      {
+        "rule_id": "workflow-lifecycle",
+        "status": "partial",
+        "required": false,
+        "evidence": "existing compatibility path retained"
+      },
+      {
+        "rule_id": "inventory:database",
+        "status": "partial",
+        "required": false,
+        "evidence": {
+          "provenance": {
+            "type": "manual",
+            "scope": "No application database; adapter metadata boundary only",
+            "complete": false,
+            "evidence": "docs/database.md",
+            "source_files": []
+          },
+          "coverage": [
+            "items and fields match"
+          ],
+          "item_count": 0
+        }
+      },
+      {
+        "rule_id": "inventory:contracts",
+        "status": "partial",
+        "required": false,
+        "evidence": {
+          "provenance": {
+            "type": "manual",
+            "scope": "Checker CLI and metadata snapshot contracts documented manually",
+            "complete": false,
+            "evidence": "docs/contracts.md",
+            "source_files": []
+          },
+          "coverage": [
+            "items and fields match"
+          ],
+          "item_count": 0
+        }
+      },
+      {
+        "rule_id": "TEST",
+        "status": "skipped",
+        "required": true,
+        "evidence": "not run; use --run-checks"
+      },
+      {
+        "rule_id": "COMPILE",
+        "status": "skipped",
+        "required": true,
+        "evidence": "not run; use --run-checks"
+      },
+      {
+        "rule_id": "GUIDANCE-COMPILE",
+        "status": "skipped",
+        "required": true,
+        "evidence": "not run; use --run-checks"
+      }
+    ],
+    "structural_checks": [
+      {
+        "rule_id": "manifest",
+        "status": "pass"
+      },
+      {
+        "rule_id": "task-gate",
+        "status": "pass"
+      },
+      {
+        "rule_id": "change-scope",
+        "status": "pass"
+      }
+    ],
+    "report_sha256": "9f956ea9a06bfe83a2249cfeb61d9c2bad098a39edfee66be2d701950692b4c5",
+    "full_regression_not_run_reason": "Documentation and proposal records only; runtime/checker/skill instructions unchanged; original required commands remain for implementation delivery and are not claimed passed.",
+    "validation_history": [
+      {
+        "report": "work/issue-23-review/change-report.json",
+        "exit_code": 1,
+        "result": "Original structural checks pass, required commands skipped"
+      },
+      {
+        "report": "work/issue-23-review/change-report.json",
+        "exit_code": 2,
+        "result": "Repeated output path correctly refused: report output must be a new file; refusing overwrite. Not accepted as fresh validation."
+      },
+      {
+        "report": "work/issue-23-review/final-confirm.json",
+        "exit_code": 1,
+        "result": "New output file; errors=[]; required commands skipped; structural checks pass"
+      }
+    ]
+  },
+  "static_validation": {
+    "json_parse": "pass",
+    "markdown_local_links": "pass",
+    "git_diff_check": "pass",
+    "unchanged_policy_fields": [
+      "checks",
+      "control_plane",
+      "exclude_paths",
+      "modules",
+      "inventories"
+    ],
+    "credentials_pattern_scan": "No PAT patterns found in newly authored issue23 artifacts"
+  },
+  "implementation": {
+    "status": "complete_locally_unreleased",
+    "source_base": "d214021",
+    "target_version": "1.8.0 Unreleased",
+    "authorization": {
+      "user_statement": "那就开始实施吧",
+      "scope": "Presented Plan r1 and compatibility clarification, diagnostic default and explicit strict opt-in; local implementation and validation",
+      "recorded_at": "2026-10-21T11:27:04.442638+08:00",
+      "approved_at": "2026-10-21T10:38:03+08:00",
+      "source": {
+        "kind": "conversation",
+        "reference": "codex://threads/01a15ac8-58bd-7c82-a619-5003cdc82d1e?message=01a15c52-a8ae-7910-9b75-8e76f435ce30"
+      },
+      "source_note": "Original current turn started_at timestamp and direct user message ID; original record time retained separately"
+    },
+    "approved_snapshots": {
+      "issue-23-spec.md": "0f5e8ba967d867e239922a58ce3ef44c8885678f18b316b7487066f423fedaa4",
+      "issue-23-plan.md": "ea4949240c218e9fc7f12a3107ec62938feec6abe461763fad2a931ccb36a39d"
+    },
+    "environment": {
+      "python": "Python 3.14.7",
+      "rust_parsers": "tree-sitter==0.25.2; tree-sitter-rust==0.24.2 in ignored local venv",
+      "javascript": "npm ci --ignore-scripts --prefix scripts/context-runtime; package-lock unchanged",
+      "global_changes": false,
+      "python_primary": "CPython3.11.15 at work/issue-23-review/python311, uv --no-bin --no-registry",
+      "python_compatibility": "CPython3.14:225 tests passed functionally; runtime exceeds required TEST limit in this environment",
+      "source_context_pins": "scripts/reference-requirements.txt and scripts/context-runtime/package-lock.json unchanged"
+    },
+    "validation_history": [
+      {
+        "command": "python -m unittest discover -s scripts/tests -q",
+        "log": "work/issue-23-review/full-suite-initial.log",
+        "exit_code": 1,
+        "count": 223,
+        "duration_seconds": 148.782,
+        "result": "6 failures; old diagnostic order and Python3.14 JSON depth compatibility; corrected without lowering assertions",
+        "log_sha256": "c7e6750b210b182a46b64cfd4e5238aa7678234189d010ea2fda63a7359c8033"
+      },
+      {
+        "command": "four original failing checker/state test methods",
+        "result": "pass after restoring existing Git diagnostic order and interpreter-budget JSON guard; focused 4 tests, 5.868 seconds"
+      },
+      {
+        "command": "python -m unittest discover -s scripts/tests -q",
+        "runtime": "CPython3.14 isolated venv",
+        "log": "work/issue-23-review/full-suite-fixed.log",
+        "exit_code": 0,
+        "test_count": 225,
+        "duration_seconds": 134.907,
+        "qualifies_for_required_TEST": false,
+        "reason": "Exceeded unchanged 120 second TEST limit; retained as functional compatibility evidence only",
+        "sha256": "9761e87d9ccbf1b28e1be0a32b29b3ca636e155eef18783d290f6ac9e9d38c42"
+      },
+      {
+        "command": "original manifest change --run-checks",
+        "runtime": "task-owned portable CPython3.11.15; pinned parsers installed only in task directory",
+        "report": "work/issue-23-review/formal-1.json",
+        "exit_code": 0,
+        "required_checks_satisfied": true,
+        "TEST_duration_seconds": 117.625,
+        "reason": "First original-policy pass before last shared approval JSON decoder correction; final same-policy rerun follows"
+      }
+    ],
+    "limits": [
+      "No hosted CI, external project migration, publication, installation or implementation event host attestation."
+    ],
+    "source_hashes": {
+      "scripts/check_project.py": "c6196f7e16eeb2a152de59ba7cf22301f094d85c611bb4f09cb9f7b1a8529e3b",
+      "scripts/init_manifest.py": "4fd7eb2f49efd0b1f58a55d9de9b8112abf474c645c16078eaa1e3be427cd31d",
+      "scripts/adopt_project.py": "e13ad7ef02c75349bd4b03ea53051d715b2a5cce90c0e505da0eeb9a74acc937",
+      "scripts/tests/test_checker.py": "6d42c7485a243e74749283123d5b0fa6957053128579d0be4da5bca0cd95c111",
+      "scripts/tests/test_adoption.py": "993b5c16bccec842ac7830d52f32a44e05985c02d91ddc87c94519a24b4c4716",
+      "scripts/tests/test_init.py": "bd7c9974e116ba2a9d86df0b39e61be8d8b505c15e1eead0d2fa415e70b13e55",
+      "SKILL.md": "d12aa0d14be54eff59178bbdce47c2a6a9297274403b76b9a532afaec8df14bb",
+      "VERSION": "27d9e336a84f32dd7ebc6eb5c242d896c10eacd9c44b8d2fe447e0c8a9806970",
+      "agents/openai.yaml": "97b3923cc73c927e730fe144b6f9db87f1fdcc704159d27478be69e02f7f8e96",
+      "README.md": "0567f3d10df1d797bb20df1c5456d4b62c150486cc9f7200785e2509050f053d",
+      "CHANGELOG.md": "e6d5a655348f5ff8f059892c2aca1ed664bd242b0025e81b7df586aa55d1c15a",
+      "references/checker.md": "9c5e7a5605ec15f1957d8a2f2b89c6b6d27047deb5dd495da4ed9185c57b23ce",
+      "references/adoption-lifecycle.md": "0b2b2e2c18d210ae5be70e34e4e434ee409bccc95884775f3c6658deb38b7f68",
+      "assets/templates/pre-commit.engineering": "e4930889c3acdaacd7ccdbde6365fe51b9e4ebe4188287c917a89fec25376acb",
+      "assets/templates/pre-commit.engineering.ps1": "d87752a67393b12a84cdb2bfe62fa4c2380390033cd69c5ba9c6b014f4e5c001",
+      "assets/templates/ci-committed.engineering": "141b2a98ecbc0d50990c8278f11348ebb8e50a0d0b487a706f0481602c08bb86",
+      "assets/templates/ci-committed.engineering.ps1": "b0125181e584a9906879e49b4388f2e140db4efd22cfdb0cde61c243737789ec"
+    },
+    "additional_checks": {
+      "skill_creator_quick_validate": "pass, UTF-8 and task-local PyYAML6.0.3",
+      "powershell_hook_syntax": "pass both existing templates",
+      "git_diff_check": "pass",
+      "version_sources": "all five 1.8.0, Unreleased",
+      "required_commands_control_declarations": "equal to original HEAD",
+      "focused_actual_commit_and_committed": "pass: strict evidence and capability flag; modified unstaged evidence rejected"
+    },
+    "completed_at": "2026-10-21T11:43:09.287244+08:00",
+    "version": "1.8.0",
+    "formal_gate": {
+      "report": "work/issue-23-review/formal-final.json",
+      "report_sha256": "08a05ff0cfb1e46711a1ccf664da604485e3f498be82d3457de637d3a132399d",
+      "mode": "change",
+      "exit_code": 0,
+      "required_checks_satisfied": true,
+      "errors": [],
+      "checks": [
+        {
+          "rule_id": "document:BASELINE_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/baseline-workflow-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:CONTINUITY_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/continuous-requirements-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:VERSION_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/version-policy-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:STAGES_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/takeover-stages-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:SPEC",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "docs/spec.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:MAP",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "docs/module-map.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:DB",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "docs/database.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:CONTRACT",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "docs/contracts.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:FLOW",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "docs/business-flow.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:IMPACT",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/change-impact.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:BASELINE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/baseline-review.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:SKILL_REVIEW",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/skill-review.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:PERSISTENCE_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/persistence-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUES_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issues-11-13-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:AUTO_REVIEW_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issues-14-auto-review-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUES_SECURITY_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issues-14-16-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:PLAN",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "docs/plan.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:TRACE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/traceability.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:LINKED_ARTIFACT_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/linked-artifact-model-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:CONTEXT_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/source-context-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:CONTEXT_EVIDENCE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/source-context-evidence.json",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:CONTEXT_BENCHMARK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/source-context-benchmark.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUES_17_18_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issues-17-18-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUES_17_18_EVIDENCE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issues-17-18-fix-evidence.json",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUES_19_21_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issues-19-21-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUES_19_21_FIX_EVIDENCE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issues-19-21-fix-evidence.json",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ADOPTION_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/adoption-lifecycle-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ADOPTION_IMPACT",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/adoption-lifecycle-impact.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ADOPTION_VERIFICATION",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/adoption-lifecycle-verification.json",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE22_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-22-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE22_ASSESSMENT",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-22-assessment.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE22_EVIDENCE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-22-evidence.json",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE22_SPEC",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-22-spec.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE22_PLAN",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-22-plan.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE23_TASK",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-23-task.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE23_SPEC",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-23-spec.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE23_PLAN",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-23-plan.md",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE23_EVIDENCE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-23-evidence.json",
+          "limitations": []
+        },
+        {
+          "rule_id": "document:ISSUE23_SESSION",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "document existence",
+          "evidence": "planning/issue-23-session-evidence.json",
+          "limitations": []
+        },
+        {
+          "rule_id": "workflow-lifecycle",
+          "status": "partial",
+          "required": false,
+          "checked_scope": "legacy manifest without stage lifecycle",
+          "evidence": "existing compatibility path retained",
+          "limitations": [
+            "This manifest does not receive automatic takeover-stage or implementation authorization gates until lifecycle fields are adopted."
+          ]
+        },
+        {
+          "rule_id": "approval-evidence",
+          "status": "partial",
+          "required": false,
+          "checked_scope": "legacy approval declarations",
+          "evidence": {
+            "status": "legacy_unverified",
+            "reason": "no structured approval policy enabled",
+            "declared_records": {
+              "implementation_authorization": {
+                "status": "approved",
+                "evidence": "planning/issue-23-task.md"
+              },
+              "spec_review": {
+                "status": "approved",
+                "evidence": "planning/issue-23-task.md"
+              },
+              "plan_review": {
+                "status": "approved",
+                "evidence": "planning/issue-23-task.md"
+              }
+            }
+          },
+          "limitations": [
+            "Legacy validation is preserved; a passing command result does not verify approval content or current scope."
+          ]
+        },
+        {
+          "rule_id": "manifest",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "declared IDs, references, graph and baseline",
+          "evidence": [
+            "manifest validated"
+          ],
+          "limitations": [
+            "Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."
+          ]
+        },
+        {
+          "rule_id": "inventory:database",
+          "status": "partial",
+          "required": false,
+          "checked_scope": "No application database; adapter metadata boundary only",
+          "evidence": {
+            "provenance": {
+              "type": "manual",
+              "scope": "No application database; adapter metadata boundary only",
+              "complete": false,
+              "evidence": "docs/database.md",
+              "source_files": []
+            },
+            "coverage": [
+              "items and fields match"
+            ],
+            "item_count": 0
+          },
+          "limitations": [
+            "Manual/unknown sources cannot prove full coverage. SQLite completeness covers the declared metadata scope only. Remote adapter snapshots prove internal integrity and declared metadata shape, not live database truth; field semantics and real usage require code review."
+          ]
+        },
+        {
+          "rule_id": "inventory:contracts",
+          "status": "partial",
+          "required": false,
+          "checked_scope": "Checker CLI and metadata snapshot contracts documented manually",
+          "evidence": {
+            "provenance": {
+              "type": "manual",
+              "scope": "Checker CLI and metadata snapshot contracts documented manually",
+              "complete": false,
+              "evidence": "docs/contracts.md",
+              "source_files": []
+            },
+            "coverage": [
+              "items and fields match"
+            ],
+            "item_count": 0
+          },
+          "limitations": [
+            "Manual/unknown sources cannot prove full coverage. SQLite completeness covers the declared metadata scope only. Remote adapter snapshots prove internal integrity and declared metadata shape, not live database truth; field semantics and real usage require code review."
+          ]
+        },
+        {
+          "rule_id": "task-gate",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "selected task approval/dependencies/status",
+          "evidence": [
+            "TASK-ISSUE-23-PROPOSAL"
+          ],
+          "limitations": []
+        },
+        {
+          "rule_id": "change-scope",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "Git base diff including deletions, untracked paths and declared documentation impact",
+          "evidence": {
+            "uncovered": [],
+            "excluded": [],
+            "allowed": [
+              "SKILL.md",
+              "README.md",
+              "AGENTS.md",
+              "VERSION",
+              "CHANGELOG.md",
+              "LICENSE",
+              "scripts/install_agents_guidance.py",
+              "scripts/init_manifest.py",
+              "agents",
+              "assets",
+              "references",
+              "scripts/adopt_project.py",
+              "docs/module-map.md",
+              "scripts/check_project.py",
+              "docs/module-map.md",
+              "scripts/tests",
+              "docs/module-map.md",
+              "engineering-manifest.json",
+              ".gitignore",
+              "docs",
+              "planning",
+              ".github",
+              "docs/module-map.md",
+              "planning/issue-23-task.md",
+              "planning/baseline-review.md",
+              "docs/spec.md",
+              "docs/plan.md",
+              "docs/module-map.md",
+              "docs/contracts.md",
+              "docs/business-flow.md",
+              "planning/traceability.md",
+              "planning/issue-23-task.md",
+              "planning/issue-23-spec.md",
+              "planning/issue-23-plan.md",
+              "planning/issue-23-evidence.json",
+              "planning/issue-23-session-evidence.json",
+              "planning/baseline-review.md",
+              "docs/module-map.md",
+              "docs/contracts.md",
+              "docs/business-flow.md",
+              "docs/spec.md",
+              "docs/plan.md",
+              "planning/traceability.md",
+              "planning/issue-23-task.md",
+              "planning/issue-23-spec.md",
+              "planning/issue-23-plan.md",
+              "planning/issue-23-evidence.json"
+            ],
+            "documentation_gaps": []
+          },
+          "limitations": [
+            "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+          ]
+        },
+        {
+          "rule_id": "TEST",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 119.75,
+            "output_bytes": 647,
+            "output_sha256": "83be01afcb921879c1652220733572f08f9beec732bfff0ffdfd8f20c05c61df",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.219,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        {
+          "rule_id": "GUIDANCE-COMPILE",
+          "status": "pass",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "f71303755023779206467a91468aea12cee521bc95420b4790880afaec014808",
+            "working_directory": ".",
+            "returncode": 0,
+            "duration_seconds": 0.218,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": false,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": true,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        }
+      ],
+      "original_required_commands_unchanged": true,
+      "test_count": 225,
+      "runtime": "task-owned CPython3.11.15",
+      "source_hashes_match_after_verification": true
+    },
+    "delivery_state": "Local implementation validated; no commit/push/global install/target project migration",
+    "manual_semantic_review": {
+      "method": "Same-agent source review and bounded tabletop scenarios, not independent agent behavior testing",
+      "cases": [
+        {
+          "id": "S23-01",
+          "scenario": "Requirement-choice answer before full Plan exists",
+          "result": "Guidance records only chosen scope, preserves conflict sources and keeps unseen Plan implementation pending"
+        },
+        {
+          "id": "S23-02",
+          "scenario": "Explicit implementation request after complete Plan and compatibility clarification",
+          "result": "One source instruction can serve proposal/implementation within its actual scope; no additional approval round"
+        },
+        {
+          "id": "S23-03",
+          "scenario": "Explicitly replacing earlier rule versus unresolved tension",
+          "result": "Explicit replacement is new decision, unresolved material scope asks once; original statements retained"
+        },
+        {
+          "id": "S23-04",
+          "scenario": "Factual Baseline correction or progress append",
+          "result": "No automatic reapproval; reviewed snapshot stays stable, technical basis relation explicit; invalidated premise only reopens affected work"
+        },
+        {
+          "id": "S23-05",
+          "scenario": "Manual product tests pass but required checker gates incomplete",
+          "result": "Delivery guidance preserves both outcomes and incomplete overall status"
+        }
+      ],
+      "limits": "This checks documented guidance and implemented declarations; it cannot prove all future agents obey or authenticate human approval."
+    }
+  },
+  "github_upload": {
+    "status": "authorized_pending_submission_gates",
+    "recorded_at": "2026-10-21T13:35:58.671837+08:00",
+    "user_statement": "上传github",
+    "branch": "codex/issue-23-approval-contract",
+    "base_remote_main": "d214021d8c462d5b7733d0cb3f04a26f8f3bb35b",
+    "scope": "Reviewed Issue23 1.8.0 source and linked evidence; no hosted Release/global install/target project migration",
+    "secret_pattern_scan": "No PAT patterns in changed/new files",
+    "source_hashes": "match final formally checked runtime/tests/templates"
+  }
+}

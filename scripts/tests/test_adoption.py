@@ -41,6 +41,7 @@ class AdoptionTests(unittest.TestCase):
             data = json.loads((root / "engineering-manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(data["workflow"]["stage"], "takeover_discovery")
             self.assertEqual(data["workflow"]["active_task"], "TASK-01")
+            self.assertEqual(data["workflow"]["approval_policy"]["enforcement"], "diagnostic")
             self.assertEqual(data["baseline"]["status"], "planned")
             self.assertEqual(data["adoption"]["status"], "initialized_incomplete")
             self.assertEqual(data["adoption"]["skill_version"], "1.6.4")
@@ -121,8 +122,54 @@ class AdoptionTests(unittest.TestCase):
             self.assertEqual(upgraded["tasks"][0]["approval"], original["tasks"][0]["approval"])
             self.assertEqual(upgraded["workflow"]["baseline_review"]["status"], "pending")
             self.assertEqual(upgraded["workflow"]["proposal_approval"]["status"], "pending")
+            self.assertEqual(upgraded["workflow"]["approval_policy"]["enforcement"], "diagnostic")
             self.assertEqual(upgraded["tasks"][0]["implementation_authorization"]["status"], "pending")
             self.assertEqual(json.loads(result.stdout)["bootstrap"]["report"]["mode"], "discovery")
+
+    def test_explicit_strict_opt_in_is_only_applied_on_new_or_migrated_manifest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'backend').mkdir()
+            result=self.command(root,'--approval-enforcement','strict')
+            self.assertEqual(result.returncode,0,result.stderr)
+            data=json.loads((root/'engineering-manifest.json').read_text(encoding='utf-8'))
+            self.assertEqual(data['workflow']['approval_policy']['enforcement'],'strict')
+
+    def test_existing_lifecycle_manifest_is_not_silently_rewritten_to_strict(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'backend').mkdir()
+            result=self.command(root);self.assertEqual(result.returncode,0,result.stderr)
+            path=root/'engineering-manifest.json';original=path.read_bytes()
+            result=self.command(root,'--approval-enforcement','strict')
+            self.assertEqual(result.returncode,2)
+            self.assertEqual(path.read_bytes(),original)
+
+    def test_existing_lifecycle_approval_upgrade_is_previewed_then_atomically_applied(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'backend').mkdir()
+            result=self.command(root);self.assertEqual(result.returncode,0,result.stderr)
+            path=root/'engineering-manifest.json';data=json.loads(path.read_text(encoding='utf-8'))
+            data['workflow'].pop('approval_policy');path.write_text(json.dumps(data),encoding='utf-8');original=path.read_bytes()
+            preview=self.command(root,'--upgrade-approval-contract','--approval-enforcement','strict')
+            self.assertEqual(preview.returncode,0,preview.stderr)
+            report=json.loads(preview.stdout)
+            self.assertFalse(report['applied']);self.assertEqual(report['proposed_policy']['enforcement'],'strict')
+            self.assertTrue(next(item for item in report['policy_checks_after'] if item['rule_id']=='approval-evidence')['required'])
+            self.assertFalse(next(item for item in report['policy_checks_before'] if item['rule_id']=='approval-evidence')['required'])
+            self.assertEqual(path.read_bytes(),original)
+            applied=self.command(root,'--upgrade-approval-contract','--approval-enforcement','strict','--apply-approval-contract-upgrade')
+            self.assertEqual(applied.returncode,0,applied.stderr)
+            self.assertTrue(json.loads(applied.stdout)['applied'])
+            migrated=json.loads(path.read_text(encoding='utf-8'))
+            self.assertEqual(migrated['workflow']['approval_policy']['enforcement'],'strict')
+            self.assertEqual(migrated['tasks'][0]['approval']['status'],'pending')
+
+    def test_contract_migration_requires_explicit_upgrade_flag(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'backend').mkdir()
+            result=self.command(root);self.assertEqual(result.returncode,0,result.stderr)
+            path=root/'engineering-manifest.json';data=json.loads(path.read_text(encoding='utf-8'));data['workflow'].pop('approval_policy');path.write_text(json.dumps(data),encoding='utf-8');original=path.read_bytes()
+            result=self.command(root,'--approval-enforcement','strict')
+            self.assertEqual(result.returncode,2);self.assertEqual(path.read_bytes(),original)
 
     def test_failed_legacy_replacement_leaves_original_bytes_and_guidance_untouched(self):
         with tempfile.TemporaryDirectory() as tmp:

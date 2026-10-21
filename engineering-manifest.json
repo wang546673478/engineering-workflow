@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "ISSUE22_SPEC",
-    "active_plan": "ISSUE22_PLAN",
-    "active_task": "TASK-ISSUE-22-REVIEW"
+    "active_spec": "ISSUE23_SPEC",
+    "active_plan": "ISSUE23_PLAN",
+    "active_task": "TASK-ISSUE-23-PROPOSAL"
   },
   "documents": [
     {
@@ -209,6 +209,36 @@
       "id": "ISSUE22_PLAN",
       "path": "planning/issue-22-plan.md",
       "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_TASK",
+      "path": "planning/issue-23-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_SPEC",
+      "path": "planning/issue-23-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_PLAN",
+      "path": "planning/issue-23-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_EVIDENCE",
+      "path": "planning/issue-23-evidence.json",
+      "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "ISSUE23_SESSION",
+      "path": "planning/issue-23-session-evidence.json",
+      "kind": "research-evidence",
       "required": true
     }
   ],
@@ -507,6 +537,38 @@
     {
       "id": "REQ-ISSUE22-E10",
       "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE23-01",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE23-02",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE23-03",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE23-04",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE23-05",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE23-06",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE23-07",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "REQ-ISSUE23-08",
+      "document": "ISSUE23_SPEC"
     }
   ],
   "acceptance": [
@@ -804,6 +866,38 @@
     {
       "id": "AT-ISSUE22-E10",
       "document": "ISSUE22_SPEC"
+    },
+    {
+      "id": "AT-ISSUE23-01",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "AT-ISSUE23-02",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "AT-ISSUE23-03",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "AT-ISSUE23-04",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "AT-ISSUE23-05",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "AT-ISSUE23-06",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "AT-ISSUE23-07",
+      "document": "ISSUE23_SPEC"
+    },
+    {
+      "id": "AT-ISSUE23-08",
+      "document": "ISSUE23_SPEC"
     }
   ],
   "modules": [
@@ -3900,6 +3994,278 @@
         "global_installation_updated": false,
         "receipt_only_no_version_bump": "Publication evidence and current status only; delivered guidance/metadata unchanged"
       }
+    },
+    {
+      "id": "TASK-ISSUE-23-PROPOSAL",
+      "requirement_ids": [
+        "REQ-ISSUE23-01",
+        "REQ-ISSUE23-02",
+        "REQ-ISSUE23-03",
+        "REQ-ISSUE23-04",
+        "REQ-ISSUE23-05",
+        "REQ-ISSUE23-06",
+        "REQ-ISSUE23-07",
+        "REQ-ISSUE23-08"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUE23-01",
+        "AT-ISSUE23-02",
+        "AT-ISSUE23-03",
+        "AT-ISSUE23-04",
+        "AT-ISSUE23-05",
+        "AT-ISSUE23-06",
+        "AT-ISSUE23-07",
+        "AT-ISSUE23-08"
+      ],
+      "module_ids": [
+        "instructions",
+        "checker",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "complete",
+      "impact_document": "ISSUE23_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": false,
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "ISSUE23_SPEC",
+        "plan": "ISSUE23_PLAN",
+        "task": "ISSUE23_TASK",
+        "traceability": "TRACE",
+        "verification": "ISSUE23_EVIDENCE",
+        "session_evidence": "ISSUE23_SESSION"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE-ISSUE23-02",
+        "spec": "SPEC-ISSUE23-01",
+        "plan": "PLAN-ISSUE23-01 r1",
+        "task": "TASK-ISSUE-23-PROPOSAL"
+      },
+      "requirement_state": "approved_for_spec_issue23_01",
+      "implementation_status": "complete_locally",
+      "proposal_status": "approved",
+      "spec_review": {
+        "status": "approved",
+        "revision": "SPEC-ISSUE23-01",
+        "scope": "Implement PLAN-ISSUE23-01 r1 including preceding clarification: diagnostic defaults for new projects and explicit strict opt-in, preserve old checks/sync and valid approval reuse; local implementation and validation only",
+        "evidence": "planning/issue-23-task.md",
+        "approved_at": "2026-10-21T10:38:03+08:00",
+        "user_statement": "那就开始实施吧",
+        "recorded_at": "2026-10-21T10:46:52.850841+08:00",
+        "source": {
+          "kind": "conversation",
+          "reference": "codex://threads/01a15ac8-58bd-7c82-a619-5003cdc82d1e?message=01a15c52-a8ae-7910-9b75-8e76f435ce30"
+        }
+      },
+      "plan_review": {
+        "status": "approved",
+        "revision": "PLAN-ISSUE23-01 r1",
+        "evidence": "planning/issue-23-task.md",
+        "approved_at": "2026-10-21T10:38:03+08:00",
+        "user_statement": "那就开始实施吧",
+        "scope": "Implement PLAN-ISSUE23-01 r1 including preceding clarification: diagnostic defaults for new projects and explicit strict opt-in, preserve old checks/sync and valid approval reuse; local implementation and validation only",
+        "recorded_at": "2026-10-21T10:46:52.850841+08:00",
+        "source": {
+          "kind": "conversation",
+          "reference": "codex://threads/01a15ac8-58bd-7c82-a619-5003cdc82d1e?message=01a15c52-a8ae-7910-9b75-8e76f435ce30"
+        }
+      },
+      "implementation_authorization": {
+        "status": "approved",
+        "task_id": "TASK-ISSUE-23-PROPOSAL",
+        "plan_revision": "PLAN-ISSUE23-01 r1",
+        "evidence": "planning/issue-23-task.md",
+        "scope": "Implement PLAN-ISSUE23-01 r1 including preceding clarification: diagnostic defaults for new projects and explicit strict opt-in, preserve old checks/sync and valid approval reuse; local implementation and validation only",
+        "approved_at": "2026-10-21T10:38:03+08:00",
+        "user_statement": "那就开始实施吧",
+        "recorded_at": "2026-10-21T10:46:52.850841+08:00",
+        "source": {
+          "kind": "conversation",
+          "reference": "codex://threads/01a15ac8-58bd-7c82-a619-5003cdc82d1e?message=01a15c52-a8ae-7910-9b75-8e76f435ce30"
+        }
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog plus repository AGENTS.md",
+        "checked_at": "2026-10-21T13:35:58.671837+08:00",
+        "scope": "Submit already implemented Issue23 1.8.0 to GitHub; no new implementation scope",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md; C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+            "version_or_release_date": "1.7.2 / d214021 repository base",
+            "decision": "adopted",
+            "reason": "Explicit invocation; retain authoritative linked project workflow",
+            "evidence": [
+              "SKILL.md",
+              "planning/issue-23-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Constrain proposed skill changes and behavior validation to demonstrated failures",
+            "evidence": [
+              "planning/issue-23-task.md"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "2.37.0",
+            "decision": "not-adopted",
+            "reason": "Existing linked planning authority takes precedence over parallel planning files",
+            "evidence": [
+              "planning/issue-23-task.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Real CLI/Git behavior regressions for checker policy; approved Plan already defines interface and acceptance scope",
+            "evidence": [
+              "planning/issue-23-task.md"
+            ]
+          }
+        ],
+        "recheck": "2026-10-21 upload authorized. Re-read repository SKILL1.8.0, AGENTS, active Task/Plan/Baseline, checker submission and implementation references, and current Skills catalog. Engineering-workflow remains adopted; no new skill, code or delegation needed.",
+        "evidence": "planning/issue-23-task.md"
+      },
+      "documentation_impact": {
+        "proposal-records": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "docs",
+            "planning"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "SPEC",
+            "PLAN",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "TRACE",
+            "ISSUE23_TASK",
+            "ISSUE23_SPEC",
+            "ISSUE23_PLAN",
+            "ISSUE23_EVIDENCE",
+            "ISSUE23_SESSION"
+          ]
+        },
+        "implementation": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "references",
+            "assets",
+            "scripts",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "SPEC",
+            "PLAN",
+            "TRACE",
+            "ISSUE23_TASK",
+            "ISSUE23_SPEC",
+            "ISSUE23_PLAN",
+            "ISSUE23_EVIDENCE"
+          ]
+        }
+      },
+      "release_impact": {
+        "current_version": "1.8.0",
+        "bump_required_this_batch": true,
+        "reason": "Backward-compatible optional structured approval capability plus guidance and migration helpers",
+        "proposed_implementation_version": "1.8.0 Unreleased",
+        "publication_status": "github_source_upload_authorized_pending_gates",
+        "target_version": "1.8.0",
+        "previous_version": "1.7.2",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ],
+        "changelog_status": "Unreleased",
+        "validation": "all five release metadata sources 1.8.0, Unreleased; original TEST and compile gates pass",
+        "bump_required_for_receipt": false,
+        "receipt_no_bump_reason": "Submission/publication records do not change the delivered 1.8.0 content."
+      },
+      "verification_status": "required_checks_pass_with_declared_optional_partials",
+      "delivery_status": "github_upload_authorized_submission_checks_in_progress",
+      "verification_evidence": "planning/issue-23-evidence.json",
+      "execution_steps": [
+        {
+          "id": "T23-01",
+          "status": "complete",
+          "detail_document": "planning/issue-23-task.md",
+          "evidence": "planning/issue-23-evidence.json"
+        },
+        {
+          "id": "T23-02",
+          "status": "complete",
+          "detail_document": "planning/issue-23-task.md",
+          "evidence": "planning/issue-23-evidence.json"
+        },
+        {
+          "id": "T23-03",
+          "status": "complete",
+          "detail_document": "planning/issue-23-task.md",
+          "evidence": "planning/issue-23-evidence.json"
+        },
+        {
+          "id": "T23-04",
+          "status": "complete",
+          "detail_document": "planning/issue-23-task.md",
+          "evidence": "planning/issue-23-evidence.json"
+        },
+        {
+          "id": "T23-05",
+          "status": "complete",
+          "detail_document": "planning/issue-23-task.md",
+          "evidence": "planning/issue-23-evidence.json"
+        },
+        {
+          "id": "T23-06",
+          "status": "complete",
+          "detail_document": "planning/issue-23-task.md",
+          "evidence": "planning/issue-23-evidence.json"
+        },
+        {
+          "id": "T23-07",
+          "status": "complete",
+          "detail_document": "planning/issue-23-task.md",
+          "evidence": "planning/issue-23-evidence.json"
+        },
+        {
+          "id": "T23-08",
+          "status": "complete",
+          "detail_document": "planning/issue-23-task.md",
+          "evidence": "planning/issue-23-evidence.json"
+        }
+      ],
+      "publication_authorization": {
+        "user_statement": "上传github",
+        "recorded_at": "2026-10-21T13:35:58.671837+08:00",
+        "scope": "Commit the reviewed and locally validated Issue23 1.8.0 source and linked documentation; run original staged and committed gates with existing single-run control approval, push to origin/main and verify remote SHA. No global skill installation, target-project migration, tag or hosted Release."
+      }
     }
   ],
   "control_plane": {
@@ -3929,8 +4295,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "868e496 + 1.7.2 Unreleased working tree; delivery_sha256 aa0ba37fbfa345c10f48ee2c815205f60b312f14bea19f2f2f4404efce3e5221",
-    "scope": "BASELINE-ISSUE22-02: local guidance/template implementation, original required checks and bounded manual scenarios complete; upstream full audit deferred, not certified"
+    "source_revision": "d214021 + Issue23 1.8.0 Unreleased implementation worktree",
+    "scope": "BASELINE-ISSUE23-02: structured approval contract, diagnostic defaults/explicit strict, scope/reuse/sequence/history checks, migration/capability hooks and original checks; final validation in current Task"
   },
   "exclude_paths": [
     ".git",

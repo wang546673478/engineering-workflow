@@ -30,3 +30,5 @@ Next highest-impact question and why it follows from the latest answer:
 Module review when the functional topic concludes (combined completeness check and user review): requirements, changes, open/deferred items and related effects; user's statement, date, scope and reviewed document version:
 
 Implementation approval: cite the human statement, scope and proposal version separately; never create a fictional confirmation. Whole-system baseline and complete proposal approval gates still apply.
+
+If the project explicitly enables the structured approval contract, link the existing evidence block ID and reviewed Spec/Plan section digest here; do not treat this optional template or a candidate decision as approval.

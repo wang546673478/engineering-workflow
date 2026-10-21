@@ -12,4 +12,7 @@ set -- "$python_bin" "$skill_dir/scripts/check_project.py" \
 if [ -n "${ENGINEERING_TASK_ID:-}" ]; then
   set -- "$@" --task "$ENGINEERING_TASK_ID"
 fi
+if [ -n "${ENGINEERING_APPROVAL_CONTRACT:-}" ]; then
+  set -- "$@" --require-approval-contract "$ENGINEERING_APPROVAL_CONTRACT"
+fi
 exec "$@"

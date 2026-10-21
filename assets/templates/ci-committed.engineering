@@ -10,6 +10,10 @@ project_root="${ENGINEERING_PROJECT_ROOT:-$(git rev-parse --show-toplevel)}"
 manifest="${ENGINEERING_MANIFEST:-engineering-manifest.json}"
 python_bin="${PYTHON:-python}"
 
-exec "$python_bin" "$ENGINEERING_WORKFLOW_SKILL_DIR/scripts/check_project.py" \
+set -- "$python_bin" "$ENGINEERING_WORKFLOW_SKILL_DIR/scripts/check_project.py" \
   --root "$project_root" --manifest "$manifest" --mode committed \
   --commit-ref "$ENGINEERING_COMMIT_SHA" --task "$ENGINEERING_TASK_ID" --run-checks
+if [ -n "${ENGINEERING_APPROVAL_CONTRACT:-}" ]; then
+  set -- "$@" --require-approval-contract "$ENGINEERING_APPROVAL_CONTRACT"
+fi
+exec "$@"

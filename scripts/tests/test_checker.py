@@ -1,9 +1,11 @@
 import copy
-from contextlib import closing
+from contextlib import closing, redirect_stdout
 import hashlib
 import importlib.util
+import io
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import sqlite3
@@ -145,6 +147,251 @@ class CheckerTests(unittest.TestCase):
         self.manifest["tasks"][0]["status"] = "in_progress"
         self.manifest["tasks"][0]["implementation_authorization"] = {
             "status": "approved", "plan_revision": "plan-r1", "evidence": "docs/approval.md", "task_id": "TASK-1"}
+
+    def approval_contract_fixture(self, enforcement="strict"):
+        self.lifecycle_fixture()
+        (self.root / "docs/spec.md").write_text("# Approval scope\nREQ-1 AT-1\n", encoding="utf-8")
+        subject_sha = hashlib.sha256(b"# Approval scope\nREQ-1 AT-1\n").hexdigest()
+        records = {
+            "BASELINE-APPROVAL": {
+                "id": "BASELINE-APPROVAL", "status": "approved",
+                "user_statement": "我已审阅当前基线范围和限制。",
+                "approved_at": "2026-10-20T10:00:00+08:00", "recorded_at": "2026-10-20T10:00:01+08:00",
+                "scope": "Review the listed project modules, public contracts and documented validation limits.", "source": {"kind": "conversation", "reference": "fixture-message-1"},
+                "subject": {"document": "spec", "revision": "baseline-r1", "section_id": "Approval-Scope", "sha256": subject_sha},
+            },
+            "PROPOSAL-APPROVAL": {
+                "id": "PROPOSAL-APPROVAL", "status": "approved",
+                "user_statement": "按这个完整方案实施。",
+                "approved_at": "2026-10-20T10:01:00+08:00", "recorded_at": "2026-10-20T10:01:01+08:00",
+                "scope": "Implement the reviewed TASK-1 Plan for REQ-1, including its stated behavior and acceptance. No additional requirements or permission changes are included.", "source": {"kind": "conversation", "reference": "fixture-message-2"},
+                "task_id": "TASK-1", "batch_id": "batch-r1", "requirement_ids": ["REQ-1"],
+                "acceptance_ids": ["AT-1"],
+                "subject": {"document": "spec", "revision": "plan-r1", "section_id": "Approval-Scope", "sha256": subject_sha},
+                "spec_basis": {"document": "spec", "revision": "spec-r1", "section_id": "Approval-Scope", "sha256": subject_sha},
+            },
+            "IMPLEMENTATION-APPROVAL": {
+                "id": "IMPLEMENTATION-APPROVAL", "status": "approved",
+                "user_statement": "按这个完整方案实施。",
+                "approved_at": "2026-10-20T10:01:00+08:00", "recorded_at": "2026-10-20T10:01:01+08:00",
+                "scope": "Implement the reviewed TASK-1 Plan for REQ-1, including its stated behavior and acceptance. No additional requirements or permission changes are included.", "source": {"kind": "conversation", "reference": "fixture-message-2"},
+                "task_id": "TASK-1", "batch_id": "batch-r1", "requirement_ids": ["REQ-1"],
+                "acceptance_ids": ["AT-1"],
+                "subject": {"document": "spec", "revision": "plan-r1", "section_id": "Approval-Scope", "sha256": subject_sha},
+                "spec_basis": {"document": "spec", "revision": "spec-r1", "section_id": "Approval-Scope", "sha256": subject_sha},
+            },
+        }
+        blocks = []
+        for record in records.values():
+            blocks.append("<!-- engineering-approval:%s -->\n```json\n%s\n```" % (record["id"], json.dumps(record, ensure_ascii=False, indent=2)))
+        (self.root / "docs/approval.md").write_text("\n\n".join(blocks) + "\n", encoding="utf-8")
+        self.manifest["workflow"]["approval_policy"] = {"record_contract": 1, "enforcement": enforcement}
+        self.manifest["workflow"]["approval_policy"]["minimum_checker_version"] = checker.VERSION
+        self.manifest["workflow"]["baseline_review"].update(evidence="docs/approval.md", evidence_record_id="BASELINE-APPROVAL")
+        self.manifest["workflow"]["proposal_approval"].update(evidence="docs/approval.md", evidence_record_id="PROPOSAL-APPROVAL", batch_id="batch-r1")
+        self.manifest["tasks"][0].update(batch_id="batch-r1", artifact_revisions={"plan": "plan-r1", "spec": "spec-r1"})
+        self.manifest["tasks"][0]["approval_required"] = False
+        self.manifest["tasks"][0]["implementation_authorization"].update(
+            evidence="docs/approval.md", evidence_record_id="IMPLEMENTATION-APPROVAL", batch_id="batch-r1", proposal_record_id="PROPOSAL-APPROVAL")
+
+    def approval_cli(self, *extra):
+        """Exercise the public CLI entrypoint without another interpreter for static contracts."""
+        self.write()
+        output = io.StringIO()
+        with redirect_stdout(output):
+            code = checker.main(["--root", str(self.root), "--manifest", "manifest.json", *extra])
+        return subprocess.CompletedProcess([], code), json.loads(output.getvalue())
+
+    def test_strict_approval_contract_accepts_bound_records(self):
+        self.approval_contract_fixture()
+        proc, report = self.cli("--mode", "change", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        contract = next(item for item in report["checks"] if item["rule_id"] == "approval-evidence")
+        self.assertEqual(contract["status"], "pass")
+        self.assertTrue(contract["required"])
+
+    def test_strict_approval_contract_rejects_empty_or_placeholder_evidence(self):
+        self.approval_contract_fixture()
+        (self.root / "docs/approval.md").write_text("approved\n", encoding="utf-8")
+        proc, report = self.approval_cli("--mode", "change", "--base", "HEAD")
+        self.assertEqual(proc.returncode, 1, report)
+        contract = next(item for item in report["checks"] if item["rule_id"] == "approval-evidence")
+        self.assertEqual(contract["status"], "fail")
+        self.assertTrue(contract["required"])
+
+    def test_strict_approval_contract_rejects_plan_scope_drift(self):
+        self.approval_contract_fixture()
+        self.manifest["workflow"]["proposal_approval"]["revision"] = "plan-r2"
+        proc, report = self.approval_cli("--mode", "change", "--base", "HEAD")
+        self.assertEqual(proc.returncode, 1, report)
+        self.assertIn("revision", json.dumps(next(item for item in report["checks"] if item["rule_id"] == "approval-evidence")))
+
+    def test_diagnostic_approval_contract_reports_partial_without_blocking(self):
+        self.approval_contract_fixture("diagnostic")
+        (self.root / "docs/approval.md").write_text("approved\n", encoding="utf-8")
+        proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        contract = next(item for item in report["checks"] if item["rule_id"] == "approval-evidence")
+        self.assertEqual(contract["status"], "partial")
+        self.assertFalse(contract["required"])
+
+    def test_legacy_manifest_without_policy_keeps_existing_approval_behavior(self):
+        self.lifecycle_fixture()
+        self.manifest["workflow"].pop("approval_policy", None)
+        proc, report = self.cli("--mode", "change", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        contract = next(item for item in report["checks"] if item["rule_id"] == "approval-evidence")
+        self.assertEqual(contract["status"], "partial")
+        self.assertFalse(contract["required"])
+
+    def test_contract_rejects_stale_current_plan_and_does_not_run_commands(self):
+        self.approval_contract_fixture()
+        self.manifest["tasks"][0]["artifact_revisions"]["plan"] = "plan-r2"
+        self.manifest["checks"][0]["command"] = [sys.executable, "-c", "open('command-ran.txt','w').write('ran')"]
+        proc, report = self.cli("--mode", "change", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 1, report)
+        self.assertFalse((self.root / "command-ran.txt").exists())
+        self.assertIn("selected task Plan", str(next(c for c in report["checks"] if c["rule_id"] == "approval-evidence")))
+
+    def test_contract_rejects_future_time_duplicate_blocks_and_snapshot_changes(self):
+        for mutation in ("future", "duplicate", "snapshot", "spec_revision", "batch"):
+            with self.subTest(mutation=mutation):
+                self.approval_contract_fixture()
+                path = self.root / "docs/approval.md"
+                text = path.read_text(encoding="utf-8")
+                if mutation == "future":
+                    path.write_text(text.replace("2026-10-20", "2099-01-01"), encoding="utf-8")
+                elif mutation == "duplicate":
+                    path.write_text(text + text, encoding="utf-8")
+                elif mutation == "snapshot":
+                    (self.root / "docs/spec.md").write_text("# Approval scope\nREQ-1 AT-1 changed permission\n", encoding="utf-8")
+                elif mutation == "spec_revision":
+                    self.manifest["tasks"][0]["artifact_revisions"]["spec"] = "spec-r2"
+                else:
+                    self.manifest["tasks"][0]["batch_id"] = "new-batch"
+                proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
+                self.assertEqual(proc.returncode, 1, report)
+                self.assertEqual(next(c for c in report["checks"] if c["rule_id"] == "approval-evidence")["status"], "fail")
+
+    def test_contract_policy_removal_is_not_a_legacy_escape(self):
+        self.approval_contract_fixture()
+        self.write()
+        self.git("add", ".")
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-m", "strict approval basis")
+        self.manifest["workflow"].pop("approval_policy")
+        self.write()
+        proc, report = self.cli("--mode", "change", "--base", "HEAD", "--run-checks")
+        self.assertEqual(proc.returncode, 1, report)
+        self.assertEqual(next(c for c in report["checks"] if c["rule_id"] == "approval-policy-history")["status"], "fail")
+
+    def test_contract_sequence_is_optional_unless_explicitly_required(self):
+        self.approval_contract_fixture()
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        sequence = next(c for c in report["checks"] if c["rule_id"] == "approval-sequence")
+        self.assertEqual(sequence["status"], "partial")
+        self.assertFalse(sequence["required"])
+        self.manifest["workflow"]["approval_policy"]["sequence_enforcement"] = "strict"
+        self.manifest["tasks"][0]["approval_sequence"] = {
+            key: {"timeline_id": "fixture-chat", "position": position, "reference": "fixture-message-" + str(position)}
+            for key, position in (("presented", 1), ("approved", 2), ("implementation", 3))}
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        self.manifest["tasks"][0]["approval_sequence"]["approved"]["position"] = 4
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 1, report)
+
+    def test_contract_can_read_json_records_and_normalize_crlf(self):
+        self.approval_contract_fixture()
+        evidence = self.root / "docs/approval.md"
+        records = [json.loads(part) for part in re.findall(r"```json\n(.*?)\n```", evidence.read_text(encoding="utf-8"), re.DOTALL)]
+        (self.root / "docs/approval.json").write_text(json.dumps({"records": records}), encoding="utf-8")
+        for record in (self.manifest["workflow"]["baseline_review"], self.manifest["workflow"]["proposal_approval"], self.manifest["tasks"][0]["implementation_authorization"]):
+            record["evidence"] = "docs/approval.json"
+        (self.root / "docs/spec.md").write_bytes(b"# Approval scope\r\nREQ-1 AT-1\r\n")
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+
+    def test_contract_approved_scope_can_be_reused_without_new_user_statement(self):
+        self.approval_contract_fixture()
+        path = self.root / "docs/approval.md"
+        text = path.read_text(encoding="utf-8")
+        for kind, original in (("proposal_approval", "PROPOSAL-APPROVAL"), ("implementation_authorization", "IMPLEMENTATION-APPROVAL")):
+            ident = original + "-REUSE"
+            reuse = {"id": ident, "status": "approved", "task_id": "TASK-1", "batch_id": "batch-r2", "scope": "same approved requirement scope", "requirement_ids": ["REQ-1"], "acceptance_ids": ["AT-1"],
+                     "reuse_of": {"evidence": "docs/approval.md", "evidence_record_id": original, "reason": "same accepted scope"}}
+            text += "\n<!-- engineering-approval:%s -->\n```json\n%s\n```\n" % (ident, json.dumps(reuse))
+            declaration = self.manifest["workflow"][kind] if kind == "proposal_approval" else self.manifest["tasks"][0][kind]
+            declaration.update(evidence_record_id=ident, batch_id="batch-r2")
+        self.manifest["tasks"][0]["batch_id"] = "batch-r2"
+        self.manifest["tasks"][0]["implementation_authorization"]["proposal_record_id"] = "PROPOSAL-APPROVAL-REUSE"
+        path.write_text(text, encoding="utf-8")
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+
+    def test_strict_contract_accepts_evidenced_small_fix_not_applicable(self):
+        self.approval_contract_fixture()
+        task = self.manifest["tasks"][0]
+        task["workflow_kind"] = "small_fix"
+        declaration = self.manifest["workflow"]["proposal_approval"]
+        declaration.update(status="not_applicable", revision="plan-r1", reason="Existing confirmed requirement; correction scope only.")
+        path = self.root / "docs/approval.md"
+        records = checker.approval_records(path)
+        record = records["PROPOSAL-APPROVAL"]
+        record.update(status="not_applicable", reason="Existing confirmed requirement; this correction does not change scope.",
+                      scope="Existing confirmed requirement REQ-1 only.")
+        record.pop("user_statement", None); record.pop("approved_at", None); record.pop("recorded_at", None); record.pop("source", None)
+        baseline = records["BASELINE-APPROVAL"]; implementation = records["IMPLEMENTATION-APPROVAL"]
+        rendered=[]
+        for ident, value in (("BASELINE-APPROVAL", baseline), ("PROPOSAL-APPROVAL", record), ("IMPLEMENTATION-APPROVAL", implementation)):
+            rendered.append("<!-- engineering-approval:%s -->\n```json\n%s\n```" % (ident, json.dumps(value, ensure_ascii=False, indent=2)))
+        path.write_text("\n\n".join(rendered), encoding="utf-8")
+        self.manifest["workflow"]["proposal_approval"]["status"] = "not_applicable"
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 0, report)
+        declaration["status"] = "approved"
+        task["workflow_kind"] = "major_change"
+        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        self.assertEqual(proc.returncode, 1, report)
+
+    def test_contract_rejects_unsafe_records_and_preserves_incomplete_state(self):
+        for mutation in ("path", "duplicate_key", "wrong_type", "invalidated", "capability"):
+            with self.subTest(mutation=mutation):
+                self.approval_contract_fixture()
+                if mutation == "path":
+                    self.manifest["workflow"]["proposal_approval"]["evidence"] = "../outside.json"
+                elif mutation == "duplicate_key":
+                    path=self.root/"docs/approval.md"
+                    path.write_text(path.read_text(encoding="utf-8").replace('"status": "approved"','"status": "approved", "status": "approved"'),encoding="utf-8")
+                elif mutation == "wrong_type":
+                    path=self.root/"docs/approval.md"
+                    path.write_text(path.read_text(encoding="utf-8").replace('"requirement_ids": [\n    "REQ-1"\n  ]','"requirement_ids": [{}]'),encoding="utf-8")
+                elif mutation == "invalidated":
+                    path=self.root/"docs/approval.md"
+                    path.write_text(path.read_text(encoding="utf-8").replace('"status": "approved"','"status": "approved", "invalidated": true'),encoding="utf-8")
+                else:
+                    self.manifest["workflow"]["approval_policy"]["minimum_checker_version"] = "999.0.0"
+                proc,report=self.cli("--mode","change","--base","HEAD","--run-checks")
+                self.assertNotEqual(proc.returncode,0,report)
+                self.assertFalse(report["required_checks_satisfied"])
+
+    def test_contract_bound_snapshots_and_capability_in_both_commit_modes(self):
+        self.approval_contract_fixture()
+        task=self.manifest["tasks"][0]
+        task["documentation_impact"]={"implementation-only":{"when_paths":["src"],"document_ids":["impact"]}}
+        self.write();self.git("add",".");self.git("-c","user.name=Test","-c","user.email=test@example.invalid","commit","-m","approved contract")
+        (self.root/"src/app.py").write_text("print('bounded implementation')",encoding="utf-8")
+        (self.root/"docs/impact.md").write_text("bounded change review",encoding="utf-8")
+        self.git("add",".")
+        proc,report=self.cli("--mode","commit","--run-checks","--require-approval-contract","1")
+        self.assertEqual(proc.returncode,0,report)
+        self.git("-c","user.name=Test","-c","user.email=test@example.invalid","commit","-m","bounded implementation")
+        proc,report=self.cli("--mode","committed","--commit-ref","HEAD","--run-checks","--require-approval-contract","1")
+        self.assertEqual(proc.returncode,0,report)
+        self.assertIsNotNone(report["verified_tree"])
+        (self.root/"docs/approval.md").write_text("approved",encoding="utf-8")
+        proc,report=self.cli("--mode","committed","--commit-ref","HEAD","--run-checks","--require-approval-contract","1")
+        self.assertEqual(proc.returncode,1,report)
 
     def test_lifecycle_rejects_missing_approval_and_revision_or_task_mismatches(self):
         self.lifecycle_fixture()

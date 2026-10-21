@@ -1,5 +1,14 @@
 # Engineering Workflow Module Map
 
+## Issue 23 current implementation / 1.8.0
+
+The existing checker owns structured approval parsing, stable section digests, task/batch/REQ/AT and current Spec/Plan bindings, reuse/sequence validation and historical policy comparison. init_manifest emits diagnostic policy; adopt_project previews/applies explicit migration without manufacturing approvals. Existing hooks optionally pass the capability flag. Instructions remain the semantic authority; no new runtime dependency or product database exists. Tests exercise actual CLI/Git and migration boundaries. [Task](../planning/issue-23-task.md) owns current verification.
+
+
+## Issue 23 current factual supplement
+
+Existing checker lifecycle/file gates and legacy compatibility are unchanged. The scoped audit found approval-content/current-batch gaps; governance links the candidate solution without adding a runtime dependency or implementation. [Plan](../planning/issue-23-plan.md), [facts B23-01..07](../planning/baseline-review.md), [Task](../planning/issue-23-task.md).
+
 Status: `current`; active task and current evidence are selected by `workflow.active_task` in [the manifest](../engineering-manifest.json).
 Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 

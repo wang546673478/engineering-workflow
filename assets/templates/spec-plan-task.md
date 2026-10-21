@@ -72,6 +72,8 @@ Documentation and verification gates:
 
 Implementation approval record (who/when/scope/what version; requirement confirmation and module review are separate):
 
+Structured approval snapshot (optional; for manifests that opt into `workflow.approval_policy`): record ID, original statement/source, approval and record timestamps, exact task batch/REQ/AT scope, and stable reviewed Spec/Plan section hash. Keep the evidence pending until a real user instruction covers this exact scope. A template example is in `references/checker.md`.
+
 ## Task: `<ID>`
 
 Linked Baseline / Spec / Plan / Traceability document IDs:

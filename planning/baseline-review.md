@@ -1,3 +1,35 @@
+# Current factual baseline: BASELINE-ISSUE23-02
+
+最终本地验证：1.8.0 Unreleased，225项及原120/30/30秒门槛通过；当前source摘要、非必需partial和CPython3.14耗时限制见[Task](issue-23-task.md)及[正式证据](issue-23-evidence.json)。没有提交树/托管CI/全局安装认证。
+
+2026-10-21; source d214021 plus current 1.8.0 Unreleased worktree. Approved basis: SPEC-ISSUE23-01 / PLAN-ISSUE23-01 r1, user “那就开始实施吧” after the explicit compatibility clarification. This is current implementation fact, not a transfer of old human approval to all new evidence.
+
+- Checker now implements optional approval contract 1: Markdown/JSON records, safe path/duplicate-key/ID rejection, timestamps, original statement/source/scope, stable section hashes and selected task batch/REQ/AT plus Spec/Plan revision binding. Original lifecycle/old task approval gates remain.
+- Current evidence resolution supports bounded explicit reuse, preserves original statement/time/source and subjects, and rejects invalidated or expanded scope. Technical equivalence uses an explicit review-basis relation that still needs agent semantic review.
+- New scaffolds and legacy migrations default diagnostic; strict opt-in blocks invalid approval execution. Existing-stage migration previews proposed checks without mutating files, then explicitly applies via atomic replacement. No existing project is automatically migrated.
+- History comparison protects enabled policy and strict path/stage scope; downgrades require original one-run external control approval. Optional sequence comparison is declared-event evidence, not host attestation. Capability flag and hook configuration detect use of an older checker.
+- All existing required commands/timeouts, Git tree checks, metadata adapters and impact/synchronization paths are retained. No product DB, external application or global installation change. Current regressions and actual final gate status remain owned by [Task](issue-23-task.md) and evidence; do not infer all tests passed from this source summary.
+
+Source module/contract/flow views were refreshed together. The original real-session audit and unimplemented-upstream review limits remain historical below.
+
+## Prior assessment and evidence (original scope retained)
+
+# Current factual assessment: BASELINE-ISSUE23-01
+
+2026-10-21; source `d214021` / 1.7.2, initially clean worktree. Current Task: [TASK-ISSUE-23-PROPOSAL](issue-23-task.md). Existing implementation and prior local baseline coverage remain; this revision adds source-verified facts and bounded counterexamples, without implementing a new approval system.
+
+- B23-01: SKILL distinguishes goal/requirement selection from complete proposal approval and implementation; original exceptions allow valid prior review reuse, established small fixes and evidenced greenfield scope.
+- B23-02: workflow_lifecycle_gaps already checks approval evidence file existence when stage lifecycle is enabled. It does not read approval content or authenticate a human. This corrects Issue 23's literal claim that no existence check exists.
+- B23-03: Legacy manifests without stage receive non-required workflow-lifecycle partial; implementation_gate is absent. The target manifest takes this path and its old implementation authorization is outside the new Plan/batch scope.
+- B23-04: Five isolated real-CLI scenarios accept empty/placeholder approval files, a current Plan mismatch, a future approved_at, and a stale legacy authorization. [Evidence](issue-23-evidence.json) binds commands, source digests and individual original results. These are defect reproductions, not fixed-feature passes.
+- B23-05: The inspected target conversation contains three turns; its final turn was active when read. One enterprise identity choice was followed by P1-P6 planning and product edits without an intervening full-plan user approval. Source item IDs and snapshot bounds: [session evidence](issue-23-session-evidence.json).
+- B23-06: The target prior delivery report has required_checks_satisfied=false despite errors=[]; manual product-test success does not change required inventory partial, dependency fail or skipped declared commands. No target product tests were rerun in this investigation.
+- B23-07: New targets are candidate [Spec](issue-23-spec.md) / [Plan](issue-23-plan.md), not current implementation. No scripts, required checks, protection rules, templates, adapters or product database changed. Module/contract/flow views receive factual annotations only.
+
+Current source revision is not a new human approval. Prior approved revisions and Issue 22's deferred full upstream review retain their own scope. This local skill assessment does not certify target product behavior or later actions in the active chat.
+
+## Prior records (historical; original scope retained)
+
 # Current factual baseline: BASELINE-ISSUE22-02
 
 1.7.2 source upload receipt (2026-10-20T17:52:35.783179+08:00): implementation 5b8013c9b67debff0b080da563781a39f6e69f74 is verified on origin/main with original local staged/exact-commit gates and tree 7c0c112192ea337ab4515113c4c342375924e497. This receipt changes evidence/status only; current local facts and original limits remain. Hosted CI and global installation are separate.

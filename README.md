@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.7.2` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.8.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -81,7 +81,9 @@ Skill 会引导 Agent：
 5. 分析页面、接口、业务逻辑、数据库、事件和消费者之间的影响链，在实现后刷新受影响 Baseline，并同步 Spec/Plan/Task 的引用和状态。
 6. 运行项目检查，并记录通过、失败、跳过、未支持和未验证状态。
 
-三项指引在这些原节点中使用：[缺陷证据](references/implementation-workflow.md#defect-evidence-within-the-existing-task)连接原复现、根因、修复前后结果与回归；[交付前收敛](references/baseline-linked-artifacts.md#交付前收敛)具体核对本批缺失、部分、矛盾、无归属实现和过期证据；[可选需求/验收示例](references/requirements-interview.md#optional-requirement-and-acceptance-examples)提供 EARS 中文等价句式及 Given–When–Then。沿用原记录与格式，不增加阶段、审批、必填报告或验证命令，也不要求旧项目迁移历史文档。
+已批准项目可按需启用结构化批准证据合同，核对批准记录和已审方案/本批范围绑定；新项目初始化为diagnostic，旧项目不自动迁移，strict需明确选择。它只强化审批相关检查，不替代原需求访谈、项目门禁、验证命令或文档同步。旧版本行为增强说明见 [Issue 23 Task](planning/issue-23-task.md)。
+
+三项指引在这些原节点中使用：[缺陷证据](references/implementation-workflow.md#defect-evidence-within-the-existing-task)连接原复现、根因、修复前后结果与回归；[交付前收敛](references/baseline-linked-artifacts.md#交付前收敛)具体核对本批缺失、部分、矛盾、无归属实现和过期证据；[可选需求/验收示例](references/requirements-interview.md#optional-requirement-and-acceptance-examples)提供 EARS 中文等价句式及 Given–When–Then。沿用原记录与格式，不增加阶段、审批轮次或验证命令，也不要求旧项目迁移历史文档。
 
 ## 自主调查与动态基线
 

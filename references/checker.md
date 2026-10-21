@@ -1,5 +1,36 @@
 # 项目自动检查
 
+## 结构化批准证据合同
+
+1.8.0增加可选 `workflow.approval_policy`：`{"record_contract":1,"enforcement":"diagnostic","sequence_enforcement":"diagnostic","minimum_checker_version":"1.8.0"}`。未声明policy的旧清单仍按原规则检查，另给非必需 `approval-evidence:partial / legacy_unverified`。新初始化和显式legacy迁移默认diagnostic，缺字段给非必需partial；明确选择strict后，证据缺口是required fail并阻止声明命令执行。pending允许自主调查；已声称approved的记录不能因处在调查阶段逃避结构核对。既有stage、task approval、依赖、文档影响、测试/超时及树复核继续执行。
+
+证据继续位于原项目文件，不强制另建审批台账。可选：Markdown中唯一的命名JSON块，或JSON文件的单个record对象 / `{"records":[...]}`。拒绝重复ID/键、损坏fence、越界或链接路径；缺失不当作通过。Markdown形状：
+
+````text
+<!-- engineering-approval:APP-01 -->
+```json
+{"id":"APP-01","status":"pending"}
+```
+````
+
+声明通过 `evidence` + `evidence_record_id`引用record。approved必须包含非占位的user_statement、scope、带时区且非未来的approved_at与recorded_at，以及 `source:{kind:"conversation"|"manual",reference:"可追溯原消息/记录"}`。recorded_at是记录时间，不能冒充原事件时间。可复用同一用户指令，但不制造未发生的批准。
+
+三类原批准分别绑定：baseline_review.subject.revision等于当时source_revision，不强制等于后续事实基线；proposal_approval.subject.revision等于批准的Plan；implementation_authorization.plan_revision等于proposal且record.subject对应它。启用原task.approval_required时，task.approval也检查同一结构。除基线审阅外，record和声明需与选中task_id、batch_id匹配，record.requirement_ids/acceptance_ids精确覆盖选中Task范围；Task artifact_revisions记录当前plan/spec，并由artifact_links或workflow.active_plan/spec定位文档。只批准子集时选择范围明确的子任务，不能让大Task的部分批准替其余需求背书。
+
+subject与spec_basis使用 `{document:"PLAN文档ID",revision:"PLAN-r1",section_id:"REVIEW-01",sha256:"64位摘要"}`；proposal/implementation/task批准都须有spec_basis。哈希内容优先取唯一成对 `<!-- engineering-review:REVIEW-01 -->` / `<!-- /engineering-review:REVIEW-01 -->` 之间文本，规范化CRLF/CR到LF，去两端空白并加一个末尾LF，再用UTF-8 SHA256；也可用唯一标题slug（section_id为合法ID），到下一同级/更高标题。不存在或歧义拒绝。进度追加到块外，不对整份活跃Task做hash。可用导入checker后的approval_subject_hash(text,id)计算同一规则；摘要是内容绑定，不能证明用户看过它。
+
+纯技术等价调整可用Task.review_basis_revision `{plan:"原批准Plan",spec:"原批准Spec",reason:"为何仍在批准边界"}`保留依据；新权限/验收不得借此跳过重审。跨批次复用创建新record，附 `reuse_of:{evidence,evidence_record_id,reason}`，task/batch/范围按当前填写；来源必须仍approved且未invalidated，当前REQ/AT不能超出原集合，subject/spec_basis不能替换，原user_statement/approved_at/source保留。循环和超过16层的复用拒绝；关系的业务等价性仍由agent核验。
+
+not_applicable继续沿原例外：空项目基线及small_fix方案要有reason/evidence，合同记录仍有scope/subject；不伪造用户原话/批准时间。small_fix方案仍绑定Task/REQ/AT和Plan/Spec依据，implementation_authorization不允许not_applicable。
+
+`approval-sequence`只比对同时间轴的声明事件：Task.approval_sequence的presented/approved/implementation分别给timeline_id、reference、非负整数position。顺序应严格递增；不同轴/缺来源partial，不拿Git时间或mtime猜pass。默认诊断非必需；sequence_enforcement=strict仅在implementation/verification/complete时将其列为required。它不带宿主签名，手工摘录不认证真实批准。
+
+已启用policy的删除、strict降级、收缩实现范围/删除stage以及strict顺序降级会被approval-policy-history发现；change对比base，其余使用HEAD或提交父版本。缺历史/损坏数据不当作无policy。降级沿既有一次性外部控制面批准，不在仓库保存永久信号。commit/committed仍拒绝与暂存/提交树不一致的工作区证据；声明命令执行后的原漂移检查仍有效。
+
+旧checker不认识新字段，严格项目的实际hook/CI应启用 `--require-approval-contract 1`（旧checker会因未知参数失败）并核对运行的tool_version，不可只相信manifest声称的minimum_checker_version；部署入口示例见现有hook模板。policy和命令调用都不能阻止漏声明实现路径或编辑器写文件。
+
+程序只证明声明结构、文件/快照和绑定一致。不能认证作者、真实批准、用户理解、技术等价或全部业务覆盖；report的required_checks_satisfied与独立手测必须分开汇报。
+
 检查器仅依赖 Python 标准库。默认只读，`--report` 仅创建新报告文件，拒绝覆盖；`--run-checks` 才执行项目明确声明的命令。命令是非空参数数组，使用 `shell=False`，不解释管道或命令拼接，运行前需核对项目命令与授权。
 
 ```text

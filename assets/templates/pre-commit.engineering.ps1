@@ -7,5 +7,6 @@ if (-not $skillDir) { throw "Set ENGINEERING_WORKFLOW_SKILL_DIR to the engineeri
 $pythonBin = if ($env:PYTHON) { $env:PYTHON } else { "python" }
 $arguments = @("$skillDir/scripts/check_project.py", "--root", $projectRoot, "--manifest", $manifest, "--mode", "commit", "--run-checks")
 if ($env:ENGINEERING_TASK_ID) { $arguments += @("--task", $env:ENGINEERING_TASK_ID) }
+if ($env:ENGINEERING_APPROVAL_CONTRACT) { $arguments += @("--require-approval-contract", $env:ENGINEERING_APPROVAL_CONTRACT) }
 & $pythonBin @arguments
 exit $LASTEXITCODE

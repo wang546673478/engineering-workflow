@@ -38,6 +38,10 @@ Readiness review: for each dimension write confirmed, repository fact, explicit 
 
 ## Module review
 
+If a new choice conflicts with an earlier user principle or approved requirement, preserve both sources and explain which behavior changes, which remains, and whether an exception is intended. Ask only about an unresolved material boundary; an explicit instruction replacing the old rule can be recorded directly. Do not rewrite the old statement merely to make the documents appear consistent. Apply factual corrections to Baseline autonomously, keeping goal changes in a new Spec revision.
+
+A user's goal or answer to a requirement question confirms only its actual scope. It does not approve a complete implementation Plan that has not been presented. Show the converged module scope and complete proposal together when appropriate; one explicit reply covering both may serve both records without another approval round. Reuse valid earlier approvals within their scope. Record new work outside that scope as pending while independent authorized investigation continues.
+
 For this review, a module is the cohesive functional topic being discussed with the user; source-directory boundaries do not define a separate review unit. When that discussion concludes, combine the completeness check with the user's module review. Compare the discussion with the current requirements, changes, open/deferred items and related effects, then present that one reviewable summary in plain language. Let the user check understanding, scope and omissions; record their statement, date, reviewed scope and document version. If changes are needed, update that module and its affected links. Do not add a separate concentrated check or approval after every answer; continuous saving during discussion still applies.
 
 Keep the whole-system baseline review and the complete implementation proposal approval required by SKILL.md. Module reviews do not replace either gate. Reuse valid prior confirmations; after later changes, recheck and obtain review for the affected parts rather than restarting unrelated discussions.

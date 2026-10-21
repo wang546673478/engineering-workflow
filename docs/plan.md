@@ -1,3 +1,15 @@
+# Current implemented technical plan: PLAN-ISSUE23-01 r1
+
+当前交付（2026-10-21）：批准范围内本地实现及原正式检查完成，1.8.0 / Unreleased；最终源与验证、可选partial及平台限制见[当前Task](../planning/issue-23-task.md)。本条为当前状态，下面准备/执行进度保留历史范围。
+
+当前实施状态（2026-10-21）：用户“那就开始实施吧”批准已展示完整方案及影响说明；本轮本地实施与验证完成，诊断默认、strict显式启用。批准与执行证据见[当前Task](../planning/issue-23-task.md)。下文原draft/pending措辞保留为准备历史，不代表当前授权。
+
+2026-10-21; basis BASELINE-ISSUE23-01 / source d214021 and candidate SPEC-ISSUE23-01. The authoritative [detailed Plan](../planning/issue-23-plan.md) includes the real-session findings, five reproduced counterexamples, instruction changes, optional structured approval contract, reviewed-content and batch binding, explicit legacy migration, sequence limitations, honest reports and regression matrix.
+
+T23-01/02 investigation/proposal are complete. User explicitly approved implementation with “那就开始实施吧”; T23-03..08 implement the displayed Plan and diagnostic-default clarification. Current state and original required-check evidence belong to the Task; this does not authorize external project migration or publication.
+
+## Prior records (historical; original scope retained)
+
 # Current Technical Plan: PLAN-ISSUE22-ENHANCEMENT-01
 
 Source upload receipt (2026-10-20T17:52:35.783179+08:00): completed Plan r2 implementation 5b8013c9b67debff0b080da563781a39f6e69f74 is verified on origin/main after the original staged/exact-commit gates. This update is publication evidence only; full audit remains deferred and hosted CI is separate.

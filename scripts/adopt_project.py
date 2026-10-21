@@ -17,10 +17,23 @@ import init_manifest
 import install_agents_guidance
 
 
-def bootstrap_check(root, manifest_path, data):
+def bootstrap_check(root, manifest_path, data, proposed=False):
     """Inspect declarations with the bundled checker; never execute project commands."""
     stage = data.get("workflow", {}).get("stage")
     mode = "discovery" if stage in check_project.EARLY_WORKFLOW_STAGES else "baseline"
+    if proposed:
+        report = {"tool_version": check_project.VERSION, "mode": mode, "checks": [], "errors": [],
+                  "required_checks_satisfied": False, "proposed_manifest_only": True}
+        try:
+            results, _, _, _, declared = check_project.validate(root, data, mode, data["workflow"]["active_task"])
+            report["checks"].extend(results)
+            report["checks"].extend(check_project.run_checks(root, declared, False, set()))
+        except (ValueError, OSError, UnicodeError, TypeError, KeyError) as exc:
+            report["errors"].append(str(exc))
+        required = [item for item in report["checks"] if item["required"]]
+        report["required_checks_satisfied"] = bool(required) and not report["errors"] and all(item["status"] == "pass" for item in required)
+        code = 0 if report["required_checks_satisfied"] else 2 if report["errors"] else 1
+        return {"exit_code": code, "checker_source": str(Path(check_project.__file__).resolve()), "report": report}
     output = io.StringIO()
     with redirect_stdout(output):
         code = check_project.main([
@@ -55,7 +68,7 @@ def adoption_manifest(root, args, output):
         root, args.profile, args.project_kind, source_scopes,
         output.relative_to(root).as_posix(), args.state_dir,
         args.skill_source, args.skill_version, args.checker_source,
-        args.task_id, args.document,
+        args.task_id, args.document, args.approval_enforcement or "diagnostic",
     )
     data["adoption"].update(status="initialized_incomplete", checked_at=datetime.now(timezone.utc).astimezone().isoformat())
     return data
@@ -104,11 +117,14 @@ def upgrade_legacy_manifest(root, manifest, args, manifest_path):
     workflow.setdefault("implementation_paths", list(dict.fromkeys(normalized_scopes)))
     workflow.setdefault("baseline_review", {"status": "pending", "source_revision": None, "evidence": None})
     workflow.setdefault("proposal_approval", {"status": "pending", "revision": None, "evidence": None})
+    workflow.setdefault("approval_policy", {"record_contract": 1, "enforcement": "diagnostic",
+                                              "sequence_enforcement": "diagnostic", "minimum_checker_version": "1.8.0"})
     selected_task = next(task for task in tasks if isinstance(task, dict) and task.get("id") == active_task)
     selected_task.setdefault("implementation_authorization", {
         "status": "pending", "plan_revision": None,
         "evidence": f"{args.state_dir}/approval.md", "task_id": active_task,
     })
+    selected_task.setdefault("batch_id", active_task + "-BATCH-01")
     adoption = manifest.setdefault("adoption", {})
     if not isinstance(adoption, dict):
         raise ValueError("legacy adoption record is not an object; no lifecycle fields were written")
@@ -142,9 +158,15 @@ def main(argv=None):
     parser.add_argument("--task-id", default="TASK-01")
     parser.add_argument("--upgrade-legacy-manifest", action="store_true",
                         help="add lifecycle fields to an existing manifest without replacing its documents, checks, tasks, or history")
+    parser.add_argument("--upgrade-approval-contract", action="store_true",
+                        help="preview adding the opt-in approval evidence contract to an existing lifecycle manifest")
+    parser.add_argument("--apply-approval-contract-upgrade", action="store_true",
+                        help="atomically apply a reviewed --upgrade-approval-contract preview")
     parser.add_argument("--skill-source", required=True)
     parser.add_argument("--skill-version", required=True)
     parser.add_argument("--checker-source", default=str(Path(__file__).resolve().parent / "check_project.py"))
+    parser.add_argument("--approval-enforcement", choices=("diagnostic", "strict"),
+                        help="new scaffold default is diagnostic; explicit strict is opt-in")
     parser.add_argument("--file", action="append", default=[])
     args = parser.parse_args(argv)
     manifest_created = False
@@ -155,6 +177,8 @@ def main(argv=None):
             raise ValueError("--manifest must be a .json file")
         if not args.skill_source.strip() or not args.skill_version.strip():
             raise ValueError("record the actual loaded skill source and version")
+        if args.apply_approval_contract_upgrade and not args.upgrade_approval_contract:
+            raise ValueError("--apply-approval-contract-upgrade requires --upgrade-approval-contract")
         init_manifest.parse_document_overrides(args.document)
         install_agents_guidance.safe_relative(root, args.state_dir)
         if manifest_path.exists():
@@ -162,6 +186,47 @@ def main(argv=None):
             original = manifest_path.read_bytes()
             existing = json.loads(original.decode("utf-8-sig"))
             if isinstance(existing.get("workflow"), dict) and existing["workflow"].get("stage"):
+                workflow = existing["workflow"]
+                if args.upgrade_approval_contract:
+                    if not isinstance(workflow.get("stage"), str):
+                        raise ValueError("approval contract migration requires an existing declared stage")
+                    if "approval_policy" in workflow:
+                        raise ValueError("approval policy already exists; manifest preserved")
+                    upgraded = json.loads(json.dumps(existing))
+                    upgraded["workflow"]["approval_policy"] = {
+                        "record_contract": 1,
+                        "enforcement": args.approval_enforcement or "diagnostic",
+                        "sequence_enforcement": "diagnostic",
+                        "minimum_checker_version": "1.8.0",
+                    }
+                    adoption = upgraded.setdefault("adoption", {})
+                    if not isinstance(adoption, dict):
+                        raise ValueError("adoption record is invalid; manifest preserved")
+                    adoption["approval_contract_migration"] = {
+                        "contract": 1, "enforcement": upgraded["workflow"]["approval_policy"]["enforcement"],
+                        "checked_at": datetime.now(timezone.utc).astimezone().isoformat(),
+                    }
+                    before = bootstrap_check(root, manifest_path, existing)["report"]
+                    after = bootstrap_check(root, manifest_path, upgraded, proposed=True)["report"]
+                    summary = {
+                        "status": "approval_contract_migration_preview" if not args.apply_approval_contract_upgrade else "approval_contract_migrated",
+                        "manifest": args.manifest,
+                        "previous_policy": None,
+                        "proposed_policy": upgraded["workflow"]["approval_policy"],
+                        "policy_checks_before": [item for item in before["checks"] if item["rule_id"].startswith("approval-")],
+                        "policy_checks_after": [item for item in after["checks"] if item["rule_id"].startswith("approval-")],
+                        "required_checks_before": before["required_checks_satisfied"],
+                        "required_checks_after": after["required_checks_satisfied"],
+                        "applied": bool(args.apply_approval_contract_upgrade),
+                    }
+                    if args.apply_approval_contract_upgrade:
+                        preflight_guidance(root, args, manifest_path)
+                        replace_manifest(manifest_path, upgraded, original)
+                        summary["bootstrap"] = bootstrap_check(root, manifest_path, upgraded)
+                    print(json.dumps(summary, ensure_ascii=False, indent=2))
+                    return 0
+                if args.approval_enforcement is not None:
+                    raise ValueError("existing lifecycle manifest is preserved; preview an explicit approval contract migration first")
                 adoption = existing.get("adoption")
                 if not isinstance(adoption, dict) or any(adoption.get(key) != value for key, value in (
                         ("skill_source", args.skill_source), ("skill_version", args.skill_version),
@@ -184,6 +249,8 @@ def main(argv=None):
                 raise ValueError("legacy manifest preserved; review it, then rerun with --upgrade-legacy-manifest for an additive lifecycle migration")
             preflight_guidance(root, args, manifest_path)
             upgraded = upgrade_legacy_manifest(root, existing, args, manifest_path)
+            if args.approval_enforcement == "strict":
+                upgraded["workflow"]["approval_policy"]["enforcement"] = "strict"
             replace_manifest(manifest_path, upgraded, original)
             with redirect_stdout(io.StringIO()):
                 result = install_agents_guidance.main([
@@ -203,6 +270,8 @@ def main(argv=None):
 
         preflight_guidance(root, args, manifest_path)
         data = adoption_manifest(root, args, manifest_path)
+        if args.approval_enforcement == "strict":
+            data["workflow"]["approval_policy"]["enforcement"] = "strict"
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
         with manifest_path.open("x", encoding="utf-8", newline="\n") as output:
             output.write(json.dumps(data, ensure_ascii=False, indent=2) + "\n")

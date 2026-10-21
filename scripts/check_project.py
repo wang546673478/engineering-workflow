@@ -3,7 +3,7 @@
 from __future__ import annotations
 import argparse
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 from fnmatch import fnmatchcase
 import hashlib
 import json
@@ -153,11 +153,31 @@ def excluded_path(root, path, specs):
                     return True
     return False
 
-def parse_json(data, source):
+def parse_json(data, source, **decoder_options):
     try:
         if isinstance(data, bytes):
             data = data.decode("utf-8-sig")
-        return json.loads(data)
+        # CPython 3.14's C decoder may accept depths that older decoders
+        # rejected. Preserve the interpreter recursion-budget boundary without
+        # increasing it or introducing a different arbitrary input size limit.
+        depth, quoted, escaped = 0, False, False
+        for char in data:
+            if quoted:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    quoted = False
+            elif char == '"':
+                quoted = True
+            elif char in "[{":
+                depth += 1
+                if depth >= sys.getrecursionlimit():
+                    raise ValueError("JSON nesting exceeds the interpreter recursion budget")
+            elif char in "]}":
+                depth -= 1
+        return json.loads(data, **decoder_options)
     except (ValueError, RecursionError) as exc:
         raise ConfigError("invalid JSON or parser limit exceeded: " + str(source)) from exc
 
@@ -228,6 +248,467 @@ def anchor_present(text, anchor):
         if slug == token.casefold():
             return True
     return False
+
+
+def _approval_section_text(text, section_id):
+    """Return a stable heading section for approval snapshot hashing."""
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    identifier(section_id)
+    begin = "<!-- engineering-review:" + section_id + " -->"
+    end_marker = "<!-- /engineering-review:" + section_id + " -->"
+    if begin in normalized or end_marker in normalized:
+        if normalized.count(begin) != 1 or normalized.count(end_marker) != 1:
+            raise ConfigError("approval subject markers must be unique and paired")
+        start = normalized.index(begin) + len(begin)
+        end = normalized.index(end_marker)
+        if end <= start:
+            raise ConfigError("approval subject markers are out of order")
+        return normalized[start:end].strip() + "\n"
+    token = section_id.strip().lstrip("#")
+    lines = normalized.splitlines()
+    matches = []
+    for index, line in enumerate(lines):
+        match = re.match(r"^\s{0,3}(#{1,6})\s+(.+?)\s*#*\s*$", line)
+        if not match:
+            continue
+        heading = match.group(2).strip()
+        slug = re.sub(r"[^\w\s-]", "", heading, flags=re.UNICODE)
+        slug = re.sub(r"[-\s]+", "-", slug).strip("-").casefold()
+        if heading.casefold() == token.casefold() or slug == token.casefold():
+            matches.append((index, len(match.group(1))))
+    if len(matches) > 1:
+        raise ConfigError("approval subject heading is ambiguous")
+    if not matches:
+        return None
+    start, level = matches[0]
+    end = len(lines)
+    for index in range(start + 1, len(lines)):
+        match = re.match(r"^\s{0,3}(#{1,6})\s+", lines[index])
+        if match and len(match.group(1)) <= level:
+            end = index
+            break
+    return "\n".join(lines[start:end]).strip() + "\n"
+
+
+def approval_subject_hash(text, section_id):
+    """Hash a normalized approval subject section for fixtures and evidence."""
+    section = _approval_section_text(text, section_id)
+    if section is None:
+        raise ConfigError("approval subject section is missing: " + str(section_id))
+    return hashlib.sha256(section.encode("utf-8")).hexdigest()
+
+
+def _strict_json_object(text, source):
+    duplicate = []
+
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                duplicate.append(key)
+            result[key] = value
+        return result
+
+    def reject_constant(value):
+        raise ValueError("non-finite JSON constant: " + value)
+
+    try:
+        value = parse_json(text, source, object_pairs_hook=pairs, parse_constant=reject_constant)
+    except (ValueError, RecursionError) as exc:
+        raise ConfigError("invalid approval JSON: " + str(source)) from exc
+    if duplicate:
+        raise ConfigError("duplicate approval JSON key in " + str(source) + ": " + duplicate[0])
+    if not isinstance(value, dict):
+        raise ConfigError("approval record must be a JSON object: " + str(source))
+    return value
+
+
+def approval_records(path):
+    """Read uniquely named JSON approval blocks without executing content."""
+    text = path.read_text(encoding="utf-8-sig")
+    if path.suffix.lower() == ".json":
+        data = _strict_json_object(text, path)
+        values = data.get("records", [data])
+        if not isinstance(values, list):
+            raise ConfigError("approval records must be an array")
+        records = {}
+        for value in values:
+            if not isinstance(value, dict):
+                raise ConfigError("approval record must be an object")
+            ident = identifier(value.get("id"))
+            if ident in records:
+                raise ConfigError("duplicate approval record ID: " + ident)
+            records[ident] = value
+        return records
+    pattern = re.compile(
+        r"<!--\s*engineering-approval:([A-Za-z][A-Za-z0-9_.-]*)\s*-->\s*"
+        r"```json\s*\r?\n(.*?)\r?\n```", re.IGNORECASE | re.DOTALL)
+    records = {}
+    for match in pattern.finditer(text):
+        ident = match.group(1)
+        if ident in records:
+            raise ConfigError("duplicate approval record ID: " + ident)
+        record = _strict_json_object(match.group(2), path)
+        if record.get("id") != ident:
+            raise ConfigError("approval record ID does not match its block: " + ident)
+        records[ident] = record
+    markers = re.findall(r"<!--\s*engineering-approval:([A-Za-z][A-Za-z0-9_.-]*)\s*-->", text)
+    if len(markers) != len(records):
+        raise ConfigError("approval blocks must have unique IDs and valid JSON fences")
+    return records
+
+
+def resolve_approval_record(root, evidence, record_id, visited=()):
+    """Resolve an explicit bounded reuse relation, retaining the original statement."""
+    path = safe_path(root, evidence)
+    key = (str(path), record_id)
+    if key in visited or len(visited) >= 16:
+        raise ConfigError("approval reuse cycle or depth limit")
+    records = approval_records(path)
+    if record_id not in records:
+        raise ConfigError("approval evidence record is missing: " + str(record_id))
+    record = records[record_id]
+    if record.get("invalidated") is True:
+        raise ConfigError("approval evidence was invalidated")
+    reuse = record.get("reuse_of")
+    if reuse is None:
+        return record
+    if not isinstance(reuse, dict) or not isinstance(reuse.get("reason"), str) or not reuse["reason"].strip():
+        raise ConfigError("approval reuse_of requires a reference and reason")
+    original = resolve_approval_record(root, reuse.get("evidence"), reuse.get("evidence_record_id"), visited + (key,))
+    if original.get("status") != "approved":
+        raise ConfigError("approval reuse source is not approved")
+    new_ids, old_ids = record.get("requirement_ids"), original.get("requirement_ids")
+    if not isinstance(new_ids, list) or not all(isinstance(x, str) for x in new_ids) or not isinstance(old_ids, list) or not all(isinstance(x, str) for x in old_ids) or not set(new_ids) <= set(old_ids):
+        raise ConfigError("approval reuse cannot expand the approved requirements")
+    new_acceptance, old_acceptance = record.get("acceptance_ids"), original.get("acceptance_ids")
+    if not isinstance(new_acceptance, list) or not all(isinstance(x, str) for x in new_acceptance) or not isinstance(old_acceptance, list) or not all(isinstance(x, str) for x in old_acceptance) or not set(new_acceptance) <= set(old_acceptance):
+        raise ConfigError("approval reuse cannot expand approved acceptance")
+    for field in ("subject", "spec_basis"):
+        if record.get(field, original.get(field)) != original.get(field):
+            raise ConfigError("approval reuse cannot replace reviewed subjects")
+    resolved = dict(original)
+    resolved.update(record)
+    for field in ("user_statement", "approved_at", "source"):
+        if field in record and record[field] != original.get(field):
+            raise ConfigError("approval reuse cannot invent a new " + field)
+        resolved[field] = original.get(field)
+    return resolved
+
+
+def _approval_timestamp(value, now=None):
+    if not isinstance(value, str) or not value.strip():
+        return False
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if parsed.tzinfo is None:
+        return False
+    return parsed <= (now or datetime.now(timezone.utc))
+
+
+def _approval_semver(value):
+    match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)(?:[-+].*)?", value) if isinstance(value, str) else None
+    return tuple(int(match.group(index)) for index in range(1, 4)) if match else None
+
+
+def _approval_subject_gaps(root, docs, subject, label):
+    gaps = []
+    if not isinstance(subject, dict):
+        return [label + " subject is missing"]
+    document = document_reference(docs, subject.get("document"))
+    if document is None:
+        return [label + " subject references unknown document"]
+    try:
+        path = safe_path(root, document["path"])
+    except ConfigError as exc:
+        return [label + " subject path is unsafe: " + str(exc)]
+    section_id = subject.get("section_id")
+    digest = subject.get("sha256")
+    if not isinstance(subject.get("revision"), str) or not subject["revision"].strip():
+        gaps.append(label + " subject revision is missing")
+    if not isinstance(section_id, str) or not section_id.strip():
+        gaps.append(label + " subject section_id is missing")
+    if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-fA-F]{64}", digest):
+        gaps.append(label + " subject sha256 is invalid")
+    if isinstance(section_id, str) and section_id.strip() and path.is_file():
+        text = path.read_text(encoding="utf-8-sig")
+        try:
+            section = _approval_section_text(text, section_id)
+        except ConfigError as exc:
+            return gaps + [label + " " + str(exc)]
+        if section is None:
+            gaps.append(label + " subject section is missing")
+        elif isinstance(digest, str) and re.fullmatch(r"[0-9a-fA-F]{64}", digest):
+            actual = hashlib.sha256(section.encode("utf-8")).hexdigest()
+            if actual.casefold() != digest.casefold():
+                gaps.append(label + " subject sha256 does not match")
+    return gaps
+
+
+def approval_contract_check(root, docs, workflow, selected_task, task_id):
+    """Validate opt-in structured approval evidence while preserving legacy manifests."""
+    policy = workflow.get("approval_policy") if isinstance(workflow, dict) else None
+    if policy is None:
+        declaration_scope = {}
+        if isinstance(selected_task, dict):
+            declaration_scope = {key: {"status": value.get("status"), "evidence": value.get("evidence")}
+                                 for key in ("implementation_authorization", "spec_review", "plan_review", "approval")
+                                 if isinstance((value := selected_task.get(key)), dict)}
+        return output_check("approval-evidence", "partial", "legacy approval declarations",
+                            {"status": "legacy_unverified", "reason": "no structured approval policy enabled", "declared_records": declaration_scope}, False,
+                            limitations=["Legacy validation is preserved; a passing command result does not verify approval content or current scope."])
+    if not isinstance(policy, dict):
+        raise ConfigError("workflow.approval_policy must be an object")
+    if type(policy.get("record_contract")) is not int or policy.get("record_contract") != 1:
+        raise ConfigError("workflow.approval_policy.record_contract must be 1")
+    enforcement = policy.get("enforcement", "diagnostic")
+    if enforcement not in ("diagnostic", "strict"):
+        raise ConfigError("workflow.approval_policy.enforcement must be diagnostic or strict")
+    gaps = []
+    if enforcement == "strict" and (not isinstance(workflow, dict) or "stage" not in workflow):
+        gaps.append("strict approval policy requires workflow.stage")
+    minimum_version = policy.get("minimum_checker_version", "1.8.0")
+    current_version = _approval_semver(VERSION)
+    required_version = _approval_semver(minimum_version)
+    if required_version is None:
+        raise ConfigError("workflow.approval_policy.minimum_checker_version must be semantic version")
+    if enforcement == "strict" and (current_version is None or current_version < required_version):
+        gaps.append("strict approval policy requires checker " + minimum_version + " or newer")
+    records_to_check = []
+    reviewed_records = {}
+    if isinstance(workflow, dict):
+        records_to_check.extend([
+            ("baseline_review", workflow.get("baseline_review"), "baseline"),
+            ("proposal_approval", workflow.get("proposal_approval"), "proposal"),
+        ])
+    if isinstance(selected_task, dict):
+        records_to_check.append(("implementation_authorization", selected_task.get("implementation_authorization"), "implementation"))
+        if selected_task.get("approval_required") is True:
+            records_to_check.append(("task.approval", selected_task.get("approval"), "task"))
+    for name, declaration, kind in records_to_check:
+        if declaration is None or not isinstance(declaration, dict):
+            gaps.append(name + " declaration is missing")
+            continue
+        status = declaration.get("status")
+        if status == "pending":
+            continue
+        if status not in ("approved", "not_applicable"):
+            gaps.append(name + " has invalid status")
+            continue
+        evidence = declaration.get("evidence")
+        record_id = declaration.get("evidence_record_id")
+        if not isinstance(evidence, str) or not evidence.strip():
+            gaps.append(name + " evidence path is missing")
+            continue
+        if not isinstance(record_id, str) or not record_id.strip():
+            gaps.append(name + " evidence_record_id is missing")
+            continue
+        try:
+            path = safe_path(root, evidence)
+        except ConfigError as exc:
+            gaps.append(name + " evidence path is unsafe: " + str(exc))
+            continue
+        if not path.is_file():
+            gaps.append(name + " evidence file does not exist")
+            continue
+        try:
+            record = resolve_approval_record(root, evidence, record_id)
+        except (ConfigError, OSError, UnicodeError) as exc:
+            gaps.append(name + " evidence cannot be parsed: " + str(exc))
+            continue
+        if record.get("status") != status:
+            gaps.append(name + " evidence status does not match declaration")
+        reviewed_records[kind] = record
+        for field in ("user_statement", "approved_at", "scope", "source"):
+            if field in declaration and declaration[field] != record.get(field):
+                gaps.append(name + " declaration " + field + " does not match evidence")
+        if status == "not_applicable":
+            if not isinstance(record.get("reason"), str) or not record["reason"].strip():
+                gaps.append(name + " not_applicable evidence needs a reason")
+            if kind == "proposal" and (not isinstance(selected_task, dict) or selected_task.get("workflow_kind") != "small_fix"):
+                gaps.append(name + " not_applicable is only valid for an evidenced small_fix")
+            if kind == "implementation":
+                gaps.append(name + " implementation authorization cannot be not_applicable")
+        statement = record.get("user_statement")
+        if status == "approved" and (not isinstance(statement, str) or _approval_placeholder(statement)):
+            gaps.append(name + " user_statement is missing or placeholder")
+        if status == "approved" and not _approval_timestamp(record.get("approved_at")):
+            gaps.append(name + " approved_at must be timezone-aware and not future")
+        if status == "approved" and ("recorded_at" not in record or not _approval_timestamp(record.get("recorded_at"))):
+            gaps.append(name + " recorded_at must be present, timezone-aware and not future")
+        scope = record.get("scope")
+        if not isinstance(scope, str) or _approval_placeholder(scope):
+            gaps.append(name + " scope is missing or not reviewable")
+        source = record.get("source")
+        if status == "approved" and (not isinstance(source, dict) or source.get("kind") not in ("conversation", "manual") or not isinstance(source.get("reference"), str) or not source["reference"].strip()):
+            gaps.append(name + " source must identify a conversation or manual reference")
+        if kind in ("proposal", "implementation", "task"):
+            if record.get("task_id") != task_id:
+                gaps.append(name + " evidence task_id does not match selected task")
+            batch_id = selected_task.get("batch_id") if isinstance(selected_task, dict) else None
+            if not isinstance(batch_id, str) or not batch_id.strip():
+                gaps.append(name + " selected task batch_id is missing")
+            elif record.get("batch_id") != batch_id:
+                gaps.append(name + " evidence batch_id does not match selected task")
+            if declaration.get("batch_id") != record.get("batch_id"):
+                gaps.append(name + " declaration batch_id does not match evidence")
+            if not isinstance(record.get("batch_id"), str) or not record["batch_id"].strip():
+                gaps.append(name + " evidence batch_id is missing")
+            required_ids = set(selected_task.get("requirement_ids", [])) if isinstance(selected_task, dict) else set()
+            actual_ids = record.get("requirement_ids")
+            if not isinstance(actual_ids, list) or not actual_ids or not all(isinstance(item, str) for item in actual_ids) or set(actual_ids) != required_ids:
+                gaps.append(name + " requirement_ids must exactly match the selected task scope")
+            expected_acceptance = set(selected_task.get("acceptance_ids", []))
+            actual_acceptance = record.get("acceptance_ids")
+            if not isinstance(actual_acceptance, list) or not actual_acceptance or not all(isinstance(item, str) for item in actual_acceptance) or set(actual_acceptance) != expected_acceptance:
+                gaps.append(name + " acceptance_ids must exactly match the selected task scope")
+            gaps.extend(_approval_subject_gaps(root, docs, record.get("subject"), name))
+            gaps.extend(_approval_subject_gaps(root, docs, record.get("spec_basis"), name + " spec_basis"))
+            revisions = selected_task.get("artifact_revisions", {}) if isinstance(selected_task, dict) else {}
+            active_revisions = workflow.get("active_revisions", {}) if isinstance(workflow, dict) else {}
+            if not isinstance(revisions, dict) or not isinstance(active_revisions, dict):
+                raise ConfigError("artifact_revisions and active_revisions must be objects")
+            subject = record.get("subject") if isinstance(record.get("subject"), dict) else {}
+            spec_basis = record.get("spec_basis") if isinstance(record.get("spec_basis"), dict) else {}
+            plan_revision = revisions.get("plan") or active_revisions.get("plan")
+            spec_revision = revisions.get("spec") or active_revisions.get("spec")
+            basis = selected_task.get("review_basis_revision", {})
+            if not isinstance(basis, dict):
+                raise ConfigError("task.review_basis_revision must be an object")
+            if basis and (not isinstance(basis.get("reason"), str) or not basis["reason"].strip()):
+                gaps.append(name + " review_basis_revision requires an equivalence reason")
+            if not plan_revision or subject.get("revision") != (basis.get("plan") if basis.get("reason") else None) and subject.get("revision") != plan_revision:
+                gaps.append(name + " subject revision does not match the selected task Plan revision")
+            if not spec_revision or spec_basis.get("revision") != (basis.get("spec") if basis.get("reason") else None) and spec_basis.get("revision") != spec_revision:
+                gaps.append(name + " spec_basis revision does not match the selected task Spec revision")
+            links = selected_task.get("artifact_links", {})
+            for field, entry in (("plan", subject), ("spec", spec_basis)):
+                expected_document = links.get(field) or workflow.get("active_" + field)
+                if expected_document and entry.get("document") != expected_document:
+                    gaps.append(name + " subject document does not match active " + field)
+            if kind == "proposal":
+                revision = declaration.get("revision")
+                if subject.get("revision") != revision:
+                    gaps.append(name + " subject revision does not match declaration")
+            elif kind == "implementation":
+                proposal = workflow.get("proposal_approval") if isinstance(workflow, dict) else None
+                expected = proposal.get("revision") if isinstance(proposal, dict) else None
+                if declaration.get("plan_revision") != expected or subject.get("revision") != expected:
+                    gaps.append(name + " implementation plan revision does not match proposal")
+            elif kind == "task":
+                task_plan = selected_task.get("artifact_revisions", {}).get("plan")
+                if task_plan and subject.get("revision") != task_plan:
+                    gaps.append(name + " subject revision does not match selected task Plan")
+        else:
+            gaps.extend(_approval_subject_gaps(root, docs, record.get("subject"), name))
+            if status == "approved" and (not isinstance(record.get("subject"), dict) or record["subject"].get("revision") != declaration.get("source_revision")):
+                gaps.append(name + " source_revision does not match reviewed subject")
+    proposal = reviewed_records.get("proposal")
+    implementation = reviewed_records.get("implementation")
+    if isinstance(proposal, dict) and isinstance(implementation, dict):
+        for field in ("subject", "spec_basis"):
+            if proposal.get(field) != implementation.get(field):
+                gaps.append("implementation_authorization " + field + " does not match approved proposal content")
+        declaration = selected_task.get("implementation_authorization", {})
+        expected_id = workflow.get("proposal_approval", {}).get("evidence_record_id")
+        if declaration.get("proposal_record_id") != expected_id:
+            gaps.append("implementation_authorization proposal_record_id does not match approved proposal")
+    if gaps:
+        status = "partial" if enforcement == "diagnostic" else "fail"
+        required = enforcement == "strict"
+    else:
+        status, required = "pass", enforcement == "strict"
+    return output_check("approval-evidence", status, "structured approval records and reviewed subjects", gaps or ["approval records are structurally bound"], required,
+                        limitations=["The checker validates declared structure, paths, hashes and bindings; it cannot authenticate a human, prove a user understood the scope, or certify semantic completeness."])
+
+
+def _approval_placeholder(value):
+    if not isinstance(value, str) or not value.strip():
+        return True
+    text = value.strip().casefold()
+    return (text in {"pending", "all", "this batch", "tbd", "todo", "placeholder"}
+            or bool(re.fullmatch(r"<[^>]+>", text))
+            or any(token in text for token in ("replace me", "fill this", "insert here", "default-consent implementation")))
+
+
+def approval_policy_history_check(root, manifest, manifest_path, mode, base=None, commit_ref=None, allow=False):
+    """Preserve previously enabled approval gates, including complete history checks."""
+    if mode == "change":
+        ref = base
+    elif mode == "handoff":
+        ref = "HEAD" if git_revision(root, "HEAD") else None
+    elif mode == "commit":
+        ref = "HEAD" if git_revision(root, "HEAD") else None
+    elif mode == "committed":
+        ref = git_parent(root, commit_ref or "HEAD")
+    else:
+        return None
+    if ref and not git_revision(root, ref):
+        raise ConfigError("approval policy history revision is unavailable")
+    previous = manifest_from_git(root, ref, manifest_path) if ref else None
+    old_workflow = previous.get("workflow", {}) if isinstance(previous, dict) else {}
+    new_workflow = manifest.get("workflow", {})
+    old = old_workflow.get("approval_policy") if isinstance(old_workflow, dict) else None
+    if old is None:
+        return None
+    new = new_workflow.get("approval_policy") if isinstance(new_workflow, dict) else None
+    gaps = []
+    if not isinstance(old, dict):
+        raise ConfigError("historical approval_policy must be an object")
+    if not isinstance(new, dict):
+        gaps.append("enabled approval policy was removed")
+    else:
+        if old.get("record_contract") != new.get("record_contract"):
+            gaps.append("approval record contract was replaced")
+        if old.get("enforcement", "diagnostic") == "strict":
+            if new.get("enforcement", "diagnostic") != "strict":
+                gaps.append("strict approval policy was weakened")
+            for field in ("stage", "implementation_paths"):
+                if field not in new_workflow:
+                    gaps.append("strict lifecycle field was removed: " + field)
+            old_paths = old_workflow.get("implementation_paths", [])
+            new_paths = new_workflow.get("implementation_paths", [])
+            if isinstance(old_paths, list) and isinstance(new_paths, list):
+                if not all(any(covered(relative_scope(root, old_path), relative_scope(root, new_path)) for new_path in new_paths) for old_path in old_paths):
+                    gaps.append("strict implementation scopes were reduced")
+        if old.get("sequence_enforcement") == "strict" and new.get("sequence_enforcement") != "strict":
+            gaps.append("strict approval sequence policy was weakened")
+    control = previous.get("control_plane", {}) if isinstance(previous, dict) else {}
+    env_name = control.get("approval_env", "ENGINEERING_CONTROL_PLANE_APPROVED") if isinstance(control, dict) else "ENGINEERING_CONTROL_PLANE_APPROVED"
+    approved = allow and os.environ.get(env_name) == "1"
+    if not gaps:
+        return output_check("approval-policy-history", "pass", "previously enabled approval policy", "policy retained", True)
+    return output_check("approval-policy-history", "fail" if not approved else "pass",
+                        "previously enabled approval policy", {"gaps": gaps, "external_change_approval": approved}, True,
+                        limitations=["Policy weakening requires the existing one-run external control approval; this does not authenticate a human."])
+
+
+def approval_sequence_check(workflow, task):
+    """Compare declared event positions on one timeline; clocks alone never prove order."""
+    policy = workflow.get("approval_policy") if isinstance(workflow, dict) else None
+    if policy is None:
+        return None
+    enforcement = policy.get("sequence_enforcement", "diagnostic")
+    if enforcement not in ("diagnostic", "strict"):
+        raise ConfigError("sequence_enforcement must be diagnostic or strict")
+    sequence = task.get("approval_sequence") if isinstance(task, dict) else None
+    required = enforcement == "strict" and workflow.get("stage") in IMPLEMENTATION_WORKFLOW_STAGES | {"complete"}
+    status, evidence = "partial", "ordered approval events were not supplied"
+    if isinstance(sequence, dict):
+        events = [sequence.get(key) for key in ("presented", "approved", "implementation")]
+        valid = all(isinstance(event, dict) and isinstance(event.get("timeline_id"), str) and event["timeline_id"].strip()
+                    and isinstance(event.get("reference"), str) and event["reference"].strip()
+                    and type(event.get("position")) is int and event["position"] >= 0 for event in events)
+        if valid and len({event["timeline_id"] for event in events}) == 1:
+            status = "pass" if events[0]["position"] < events[1]["position"] < events[2]["position"] else "fail"
+            evidence = {"timeline_id": events[0]["timeline_id"], "positions": [event["position"] for event in events]}
+        else:
+            evidence = "event references are incomplete or belong to different timelines"
+    return output_check("approval-sequence", status, "declared presentation/approval/implementation order", evidence, required,
+                        limitations=["Declared event order is not a trusted host receipt. File mtime, Git time and manually asserted order cannot authenticate approval."])
+
 
 def validate_trace_reference(root, docs, ident, entry, kind, faults):
     """Validate a requirement/acceptance document and optional index/anchor."""
@@ -830,6 +1311,12 @@ def validate(root, manifest, mode, task_id):
         results.append(output_check("workflow-lifecycle", "partial", "legacy manifest without stage lifecycle", "existing compatibility path retained", required=False,
                                     limitations=["This manifest does not receive automatic takeover-stage or implementation authorization gates until lifecycle fields are adopted."]))
     faults.extend(lifecycle_errors)
+    approval_check = approval_contract_check(root, docs, workflow, tasks.get(task_id) if task_id else None, task_id) if isinstance(workflow, dict) else None
+    if approval_check is not None:
+        results.append(approval_check)
+        sequence_check = approval_sequence_check(workflow, tasks.get(task_id) if task_id else None)
+        if sequence_check is not None:
+            results.append(sequence_check)
     results.append(output_check("manifest", "fail" if faults else "pass", "declared IDs, references, graph and baseline", faults or ["manifest validated"],
                                 limitations=["Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."]))
     for ident, entry in inventories.items():
@@ -1468,6 +1955,8 @@ def main(argv=None):
     parser.add_argument("--run-checks", action="store_true")
     parser.add_argument("--allow-control-plane-change", action="store_true",
                         help="allow protected manifest/checker changes only with external approval")
+    parser.add_argument("--require-approval-contract", type=int, choices=(1,),
+                        help="require approval contract capability 1; older checkers must reject this invocation")
     parser.add_argument("--report")
     args = parser.parse_args(argv)
     task_id = args.task or os.environ.get("ENGINEERING_TASK_ID")
@@ -1484,6 +1973,10 @@ def main(argv=None):
         manifest = read_json(safe_path(root, args.manifest))
         if not isinstance(manifest, dict):
             raise ConfigError("manifest must be a JSON object")
+        if args.require_approval_contract is not None:
+            capability = manifest.get("workflow", {}).get("approval_policy") if isinstance(manifest.get("workflow"), dict) else None
+            if not isinstance(capability, dict) or capability.get("record_contract") != args.require_approval_contract:
+                raise ConfigError("requested approval contract is not declared in this manifest")
         if task_id is None and isinstance(manifest.get("workflow"), dict):
             task_id = manifest["workflow"].get("active_task")
         results, docs, modules, tasks, declared = validate(root, manifest, args.mode, task_id)
@@ -1556,6 +2049,17 @@ def main(argv=None):
             except (ConfigError, OSError, subprocess.TimeoutExpired) as exc:
                 report["checks"].append(output_check("committed-scope", "unsupported", "committed tree discovery", str(exc)))
         forced = set(tasks[task_id]["required_checks"]) if task_id and task_id in tasks else set()
+        if args.mode in ("change", "handoff", "commit", "committed") and relative_scope(root, args.manifest) in report["changed_paths"] and not any(
+                item["required"] and item["status"] != "pass" for item in report["checks"]):
+            try:
+                history_check = approval_policy_history_check(root, manifest, args.manifest, args.mode, args.base, args.commit_ref, args.allow_control_plane_change)
+                if history_check is not None:
+                    report["checks"].append(history_check)
+            except (ConfigError, OSError, subprocess.TimeoutExpired) as exc:
+                report["checks"].append(output_check("approval-policy-history", "unsupported", "previously enabled approval policy", str(exc), True))
+        if any(item["required"] and item["status"] != "pass" for item in report["checks"]
+               if item["rule_id"] in ("approval-evidence", "approval-sequence", "approval-policy-history")):
+            commands_allowed = False
         reason = None if commands_allowed else "not run; submitted-tree validation did not pass"
         with command_cancellation():
             report["checks"].extend(run_checks(root, declared, args.run_checks and commands_allowed, forced, reason))

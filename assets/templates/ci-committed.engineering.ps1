@@ -7,7 +7,7 @@ if (-not $env:ENGINEERING_WORKFLOW_SKILL_DIR) { throw "Set ENGINEERING_WORKFLOW_
 $projectRoot = if ($env:ENGINEERING_PROJECT_ROOT) { $env:ENGINEERING_PROJECT_ROOT } else { (git rev-parse --show-toplevel).Trim() }
 $manifest = if ($env:ENGINEERING_MANIFEST) { $env:ENGINEERING_MANIFEST } else { "engineering-manifest.json" }
 $pythonBin = if ($env:PYTHON) { $env:PYTHON } else { "python" }
-& $pythonBin "$env:ENGINEERING_WORKFLOW_SKILL_DIR/scripts/check_project.py" `
-  --root $projectRoot --manifest $manifest --mode committed `
-  --commit-ref $env:ENGINEERING_COMMIT_SHA --task $env:ENGINEERING_TASK_ID --run-checks
+$arguments = @("$env:ENGINEERING_WORKFLOW_SKILL_DIR/scripts/check_project.py", "--root", $projectRoot, "--manifest", $manifest, "--mode", "committed", "--commit-ref", $env:ENGINEERING_COMMIT_SHA, "--task", $env:ENGINEERING_TASK_ID, "--run-checks")
+if ($env:ENGINEERING_APPROVAL_CONTRACT) { $arguments += @("--require-approval-contract", $env:ENGINEERING_APPROVAL_CONTRACT) }
+& $pythonBin @arguments
 exit $LASTEXITCODE

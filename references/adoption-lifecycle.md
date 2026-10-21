@@ -1,5 +1,15 @@
 # 接入工具与原流程映射
 
+## 可选批准合同升级（1.8.0）
+
+新scaffold与显式legacy迁移增加approval_policy，但默认enforcement=diagnostic，不阻断旧证据不完整的流程；strict必须显式`--approval-enforcement strict`。两者都保留pending原批准，不生成真实用户审批，合同字段和证据格式见[checker](checker.md#结构化批准证据合同)。strict只加强审批声明，原阶段、测试、文档同步、例外及有效批准复用保持。
+
+已有stage但尚无approval_policy的项目先预览：`adopt_project.py --root <project> --skill-source <实际来源> --skill-version <实际版本> --upgrade-approval-contract --approval-enforcement strict`。输出前后policy及相应检查结果，不改文件。用户授权具体升级后，加`--apply-approval-contract-upgrade`原子写入；失败保留旧字节。无需strict时选择diagnostic或省略该选项。现有有policy的项目不由重复接入改写，调整仍按项目控制面规则审阅。
+
+legacy无stage继续使用原`--upgrade-legacy-manifest`显式迁移，保留已有checks、required inventory、依赖、历史批准及文档；不能把缺证据的旧approved自动重写成可信新批准。升级完成与门禁通过分开看bootstrap；外层exit=0不表示证据全部满足。
+
+实际入口须用已核对的checker，并给严格项目hook/CI设置`ENGINEERING_APPROVAL_CONTRACT=1`，模板会传`--require-approval-contract 1`；旧checker拒绝未知参数，避免静默忽略新字段。此项是工具能力选择，不是控制面批准变量，不得代替原一次性外部审批。现有模板默认调用保持，只有配置该能力时加参数。
+
 本工具落实SKILL.md既有流程，不新增业务阶段或用户审核轮次。主线、模块审核、持续需求记录、自主调查、有效批准复用和例外均以SKILL及原引用为准。安装副本与维护仓库各自有版本，必须读取实际调用来源；仓库发布不会自动更新全局安装或外部项目。
 
 ## 接入与恢复

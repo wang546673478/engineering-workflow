@@ -1,5 +1,10 @@
 # Engineering Workflow Contracts
 
+## Issue 23 current approval/report contract / 1.8.0
+
+Optional record_contract=1 keeps schema_version=1; enforcement defaults diagnostic and strict is explicit. Existing stages, original required checks, process limits, Git state and document-impact rules remain. approval-evidence validates record structure, safe references, reviewed section hashes, selected task batch/REQ/AT and Plan/Spec revision. The current implementation also checks old task.approval_required. approval-sequence is diagnostic unless separately strict; history guards reject silent policy weakening. Legacy content coverage remains nonrequired partial. Explicit migration previews proposed data before atomic apply. Capability flag prevents accidental execution with old checker. [Field contract](../references/checker.md#结构化批准证据合同), [Task](../planning/issue-23-task.md).
+
+
 ## Issue 22 guidance compatibility
 
 The 1.7.2 guidance clarifies existing defect records and delivery checks, with optional EARS/Given–When–Then examples. It uses existing Task/Issue/impact/Spec records and IDs, preserving old formats and valid approvals. A sentence, template or structural check is not evidence of business correctness. It adds no CLI, schema field, stage, verdict protocol, approval round or required report; required checks retain their failure/skip/unsupported meanings. The command, installer, adapter, Git-state and control-plane contracts below are unchanged. Source-audit deferral is this maintenance task's user decision, not a new exception granted to other projects.

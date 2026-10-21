@@ -59,10 +59,12 @@ def manifest(root: Path, profile: str, project_kind: str = "existing", implement
              manifest_path: str = "engineering-manifest.json", state_dir: str = "planning",
              skill_source: str = "record actual skill source and version", skill_version: str = "not provided",
              checker_source: str = "scripts/check_project.py", task_id: str = "TASK-01",
-             document_overrides=None) -> dict:
+             document_overrides=None, approval_enforcement="diagnostic") -> dict:
     # Direct library callers can supply Windows short-name or lexical aliases,
     # just like the CLI. Compare scopes against the same canonical root.
     root = project_root(root)
+    if approval_enforcement not in ("diagnostic", "strict"):
+        raise ValueError("approval enforcement must be diagnostic or strict")
     if not state_dir.strip() or Path(state_dir).is_absolute() or Path(state_dir) == Path(".") or ".." in Path(state_dir).parts:
         raise ValueError("--state-dir must be a project-relative path")
     state_dir = Path(state_dir.replace("\\", "/")).as_posix().strip("/") or "."
@@ -124,6 +126,8 @@ def manifest(root: Path, profile: str, project_kind: str = "existing", implement
             "stage": "takeover_discovery", "implementation_paths": implementation_scopes,
             "baseline_review": {"status": "pending", "source_revision": None, "evidence": None},
             "proposal_approval": {"status": "pending", "revision": None, "evidence": None},
+            "approval_policy": {"record_contract": 1, "enforcement": approval_enforcement,
+                                "sequence_enforcement": "diagnostic", "minimum_checker_version": "1.8.0"},
         },
         "adoption": {
             "status": "initialized_incomplete", "skill_source": skill_source, "skill_version": skill_version,
@@ -138,7 +142,7 @@ def manifest(root: Path, profile: str, project_kind: str = "existing", implement
         "inventories": inventories,
         "checks": [{"id": "TEST", "command": ["python", "-m", "unittest", "discover", "-q"], "required": True, "timeout_seconds": 120}],
         "tasks": [{
-            "id": task_id, "requirement_ids": ["REQ-BOOTSTRAP-01"], "acceptance_ids": ["AT-BOOTSTRAP-01"],
+            "id": task_id, "batch_id": task_id + "-BATCH-01", "requirement_ids": ["REQ-BOOTSTRAP-01"], "acceptance_ids": ["AT-BOOTSTRAP-01"],
             "module_ids": [item["id"] for item in modules], "depends_on": [], "status": "planned", "impact_document": "IMPACT",
             "required_checks": ["TEST"], "approval_required": True, "approval": {"status": "pending", "evidence": f"{state_dir}/approval.md"},
             "implementation_authorization": {"status": "pending", "plan_revision": None, "evidence": f"{state_dir}/approval.md", "task_id": task_id},
@@ -167,6 +171,8 @@ def main(argv=None):
     parser.add_argument("--implementation-path", action="append",
                         help="greenfield implementation scope, repeatable; defaults to src and tests")
     parser.add_argument("--force", action="store_true", help="replace an existing output file")
+    parser.add_argument("--approval-enforcement", choices=("diagnostic", "strict"), default="diagnostic",
+                        help="structured approval checks default to nonblocking diagnostics; strict must be explicit")
     args = parser.parse_args(argv)
     try:
         root = project_root(args.root)
@@ -179,7 +185,7 @@ def main(argv=None):
             raise ValueError("output exists; use --force only after reviewing it")
         data = manifest(root, args.profile, args.project_kind, args.implementation_path,
                         output.relative_to(root).as_posix(), args.state_dir,
-                        args.skill_source, args.skill_version, args.checker_source, args.task_id, args.document)
+                        args.skill_source, args.skill_version, args.checker_source, args.task_id, args.document, args.approval_enforcement)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"created {output.relative_to(root).as_posix()} ({args.profile} profile)")

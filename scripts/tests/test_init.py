@@ -89,6 +89,7 @@ class InitManifestTests(unittest.TestCase):
                 data = json.loads(manifest_path.read_text(encoding="utf-8"))
                 self.assertEqual(data["baseline"]["status"], "planned")
                 self.assertEqual(data["baseline"]["implementation_paths"], ["src", "tests"])
+                self.assertEqual(data["workflow"]["approval_policy"], {"record_contract": 1, "enforcement": "diagnostic", "sequence_enforcement": "diagnostic", "minimum_checker_version": "1.8.0"})
                 self.assertFalse((root / "src").exists())
                 # A real agent supplies evidence, documents and project checks.
                 for doc in data["documents"]:
@@ -194,6 +195,13 @@ class InitManifestTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             data = json.loads((Path(tmp) / "engineering-manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(data["baseline"]["implementation_paths"], ["backend"])
+
+    def test_approval_strict_mode_is_explicit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "backend").mkdir()
+            data = initializer.manifest(root, "lite", approval_enforcement="strict")
+            self.assertEqual(data["workflow"]["approval_policy"]["enforcement"], "strict")
 
 
 if __name__ == "__main__":

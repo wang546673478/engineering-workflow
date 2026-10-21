@@ -6,6 +6,12 @@
     "active_plan": "PLAN",
     "active_task": "TASK-01",
     "stage": "takeover_discovery",
+    "approval_policy": {
+      "record_contract": 1,
+      "enforcement": "diagnostic",
+      "sequence_enforcement": "diagnostic",
+      "minimum_checker_version": "1.8.0"
+    },
     "implementation_paths": [
       "backend",
       "frontend"
@@ -165,6 +171,7 @@
   "tasks": [
     {
       "id": "TASK-01",
+      "batch_id": "TASK-01-BATCH-01",
       "requirement_ids": [
         "REQ-01"
       ],

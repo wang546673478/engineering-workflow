@@ -1,3 +1,15 @@
+# Current implemented specification: SPEC-ISSUE23-01
+
+当前交付（2026-10-21）：批准范围内本地实现及原正式检查完成，1.8.0 / Unreleased；最终源与验证、可选partial及平台限制见[当前Task](../planning/issue-23-task.md)。本条为当前状态，下面准备/执行进度保留历史范围。
+
+当前实施状态（2026-10-21）：用户“那就开始实施吧”批准已展示完整方案及影响说明；本轮本地实施与验证完成，诊断默认、strict显式启用。批准与执行证据见[当前Task](../planning/issue-23-task.md)。下文原draft/pending措辞保留为准备历史，不代表当前授权。
+
+2026-10-21. The user requested investigation of the latest issue and a detailed solution. [The eight requirements and acceptance pairs](../planning/issue-23-spec.md) are a candidate review scope, based on BASELINE-ISSUE23-01 / source d214021. They cover actual approval scope, explicit conflicts, structured evidence, batch binding, compatibility, honest delivery status, bounded sequence diagnostics and original gate preservation.
+
+Status: approved and implemented locally; original required checks passed, with declared optional partials retained. Prior Issue 22 approval does not transfer. Current [Plan](../planning/issue-23-plan.md) and [Task](../planning/issue-23-task.md) separate the authorized investigation/proposal from future skill implementation.
+
+## Prior records (historical; original scope retained)
+
 # Current specification for review: SPEC-ISSUE22-ENHANCEMENT-01
 
 Source upload receipt (2026-10-20T17:52:35.783179+08:00): the unchanged three-enhancement scope is uploaded as 5b8013c9b67debff0b080da563781a39f6e69f74. The original reviewed Spec bytes/hash and the formatting-only current copy are linked in Task/evidence; no goal or acceptance change and no new version for this receipt.

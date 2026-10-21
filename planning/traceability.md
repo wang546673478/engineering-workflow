@@ -133,3 +133,21 @@ Published implementation5f9b3e1d54a0709241fb5f11173e13ce00af3ffd passed local184
 Publication receipt (2026-10-19): implementation c15b94397314b8e84b3ee94877267f8245c3351c passed original local staged/exact-commit gates with 205 tests and the unchanged 120-second limit, was uploaded to main, and was installed as 1.7.0 with prior local work preserved. GitHub run39277812120 has a verified human environment approval but original platform reports are still pending; no hosted pass is claimed. This receipt changes evidence/status only, not source behavior or acceptance.
 
 1.7.1 correction: normalize initializer library roots through the same existing project_root function as the CLI; hosted Windows exposed short-name aliases. Scope checks and the original workflow remain unchanged; 1.7.0 Ubuntu success/Windows failure are historical, and fresh local/exact/hosted checks are required.
+
+
+## Issue 23 candidate proposal / 2026-10-21
+
+Basis BASELINE-ISSUE23-01 / d214021 -> SPEC-ISSUE23-01 -> PLAN-ISSUE23-01 r1 -> TASK-ISSUE-23-PROPOSAL. Implementation authorized by “那就开始实施吧”; current output Baseline BASELINE-ISSUE23-02. T23-03..08 source implementation and validation recorded in current Task.
+
+| Requirement / acceptance | Plan | Task | Facts / future evidence |
+| --- | --- | --- | --- |
+| REQ-ISSUE23-01 / AT-ISSUE23-01 | P23-01 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
+| REQ-ISSUE23-02 / AT-ISSUE23-02 | P23-01 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
+| REQ-ISSUE23-03 / AT-ISSUE23-03 | P23-02 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
+| REQ-ISSUE23-04 / AT-ISSUE23-04 | P23-02/03 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
+| REQ-ISSUE23-05 / AT-ISSUE23-05 | P23-03 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
+| REQ-ISSUE23-06 / AT-ISSUE23-06 | P23-05 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
+| REQ-ISSUE23-07 / AT-ISSUE23-07 | P23-04 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
+| REQ-ISSUE23-08 / AT-ISSUE23-08 | P23-06/07 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
+
+Issue 23 closure: all eight REQ/AT implemented; formal-final report original commands pass on task-local CPython3.11.15. Scenario and source-hash evidence: planning/issue-23-evidence.json. Optional legacy/manual coverage partial and source/host limits remain explicit.

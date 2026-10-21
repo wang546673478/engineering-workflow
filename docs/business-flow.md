@@ -1,6 +1,9 @@
 # Engineering Workflow Maintenance Flow
 
-Status: `current`; the manifest's active task owns current implementation and review status.
+## Issue 23 current approval flow / 1.8.0
+
+Read original user decision and presented proposal -> preserve reviewed Spec/Plan section -> reference original approval evidence -> choose diagnostic or explicit strict -> validate record/current scope/reuse -> compare enabled historical policy -> existing implementation and change gates -> original declared commands -> original post-check tree validation -> report checker status separately from independent tests. New project initialization is diagnostic, legacy projects are not automatically migrated, and invalid strict evidence blocks commands. Current verification and remaining limits are in [Task](../planning/issue-23-task.md).
+
 
 ## Issue 22 guidance through the existing flow
 
