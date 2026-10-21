@@ -1,5 +1,9 @@
 # Current factual baseline: BASELINE-ISSUE23-02
 
+同批技术保持性修正：提交校验在单次main内复用control-plane已读取的历史manifest，避免重复Git查询；缓存不跨验证运行。静态合同用例经同一公开CLI入口减少解释器启动，原安全断言、测试/超时/同步边界保持。新源码门槛结果见Issue23 Task/evidence。
+
+源上传回执（2026-10-21）：1.8.0实现提交`9723921ceac69db363fb4b655d761bc61b956e0f`已上传origin/main，原commit/committed门槛与远端SHA核对通过。此记录只更新发布事实，原内容/限制及Unreleased保留；托管CI、全局安装和外部项目迁移分开记录。
+
 最终本地验证：1.8.0 Unreleased，225项及原120/30/30秒门槛通过；当前source摘要、非必需partial和CPython3.14耗时限制见[Task](issue-23-task.md)及[正式证据](issue-23-evidence.json)。没有提交树/托管CI/全局安装认证。
 
 2026-10-21; source d214021 plus current 1.8.0 Unreleased worktree. Approved basis: SPEC-ISSUE23-01 / PLAN-ISSUE23-01 r1, user “那就开始实施吧” after the explicit compatibility clarification. This is current implementation fact, not a transfer of old human approval to all new evidence.

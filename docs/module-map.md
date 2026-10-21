@@ -1,5 +1,9 @@
 # Engineering Workflow Module Map
 
+同批技术保持性修正：提交校验在单次main内复用control-plane已读取的历史manifest，避免重复Git查询；缓存不跨验证运行。静态合同用例经同一公开CLI入口减少解释器启动，原安全断言、测试/超时/同步边界保持。新源码门槛结果见Issue23 Task/evidence。
+
+源上传回执（2026-10-21）：实现9723921已通过原提交门槛并核对origin/main；本次仅同步发布事实，运行合同与技术范围不变。详见当前Issue23 Task/evidence。
+
 ## Issue 23 current implementation / 1.8.0
 
 The existing checker owns structured approval parsing, stable section digests, task/batch/REQ/AT and current Spec/Plan bindings, reuse/sequence validation and historical policy comparison. init_manifest emits diagnostic policy; adopt_project previews/applies explicit migration without manufacturing approvals. Existing hooks optionally pass the capability flag. Instructions remain the semantic authority; no new runtime dependency or product database exists. Tests exercise actual CLI/Git and migration boundaries. [Task](../planning/issue-23-task.md) owns current verification.

@@ -633,21 +633,25 @@ def _approval_placeholder(value):
             or any(token in text for token in ("replace me", "fill this", "insert here", "default-consent implementation")))
 
 
-def approval_policy_history_check(root, manifest, manifest_path, mode, base=None, commit_ref=None, allow=False):
+def approval_policy_history_check(root, manifest, manifest_path, mode, base=None, commit_ref=None, allow=False, submission_baseline=None):
     """Preserve previously enabled approval gates, including complete history checks."""
-    if mode == "change":
-        ref = base
-    elif mode == "handoff":
-        ref = "HEAD" if git_revision(root, "HEAD") else None
-    elif mode == "commit":
-        ref = "HEAD" if git_revision(root, "HEAD") else None
-    elif mode == "committed":
-        ref = git_parent(root, commit_ref or "HEAD")
+    if submission_baseline is not None and "manifest" in submission_baseline:
+        # The control-plane check has already read this exact submission's
+        # historical manifest. This dictionary is local to one CLI invocation;
+        # it is never reused across commands, repositories or verification runs.
+        previous = submission_baseline["manifest"]
     else:
-        return None
-    if ref and not git_revision(root, ref):
-        raise ConfigError("approval policy history revision is unavailable")
-    previous = manifest_from_git(root, ref, manifest_path) if ref else None
+        if mode == "change":
+            ref = base
+        elif mode in ("handoff", "commit"):
+            ref = "HEAD" if git_revision(root, "HEAD") else None
+        elif mode == "committed":
+            ref = git_parent(root, commit_ref or "HEAD")
+        else:
+            return None
+        if ref and not git_revision(root, ref):
+            raise ConfigError("approval policy history revision is unavailable")
+        previous = manifest_from_git(root, ref, manifest_path) if ref else None
     old_workflow = previous.get("workflow", {}) if isinstance(previous, dict) else {}
     new_workflow = manifest.get("workflow", {})
     old = old_workflow.get("approval_policy") if isinstance(old_workflow, dict) else None
@@ -1028,7 +1032,7 @@ def manifest_from_git(root, revision, manifest_path):
         raise ConfigError("historical manifest must be a JSON object")
     return data
 
-def control_plane_check(root, manifest, manifest_path, mode, changed_paths, commit_ref=None, allow=False):
+def control_plane_check(root, manifest, manifest_path, mode, changed_paths, commit_ref=None, allow=False, submission_baseline=None):
     """Block control-plane edits unless explicitly approved outside the repository."""
     if git_is_shallow(root):
         raise ConfigError("commit validation requires full Git history; shallow checkout is not supported")
@@ -1037,6 +1041,8 @@ def control_plane_check(root, manifest, manifest_path, mode, changed_paths, comm
     protected = set(control_plane_paths(root, manifest, manifest_path))
     baseline_ref = "HEAD" if mode == "commit" else git_parent(root, commit_ref) if commit_ref else None
     baseline = manifest_from_git(root, baseline_ref, manifest_path) if baseline_ref else None
+    if submission_baseline is not None:
+        submission_baseline["manifest"] = baseline
     if isinstance(baseline, dict):
         protected.update(control_plane_paths(root, baseline, manifest_path))
     changed = sorted(path for path in changed_paths if any(covered(path, scope) for scope in protected))
@@ -1966,6 +1972,7 @@ def main(argv=None):
     commands_allowed = args.mode not in ("commit", "committed")
     snapshot = None
     cancelled_exit = None
+    submission_baseline = {}
     try:
         root = safe_root(args.root)
         if args.mode in ("commit", "committed"):
@@ -1997,7 +2004,8 @@ def main(argv=None):
                 report["changed_paths"], check = change_check(root, manifest, docs, modules, tasks, task_id,
                                                                paths=staged_git_paths(root), rule_id="commit-scope")
                 control_check = control_plane_check(root, manifest, args.manifest, args.mode,
-                                                    report["changed_paths"], allow=args.allow_control_plane_change)
+                                                    report["changed_paths"], allow=args.allow_control_plane_change,
+                                                    submission_baseline=submission_baseline)
                 report["checks"].append(control_check)
                 gate = implementation_gate(root, manifest, report["changed_paths"], task_id)
                 if gate is not None:
@@ -2029,7 +2037,8 @@ def main(argv=None):
                                                                scope_label="checked-out commit tree versus first parent")
                 control_check = control_plane_check(root, manifest, args.manifest, args.mode,
                                                     report["changed_paths"], commit_ref=args.commit_ref,
-                                                    allow=args.allow_control_plane_change)
+                                                    allow=args.allow_control_plane_change,
+                                                    submission_baseline=submission_baseline)
                 report["checks"].append(control_check)
                 gate = implementation_gate(root, manifest, report["changed_paths"], task_id)
                 if gate is not None:
@@ -2052,7 +2061,8 @@ def main(argv=None):
         if args.mode in ("change", "handoff", "commit", "committed") and relative_scope(root, args.manifest) in report["changed_paths"] and not any(
                 item["required"] and item["status"] != "pass" for item in report["checks"]):
             try:
-                history_check = approval_policy_history_check(root, manifest, args.manifest, args.mode, args.base, args.commit_ref, args.allow_control_plane_change)
+                history_check = approval_policy_history_check(root, manifest, args.manifest, args.mode, args.base, args.commit_ref,
+                                                             args.allow_control_plane_change, submission_baseline)
                 if history_check is not None:
                     report["checks"].append(history_check)
             except (ConfigError, OSError, subprocess.TimeoutExpired) as exc:

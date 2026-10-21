@@ -971,7 +971,7 @@
       "runtime": "task-owned CPython3.11.15",
       "source_hashes_match_after_verification": true
     },
-    "delivery_state": "Local implementation validated; no commit/push/global install/target project migration",
+    "delivery_state": "Reviewed 1.8.0 source uploaded to GitHub main with original staged/exact-commit checks; no global install or target project migration",
     "manual_semantic_review": {
       "method": "Same-agent source review and bounded tabletop scenarios, not independent agent behavior testing",
       "cases": [
@@ -1005,13 +1005,1531 @@
     }
   },
   "github_upload": {
-    "status": "authorized_pending_submission_gates",
+    "status": "source_uploaded_to_main",
     "recorded_at": "2026-10-21T13:35:58.671837+08:00",
     "user_statement": "上传github",
     "branch": "codex/issue-23-approval-contract",
     "base_remote_main": "d214021d8c462d5b7733d0cb3f04a26f8f3bb35b",
     "scope": "Reviewed Issue23 1.8.0 source and linked evidence; no hosted Release/global install/target project migration",
     "secret_pattern_scan": "No PAT patterns in changed/new files",
-    "source_hashes": "match final formally checked runtime/tests/templates"
+    "source_hashes": "match final formally checked runtime/tests/templates",
+    "uploaded_at": "2026-10-21T13:42:38.686116+08:00",
+    "source_commit": "9723921ceac69db363fb4b655d761bc61b956e0f",
+    "source_tree": "4165482e1a8b8cf781e1de56a545128540dcbdf2",
+    "remote_main_verified": "9723921ceac69db363fb4b655d761bc61b956e0f",
+    "source_url": "https://github.com/wang546673478/engineering-workflow/commit/9723921ceac69db363fb4b655d761bc61b956e0f",
+    "publication_kind": "Git source upload only; version remains 1.8.0 Unreleased; no tag/Release",
+    "hosted_ci": "Source commit 9723921: Linux reviewed, Windows reviewed and aggregate quality all success; run39551012856",
+    "receipt_scope": "This follow-up changes publication evidence and current state only; no new version or runtime change",
+    "submission_gates": {
+      "staged": {
+        "exit_code": 0,
+        "report": "work/issue-23-review/upload-commit.json",
+        "report_sha256": "c9ccb63a04cf03c01e4f24d74162475108be90d56be5e237be12bdc40550e5ee",
+        "tool_version": "1.8.0",
+        "mode": "commit",
+        "required_checks_satisfied": true,
+        "checks": [
+          {
+            "rule_id": "document:BASELINE_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/baseline-workflow-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTINUITY_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/continuous-requirements-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:VERSION_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/version-policy-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:STAGES_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/takeover-stages-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:SPEC",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/spec.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:MAP",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/module-map.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:DB",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/database.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTRACT",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/contracts.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:FLOW",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/business-flow.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:IMPACT",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/change-impact.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:BASELINE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/baseline-review.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:SKILL_REVIEW",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/skill-review.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:PERSISTENCE_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/persistence-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-11-13-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:AUTO_REVIEW_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-14-auto-review-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_SECURITY_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-14-16-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:PLAN",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/plan.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:TRACE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/traceability.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:LINKED_ARTIFACT_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/linked-artifact-model-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTEXT_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/source-context-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTEXT_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/source-context-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTEXT_BENCHMARK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/source-context-benchmark.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_17_18_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-17-18-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_17_18_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-17-18-fix-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_19_21_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-19-21-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_19_21_FIX_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-19-21-fix-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ADOPTION_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/adoption-lifecycle-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ADOPTION_IMPACT",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/adoption-lifecycle-impact.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ADOPTION_VERIFICATION",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/adoption-lifecycle-verification.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_ASSESSMENT",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-assessment.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_SPEC",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-spec.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_PLAN",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-plan.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_SPEC",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-spec.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_PLAN",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-plan.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_SESSION",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-session-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "workflow-lifecycle",
+            "status": "partial",
+            "required": false,
+            "checked_scope": "legacy manifest without stage lifecycle",
+            "evidence": "existing compatibility path retained",
+            "limitations": [
+              "This manifest does not receive automatic takeover-stage or implementation authorization gates until lifecycle fields are adopted."
+            ]
+          },
+          {
+            "rule_id": "approval-evidence",
+            "status": "partial",
+            "required": false,
+            "checked_scope": "legacy approval declarations",
+            "evidence": {
+              "status": "legacy_unverified",
+              "reason": "no structured approval policy enabled",
+              "declared_records": {
+                "implementation_authorization": {
+                  "status": "approved",
+                  "evidence": "planning/issue-23-task.md"
+                },
+                "spec_review": {
+                  "status": "approved",
+                  "evidence": "planning/issue-23-task.md"
+                },
+                "plan_review": {
+                  "status": "approved",
+                  "evidence": "planning/issue-23-task.md"
+                }
+              }
+            },
+            "limitations": [
+              "Legacy validation is preserved; a passing command result does not verify approval content or current scope."
+            ]
+          },
+          {
+            "rule_id": "manifest",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "declared IDs, references, graph and baseline",
+            "evidence": [
+              "manifest validated"
+            ],
+            "limitations": [
+              "Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."
+            ]
+          },
+          {
+            "rule_id": "inventory:database",
+            "status": "partial",
+            "required": false,
+            "checked_scope": "No application database; adapter metadata boundary only",
+            "evidence": {
+              "provenance": {
+                "type": "manual",
+                "scope": "No application database; adapter metadata boundary only",
+                "complete": false,
+                "evidence": "docs/database.md",
+                "source_files": []
+              },
+              "coverage": [
+                "items and fields match"
+              ],
+              "item_count": 0
+            },
+            "limitations": [
+              "Manual/unknown sources cannot prove full coverage. SQLite completeness covers the declared metadata scope only. Remote adapter snapshots prove internal integrity and declared metadata shape, not live database truth; field semantics and real usage require code review."
+            ]
+          },
+          {
+            "rule_id": "inventory:contracts",
+            "status": "partial",
+            "required": false,
+            "checked_scope": "Checker CLI and metadata snapshot contracts documented manually",
+            "evidence": {
+              "provenance": {
+                "type": "manual",
+                "scope": "Checker CLI and metadata snapshot contracts documented manually",
+                "complete": false,
+                "evidence": "docs/contracts.md",
+                "source_files": []
+              },
+              "coverage": [
+                "items and fields match"
+              ],
+              "item_count": 0
+            },
+            "limitations": [
+              "Manual/unknown sources cannot prove full coverage. SQLite completeness covers the declared metadata scope only. Remote adapter snapshots prove internal integrity and declared metadata shape, not live database truth; field semantics and real usage require code review."
+            ]
+          },
+          {
+            "rule_id": "task-gate",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "selected task approval/dependencies/status",
+            "evidence": [
+              "TASK-ISSUE-23-PROPOSAL"
+            ],
+            "limitations": []
+          },
+          {
+            "rule_id": "control-plane",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "baseline control-plane paths and submitted tree",
+            "evidence": {
+              "protected_paths": [
+                ".github/CODEOWNERS",
+                ".github/scripts/finalize_reviewed_quality.py",
+                ".github/workflows/quality.yml",
+                "CHANGELOG.md",
+                "SKILL.md",
+                "VERSION",
+                "assets/templates/ci-committed.engineering",
+                "assets/templates/ci-committed.engineering.ps1",
+                "assets/templates/pre-commit.engineering",
+                "assets/templates/pre-commit.engineering.ps1",
+                "engineering-manifest.json",
+                "references/checker.md",
+                "scripts/check_project.py"
+              ],
+              "changed_paths": [
+                "CHANGELOG.md",
+                "SKILL.md",
+                "VERSION",
+                "assets/templates/ci-committed.engineering",
+                "assets/templates/ci-committed.engineering.ps1",
+                "assets/templates/pre-commit.engineering",
+                "assets/templates/pre-commit.engineering.ps1",
+                "engineering-manifest.json",
+                "references/checker.md",
+                "scripts/check_project.py"
+              ],
+              "first_adoption": false,
+              "approval_variable": "ENGINEERING_CONTROL_PLANE_APPROVED",
+              "external_approval_present": true
+            },
+            "limitations": [
+              "Control-plane approval is intentionally supplied outside the repository; review the manifest and checker changes separately."
+            ]
+          },
+          {
+            "rule_id": "commit-scope",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "Git staged index including deletions and rename endpoints",
+            "evidence": {
+              "uncovered": [],
+              "excluded": [],
+              "allowed": [
+                "SKILL.md",
+                "README.md",
+                "AGENTS.md",
+                "VERSION",
+                "CHANGELOG.md",
+                "LICENSE",
+                "scripts/install_agents_guidance.py",
+                "scripts/init_manifest.py",
+                "agents",
+                "assets",
+                "references",
+                "scripts/adopt_project.py",
+                "docs/module-map.md",
+                "scripts/check_project.py",
+                "docs/module-map.md",
+                "scripts/tests",
+                "docs/module-map.md",
+                "engineering-manifest.json",
+                ".gitignore",
+                "docs",
+                "planning",
+                ".github",
+                "docs/module-map.md",
+                "planning/issue-23-task.md",
+                "planning/baseline-review.md",
+                "docs/spec.md",
+                "docs/plan.md",
+                "docs/module-map.md",
+                "docs/contracts.md",
+                "docs/business-flow.md",
+                "planning/traceability.md",
+                "planning/issue-23-task.md",
+                "planning/issue-23-spec.md",
+                "planning/issue-23-plan.md",
+                "planning/issue-23-evidence.json",
+                "planning/issue-23-session-evidence.json",
+                "planning/baseline-review.md",
+                "docs/module-map.md",
+                "docs/contracts.md",
+                "docs/business-flow.md",
+                "docs/spec.md",
+                "docs/plan.md",
+                "planning/traceability.md",
+                "planning/issue-23-task.md",
+                "planning/issue-23-spec.md",
+                "planning/issue-23-plan.md",
+                "planning/issue-23-evidence.json"
+              ],
+              "documentation_gaps": []
+            },
+            "limitations": [
+              "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+            ]
+          },
+          {
+            "rule_id": "TEST",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "fresh invocation",
+            "evidence": {
+              "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+              "working_directory": ".",
+              "returncode": 0,
+              "duration_seconds": 116.5,
+              "output_bytes": 647,
+              "output_sha256": "360165524971c1715350dbec0fcaa9b873fdf0bdfdce2aaefec51a1d1846a11a",
+              "output_limit_bytes": 8388608,
+              "output_limit_exceeded": false,
+              "timed_out": false,
+              "reader_failed": false,
+              "reader_stalled": false,
+              "output_complete": true,
+              "cleanup_timed_out": false
+            },
+            "limitations": [
+              "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+            ]
+          },
+          {
+            "rule_id": "COMPILE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "fresh invocation",
+            "evidence": {
+              "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+              "working_directory": ".",
+              "returncode": 0,
+              "duration_seconds": 0.203,
+              "output_bytes": 0,
+              "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_limit_bytes": 8388608,
+              "output_limit_exceeded": false,
+              "timed_out": false,
+              "reader_failed": false,
+              "reader_stalled": false,
+              "output_complete": true,
+              "cleanup_timed_out": false
+            },
+            "limitations": [
+              "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+            ]
+          },
+          {
+            "rule_id": "GUIDANCE-COMPILE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "fresh invocation",
+            "evidence": {
+              "command_sha256": "f71303755023779206467a91468aea12cee521bc95420b4790880afaec014808",
+              "working_directory": ".",
+              "returncode": 0,
+              "duration_seconds": 0.203,
+              "output_bytes": 0,
+              "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_limit_bytes": 8388608,
+              "output_limit_exceeded": false,
+              "timed_out": false,
+              "reader_failed": false,
+              "reader_stalled": false,
+              "output_complete": true,
+              "cleanup_timed_out": false
+            },
+            "limitations": [
+              "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+            ]
+          },
+          {
+            "rule_id": "verification-state",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "HEAD, index tree and worktree after declared checks",
+            "evidence": {
+              "before": {
+                "head": "d214021d8c462d5b7733d0cb3f04a26f8f3bb35b",
+                "tree": "4165482e1a8b8cf781e1de56a545128540dcbdf2"
+              },
+              "after": {
+                "head": "d214021d8c462d5b7733d0cb3f04a26f8f3bb35b",
+                "tree": "4165482e1a8b8cf781e1de56a545128540dcbdf2"
+              },
+              "index_paths": [],
+              "worktree_paths": []
+            },
+            "limitations": [
+              "Boundary snapshots detect persistent drift, not transient changes restored by hostile code, later hook races or sandbox escapes."
+            ]
+          }
+        ],
+        "summary": "required checks satisfied",
+        "changed_paths": [
+          "CHANGELOG.md",
+          "README.md",
+          "SKILL.md",
+          "VERSION",
+          "agents/openai.yaml",
+          "assets/templates/ci-committed.engineering",
+          "assets/templates/ci-committed.engineering.ps1",
+          "assets/templates/decision-log.md",
+          "assets/templates/pre-commit.engineering",
+          "assets/templates/pre-commit.engineering.ps1",
+          "assets/templates/project-manifest.example.json",
+          "assets/templates/spec-plan-task.md",
+          "docs/business-flow.md",
+          "docs/contracts.md",
+          "docs/module-map.md",
+          "docs/plan.md",
+          "docs/spec.md",
+          "engineering-manifest.json",
+          "planning/baseline-review.md",
+          "planning/issue-23-evidence.json",
+          "planning/issue-23-plan.md",
+          "planning/issue-23-session-evidence.json",
+          "planning/issue-23-spec.md",
+          "planning/issue-23-task.md",
+          "planning/traceability.md",
+          "references/adoption-lifecycle.md",
+          "references/baseline-linked-artifacts.md",
+          "references/checker.md",
+          "references/implementation-workflow.md",
+          "references/requirements-interview.md",
+          "scripts/adopt_project.py",
+          "scripts/check_project.py",
+          "scripts/init_manifest.py",
+          "scripts/tests/test_adoption.py",
+          "scripts/tests/test_checker.py",
+          "scripts/tests/test_init.py"
+        ],
+        "errors": [],
+        "verified_tree": "4165482e1a8b8cf781e1de56a545128540dcbdf2",
+        "verification_head": "d214021d8c462d5b7733d0cb3f04a26f8f3bb35b"
+      },
+      "committed": {
+        "exit_code": 0,
+        "report": "work/issue-23-review/upload-committed.json",
+        "report_sha256": "a09597c7d7c1d3f28cedc63bde48ca6231077fa276fc614ee5e176844cced805",
+        "tool_version": "1.8.0",
+        "mode": "committed",
+        "required_checks_satisfied": true,
+        "checks": [
+          {
+            "rule_id": "document:BASELINE_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/baseline-workflow-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTINUITY_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/continuous-requirements-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:VERSION_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/version-policy-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:STAGES_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/takeover-stages-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:SPEC",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/spec.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:MAP",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/module-map.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:DB",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/database.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTRACT",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/contracts.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:FLOW",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/business-flow.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:IMPACT",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/change-impact.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:BASELINE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/baseline-review.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:SKILL_REVIEW",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/skill-review.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:PERSISTENCE_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/persistence-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-11-13-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:AUTO_REVIEW_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-14-auto-review-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_SECURITY_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-14-16-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:PLAN",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "docs/plan.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:TRACE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/traceability.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:LINKED_ARTIFACT_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/linked-artifact-model-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTEXT_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/source-context-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTEXT_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/source-context-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:CONTEXT_BENCHMARK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/source-context-benchmark.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_17_18_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-17-18-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_17_18_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-17-18-fix-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_19_21_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-19-21-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUES_19_21_FIX_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issues-19-21-fix-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ADOPTION_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/adoption-lifecycle-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ADOPTION_IMPACT",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/adoption-lifecycle-impact.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ADOPTION_VERIFICATION",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/adoption-lifecycle-verification.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_ASSESSMENT",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-assessment.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_SPEC",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-spec.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE22_PLAN",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-22-plan.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_TASK",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-task.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_SPEC",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-spec.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_PLAN",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-plan.md",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_EVIDENCE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "document:ISSUE23_SESSION",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "document existence",
+            "evidence": "planning/issue-23-session-evidence.json",
+            "limitations": []
+          },
+          {
+            "rule_id": "workflow-lifecycle",
+            "status": "partial",
+            "required": false,
+            "checked_scope": "legacy manifest without stage lifecycle",
+            "evidence": "existing compatibility path retained",
+            "limitations": [
+              "This manifest does not receive automatic takeover-stage or implementation authorization gates until lifecycle fields are adopted."
+            ]
+          },
+          {
+            "rule_id": "approval-evidence",
+            "status": "partial",
+            "required": false,
+            "checked_scope": "legacy approval declarations",
+            "evidence": {
+              "status": "legacy_unverified",
+              "reason": "no structured approval policy enabled",
+              "declared_records": {
+                "implementation_authorization": {
+                  "status": "approved",
+                  "evidence": "planning/issue-23-task.md"
+                },
+                "spec_review": {
+                  "status": "approved",
+                  "evidence": "planning/issue-23-task.md"
+                },
+                "plan_review": {
+                  "status": "approved",
+                  "evidence": "planning/issue-23-task.md"
+                }
+              }
+            },
+            "limitations": [
+              "Legacy validation is preserved; a passing command result does not verify approval content or current scope."
+            ]
+          },
+          {
+            "rule_id": "manifest",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "declared IDs, references, graph and baseline",
+            "evidence": [
+              "manifest validated"
+            ],
+            "limitations": [
+              "Declared dependencies are not a discovered runtime graph; approval meaning and document semantics need review."
+            ]
+          },
+          {
+            "rule_id": "inventory:database",
+            "status": "partial",
+            "required": false,
+            "checked_scope": "No application database; adapter metadata boundary only",
+            "evidence": {
+              "provenance": {
+                "type": "manual",
+                "scope": "No application database; adapter metadata boundary only",
+                "complete": false,
+                "evidence": "docs/database.md",
+                "source_files": []
+              },
+              "coverage": [
+                "items and fields match"
+              ],
+              "item_count": 0
+            },
+            "limitations": [
+              "Manual/unknown sources cannot prove full coverage. SQLite completeness covers the declared metadata scope only. Remote adapter snapshots prove internal integrity and declared metadata shape, not live database truth; field semantics and real usage require code review."
+            ]
+          },
+          {
+            "rule_id": "inventory:contracts",
+            "status": "partial",
+            "required": false,
+            "checked_scope": "Checker CLI and metadata snapshot contracts documented manually",
+            "evidence": {
+              "provenance": {
+                "type": "manual",
+                "scope": "Checker CLI and metadata snapshot contracts documented manually",
+                "complete": false,
+                "evidence": "docs/contracts.md",
+                "source_files": []
+              },
+              "coverage": [
+                "items and fields match"
+              ],
+              "item_count": 0
+            },
+            "limitations": [
+              "Manual/unknown sources cannot prove full coverage. SQLite completeness covers the declared metadata scope only. Remote adapter snapshots prove internal integrity and declared metadata shape, not live database truth; field semantics and real usage require code review."
+            ]
+          },
+          {
+            "rule_id": "task-gate",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "selected task approval/dependencies/status",
+            "evidence": [
+              "TASK-ISSUE-23-PROPOSAL"
+            ],
+            "limitations": []
+          },
+          {
+            "rule_id": "control-plane",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "baseline control-plane paths and submitted tree",
+            "evidence": {
+              "protected_paths": [
+                ".github/CODEOWNERS",
+                ".github/scripts/finalize_reviewed_quality.py",
+                ".github/workflows/quality.yml",
+                "CHANGELOG.md",
+                "SKILL.md",
+                "VERSION",
+                "assets/templates/ci-committed.engineering",
+                "assets/templates/ci-committed.engineering.ps1",
+                "assets/templates/pre-commit.engineering",
+                "assets/templates/pre-commit.engineering.ps1",
+                "engineering-manifest.json",
+                "references/checker.md",
+                "scripts/check_project.py"
+              ],
+              "changed_paths": [
+                "CHANGELOG.md",
+                "SKILL.md",
+                "VERSION",
+                "assets/templates/ci-committed.engineering",
+                "assets/templates/ci-committed.engineering.ps1",
+                "assets/templates/pre-commit.engineering",
+                "assets/templates/pre-commit.engineering.ps1",
+                "engineering-manifest.json",
+                "references/checker.md",
+                "scripts/check_project.py"
+              ],
+              "first_adoption": false,
+              "approval_variable": "ENGINEERING_CONTROL_PLANE_APPROVED",
+              "external_approval_present": true
+            },
+            "limitations": [
+              "Control-plane approval is intentionally supplied outside the repository; review the manifest and checker changes separately."
+            ]
+          },
+          {
+            "rule_id": "committed-scope",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "checked-out commit tree versus first parent",
+            "evidence": {
+              "uncovered": [],
+              "excluded": [],
+              "allowed": [
+                "SKILL.md",
+                "README.md",
+                "AGENTS.md",
+                "VERSION",
+                "CHANGELOG.md",
+                "LICENSE",
+                "scripts/install_agents_guidance.py",
+                "scripts/init_manifest.py",
+                "agents",
+                "assets",
+                "references",
+                "scripts/adopt_project.py",
+                "docs/module-map.md",
+                "scripts/check_project.py",
+                "docs/module-map.md",
+                "scripts/tests",
+                "docs/module-map.md",
+                "engineering-manifest.json",
+                ".gitignore",
+                "docs",
+                "planning",
+                ".github",
+                "docs/module-map.md",
+                "planning/issue-23-task.md",
+                "planning/baseline-review.md",
+                "docs/spec.md",
+                "docs/plan.md",
+                "docs/module-map.md",
+                "docs/contracts.md",
+                "docs/business-flow.md",
+                "planning/traceability.md",
+                "planning/issue-23-task.md",
+                "planning/issue-23-spec.md",
+                "planning/issue-23-plan.md",
+                "planning/issue-23-evidence.json",
+                "planning/issue-23-session-evidence.json",
+                "planning/baseline-review.md",
+                "docs/module-map.md",
+                "docs/contracts.md",
+                "docs/business-flow.md",
+                "docs/spec.md",
+                "docs/plan.md",
+                "planning/traceability.md",
+                "planning/issue-23-task.md",
+                "planning/issue-23-spec.md",
+                "planning/issue-23-plan.md",
+                "planning/issue-23-evidence.json"
+              ],
+              "documentation_gaps": []
+            },
+            "limitations": [
+              "Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."
+            ]
+          },
+          {
+            "rule_id": "TEST",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "fresh invocation",
+            "evidence": {
+              "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+              "working_directory": ".",
+              "returncode": 0,
+              "duration_seconds": 116.5,
+              "output_bytes": 647,
+              "output_sha256": "d17050571e5eadbeea070385034056b0cb4a3f3b56f64d73907e738a82916bc1",
+              "output_limit_bytes": 8388608,
+              "output_limit_exceeded": false,
+              "timed_out": false,
+              "reader_failed": false,
+              "reader_stalled": false,
+              "output_complete": true,
+              "cleanup_timed_out": false
+            },
+            "limitations": [
+              "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+            ]
+          },
+          {
+            "rule_id": "COMPILE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "fresh invocation",
+            "evidence": {
+              "command_sha256": "fb8e008ab50255e9a1b20674b6543867a125f2c25ccc1eae7acc9a4ba4f87a0f",
+              "working_directory": ".",
+              "returncode": 0,
+              "duration_seconds": 0.219,
+              "output_bytes": 0,
+              "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_limit_bytes": 8388608,
+              "output_limit_exceeded": false,
+              "timed_out": false,
+              "reader_failed": false,
+              "reader_stalled": false,
+              "output_complete": true,
+              "cleanup_timed_out": false
+            },
+            "limitations": [
+              "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+            ]
+          },
+          {
+            "rule_id": "GUIDANCE-COMPILE",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "fresh invocation",
+            "evidence": {
+              "command_sha256": "f71303755023779206467a91468aea12cee521bc95420b4790880afaec014808",
+              "working_directory": ".",
+              "returncode": 0,
+              "duration_seconds": 0.234,
+              "output_bytes": 0,
+              "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_limit_bytes": 8388608,
+              "output_limit_exceeded": false,
+              "timed_out": false,
+              "reader_failed": false,
+              "reader_stalled": false,
+              "output_complete": true,
+              "cleanup_timed_out": false
+            },
+            "limitations": [
+              "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+            ]
+          },
+          {
+            "rule_id": "verification-state",
+            "status": "pass",
+            "required": true,
+            "checked_scope": "HEAD, index tree and worktree after declared checks",
+            "evidence": {
+              "before": {
+                "head": "9723921ceac69db363fb4b655d761bc61b956e0f",
+                "tree": "4165482e1a8b8cf781e1de56a545128540dcbdf2"
+              },
+              "after": {
+                "head": "9723921ceac69db363fb4b655d761bc61b956e0f",
+                "tree": "4165482e1a8b8cf781e1de56a545128540dcbdf2"
+              },
+              "index_paths": [],
+              "worktree_paths": []
+            },
+            "limitations": [
+              "Boundary snapshots detect persistent drift, not transient changes restored by hostile code, later hook races or sandbox escapes."
+            ]
+          }
+        ],
+        "summary": "required checks satisfied",
+        "changed_paths": [
+          "CHANGELOG.md",
+          "README.md",
+          "SKILL.md",
+          "VERSION",
+          "agents/openai.yaml",
+          "assets/templates/ci-committed.engineering",
+          "assets/templates/ci-committed.engineering.ps1",
+          "assets/templates/decision-log.md",
+          "assets/templates/pre-commit.engineering",
+          "assets/templates/pre-commit.engineering.ps1",
+          "assets/templates/project-manifest.example.json",
+          "assets/templates/spec-plan-task.md",
+          "docs/business-flow.md",
+          "docs/contracts.md",
+          "docs/module-map.md",
+          "docs/plan.md",
+          "docs/spec.md",
+          "engineering-manifest.json",
+          "planning/baseline-review.md",
+          "planning/issue-23-evidence.json",
+          "planning/issue-23-plan.md",
+          "planning/issue-23-session-evidence.json",
+          "planning/issue-23-spec.md",
+          "planning/issue-23-task.md",
+          "planning/traceability.md",
+          "references/adoption-lifecycle.md",
+          "references/baseline-linked-artifacts.md",
+          "references/checker.md",
+          "references/implementation-workflow.md",
+          "references/requirements-interview.md",
+          "scripts/adopt_project.py",
+          "scripts/check_project.py",
+          "scripts/init_manifest.py",
+          "scripts/tests/test_adoption.py",
+          "scripts/tests/test_checker.py",
+          "scripts/tests/test_init.py"
+        ],
+        "errors": [],
+        "verified_tree": "4165482e1a8b8cf781e1de56a545128540dcbdf2",
+        "verification_head": "9723921ceac69db363fb4b655d761bc61b956e0f"
+      }
+    },
+    "hosted_ci_snapshot": {
+      "run": {
+        "id": 39551012856,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "9723921ceac69db363fb4b655d761bc61b956e0f",
+        "html_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39551012856"
+      },
+      "jobs": [
+        {
+          "id": 119059969726,
+          "name": "detect protected paths",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39551012856/job/119059969726"
+        },
+        {
+          "id": 119059971028,
+          "name": "manual reviewed (${{ matrix.os }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39551012856/job/119059971028"
+        },
+        {
+          "id": 119060002879,
+          "name": "reviewed (ubuntu-latest)",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39551012856/job/119060002879"
+        },
+        {
+          "id": 119060002951,
+          "name": "reviewed (windows-latest)",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39551012856/job/119060002951"
+        },
+        {
+          "id": 119060004441,
+          "name": "ordinary (${{ matrix.os }})",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39551012856/job/119060004441"
+        },
+        {
+          "id": 119060995491,
+          "name": "quality",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/wang546673478/engineering-workflow/actions/runs/39551012856/job/119060995491"
+        }
+      ]
+    },
+    "hosted_ci_note": "Initial unauthenticated API request was rate-limited; reused existing Git authentication read-only, no credential recorded. Hosted results remain separate from local original-gate success.",
+    "receipt_validation_history": [
+      {
+        "report": "work/issue-23-review/upload-receipt-commit.json",
+        "report_sha256": "ac2e4628ca44262c0c3f56d00312b05b0e631b4ba43f92153edb80b4805bb553",
+        "mode": "commit",
+        "exit_code": 1,
+        "required_checks_satisfied": false,
+        "errors": [],
+        "TEST": {
+          "rule_id": "TEST",
+          "status": "fail",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 1,
+            "duration_seconds": 120.016,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": true,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": false,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        "reason": "Original TEST timed out at unchanged120seconds. Source commit gates and hosted CI remain independent; this failed receipt gate is not replaced by diagnostic success."
+      },
+      {
+        "report": "work/issue-23-review/upload-receipt-commit-final.json",
+        "sha256": "a441f95f8de22fb1115d7ec18f0534bf659d8cdb774587d75c8676dc47e5e73b",
+        "exit_code": 1,
+        "required_checks_satisfied": false,
+        "TEST": {
+          "rule_id": "TEST",
+          "status": "fail",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 1,
+            "duration_seconds": 120.0,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": true,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": false,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        "reason": "Second original receipt gate reached120seconds. Failure retained independently."
+      },
+      {
+        "kind": "diagnostic_only",
+        "command": "python -m unittest discover -s scripts/tests -v",
+        "exit_code": 0,
+        "test_count": 225,
+        "duration_seconds": 127.107,
+        "sha256": "c6f697f8939e666c64ab7759b8a4c2e22de6e9656bf0ec8b3aab6dd809fe9fa9",
+        "qualifies_for_required_TEST": false
+      },
+      {
+        "report": "work/issue-23-review/upload-receipt-native-commit.json",
+        "sha256": "8d2375ef0870bbe0d6ebb18c38d9cfcc82eb1edd5fc683dc4a30a594f22ec420",
+        "exit_code": 1,
+        "required_checks_satisfied": false,
+        "TEST": {
+          "rule_id": "TEST",
+          "status": "fail",
+          "required": true,
+          "checked_scope": "fresh invocation",
+          "evidence": {
+            "command_sha256": "03dfdb6de6fd48b5a3c70647152ddaa3a6bc627d36fc34917dac56b0fe361d73",
+            "working_directory": ".",
+            "returncode": 1,
+            "duration_seconds": 120.016,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_limit_bytes": 8388608,
+            "output_limit_exceeded": false,
+            "timed_out": true,
+            "reader_failed": false,
+            "reader_stalled": false,
+            "output_complete": false,
+            "cleanup_timed_out": false
+          },
+          "limitations": [
+            "Raw command output and argv are omitted to avoid leaking secrets. Common skip summaries are detected, but the absence of a marker cannot prove no checks were skipped."
+          ]
+        },
+        "reason": "BundledGit environment also reached unchanged120seconds; no diagnostic result substitutes for it."
+      }
+    ],
+    "receipt_validation_environment": {
+      "python": "task-owned CPython3.11.15",
+      "original_git": "system Git2.47.0.windows.2",
+      "next_run_git": "bundled Git2.53.0.windows.3; task-process PATH only",
+      "checks_and_timeouts": "unchanged"
+    },
+    "followup_scope": {
+      "status": "implementation_preserving_optimization_pending_original_gates",
+      "reason": "Repeated receipt TEST timeouts after initial source and hosted success; avoid duplicate historical-manifest Git subprocesses within the same CLI verification and extra interpreter startup for static contract CLI tests. No assertions/cases/checks/timeouts/approval meaning changed.",
+      "previous_source_commit": "9723921ceac69db363fb4b655d761bc61b956e0f",
+      "version": "1.8.0 Unreleased, same authorized delivery batch",
+      "original_source_hashes": {
+        "scripts/check_project.py": "c6196f7e16eeb2a152de59ba7cf22301f094d85c611bb4f09cb9f7b1a8529e3b",
+        "scripts/tests/test_checker.py": "6d42c7485a243e74749283123d5b0fa6957053128579d0be4da5bca0cd95c111"
+      },
+      "current_source_hashes": {
+        "scripts/check_project.py": "3bcb3eaf9276969797608816d0ed46f1dea11da51e6e2cfdb90e7613174232d9",
+        "scripts/tests/test_checker.py": "2e43b868e91171cf9e044cd325461f553629ba307dfa5e345dbc6daa7625c340"
+      }
+    }
   }
 }

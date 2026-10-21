@@ -1,5 +1,9 @@
 # Current implemented technical plan: PLAN-ISSUE23-01 r1
 
+同批技术保持性修正：提交校验在单次main内复用control-plane已读取的历史manifest，避免重复Git查询；缓存不跨验证运行。静态合同用例经同一公开CLI入口减少解释器启动，原安全断言、测试/超时/同步边界保持。新源码门槛结果见Issue23 Task/evidence。
+
+源上传回执（2026-10-21）：1.8.0实现提交`9723921ceac69db363fb4b655d761bc61b956e0f`已上传origin/main，原commit/committed门槛与远端SHA核对通过。此记录只更新发布事实，原内容/限制及Unreleased保留；托管CI、全局安装和外部项目迁移分开记录。
+
 当前交付（2026-10-21）：批准范围内本地实现及原正式检查完成，1.8.0 / Unreleased；最终源与验证、可选partial及平台限制见[当前Task](../planning/issue-23-task.md)。本条为当前状态，下面准备/执行进度保留历史范围。
 
 当前实施状态（2026-10-21）：用户“那就开始实施吧”批准已展示完整方案及影响说明；本轮本地实施与验证完成，诊断默认、strict显式启用。批准与执行证据见[当前Task](../planning/issue-23-task.md)。下文原draft/pending措辞保留为准备历史，不代表当前授权。

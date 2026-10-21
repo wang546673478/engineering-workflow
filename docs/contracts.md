@@ -1,5 +1,9 @@
 # Engineering Workflow Contracts
 
+同批技术保持性修正：提交校验在单次main内复用control-plane已读取的历史manifest，避免重复Git查询；缓存不跨验证运行。静态合同用例经同一公开CLI入口减少解释器启动，原安全断言、测试/超时/同步边界保持。新源码门槛结果见Issue23 Task/evidence。
+
+源上传回执（2026-10-21）：实现9723921已通过原提交门槛并核对origin/main；本次仅同步发布事实，运行合同与技术范围不变。详见当前Issue23 Task/evidence。
+
 ## Issue 23 current approval/report contract / 1.8.0
 
 Optional record_contract=1 keeps schema_version=1; enforcement defaults diagnostic and strict is explicit. Existing stages, original required checks, process limits, Git state and document-impact rules remain. approval-evidence validates record structure, safe references, reviewed section hashes, selected task batch/REQ/AT and Plan/Spec revision. The current implementation also checks old task.approval_required. approval-sequence is diagnostic unless separately strict; history guards reject silent policy weakening. Legacy content coverage remains nonrequired partial. Explicit migration previews proposed data before atomic apply. Capability flag prevents accidental execution with old checker. [Field contract](../references/checker.md#结构化批准证据合同), [Task](../planning/issue-23-task.md).

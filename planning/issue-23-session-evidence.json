@@ -254,5 +254,10 @@
     "消息顺序可见，但没有每个工具项的独立墙钟时间。",
     "读取时第三个 turn 仍在执行；不判断之后的数据清理是否已执行。",
     "未复制原始会话、业务行、账号口令、API凭据或完整工具输出。"
-  ]
+  ],
+  "publication_context": {
+    "source_commit": "9723921ceac69db363fb4b655d761bc61b956e0f",
+    "scope": "Publication receipt only; original read snapshot and message evidence remain unchanged",
+    "evidence": "planning/issue-23-evidence.json"
+  }
 }

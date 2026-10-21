@@ -4193,7 +4193,7 @@
         "bump_required_this_batch": true,
         "reason": "Backward-compatible optional structured approval capability plus guidance and migration helpers",
         "proposed_implementation_version": "1.8.0 Unreleased",
-        "publication_status": "github_source_upload_authorized_pending_gates",
+        "publication_status": "github_source_uploaded_no_tag_or_release",
         "target_version": "1.8.0",
         "previous_version": "1.7.2",
         "synchronization_paths": [
@@ -4209,7 +4209,7 @@
         "receipt_no_bump_reason": "Submission/publication records do not change the delivered 1.8.0 content."
       },
       "verification_status": "required_checks_pass_with_declared_optional_partials",
-      "delivery_status": "github_upload_authorized_submission_checks_in_progress",
+      "delivery_status": "source_uploaded_to_github_main",
       "verification_evidence": "planning/issue-23-evidence.json",
       "execution_steps": [
         {
@@ -4265,6 +4265,13 @@
         "user_statement": "上传github",
         "recorded_at": "2026-10-21T13:35:58.671837+08:00",
         "scope": "Commit the reviewed and locally validated Issue23 1.8.0 source and linked documentation; run original staged and committed gates with existing single-run control approval, push to origin/main and verify remote SHA. No global skill installation, target-project migration, tag or hosted Release."
+      },
+      "source_publication": {
+        "commit": "9723921ceac69db363fb4b655d761bc61b956e0f",
+        "tree": "4165482e1a8b8cf781e1de56a545128540dcbdf2",
+        "remote_main": "9723921ceac69db363fb4b655d761bc61b956e0f",
+        "verified_at": "2026-10-21T13:42:38.686116+08:00",
+        "evidence": "planning/issue-23-evidence.json"
       }
     }
   ],

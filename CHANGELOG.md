@@ -1,5 +1,7 @@
 # 1.8.0 / Unreleased
 
+- Reuse the already validated historical manifest within a single submission check and avoid repeated interpreter startup for static contract scenarios; retain all behavior assertions, independent commit/committed coverage and original time limits.
+
 - Add an opt-in structured approval evidence contract that binds declared approvals to their original statement, timestamps, evidence record, reviewed Spec/Plan section hashes, and selected task batch/requirements. The checker reports legacy approvals as non-blocking `partial`; strict enforcement is explicit and protected against silent policy removal or weakening.
 - Initialize new manifests and explicit legacy migrations in diagnostic mode by default. Add preview-before-apply migration, JSON evidence support, bounded approval reuse, optional same-timeline sequence diagnostics, and honest delivery-status guidance.
 - Preserve the existing workflow stages, valid prior approvals, small-fix/greenfield paths, required TEST/COMPILE/GUIDANCE-COMPILE commands and timeouts, Git tree verification, and documentation-impact/synchronization rules. No external project is migrated automatically.

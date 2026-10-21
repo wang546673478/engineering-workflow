@@ -151,3 +151,5 @@ Basis BASELINE-ISSUE23-01 / d214021 -> SPEC-ISSUE23-01 -> PLAN-ISSUE23-01 r1 -> 
 | REQ-ISSUE23-08 / AT-ISSUE23-08 | P23-06/07 | T23-01/02 complete; T23-03..08 complete locally | B23-01..07, planning/issue-23-evidence.json; current behavior/evidence in Task; original gate outcome authoritative |
 
 Issue 23 closure: all eight REQ/AT implemented; formal-final report original commands pass on task-local CPython3.11.15. Scenario and source-hash evidence: planning/issue-23-evidence.json. Optional legacy/manual coverage partial and source/host limits remain explicit.
+
+Issue23 source-upload closure: implementation 9723921ceac69db363fb4b655d761bc61b956e0f / tree 4165482e1a8b8cf781e1de56a545128540dcbdf2 passed original staged/committed gates and is verified on origin/main. Publication-only receipts retain the 1.8.0 version and do not change requirements or runtime evidence.

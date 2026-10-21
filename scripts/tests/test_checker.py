@@ -286,7 +286,7 @@ class CheckerTests(unittest.TestCase):
 
     def test_contract_sequence_is_optional_unless_explicitly_required(self):
         self.approval_contract_fixture()
-        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 0, report)
         sequence = next(c for c in report["checks"] if c["rule_id"] == "approval-sequence")
         self.assertEqual(sequence["status"], "partial")
@@ -295,10 +295,10 @@ class CheckerTests(unittest.TestCase):
         self.manifest["tasks"][0]["approval_sequence"] = {
             key: {"timeline_id": "fixture-chat", "position": position, "reference": "fixture-message-" + str(position)}
             for key, position in (("presented", 1), ("approved", 2), ("implementation", 3))}
-        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 0, report)
         self.manifest["tasks"][0]["approval_sequence"]["approved"]["position"] = 4
-        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 1, report)
 
     def test_contract_can_read_json_records_and_normalize_crlf(self):
@@ -309,7 +309,7 @@ class CheckerTests(unittest.TestCase):
         for record in (self.manifest["workflow"]["baseline_review"], self.manifest["workflow"]["proposal_approval"], self.manifest["tasks"][0]["implementation_authorization"]):
             record["evidence"] = "docs/approval.json"
         (self.root / "docs/spec.md").write_bytes(b"# Approval scope\r\nREQ-1 AT-1\r\n")
-        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 0, report)
 
     def test_contract_approved_scope_can_be_reused_without_new_user_statement(self):
@@ -326,7 +326,7 @@ class CheckerTests(unittest.TestCase):
         self.manifest["tasks"][0]["batch_id"] = "batch-r2"
         self.manifest["tasks"][0]["implementation_authorization"]["proposal_record_id"] = "PROPOSAL-APPROVAL-REUSE"
         path.write_text(text, encoding="utf-8")
-        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 0, report)
 
     def test_strict_contract_accepts_evidenced_small_fix_not_applicable(self):
@@ -347,11 +347,11 @@ class CheckerTests(unittest.TestCase):
             rendered.append("<!-- engineering-approval:%s -->\n```json\n%s\n```" % (ident, json.dumps(value, ensure_ascii=False, indent=2)))
         path.write_text("\n\n".join(rendered), encoding="utf-8")
         self.manifest["workflow"]["proposal_approval"]["status"] = "not_applicable"
-        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 0, report)
         declaration["status"] = "approved"
         task["workflow_kind"] = "major_change"
-        proc, report = self.cli("--mode", "baseline", "--run-checks")
+        proc, report = self.approval_cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 1, report)
 
     def test_contract_rejects_unsafe_records_and_preserves_incomplete_state(self):
@@ -371,7 +371,7 @@ class CheckerTests(unittest.TestCase):
                     path.write_text(path.read_text(encoding="utf-8").replace('"status": "approved"','"status": "approved", "invalidated": true'),encoding="utf-8")
                 else:
                     self.manifest["workflow"]["approval_policy"]["minimum_checker_version"] = "999.0.0"
-                proc,report=self.cli("--mode","change","--base","HEAD","--run-checks")
+                proc,report=self.approval_cli("--mode","change","--base","HEAD","--run-checks")
                 self.assertNotEqual(proc.returncode,0,report)
                 self.assertFalse(report["required_checks_satisfied"])
 

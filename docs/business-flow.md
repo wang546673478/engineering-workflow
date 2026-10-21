@@ -1,5 +1,9 @@
 # Engineering Workflow Maintenance Flow
 
+同批技术保持性修正：提交校验在单次main内复用control-plane已读取的历史manifest，避免重复Git查询；缓存不跨验证运行。静态合同用例经同一公开CLI入口减少解释器启动，原安全断言、测试/超时/同步边界保持。新源码门槛结果见Issue23 Task/evidence。
+
+源上传回执（2026-10-21）：实现9723921已通过原提交门槛并核对origin/main；本次仅同步发布事实，运行合同与技术范围不变。详见当前Issue23 Task/evidence。
+
 ## Issue 23 current approval flow / 1.8.0
 
 Read original user decision and presented proposal -> preserve reviewed Spec/Plan section -> reference original approval evidence -> choose diagnostic or explicit strict -> validate record/current scope/reuse -> compare enabled historical policy -> existing implementation and change gates -> original declared commands -> original post-check tree validation -> report checker status separately from independent tests. New project initialization is diagnostic, legacy projects are not automatically migrated, and invalid strict evidence blocks commands. Current verification and remaining limits are in [Task](../planning/issue-23-task.md).
