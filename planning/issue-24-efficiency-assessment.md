@@ -60,3 +60,10 @@
 - 候选优先级：先确认/修复宿主失效cwd与失败重试的调用契约；再试点从现有manifest生成索引和原子apply-batch；最后用真实配对会话衡量调用数、重复读写、失败率和时间。所有产品审核节点/批准语义继续由1.8流程控制。
 
 Implementation handoff (2026-10-22): the assessment-time candidate scope has been superseded by the separately approved [SPEC](issue-24-efficiency-spec.md) / [PLAN](issue-24-efficiency-plan.md) / [Task](issue-24-efficiency-task.md). Its original `not authorized` status describes the research boundary when assessed; the current implementation authorization and impact are owned by `TASK-ISSUE24-EFFICIENCY-01`. No session data in the external project is included in this implementation.
+
+## Follow-up evidence: Windows Actions path alias (2026-10-23)
+
+The first Issue #24 publication triggered Actions run `39787233509`: Ubuntu reviewed passed in 35s; Windows reviewed failed after its TEST command returned 1, with one failure and nine errors in 260 tests. The exact root cause and fix remain implementation evidence, not a new efficiency measurement: Windows temporary paths alternated between long and 8.3 spellings, and the shared checker rejected in-root paths as escapes. The optional tool efficiency pilot remains unmeasured.
+
+
+Windows CI follow-up (2026-10-23): Actions run `39787233509` showed one reviewed Windows leg failed while Ubuntu passed. Diagnostic evidence isolated an 8.3 alias mismatch in shared checker path containment, not a workflow-state efficiency finding. The implementation repair is tracked in the active Task; paired efficiency pilot remains unmeasured.

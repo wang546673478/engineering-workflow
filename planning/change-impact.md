@@ -13,6 +13,14 @@ Task: [TASK-ISSUE24-EFFICIENCY-01](issue-24-efficiency-task.md); input `BASELINE
 
 Approved gate-scope correction (2026-10-22): user explicitly changed the manifest TEST timeout from 120s to 240s after repeated boundary timeouts. COMPILE and GUIDANCE-COMPILE remain 30s. Command argv, coverage/assertions, required status, workflow stages, approval meanings and strict/diagnostic defaults do not change. This is the sole checker policy value changed in this batch; validate the full report against the updated manifest.
 
+## Issue #24 Windows reviewed path-alias defect correction
+
+- Evidence: Actions run `39787233509`, commit `d225cb49d25cec51abfcbaca11470ca8b71ff7af`. Ubuntu reviewed passed in 35s. Windows reviewed's original checker TEST failed in 70.563s (not timeout); diagnostic TEST recorded 1 failure/9 errors in 59.142s.
+- Root cause: Win32 temporary paths used inconsistent long and 8.3 alias spellings; `check_project.safe_path` performed lexical root containment and rejected safe paths in the same directory. This affects checker path validation and its workflow-state/archive callers.
+- Change: when a Windows path contains an 8.3 `~N` component, expand existing aliases component-by-component via Win32 GetLongPathNameW for containment comparisons while retaining the original candidate/component link checks and the final resolved-root check; paths with no short-name component use the original fast comparison. Do not use Path.resolve as a substitute for link checks. Non-Windows behavior remains unchanged. Add Windows regression coverage at the safe-path boundary and through a real workflow-state archive/batch operation, including rejection of an outside alias.
+- Impact: checker, workflow-state, task archive consumer paths; update `scripts/check_project.py`, tests, module map, contracts, baseline, Task, manifest, traceability and this impact record. No API/database/approval-stage change. Retain original TEST command, all 260 tests, 240s TEST, 30s compile gates, required status, Ubuntu/Windows matrix and original 1.8 workflow.
+- Validation: focused Windows alias tests pass; checker suite 119 pass; full direct TEST after adding both regressions is 262 pass / 140.102s. First formal checker run before narrowing the alias fast path timed out at 240.031s; rerun on final implementation is pending. Commit/push pending.
+
 ## Current adoption lifecycle impact
 
 Task: [TASK-ADOPTION-LIFECYCLE-01](adoption-lifecycle-task.md); input `BASELINE-SAFE-19-21-01` / source `3c1cb36`; target `SPEC-ADOPTION-LIFECYCLE-01` and `PLAN-ADOPTION-LIFECYCLE-01`.

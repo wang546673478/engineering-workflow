@@ -43,3 +43,12 @@
 ### 用户批准的执行政策修订（2026-10-22）
 
 用户明确要求：“把 TEST 超时改为 240 秒，其余检查和流程保持不变，并据此更新方案后继续”。仅当前仓库正式 TEST timeout 从 120 秒调整到 240 秒；TEST 命令、全部测试/断言、required 状态、COMPILE 与 GUIDANCE-COMPILE 的 30 秒 timeout、工作流阶段和审批语义保持不变。此修订限于门槛时限，不改 REQ/AT 功能范围；证据与实施进度记录在 [Task](issue-24-efficiency-task.md)。
+
+### 实现后缺陷证据补充（2026-10-23）
+
+首次 Windows reviewed Actions 暴露共享路径校验在长路径/8.3 alias 混用时误判根目录越界。按原 REQ/AT 和已批准兼容性边界修复 checker 公共路径比较并增加 Windows 回归；不改变用户功能目标、required checks、测试覆盖、跨平台矩阵、1.8 阶段或审批含义。调查、修复范围和验证以 [当前 Task](issue-24-efficiency-task.md) 为准。
+
+
+### Implementation defect evidence supplement (2026-10-23)
+
+The first protected Windows Actions run exposed a false root-escape rejection when one temporary workspace path used its 8.3 alias and another used its long form. The repair canonicalizes only existing Win32 short-name components for containment comparison and retains the existing link/root checks. This corrects a platform defect in the approved implementation; it does not change REQ/AT goals, required checks, matrix, timeout or 1.8 workflow semantics. Current evidence is owned by the active Task.

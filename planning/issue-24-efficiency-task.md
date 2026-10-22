@@ -2,10 +2,10 @@
 
 ## 当前状态
 
-- 阶段：verification / delivery；TEST timeout 按用户明确要求改为 240s，更新后的完整 baseline checker 已通过；commit/committed/push 尚未完成。基点 e1abcacefdf62647e1a743435780ed40e4aaf86d，分支 main。
-- 工件链：BASELINE-ISSUE23-02 → SPEC-ISSUE24-EFFICIENCY-01 r1（timeout 执行政策修订见文内） → PLAN-ISSUE24-EFFICIENCY-01 r1（TEST 240s 用户修订） → 本 Task → work/issue24-baseline-test240-final-docs.json。
+- 阶段：verification / delivery；Windows Actions 路径别名缺陷已修复并有回归。实现改为仅对含 `~N` 8.3 片段的路径调用 Win32 API 后，最终正式 checker 已通过；complete commit-scope 门禁也通过。精确 committed-tree 门禁待提交后运行；推送待其通过后进行。基点 `d225cb49d25cec51abfcbaca11470ca8b71ff7af`，分支 main。
+- 工件链：BASELINE-ISSUE23-02 + Actions run `39787233509` 的平台缺陷证据 → SPEC-ISSUE24-EFFICIENCY-01 r1（timeout 执行政策修订见文内） → PLAN-ISSUE24-EFFICIENCY-01 r1（TEST 240s 用户修订 + Windows follow-up） → 本 Task → work/issue24-windows-path-final4.json。
 - 批准：2026-10-22 05:55:38 +08:00 用户说“批准方案”；06:06:57 +08:00 用户说“一次性根据spec/plan/task把engineering workflow 全部改完吧,然后上传github”；首次实施指令 05:50:41 +08:00 为“开始实施吧”。原话与时间取自当前 thread session log。授权本仓库本地实施、运行原有门槛并在提交检查通过后上传；不含 GitHub Release、外部项目/会话改动、OS 权限或 host API 修改。
-- 保持边界：原 1.8 stages、审核节点、审批含义/复用、strict/diagnostic 默认、required checks、测试命令与覆盖不变；唯一例外是经用户批准将当前仓库 TEST timeout 从 120 秒改为 240 秒。COMPILE 与 GUIDANCE-COMPILE 仍为 30 秒；新 CLI 可选且不加 required gate。
+- 保持边界：原 1.8 stages、审核节点、审批含义/复用、strict/diagnostic 默认、required checks、测试命令与覆盖不变；唯一门槛例外是经用户批准将当前仓库 TEST timeout 从 120 秒改为 240 秒。COMPILE 与 GUIDANCE-COMPILE 仍为 30 秒；新 CLI 可选且不加 required gate。Windows follow-up 只纠正安全路径比较的 alias 规范化，不改这些流程/门槛。
 
 ## 实施范围
 
@@ -55,8 +55,17 @@
 ## 验证结果
 
 - focused：python -m unittest scripts.tests.test_workflow_state -q，29 tests pass（CPython 3.14）。
-- Original 120s timeout reports remain historical. Final formal checker report `work/issue24-baseline-test240-final-docs.json` passes on CPython 3.12.14 with pinned tree-sitter parsers available through task-local `PYTHONPATH`; TEST 260 pass in 115.593s under 240s, COMPILE 0.172s and GUIDANCE-COMPILE 0.172s under their unchanged 30s limits; `required_checks_satisfied=true`, `errors=[]`. An earlier rerun with an incomplete parser path failed at Rust-reference test setup (not timeout); after aligning the runtime and parser path, the unchanged full command passed. Python 3.14 diagnostic runs are not the formal gate result.
+- Original 120s timeout reports remain historical. Pre-Windows-fix formal checker report `work/issue24-baseline-test240-final-docs.json` applies to the prior tree only. Current Windows fix verification is recorded below; latest formal checker is `work/issue24-windows-path-final4.json` on CPython 3.12.14 with pinned tree-sitter parsers through task-local `PYTHONPATH`, TEST 260 pass in 117.016s under 240s, COMPILE 0.172s and GUIDANCE-COMPILE 0.187s under their unchanged 30s limits; `required_checks_satisfied=true`, `errors=[]`. Full direct `unittest discover` after adding both regressions passes 262 tests in 140.102s.
 - Skill Creator quick_validate 使用已有 PyYAML 6.0.3 路径及 PYTHONUTF8=1 后通过；git diff --check 和新增 Python 文件 py_compile 通过。原 database/contracts inventory 为非必需 partial，按既有状态保留。
+
+## Windows reviewed Actions 缺陷修复（2026-10-23）
+
+- 复现证据：GitHub Actions run `39787233509`，提交 `d225cb49d25cec51abfcbaca11470ca8b71ff7af`。`reviewed (ubuntu-latest)` 35s 通过；`reviewed (windows-latest)` 2m39s 失败。Windows checker TEST 70.563s 返回 1（非超时）；诊断全量测试 260 项在 59.142s 结束，1 failure / 9 errors。
+- 根因：Windows 临时项目根/目标在 `runneradmin` 长路径与 `RUNNER~1` 8.3 短路径表示间不一致。原 `safe_path` 以词面 `Path.relative_to(root)` 比较，误把同一目录中的路径判为越界。`workflow_state.apply_batch` 把解析后的绝对文档路径再次交给该校验器，所以测试请求、manifest 文档与 archive batch 路径处理连续失败。
+- 修复：公共路径边界 helper 在 Windows 上逐组件调用 Win32 `GetLongPathNameW`，只展开存在组件的 8.3 alias 后比较 project-root containment；原 candidate/component link 检查与最终 resolved-root 校验保持。没有用 `Path.resolve` 代替 link 防护；POSIX 词面行为不变。Path-like 参数和结构化错误路径保留原输入。
+- 回归：新增 checker 层短路径接受/越界拒绝用例，以及 workflow-state 使用短路径 root 初始化 archive 并成功批量更新、同时拒绝指向项目外的 alias 文件的真实边界用例。Windows focused 回归通过；checker 子套件 119 项通过；完整正式 checker TEST 260 项通过（117.016s）；COMPILE 0.172s、GUIDANCE-COMPILE 0.187s 通过；报告 `work/issue24-windows-path-final3.json` 的 `required_checks_satisfied=true`。短路径专用测试还证明项目外 alias 仍被拒绝；完整 direct TEST 增加两项 Windows regression 后 262 项通过/126.394s。最后正式 checker 报告 `work/issue24-windows-path-final4.json` 的 required checks 全部通过。
+- 影响：修复 `scripts/check_project.py` 路径验证边界，并覆盖其消费者 `workflow_state.py` / `task_archive.py`；不改变 manifest 命令、260 项覆盖、240s TEST / 30s compile limits、required checks、Windows/Ubuntu workflow matrix 或 1.8 stages/审批流程。
+- GitHub：本修复尚未提交或推送；scope 检查前置步骤已通过。
 
 ## 上传前步骤
 

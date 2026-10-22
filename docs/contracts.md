@@ -23,6 +23,10 @@ scripts/workflow_state.py consumes the same manifest documents and Task artifact
 
 ## Checker CLI
 
+### Windows path containment
+
+The checker expands existing Win32 8.3 aliases component-by-component before comparing candidate paths to the project root. Equivalent spellings for the same in-root file are accepted; outside aliases remain rejected. Original candidate/component symbolic-link/junction checks and final resolved-root containment still run; alias expansion does not replace link defense. POSIX lexical containment behavior is unchanged. The optional workflow-state/archive callers share this boundary.
+
 
 - Input: project root, manifest path, mode, task ID, and optional base or commit reference.
 - Modes: `discovery`, `baseline`, `change`, `handoff`, `commit`, `committed`.

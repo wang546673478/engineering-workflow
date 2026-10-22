@@ -3,6 +3,7 @@
 from __future__ import annotations
 import argparse
 from contextlib import contextmanager
+import ctypes
 from datetime import datetime, timezone
 from fnmatch import fnmatchcase
 import hashlib
@@ -37,6 +38,36 @@ def file_hash(path):
 def is_link(path):
     return path.is_symlink() or bool(getattr(path, "is_junction", lambda: False)())
 
+def _comparison_path(path):
+    """Expand existing Win32 8.3 aliases without resolving link targets."""
+    absolute = Path(path).absolute()
+    if os.name != "nt" or not any(re.search(r"~[0-9]", part) for part in absolute.parts):
+        return absolute
+    try:
+        get_long = ctypes.windll.kernel32.GetLongPathNameW
+        get_long.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint)
+        get_long.restype = ctypes.c_uint
+        expanded = Path(absolute.anchor)
+        for part in absolute.parts[1:]:
+            candidate = expanded / part
+            if candidate.exists():
+                size = get_long(str(candidate), None, 0)
+                if size:
+                    buffer = ctypes.create_unicode_buffer(size + 1)
+                    written = get_long(str(candidate), buffer, len(buffer))
+                    if written and written < len(buffer):
+                        candidate = Path(buffer.value)
+            expanded = candidate
+        return expanded
+    except (AttributeError, OSError, ValueError):
+        return absolute
+
+def _relative_to_root(path, root):
+    """Compare paths after resolving Windows long/short aliases consistently."""
+    candidate = _comparison_path(path)
+    canonical_root = _comparison_path(root)
+    return candidate.relative_to(canonical_root)
+
 def safe_root(raw):
     original = Path(raw).absolute()
     cursor = Path(original.anchor)
@@ -49,6 +80,8 @@ def safe_root(raw):
     return original.resolve()
 
 def normalize_manifest_path(raw):
+    if isinstance(raw, os.PathLike):
+        raw = os.fspath(raw)
     if not isinstance(raw, str) or not raw.strip() or "\x00" in raw:
         raise ConfigError("invalid path")
     normalized = raw.replace("\\", "/")
@@ -60,29 +93,30 @@ def safe_path(root, raw, file_only=True):
     normalized = normalize_manifest_path(raw)
     given = Path(normalized)
     candidate = given if given.is_absolute() else root / given
+    raw_text = os.fspath(raw)
     try:
-        relative = candidate.absolute().relative_to(root)
+        relative = _relative_to_root(candidate, root)
     except ValueError:
-        raise ConfigError("path escapes project root: " + raw)
+        raise ConfigError("path escapes project root: " + raw_text)
     cursor = root
     for part in relative.parts:
         if part == "..":
             cursor = cursor.parent
             try:
-                cursor.relative_to(root)
+                _relative_to_root(cursor, root)
             except ValueError:
-                raise ConfigError("path escapes project root: " + raw)
+                raise ConfigError("path escapes project root: " + raw_text)
             continue
         cursor = cursor / part
         if is_link(cursor):
-            raise ConfigError("symlink path is not allowed: " + raw)
+            raise ConfigError("symlink path is not allowed: " + raw_text)
     resolved = candidate.resolve()
     try:
-        resolved.relative_to(root)
+        _relative_to_root(resolved, root)
     except ValueError:
-        raise ConfigError("resolved path escapes project root: " + raw)
+        raise ConfigError("resolved path escapes project root: " + raw_text)
     if resolved.exists() and file_only and not resolved.is_file():
-        raise ConfigError("expected file: " + raw)
+        raise ConfigError("expected file: " + raw_text)
     return resolved
 
 def has_glob_magic(raw):
@@ -134,7 +168,7 @@ def build_exclude_specs(root, values):
     return specs
 
 def lexical_relative(root, path):
-    return Path(path).absolute().relative_to(root).as_posix()
+    return _relative_to_root(path, root).as_posix()
 
 def excluded_path(root, path, specs):
     if isinstance(path, Path):
@@ -908,7 +942,7 @@ def implementation_gate(root, manifest, paths, task_id):
 
 def relative_scope(root, raw):
     """Normalize a manifest path so it can be compared with Git paths."""
-    path = safe_path(root, raw, file_only=False).relative_to(root).as_posix()
+    path = _relative_to_root(safe_path(root, raw, file_only=False), root).as_posix()
     return "" if path == "." else path
 
 def lexical_path(root, raw):

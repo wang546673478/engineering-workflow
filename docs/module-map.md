@@ -24,6 +24,8 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 `scripts/workflow_state.py` is a standalone opt-in owner of manifest-backed index, document snapshot and exact batch operations; it consumes the existing checker safe-path/strict JSON helpers and task_archive immutable revisions, but does not add a checker mode or required check. It lists manifest records plus unregistered planning Markdown as unknown/unverified, exposes approval/task/lifecycle fields separately, and rejects stale heads, conflicts or protected workflow targets before writes. Ordinary replacement errors attempt rollback; rollback failure is reported as potentially partial with the recovery command. It cannot recover a host process that failed before script startup. No business database/API changes. Twenty-nine focused behavior tests cover CLI/index, lifecycle, snapshots, duplicate JSON/IDs, conflict/CAS, archive replay, BOM/newline preservation, rollback and recovery; all 29 pass. Current implementation and full-gate evidence belong to [Issue #24 Task](../planning/issue-24-efficiency-task.md).
 
+The shared checker path boundary expands existing Windows 8.3 aliases component-by-component before root-containment comparison, while retaining original candidate/component symbolic-link/junction rejection and the final resolved-root check. This also protects workflow-state and archive consumers. Actions run `39787233509` exposed the alias mismatch; Windows regression and full-test evidence are recorded in the current Issue #24 Task.
+
 ## Module: instructions
 
 - Issue 22 current guidance (1.7.2): implementation-workflow owns defect evidence, baseline-linked-artifacts owns delivery discrepancy classification and routing, requirements-interview owns optional EARS/Given–When–Then examples. SKILL/README route to these original owners; the two existing templates offer optional prompts. Task/impact/Spec remain project-owned records. No new module, executable dependency or automatic migration is added; current evidence is in [Task](../planning/issue-22-task.md).
@@ -41,6 +43,7 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 ## Module: checker
 
 - Responsibility and owner: Validate project manifests, inventories, task gates, documentation impact, staged commits, and committed trees.
+- Path safety: Windows root-containment comparisons canonicalize long/8.3 aliases so equivalent spellings remain in scope and aliases resolving outside the root are rejected; link traversal checks remain in force.
 - Entrypoints/public interfaces: `scripts/check_project.py`; `discovery`, `baseline`, `change`, `handoff`, `commit`, and `committed` modes. `scripts/workflow_state.py` is an independent opt-in navigation/snapshot/batch CLI and does not add a checker mode.
 - Callers: Project hooks, CI, and maintainers.
 - Direct dependencies and reason: Python standard library, manifest documents, and adapter metadata validators.

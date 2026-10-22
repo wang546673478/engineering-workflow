@@ -1,5 +1,6 @@
 import copy
 from contextlib import closing, redirect_stdout
+import ctypes
 import hashlib
 import importlib.util
 import io
@@ -595,6 +596,26 @@ class CheckerTests(unittest.TestCase):
         self.manifest["documents"][0]["path"] = "docs\\spec.md"
         proc, result = self.cli("--mode", "baseline", "--run-checks")
         self.assertEqual(proc.returncode, 0, result)
+
+    @unittest.skipUnless(os.name == "nt", "Windows short-path aliases are Windows-specific")
+    def test_safe_path_accepts_existing_short_alias_inside_project(self):
+        root = self.root / "project root with spaces"
+        target = root / "docs" / "spec.md"
+        target.parent.mkdir(parents=True)
+        target.write_text("spec", encoding="utf-8")
+        buffer = ctypes.create_unicode_buffer(32768)
+        get_short = ctypes.windll.kernel32.GetShortPathNameW
+        get_short.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint)
+        get_short.restype = ctypes.c_uint
+        written = get_short(str(root), buffer, len(buffer))
+        self.assertGreater(written, 0)
+        alias = Path(buffer.value)
+        if alias == root:
+            self.skipTest("This volume does not generate a short-path alias for the fixture")
+
+        self.assertEqual(checker.safe_path(root, alias / "docs" / "spec.md"), target.resolve())
+        with self.assertRaisesRegex(checker.ConfigError, "path escapes project root"):
+            checker.safe_path(root, alias.parent / "outside.txt")
 
     def test_foreign_drive_and_unc_paths_are_rejected(self):
         for raw in ("C:/outside/spec.md", "//server/share/spec.md"):

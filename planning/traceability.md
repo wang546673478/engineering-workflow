@@ -173,6 +173,8 @@ REQ-ISSUE24-E01 AT-ISSUE24-E01 REQ-ISSUE24-E02 AT-ISSUE24-E02 REQ-ISSUE24-E03 AT
 | REQ-ISSUE24-E08 / AT-ISSUE24-E08 | WFS-04 | invalid process root returns unsupported once; host pre-start cwd failure remains unsupported. |
 | REQ-ISSUE24-E01/E09/E10 / AT-ISSUE24-E01/E09/E10 | WFS-05..07 | 1.8 semantics retained; real efficiency pilot remains unverified; formal checks pass under the approved timeout; commit/upload pending. See active Task and report. |
 
+Windows reviewed path-alias correction (2026-10-23): Actions run `39787233509` showed a Windows-only false path-escape rejection when TemporaryDirectory paths alternated between long and 8.3 forms. The fix stays within the existing Issue24 task and adds no gate or approval. Windows alias regressions and full 262-test/260-checker-test evidence are in [the current Task](issue-24-efficiency-task.md); local commit and upload remain pending.
+
 ## Issue 23 record integrity local recovery implementation / 2026-10-22
 
 `BASELINE-ISSUE23-02` → [SPEC-ISSUE23-RI-01](issue-23-record-integrity-spec.md) → [PLAN-ISSUE23-RI-01](issue-23-record-integrity-plan.md) → [TASK-ISSUE23-RECORD-INTEGRITY-01](issue-23-record-integrity-task.md). User authorized local archive/recovery while preserving the existing 1.8 review and required-check flow.

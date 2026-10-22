@@ -5773,6 +5773,7 @@
       ],
       "module_ids": [
         "instructions",
+        "checker",
         "workflow-state",
         "tests",
         "governance"
@@ -5880,6 +5881,10 @@
         },
         "implementation": {
           "when_paths": [
+            "scripts/tests/test_checker.py",
+            "planning/issue-24-efficiency-assessment.md",
+            "planning/issue-24-efficiency-spec.md",
+            "scripts/check_project.py",
             "scripts/workflow_state.py",
             "scripts/tests/test_workflow_state.py",
             "SKILL.md",
@@ -5931,9 +5936,9 @@
         ],
         "publication_status": "local_unpublished"
       },
-      "verification_status": "baseline checker pass; TEST 260/115.593s under user-approved 240s timeout; COMPILE 0.172s; GUIDANCE-COMPILE 0.172s; required_checks_satisfied=true; CPython3.12.14 with pinned parser path",
-      "verification_evidence": "work/issue24-baseline-test240-final-docs.json",
-      "delivery_status": "ready for local commit gates; GitHub push pending"
+      "verification_status": "Windows alias correction: final baseline TEST 262/117.016s; COMPILE 0.172s; GUIDANCE-COMPILE 0.187s; required_checks_satisfied=true; full direct TEST 262/126.394s; CPython3.12.14 pinned parser path",
+      "verification_evidence": "work/issue24-windows-path-final4.json; work/issue24-windows-path-direct-final.log; focused Windows alias tests; checker suite 119 pass",
+      "delivery_status": "implementation verified; commit and exact committed-tree gates pending; push authorized after both pass"
     }
   ],
   "control_plane": {
@@ -5963,8 +5968,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "e1abcacefdf62647e1a743435780ed40e4aaf86d + approved Issue24 workflow-state implementation and 1.10.0 Unreleased worktree; current report work/issue24-baseline-test240-final-docs.json",
-    "scope": "BASELINE-ISSUE23-02 plus Issue24: optional workflow-state navigation/snapshot/batch helper; 1.8 workflow and approvals preserved; current repository TEST timeout 240s by explicit user approval, all required checks retained; host cwd recovery unsupported; no external project migration."
+    "source_revision": "e1abcacefdf62647e1a743435780ed40e4aaf86d + Issue24 Windows path-alias fix; current report work/issue24-windows-path-final4.json",
+    "scope": "BASELINE-ISSUE23-02 plus Issue24: optional workflow-state index/snapshot/batch helper and shared Windows long/8.3 alias containment fix; 1.8 workflow/approval semantics preserved; TEST timeout 240s by explicit user decision; all required checks retained."
   },
   "exclude_paths": [
     ".git",
