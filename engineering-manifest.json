@@ -5936,9 +5936,9 @@
         ],
         "publication_status": "local_unpublished"
       },
-      "verification_status": "Windows alias correction: final baseline TEST 262/117.016s; COMPILE 0.172s; GUIDANCE-COMPILE 0.187s; required_checks_satisfied=true; full direct TEST 262/126.394s; CPython3.12.14 pinned parser path",
-      "verification_evidence": "work/issue24-windows-path-final4.json; work/issue24-windows-path-direct-final.log; focused Windows alias tests; checker suite 119 pass",
-      "delivery_status": "implementation verified; commit and exact committed-tree gates pending; push authorized after both pass"
+      "verification_status": "Windows path and test-collection fix: POSIX TEST 260/121.078s no skips; Windows direct TEST 262/122.091s; COMPILE 0.204s; GUIDANCE-COMPILE 0.203s; baseline required_checks_satisfied=true",
+      "verification_evidence": "work/issue24-windows-path-no-skips-final.json; work/issue24-windows-path-no-skips-final.log; focused Windows alias tests; checker suite 119 pass",
+      "delivery_status": "platform correction ready for final staged/committed gates; push pending"
     }
   ],
   "control_plane": {

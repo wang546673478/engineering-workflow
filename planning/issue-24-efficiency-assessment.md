@@ -53,6 +53,8 @@
 
 ## 与 Issue24 原建议的关系及结论
 
+Windows CI follow-up (2026-10-23): Actions run 39802741018 exposed a POSIX skip-summary interaction after the Windows-only alias regression tests were added. The required TEST became partial because unittest reported those host-specific cases as skipped. The tests are now registered only on Windows; this validation correction does not measure or claim an efficiency improvement. The paired efficiency pilot remains unmeasured.
+
 - 导航索引可减少“文件在哪里”的搜索，但应由 CLI 从 manifest/active task 生成；手写第二份索引会增加另一份需同步状态。索引只保存 document ID、路径、状态/版本、owner 和上下游关联，不复制整段 Spec/Task 正文。
 - 批量状态接口能把一次已确认答复需要的若干确定更新压成一次可审核操作。单纯把 PowerShell 换为 Python，而不提供单次读取快照、明确目标、幂等 operation ID 和批次校验，无法系统性减少重复搜索/返工。
 - 不建议当前把历史全部搬到 JSONL 或把 Task 缩成“当前状态+下一问”；那会改变现有权威记录方式和迁移边界。先用索引/摘要改善导航与读取，再经配对试点证明收益后评估格式演化。
@@ -66,4 +68,4 @@ Implementation handoff (2026-10-22): the assessment-time candidate scope has bee
 The first Issue #24 publication triggered Actions run `39787233509`: Ubuntu reviewed passed in 35s; Windows reviewed failed after its TEST command returned 1, with one failure and nine errors in 260 tests. The exact root cause and fix remain implementation evidence, not a new efficiency measurement: Windows temporary paths alternated between long and 8.3 spellings, and the shared checker rejected in-root paths as escapes. The optional tool efficiency pilot remains unmeasured.
 
 
-Windows CI follow-up (2026-10-23): Actions run `39787233509` showed one reviewed Windows leg failed while Ubuntu passed. Diagnostic evidence isolated an 8.3 alias mismatch in shared checker path containment, not a workflow-state efficiency finding. The implementation repair is tracked in the active Task; paired efficiency pilot remains unmeasured.
+Windows CI follow-up (2026-10-23): Actions run `39802741018` showed the Ubuntu reviewed leg failed because its required TEST summary included skipped Windows-only regression cases and was classified `partial`. The Windows reviewed leg was still waiting for protected-environment approval when inspected, so that run does not establish a Windows result. The collection correction is tracked in the active Task; the paired efficiency pilot remains unmeasured.

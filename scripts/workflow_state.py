@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Manifest-backed engineering index, exact snapshots and guarded batch edits.
 
-Project paths use the shared checker boundary, including Win32 8.3 alias containment."""
+Project paths use the shared checker boundary, including Win32 8.3 alias containment.
+
+Windows-only path regression methods are registered on Windows to avoid POSIX required TEST skip summaries."""
 from __future__ import annotations
 import argparse, difflib, hashlib, json, os, re, sqlite3, sys, tempfile
 from pathlib import Path

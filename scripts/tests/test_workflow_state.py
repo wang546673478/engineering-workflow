@@ -256,44 +256,45 @@ Later
     def test_invalid_project_root_is_reported_without_retry(self):
         with self.assertRaises(workflow_state.UnsupportedHostError):
             workflow_state.resolve_root(str(self.root / 'missing'))
-    @unittest.skipUnless(os.name == 'nt', 'Windows short-path aliases are Windows-specific')
-    def test_batch_accepts_short_alias_for_project_root(self):
-        with tempfile.TemporaryDirectory(prefix='workflow state alias ') as tmp:
-            root = Path(tmp) / 'project'
-            (root / 'planning').mkdir(parents=True)
-            task_path = root / 'planning/task.md'
-            task_path.write_text('# Current\n\n## Decisions\nOld\n', encoding='utf-8')
-            (root / 'planning/spec.md').write_text('# Spec\nREQ-1\n', encoding='utf-8')
-            outside = Path(tmp) / 'outside'
-            outside.mkdir()
-            (outside / 'secret.md').write_text('outside', encoding='utf-8')
-            manifest = {'workflow': {'active_task': 'TASK-1'}, 'modules': [{'id': 'instructions'}], 'documents': [{'id': 'TASK_DOC', 'path': 'planning/task.md', 'kind': 'task'}, {'id': 'SPEC_DOC', 'path': 'planning/spec.md', 'kind': 'spec'}], 'tasks': [{'id': 'TASK-1', 'status': 'in_progress'}]}
-            (root / 'engineering-manifest.json').write_text(json.dumps(manifest), encoding='utf-8')
-            buffer = ctypes.create_unicode_buffer(32768)
-            get_short = ctypes.windll.kernel32.GetShortPathNameW
-            get_short.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint)
-            get_short.restype = ctypes.c_uint
-            written = get_short(str(root), buffer, len(buffer))
-            self.assertGreater(written, 0)
-            alias = Path(buffer.value)
-            if alias == root:
-                self.skipTest('This volume does not generate a short-path alias for the fixture')
-            outside_alias = ctypes.create_unicode_buffer(32768)
-            self.assertGreater(get_short(str(outside), outside_alias, len(outside_alias)), 0)
+    if os.name == 'nt':
+        def test_batch_accepts_short_alias_for_project_root(self):
+            with tempfile.TemporaryDirectory(prefix='workflow state alias ') as tmp:
+                root = Path(tmp) / 'project'
+                (root / 'planning').mkdir(parents=True)
+                task_path = root / 'planning/task.md'
+                task_path.write_text('# Current\n\n## Decisions\nOld\n', encoding='utf-8')
+                (root / 'planning/spec.md').write_text('# Spec\nREQ-1\n', encoding='utf-8')
+                outside = Path(tmp) / 'outside'
+                outside.mkdir()
+                (outside / 'secret.md').write_text('outside', encoding='utf-8')
+                manifest = {'workflow': {'active_task': 'TASK-1'}, 'modules': [{'id': 'instructions'}], 'documents': [{'id': 'TASK_DOC', 'path': 'planning/task.md', 'kind': 'task'}, {'id': 'SPEC_DOC', 'path': 'planning/spec.md', 'kind': 'spec'}], 'tasks': [{'id': 'TASK-1', 'status': 'in_progress'}]}
+                (root / 'engineering-manifest.json').write_text(json.dumps(manifest), encoding='utf-8')
+                buffer = ctypes.create_unicode_buffer(32768)
+                get_short = ctypes.windll.kernel32.GetShortPathNameW
+                get_short.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint)
+                get_short.restype = ctypes.c_uint
+                written = get_short(str(root), buffer, len(buffer))
+                self.assertGreater(written, 0)
+                alias = Path(buffer.value)
+                if alias == root:
+                    self.skipTest('This volume does not generate a short-path alias for the fixture')
+                outside_alias = ctypes.create_unicode_buffer(32768)
+                self.assertGreater(get_short(str(outside), outside_alias, len(outside_alias)), 0)
 
-            request_path = alias / 'request.json'
-            store = Path(tmp) / 'host/archive.sqlite3'
-            head = task_archive.main(['--root', str(alias), '--manifest', 'engineering-manifest.json', '--project-id', 'short-alias', '--store', str(store), 'init'])
-            self.assertEqual(head, 0)
-            with contextlib.closing(task_archive.open_archive(store, 'short-alias')) as db:
-                archive_head = task_archive.head(db)
-            request = {'operation_id': 'short-alias-1', 'expected_archive_head': archive_head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': workflow_state.digest(task_path.read_bytes()), 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'Updated'}]}
-            request_path.write_text(json.dumps(request), encoding='utf-8')
-            result = workflow_state.apply_batch(*workflow_state.load_project(alias, 'engineering-manifest.json')[:3], request_path, store, 'short-alias', apply=True)
-            self.assertEqual(result['status'], 'applied')
-            self.assertIn('Updated', task_path.read_text(encoding='utf-8'))
-            with self.assertRaisesRegex(check_project.ConfigError, 'path escapes project root'):
-                check_project.safe_path(root.resolve(), Path(outside_alias.value) / 'secret.md')
+                request_path = alias / 'request.json'
+                store = Path(tmp) / 'host/archive.sqlite3'
+                result = task_archive.main(['--root', str(alias), '--manifest', 'engineering-manifest.json', '--project-id', 'short-alias', '--store', str(store), 'init'])
+                self.assertEqual(result, 0)
+                with contextlib.closing(task_archive.open_archive(store, 'short-alias')) as db:
+                    archive_head = task_archive.head(db)
+                request = {'operation_id': 'short-alias-1', 'expected_archive_head': archive_head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': workflow_state.digest(task_path.read_bytes()), 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'Updated'}]}
+                request_path.write_text(json.dumps(request), encoding='utf-8')
+                result = workflow_state.apply_batch(*workflow_state.load_project(alias, 'engineering-manifest.json')[:3], request_path, store, 'short-alias', apply=True)
+                self.assertEqual(result['status'], 'applied')
+                self.assertIn('Updated', task_path.read_text(encoding='utf-8'))
+                with self.assertRaisesRegex(check_project.ConfigError, 'path escapes project root'):
+                    check_project.safe_path(root.resolve(), Path(outside_alias.value) / 'secret.md')
+
     def test_nonexistent_project_root_cli_returns_unsupported_without_retry(self):
         script = SCRIPTS / 'workflow_state.py'
         result = subprocess.run([sys.executable, str(script), '--root', str(self.root / 'missing'), 'index'], capture_output=True, text=True, check=False)

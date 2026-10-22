@@ -65,3 +65,5 @@ Baseline→Spec→Plan→Task→Evidence、一次一问、持续需求记录、�
 ### Windows reviewed 路径别名修复（Task 后续实现）
 
 Actions run `39787233509` 证实 Windows 在 TemporaryDirectory 的长路径与 8.3 短路径别名间切换时，公共 `safe_path` 把同一 project root 下文件误拒为越界；Ubuntu reviewed 同一提交通过。修复在 checker 公共路径边界仅对含 `~N` 短名片段的路径逐组件调用 Win32 `GetLongPathNameW` 展开已有 alias 后做 root containment 比较；普通路径保留原快速比较。原 candidate/component link 检查、词面 `..` 拒绝和最后 resolved-root 校验均保留；不使用 `Path.resolve` 代替 link 防护。POSIX containment 不变。checker 与 workflow-state/archive 两层都有 Windows 短路径回归，含越界 alias 拒绝。保留双平台 matrix、正式 checker、诊断器和 240/30/30 秒时限；详见当前 Task 的 Actions 缺陷记录。最终报告显示全部 262 tests 与 required checks 通过。
+
+Ubuntu reviewed run `39802741018` then exposed a separate test-collection issue: unittest counted the Windows-only alias regressions as skipped on POSIX, and required TEST was consequently `partial`. The methods are now defined only on Windows; POSIX runs its 260 applicable cases without skips, while Windows runs 262. Both platform matrix legs and the original checker/finalizer remain in place.

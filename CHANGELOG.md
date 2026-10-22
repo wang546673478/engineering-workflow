@@ -2,7 +2,8 @@
 
 - Add an optional manifest-backed workflow state CLI that preserves completed, superseded/obsolete, deferred and unverified records in a rebuildable index; reads exact document snapshots with source hashes; and supports dry-run plus idempotent hash/archive-head guarded batch updates with conflict detection and recovery through the existing local archive.
 - Preserve the existing 1.8 workflow stages, approval meanings, required checks, command timeouts and migration boundaries. The new CLI adds no required gate, automatic migration or host API integration; host cwd launch failures remain unsupported.
-- Set the existing required TEST timeout to the user-approved 240 seconds to accommodate the full suite's measured near-boundary runtime; keep the same unittest command, all 260 test cases/assertions, COMPILE/GUIDANCE-COMPILE 30-second timeouts and workflow/approval stages unchanged.
+- Set the existing required TEST timeout to the user-approved 240 seconds to accommodate the full suite's measured near-boundary runtime; keep the same unittest command and all 260 pre-existing test cases/assertions, COMPILE/GUIDANCE-COMPILE 30-second timeouts and workflow/approval stages unchanged.
+- Fix Windows checker root containment for 8.3 short-path aliases without weakening symlink/root checks; register the two Windows-specific regression tests only on Windows so POSIX TEST is not marked partial by skipped platform-specific cases.
 
 # 1.9.0 / Unreleased
 

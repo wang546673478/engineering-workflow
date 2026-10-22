@@ -52,3 +52,7 @@
 ### Implementation defect evidence supplement (2026-10-23)
 
 The first protected Windows Actions run exposed a false root-escape rejection when one temporary workspace path used its 8.3 alias and another used its long form. The repair canonicalizes only existing Win32 short-name components for containment comparison and retains the existing link/root checks. This corrects a platform defect in the approved implementation; it does not change REQ/AT goals, required checks, matrix, timeout or 1.8 workflow semantics. Current evidence is owned by the active Task.
+
+Run 39802741018 also showed that POSIX discovery marked Windows-only path cases as skipped and therefore made required TEST partial. Those methods are now defined only on Windows; Ubuntu no longer reports host-inapplicable skips, while Windows still executes the cases. The required test command, timeout, 260 pre-existing cases, matrix and workflow remain unchanged.
+
+Ubuntu reviewed run 39802741018 then showed that unittest reported the two Windows-only regression methods as skipped on POSIX, making required TEST partial. The methods are now registered only on Windows: POSIX does not report host-inapplicable skips, while Windows retains and executes the alias assertions. This does not change the 260 pre-existing tests, required command/status, timeout, platform matrix or workflow stages.

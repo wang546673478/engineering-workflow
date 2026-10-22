@@ -173,7 +173,7 @@ REQ-ISSUE24-E01 AT-ISSUE24-E01 REQ-ISSUE24-E02 AT-ISSUE24-E02 REQ-ISSUE24-E03 AT
 | REQ-ISSUE24-E08 / AT-ISSUE24-E08 | WFS-04 | invalid process root returns unsupported once; host pre-start cwd failure remains unsupported. |
 | REQ-ISSUE24-E01/E09/E10 / AT-ISSUE24-E01/E09/E10 | WFS-05..07 | 1.8 semantics retained; real efficiency pilot remains unverified; formal checks pass under the approved timeout; commit/upload pending. See active Task and report. |
 
-Windows reviewed path-alias correction (2026-10-23): Actions run `39787233509` showed a Windows-only false path-escape rejection when TemporaryDirectory paths alternated between long and 8.3 forms. The fix stays within the existing Issue24 task and adds no gate or approval. Windows alias regressions and full 262-test/260-checker-test evidence are in [the current Task](issue-24-efficiency-task.md); local commit and upload remain pending.
+Windows reviewed path-alias and skip-result correction (2026-10-23): Actions runs `39787233509` and `39802741018` showed a Windows-only false path-escape rejection and POSIX `partial` caused by counting Windows-only regression methods as skipped. The fix stays within the existing Issue24 task and adds no gate or approval. Windows executes both alias regressions; POSIX does not register those host-only methods and thus has no skip marker. Full cross-platform evidence is in [the current Task](issue-24-efficiency-task.md); local commit/committed gates and upload remain pending.
 
 ## Issue 23 record integrity local recovery implementation / 2026-10-22
 

@@ -26,6 +26,8 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 The shared checker path boundary expands existing Windows 8.3 aliases component-by-component before root-containment comparison, while retaining original candidate/component symbolic-link/junction rejection and the final resolved-root check. This also protects workflow-state and archive consumers. Actions run `39787233509` exposed the alias mismatch; Windows regression and full-test evidence are recorded in the current Issue #24 Task.
 
+The two alias regression methods are registered only on Windows. POSIX TEST no longer receives skipped Windows-specific cases, and both reviewed matrix legs remain required.
+
 ## Module: instructions
 
 - Issue 22 current guidance (1.7.2): implementation-workflow owns defect evidence, baseline-linked-artifacts owns delivery discrepancy classification and routing, requirements-interview owns optional EARS/Given–When–Then examples. SKILL/README route to these original owners; the two existing templates offer optional prompts. Task/impact/Spec remain project-owned records. No new module, executable dependency or automatic migration is added; current evidence is in [Task](../planning/issue-22-task.md).
