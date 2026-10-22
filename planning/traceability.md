@@ -156,6 +156,23 @@ Issue 23 closure: all eight REQ/AT implemented; formal-final report original com
 Issue23 source-upload closure: implementation 9723921ceac69db363fb4b655d761bc61b956e0f / tree 4165482e1a8b8cf781e1de56a545128540dcbdf2 passed original staged/committed gates and is verified on origin/main. Publication-only receipts retain the 1.8.0 version and do not change requirements or runtime evidence.
 
 
+## Issue #24 efficiency assessment (research task; not the implementation approval)
+REQ-ISSUE24-E01 AT-ISSUE24-E01 REQ-ISSUE24-E02 AT-ISSUE24-E02 REQ-ISSUE24-E03 AT-ISSUE24-E03 REQ-ISSUE24-E04 AT-ISSUE24-E04 REQ-ISSUE24-E05 AT-ISSUE24-E05 REQ-ISSUE24-E06 AT-ISSUE24-E06 REQ-ISSUE24-E07 AT-ISSUE24-E07 REQ-ISSUE24-E08 AT-ISSUE24-E08 REQ-ISSUE24-E09 AT-ISSUE24-E09 REQ-ISSUE24-E10 AT-ISSUE24-E10
+
+`BASELINE-ISSUE23-02` → [ISSUE24 assessment](issue-24-efficiency-assessment.md) / [TASK-ISSUE24-EFFICIENCY-ASSESS-01](issue-24-efficiency-assessment.md). It is a separate research follow-up to the shipped 1.9.0 local archive. Its no-implementation-authorization statement describes that historical assessment scope only; implementation approval is recorded in the active task below.
+
+## Issue #24 efficiency Spec/Plan/Task (approved implementation scope)
+
+`BASELINE-ISSUE23-02` → [SPEC-ISSUE24-EFFICIENCY-01 r1 plus user-approved execution-policy amendment](issue-24-efficiency-spec.md) → [PLAN-ISSUE24-EFFICIENCY-01 r1 updated for TEST 240s](issue-24-efficiency-plan.md) → [TASK-ISSUE24-EFFICIENCY-01](issue-24-efficiency-task.md). User approved the complete proposal and implementation on 2026-10-22, then explicitly changed only this repository TEST timeout from 120s to 240s; exact words, times, boundaries, current progress and verification are in Task. The optional CLI preserves existing workflow stages, approval semantics, required checks and test coverage.
+
+| Requirement/acceptance | Plan phase | Evidence/status |
+| --- | --- | --- |
+| REQ-ISSUE24-E01..04 / AT-ISSUE24-E01..04 | WFS-01 | index JSON/Markdown; completed/obsolete/deferred and unknown records retained; focused tests in `scripts/tests/test_workflow_state.py`; formal baseline checks pass. |
+| REQ-ISSUE24-E05 / AT-ISSUE24-E05 | WFS-02 | exact snapshot IDs/sections with SHA-256 and active/open-state summary; focused tests and formal baseline checks pass. |
+| REQ-ISSUE24-E06..07 / AT-ISSUE24-E06..07 | WFS-03 | guarded dry-run/apply, duplicate-key rejection, conflicts/CAS, idempotency, gate protections, archive revision and rollback; 29 focused tests pass; formal checks pass with user-approved TEST 240s timeout. |
+| REQ-ISSUE24-E08 / AT-ISSUE24-E08 | WFS-04 | invalid process root returns unsupported once; host pre-start cwd failure remains unsupported. |
+| REQ-ISSUE24-E01/E09/E10 / AT-ISSUE24-E01/E09/E10 | WFS-05..07 | 1.8 semantics retained; real efficiency pilot remains unverified; formal checks pass under the approved timeout; commit/upload pending. See active Task and report. |
+
 ## Issue 23 record integrity local recovery implementation / 2026-10-22
 
 `BASELINE-ISSUE23-02` → [SPEC-ISSUE23-RI-01](issue-23-record-integrity-spec.md) → [PLAN-ISSUE23-RI-01](issue-23-record-integrity-plan.md) → [TASK-ISSUE23-RECORD-INTEGRITY-01](issue-23-record-integrity-task.md). User authorized local archive/recovery while preserving the existing 1.8 review and required-check flow.

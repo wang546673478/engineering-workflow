@@ -94,6 +94,27 @@ python C:/path/to/engineering-workflow/scripts/task_archive.py --root C:/path/to
 
 这些命令只读写显式指定的工程文档及本地 archive；不更改 OS 权限、不访问网络、不需要 API key。
 
+## 可选文档目录、快照与精确批量更新
+
+workflow_state.py 是可选 CLI，不改变 check_project.py 的 mode、required checks 或 timeout。index 从 manifest、Task 与显式 lifecycle 元数据生成 JSON（默认）或 Markdown；输出为 stdout，不另建权威文件。所有 manifest 文档都入索引；planning/ 下其他 Markdown 也显示为 unknown/unverified。active pointer 标 current；Task 的显式状态另列。非 active、文件较旧不等于 obsolete。completed 需显式 Task 状态；明确 obsolete/superseded 应提供 reason、replacement document ID 和 evidence document ID/path；deferred 应提供 module、结论、问题及恢复条件。元数据无效或和 active pointer 冲突时不替用户挑选，标记 unknown/conflict 或直接返回清单错误。
+
+只读目录与批量读取示例：
+
+    python C:/path/to/engineering-workflow/scripts/workflow_state.py --root C:/path/to/project index --format markdown
+    python C:/path/to/engineering-workflow/scripts/workflow_state.py --root C:/path/to/project snapshot --document-id TASK-01 --section "当前状态"
+
+Snapshot 返回活动 Baseline/Spec/Plan/Task 摘要、显式 deferred 项，以及被请求的精确文件章节、语义 revision 和源字节 SHA-256。每次命令重新读源文件；不保留跨调用缓存。标题必须唯一；缺失/歧义 ID、标题或引用都报错。
+
+批量写入只接受 JSON request：唯一 operation_id、expected_archive_head 及操作数组。Markdown 操作 replace-section 按唯一精确标题替换标题下正文；JSON 操作 set-json-pointer 只支持清单 documents[*].lifecycle 元数据。每个目标带当前文件 expected_sha256。目标文件仅能命中一次；整批先验证、输出一个 unified diff。任何预期 hash/head、JSON/REQ/AT/revision、anchor、lifecycle 引用冲突都会拒绝整批。
+
+先在 JSON 文档里使用 init 初始化现有 task archive（见上一节），取得 head 后创建 request 并预览：
+
+    python C:/path/to/engineering-workflow/scripts/workflow_state.py --root C:/path/to/project apply-batch --request planning/batch.json --store C:/Users/you/AppData/Local/EngineeringState/project.sqlite --project-id project
+
+默认只 dry-run。人工检查 diff 后，只有显式加 --apply 才写入。Apply 要求当前 workspace 与 archive head 完全一致；它先在同一 SQLite 事务中建包含整批新内容的 immutable revision，再逐个同目录原子替换文件，并 CAS 核对 archive head。普通异常会回滚已替换文件和 SQLite 事务。进程被强制中断时跨文件替换不能保证整体原子，应运行 archive check 检查并用 restore --project-head 恢复已提交 archive head。相同 operation ID 和 request bytes 重放返回原 revision；复用 ID 却改变 request 会报冲突。
+
+工具拒绝修改 manifest 的 workflow pointer/stage、approval、task 状态/门槛、checks/timeout 或 control-plane；不创建 archive、不迁移项目、不触发 approval，也不代替人工语义审核。archive 外置路径、生命周期和备份责任同上。命令进程启动前的无效 cwd 不可由本脚本捕获；进程收到不存在 root 时一次报告 unsupported 并退出，不重试或声称调用了宿主 file API。当前无已验证的 host workspace/file transaction API，因而 host cwd 恢复仍 unsupported。
+
 ## 项目清单字段
 
 从 [清单示例](../assets/templates/project-manifest.example.json) 调整实际路径；示例状态为 planned，直接复制不会被视为已完成。

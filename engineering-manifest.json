@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "ISSUE23_RI_SPEC",
-    "active_plan": "ISSUE23_RI_PLAN",
-    "active_task": "TASK-ISSUE23-RECORD-INTEGRITY-01"
+    "active_spec": "ISSUE24_SPEC",
+    "active_plan": "ISSUE24_PLAN",
+    "active_task": "TASK-ISSUE24-EFFICIENCY-01"
   },
   "documents": [
     {
@@ -322,6 +322,42 @@
     {
       "id": "ARCHIVE_TEST",
       "path": "scripts/tests/test_task_archive.py",
+      "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "ISSUE24_ASSESSMENT",
+      "path": "planning/issue-24-efficiency-assessment.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "ISSUE24_SPEC",
+      "path": "planning/issue-24-efficiency-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "ISSUE24_PLAN",
+      "path": "planning/issue-24-efficiency-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "ISSUE24_TASK",
+      "path": "planning/issue-24-efficiency-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "WORKFLOW_STATE_SCRIPT",
+      "path": "scripts/workflow_state.py",
+      "kind": "source",
+      "required": true
+    },
+    {
+      "id": "WORKFLOW_STATE_TEST",
+      "path": "scripts/tests/test_workflow_state.py",
       "kind": "verification",
       "required": true
     }
@@ -753,6 +789,56 @@
     {
       "id": "REQ-ISSUE23-RI-13",
       "document": "ISSUE23_RI_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E01",
+      "document": "ISSUE24_ASSESSMENT",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E02",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E03",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E04",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E05",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E06",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E07",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E08",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E09",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-ISSUE24-E10",
+      "document": "ISSUE24_SPEC",
       "index": "TRACE"
     }
   ],
@@ -1229,6 +1315,56 @@
       "id": "AT-ISSUE23-RI-12",
       "document": "ISSUE23_RI_SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E01",
+      "document": "ISSUE24_ASSESSMENT",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E02",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E03",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E04",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E05",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E06",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E07",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E08",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E09",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-ISSUE24-E10",
+      "document": "ISSUE24_SPEC",
+      "index": "TRACE"
     }
   ],
   "modules": [
@@ -1288,12 +1424,14 @@
       "depends_on": [
         "checker",
         "adapters",
-        "instructions"
+        "instructions",
+        "workflow-state"
       ],
       "allowed_dependencies": [
         "checker",
         "adapters",
-        "instructions"
+        "instructions",
+        "workflow-state"
       ]
     },
     {
@@ -1333,6 +1471,19 @@
       "allowed_dependencies": [
         "checker"
       ]
+    },
+    {
+      "id": "workflow-state",
+      "source_paths": [
+        "scripts/workflow_state.py"
+      ],
+      "document": "MAP",
+      "depends_on": [
+        "checker"
+      ],
+      "allowed_dependencies": [
+        "checker"
+      ]
     }
   ],
   "inventories": [
@@ -1364,7 +1515,7 @@
         "-q"
       ],
       "required": true,
-      "timeout_seconds": 120
+      "timeout_seconds": 240
     },
     {
       "id": "COMPILE",
@@ -5468,6 +5619,321 @@
       "verification_status": "commit_gate_task_gate_and_control_plane_pass; TEST_timeout_at_120.000s_on_Python3.12_and_120.011s_prior; COMPILE_and_GUIDANCE_COMPILE_pass; no_commit_or_push",
       "delivery_status": "staged_local_worktree_not_published",
       "verification_evidence": "work/issue-23-record-integrity-commit-py312-approved.json; work/issue-23-record-integrity-formal-rerun.json; scripts/tests/test_task_archive.py"
+    },
+    {
+      "id": "TASK-ISSUE24-EFFICIENCY-ASSESS-01",
+      "requirement_ids": [
+        "REQ-ISSUE24-E01"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUE24-E01"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-ISSUE23-RECORD-INTEGRITY-01"
+      ],
+      "status": "complete",
+      "impact_document": "ISSUE24_ASSESSMENT",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": false,
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "ISSUE24_ASSESSMENT",
+        "plan": "ISSUE24_ASSESSMENT",
+        "task": "ISSUE24_ASSESSMENT",
+        "traceability": "TRACE",
+        "prior_delivery": "ISSUE23_RI_TASK"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE-ISSUE23-02",
+        "spec": "ISSUE24-ASSESSMENT-01",
+        "plan": "ISSUE24-CANDIDATE-01",
+        "task": "TASK-ISSUE24-EFFICIENCY-ASSESS-01"
+      },
+      "requirement_state": "candidate_global_assessment_complete",
+      "implementation_status": "not_authorized",
+      "proposal_status": "draft",
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-22 Asia/Shanghai",
+        "scope": "Read-only global assessment of Issue24 from real Codex session trace; candidate batch read/write tooling and host cwd failure analysis; no implementation",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "SKILL.md and installed local skill",
+            "version_or_release_date": "1.9.0 / e1abcac",
+            "decision": "adopted",
+            "reason": "Explicit invocation; preserve existing 1.8 workflow and linked records"
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Assess optional tooling without overfitting one observed session"
+          },
+          {
+            "id": "openai-docs",
+            "source": "C:/Users/54667/.codex/skills/.system/openai-docs/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted_for_host_capability_boundary",
+            "reason": "Official search/fetch capability unavailable here; host claims limited to exposed tools and direct session evidence"
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Reuse existing linked state files"
+          },
+          {
+            "id": "triage-issue",
+            "source": "C:/Users/54667/.agents/skills/triage-issue/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted_this_followup",
+            "reason": "Assess existing Issue24 rather than create a duplicate issue"
+          }
+        ],
+        "recheck": "Repeat skills review if the batch writer or host integration becomes authorized implementation scope"
+      },
+      "documentation_impact": {
+        "assessment-record": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/issue-24-efficiency-assessment.md",
+            "planning/traceability.md"
+          ],
+          "document_ids": [
+            "ISSUE24_ASSESSMENT",
+            "TRACE"
+          ]
+        },
+        "implementation-candidate-scope": {
+          "when_paths": [
+            "planning/issue-24-efficiency-spec.md",
+            "planning/issue-24-efficiency-plan.md",
+            "planning/issue-24-efficiency-task.md"
+          ],
+          "document_ids": [
+            "ISSUE24_ASSESSMENT",
+            "ISSUE24_SPEC",
+            "ISSUE24_PLAN",
+            "ISSUE24_TASK",
+            "TRACE"
+          ]
+        }
+      },
+      "release_impact": {
+        "current_version": "1.9.0",
+        "bump_required_this_batch": false,
+        "reason": "Assessment records remain historical; implementation release impact is tracked separately on the active Issue24 Task.",
+        "proposed_implementation_version": "1.10.0 / Unreleased (active implementation task)"
+      },
+      "scope_confirmation": {
+        "date": "2026-10-22 Asia/Shanghai",
+        "user_statement": "我们从全局来看这个问题,只要不改变流程,那么我们替换更好的工具能不能减少搜索\\写入\\替换的工作量?",
+        "scope": "Read-only global evaluation and linked requirements records; this assessment did not itself authorize implementation. Later implementation approval is recorded on TASK-ISSUE24-EFFICIENCY-01. Preserve current 1.8 workflow stages/approval/check meanings.",
+        "decision_state": "assessment_complete; implementation_approved_in_active_task"
+      },
+      "verification_status": "session trace summarized from available 35-turn snapshot; source/workspace cross-check not possible because host rejected working-directory process creation",
+      "evidence": "planning/issue-24-efficiency-assessment.md"
+    },
+    {
+      "id": "TASK-ISSUE24-EFFICIENCY-01",
+      "requirement_ids": [
+        "REQ-ISSUE24-E01",
+        "REQ-ISSUE24-E02",
+        "REQ-ISSUE24-E03",
+        "REQ-ISSUE24-E04",
+        "REQ-ISSUE24-E05",
+        "REQ-ISSUE24-E06",
+        "REQ-ISSUE24-E07",
+        "REQ-ISSUE24-E08",
+        "REQ-ISSUE24-E09",
+        "REQ-ISSUE24-E10"
+      ],
+      "acceptance_ids": [
+        "AT-ISSUE24-E01",
+        "AT-ISSUE24-E02",
+        "AT-ISSUE24-E03",
+        "AT-ISSUE24-E04",
+        "AT-ISSUE24-E05",
+        "AT-ISSUE24-E06",
+        "AT-ISSUE24-E07",
+        "AT-ISSUE24-E08",
+        "AT-ISSUE24-E09",
+        "AT-ISSUE24-E10"
+      ],
+      "module_ids": [
+        "instructions",
+        "workflow-state",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [
+        "TASK-ISSUE24-EFFICIENCY-ASSESS-01"
+      ],
+      "status": "in_progress",
+      "impact_document": "ISSUE24_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/issue-24-efficiency-task.md",
+        "user_statement": "批准方案；一次性根据spec/plan/task把engineering workflow 全部改完吧,然后上传github",
+        "approved_at": "2026-10-22T05:55:38+08:00",
+        "recorded_at": "2026-10-22T06:06:57+08:00",
+        "scope": "Implement SPEC-ISSUE24-EFFICIENCY-01 r1 and PLAN-ISSUE24-EFFICIENCY-01 r1 locally, run the unchanged original required checks, and upload this repository only if gates pass. Preserve 1.8 workflow stages, approval meanings/reuse, required checks and timeouts. Do not modify external projects or host/OS settings, migrate projects, configure remote sync, or publish a GitHub Release. User later approved changing only TEST timeout from 120s to 240s; COMPILE and GUIDANCE-COMPILE remain 30s; all workflow stages, approval semantics, commands and test coverage stay unchanged.",
+        "task_id": "TASK-ISSUE24-EFFICIENCY-01",
+        "plan_revision": "PLAN-ISSUE24-EFFICIENCY-01 r1"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "ISSUE24_SPEC",
+        "plan": "ISSUE24_PLAN",
+        "task": "ISSUE24_TASK",
+        "traceability": "TRACE",
+        "assessment": "ISSUE24_ASSESSMENT",
+        "workflow_state": "WORKFLOW_STATE_SCRIPT",
+        "workflow_state_tests": "WORKFLOW_STATE_TEST"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE-ISSUE23-02",
+        "spec": "SPEC-ISSUE24-EFFICIENCY-01 r1",
+        "plan": "PLAN-ISSUE24-EFFICIENCY-01 r1",
+        "task": "TASK-ISSUE24-EFFICIENCY-01 current execution r1"
+      },
+      "requirement_state": "REQ/AT-ISSUE24-E01..E10 approved within SPEC/PLAN r1; original workflow boundaries unchanged",
+      "implementation_status": "local_cli_implemented; focused_29_tests_pass; user_approved_TEST_240s; original_checker_required_checks_pass; commit_committed_push_pending",
+      "proposal_status": "approved",
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-22 Asia/Shanghai",
+        "scope": "Approved optional workflow state CLI, behavior tests, lifecycle/index contracts and linked release documentation; no host integration or external project mutation",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "C:/Users/54667/.codex/skills/engineering-workflow/SKILL.md",
+            "version_or_release_date": "1.9.0 / e1abcac",
+            "decision": "adopted",
+            "reason": "Current linked authority, impact, original check gates and version/release rules."
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md; tests.md; interface-design.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Use focused public-interface vertical RED/GREEN checks for each CLI behavior."
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Keep the new CLI optional, guidance progressive and scope narrow; run its validator."
+          },
+          {
+            "id": "openai-docs",
+            "source": "Current session Skills catalog",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted_for_implementation",
+            "reason": "No host API integration or Codex product claim is implemented; host pre-start cwd failure stays unsupported."
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Reuse the linked manifest Baseline/Spec/Plan/Task/traceability rather than duplicate ledgers."
+          }
+        ],
+        "recheck": "2026-10-22 implementation-scope review: CLI, source paths, lifecycle validation and version/docs now included; recheck only if host integration or other external scope is separately authorized."
+      },
+      "documentation_impact": {
+        "assessment-and-plan-records": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/issue-24-efficiency-assessment.md",
+            "planning/issue-24-efficiency-spec.md",
+            "planning/issue-24-efficiency-plan.md",
+            "planning/issue-24-efficiency-task.md",
+            "planning/traceability.md"
+          ],
+          "document_ids": [
+            "ISSUE24_ASSESSMENT",
+            "ISSUE24_SPEC",
+            "ISSUE24_PLAN",
+            "ISSUE24_TASK",
+            "TRACE"
+          ]
+        },
+        "implementation": {
+          "when_paths": [
+            "scripts/workflow_state.py",
+            "scripts/tests/test_workflow_state.py",
+            "SKILL.md",
+            "README.md",
+            "references/checker.md",
+            "engineering-manifest.json",
+            "planning/issue-24-efficiency-assessment.md",
+            "planning/issue-24-efficiency-spec.md",
+            "planning/issue-24-efficiency-plan.md",
+            "planning/issue-24-efficiency-task.md",
+            "planning/traceability.md",
+            "planning/change-impact.md",
+            "planning/baseline-review.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents/openai.yaml"
+          ],
+          "document_ids": [
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "IMPACT",
+            "TRACE",
+            "ISSUE24_ASSESSMENT",
+            "ISSUE24_SPEC",
+            "ISSUE24_PLAN",
+            "ISSUE24_TASK",
+            "WORKFLOW_STATE_SCRIPT",
+            "WORKFLOW_STATE_TEST"
+          ]
+        }
+      },
+      "release_impact": {
+        "previous_version": "1.9.0",
+        "current_version": "1.10.0",
+        "proposed_implementation_version": "1.10.0 / Unreleased",
+        "bump_required_this_batch": true,
+        "reason": "Backward-compatible optional workflow state CLI plus user-approved extension of this repository’s existing TEST timeout from 120s to 240s; no gate, command, or test coverage is removed.",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ],
+        "publication_status": "local_unpublished"
+      },
+      "verification_status": "baseline checker pass; TEST 260/115.593s under user-approved 240s timeout; COMPILE 0.172s; GUIDANCE-COMPILE 0.172s; required_checks_satisfied=true; CPython3.12.14 with pinned parser path",
+      "verification_evidence": "work/issue24-baseline-test240-final-docs.json",
+      "delivery_status": "ready for local commit gates; GitHub push pending"
     }
   ],
   "control_plane": {
@@ -5497,8 +5963,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "d214021 + Issue23 1.8.0 + Issue23-RI 1.9.0 Unreleased local archive implementation worktree",
-    "scope": "BASELINE-ISSUE23-RI-01: 1.8 workflow preserved; optional local archive detection/recovery, immutable revisions, expected-head checkpoint, restore-as-new-revision; host write blocking unsupported"
+    "source_revision": "e1abcacefdf62647e1a743435780ed40e4aaf86d + approved Issue24 workflow-state implementation and 1.10.0 Unreleased worktree; current report work/issue24-baseline-test240-final-docs.json",
+    "scope": "BASELINE-ISSUE23-02 plus Issue24: optional workflow-state navigation/snapshot/batch helper; 1.8 workflow and approvals preserved; current repository TEST timeout 240s by explicit user approval, all required checks retained; host cwd recovery unsupported; no external project migration."
   },
   "exclude_paths": [
     ".git",

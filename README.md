@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.9.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.10.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -179,6 +179,17 @@ python scripts/extract_database.py postgresql --url-env ENGINEERING_DATABASE_URL
 python scripts/extract_database.py redis --url-env ENGINEERING_DATABASE_URL --output database-inventory.json
 ```
 
+## 可选目录与批量状态工具
+
+文档/任务较多时，可运行 scripts/workflow_state.py 从现有工程清单和 Task 生成 JSON/Markdown 目录，或按 document ID 与精确标题批量读取正文、章节和 SHA-256：
+
+    python scripts/workflow_state.py --root <project> index --format markdown
+    python scripts/workflow_state.py --root <project> snapshot --document-id TASK-01 --section "当前状态"
+
+目录保留已完成、明确 superseded/obsolete、deferred 项及其证据；planning 下未登记的 Markdown 显示为 unknown/unverified。缺少状态证据时不根据时间或非当前状态猜测。apply-batch 支持精确章节/JSON lifecycle 字段更新；默认只给完整 diff，必须同时提供 archive head、所有目标的 expected hash、已初始化 task archive 并显式加 --apply 才会写入。工具拒绝改审批、工作阶段、task status、门禁或超时，不增加 required checks，也不代替语义审查。宿主命令因无效 cwd 无法启动时，本地脚本无法介入；无可验证 host file API 时保持 unsupported。完整接口、安全和恢复边界见 [Checker reference](references/checker.md#可选文档目录快照与精确批量更新)。
+
+该工具读取记录时遵守工程清单的安全路径与严格 JSON 检查；批量 request 文件应放在 manifest 管理文件之外。它用同目录原子替换单个文件，但多文件更新不提供整体原子可见性；中断或回滚失败时检查 archive drift，并按已保存 head 恢复。
+
 ## 目录结构
 
 ```text
@@ -188,12 +199,13 @@ assets/templates/                项目清单、文档和 hook 模板
 assets/templates/AGENTS.engineering.md  跨 agent 持久化接入片段
 references/                      分阶段工作流说明
 scripts/check_project.py         项目清单与提交门禁检查器
+scripts/workflow_state.py        可选目录、批量快照和显式 hash-guarded 更新工具
 scripts/install_agents_guidance.py  幂等更新 AGENTS.md 管理区
 scripts/init_manifest.py             生成 full/lite 清单骨架
 scripts/adopt_project.py             安装 managed guidance 与生命周期清单
 scripts/extract_database.py      MySQL、PostgreSQL、Redis 元数据适配器
 scripts/extract_sqlite.py        SQLite 元数据提取器
-scripts/tests/                   检查器和适配器测试
+scripts/tests/                   检查器、适配器和 workflow-state CLI 测试
 ```
 
 ## 验证

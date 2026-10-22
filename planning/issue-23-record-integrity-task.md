@@ -40,6 +40,13 @@
 - 迁移并启用 writer 的项目会改变编辑方法；并发冲突需显式处理。若宿主权限无法阻止绕过写入，则能力只能标为检测/恢复或 unsupported，不能说流程受到强制保护。
 - 上述是候选设计影响，未在当前宿主验证；宿主权限与旧项目迁移机制是方案批准前的技术调查项。
 
+## Issue #24效率后续 / 2026-10-22
+
+- 历史交接：用户要求从全局评估替换/增加工具能否减少需求访谈的搜索、读取、写入和替换开销，并保持原流程不变。曾建立[ISSUE24-ASSESSMENT-01](issue-24-efficiency-assessment.md)；它依赖本Task的1.9 archive作为可选恢复基础，但不属于本Task 1.9 发布功能。
+- 目标会话“梳理当前用户体系”`01a15d44-a667-7952-89da-04ff9179fd6d`在检查时仍active。35轮可读快照累计约1595命令，活动Spec轮约495命令；失败命令多为宿主返回“目录名称无效”。平台未提供逐命令耗时，Issue声称的按小时比例/2⁄3时间无法独立验证。
+- 当时的候选架构为 manifest 重建索引 + snapshot + hash/head guarded batch；该判断不构成实施批准。
+- **交接状态已被后续决定取代：** 用户于 2026-10-22 批准独立的 [Issue #24 Spec](issue-24-efficiency-spec.md) r1 / [Plan](issue-24-efficiency-plan.md) r1，并授权通过原门槛后上传本仓库 GitHub。当前实施、技能复核、门槛和未决项只以 [TASK-ISSUE24-EFFICIENCY-01](issue-24-efficiency-task.md) 为准。Issue #23 本地 archive 的 1.9 范围、结果和旧审批不扩展或替代这次授权。
+
 ## 实施进度 / 2026-10-22
 
 - `scripts/task_archive.py` 提供本地 SQLite 归档；必须显式指定工作区外的 `--store` 和稳定 `--project-id`。`init` 快照当前 manifest 声明的文件；`check` 检测视图与保存 head 的漂移；`check --save --expected-head REV` 由调用者确认当前工作区修改后，创建带父 revision 的检查点；`history` 列版本；`restore REV` 先确认工作区等于 head、再记录 restore revision，并原子重建各文件。

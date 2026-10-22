@@ -1,5 +1,18 @@
 # Current Impact Analysis Entry
 
+## Current Issue #24 approved implementation impact
+
+Task: [TASK-ISSUE24-EFFICIENCY-01](issue-24-efficiency-task.md); input `BASELINE-ISSUE23-02`; approved `SPEC-ISSUE24-EFFICIENCY-01 r1` / `PLAN-ISSUE24-EFFICIENCY-01 r1`.
+
+- Modules: instructions, new opt-in `workflow-state` CLI, task archive as existing recovery owner, tests and governance. The CLI depends on the existing safe-path/JSON helpers; tests exercise its public command and archive boundary. It is not added to checker modes or required checks.
+- Connectivity/contracts: new routes are standalone `index`, `snapshot`, and `apply-batch`; no product API/routes/schema. It reads manifest/Task links and writes only explicitly selected manifest lifecycle metadata or exact Markdown sections after expected hashes/head and a complete diff. 1.8 stages, approval meanings/reuse, strict/diagnostic defaults, required checks and TEST command/coverage remain unchanged. Per user approval, this repository's TEST timeout changes from 120s to 240s; COMPILE and GUIDANCE-COMPILE remain 30s.
+- State/recovery: no new database. Apply reuses the external SQLite archive immutable revision and CAS; ordinary replacement errors roll back files/archive transaction. Forced interruption between multiple replaces can leave a partial view, detected/recovered through existing archive check/restore --project-head.
+- Baseline/traceability: update module map, contracts, flow and current factual baseline plus Task/Spec/Plan/manifest/traceability links. No application DB dictionary migration.
+- Host boundary: command cwd failure before process creation cannot be fixed here; no stable host file API is available/verified. Mark unsupported. No OS ACL, external project migration, remote sync, or GitHub Release changes.
+- Release: 1.9.0 → 1.10.0 MINOR / Unreleased for a backward-compatible optional CLI; synchronize VERSION, SKILL metadata, README, agents/openai.yaml and CHANGELOG after validation review.
+
+Approved gate-scope correction (2026-10-22): user explicitly changed the manifest TEST timeout from 120s to 240s after repeated boundary timeouts. COMPILE and GUIDANCE-COMPILE remain 30s. Command argv, coverage/assertions, required status, workflow stages, approval meanings and strict/diagnostic defaults do not change. This is the sole checker policy value changed in this batch; validate the full report against the updated manifest.
+
 ## Current adoption lifecycle impact
 
 Task: [TASK-ADOPTION-LIFECYCLE-01](adoption-lifecycle-task.md); input `BASELINE-SAFE-19-21-01` / source `3c1cb36`; target `SPEC-ADOPTION-LIFECYCLE-01` and `PLAN-ADOPTION-LIFECYCLE-01`.

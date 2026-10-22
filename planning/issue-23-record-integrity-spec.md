@@ -51,5 +51,4 @@
 - **AT-ISSUE23-RI-10：** 未迁移的既有项目继续使用原工件格式、审批语义及已声明检查；迁移先预览并由项目明确启用，不自动打开 strict、增加 required checks 或改变现有阶段。
 - **AT-ISSUE23-RI-11：** 过期的 archive head 或并发保存不会静默覆盖先保存的 revision；工具返回冲突并保留双方可见的历史。
 - **AT-ISSUE23-RI-12：** archive 事务在版本文件写入期间失败后，重启/重试仍只显示此前提交的完整 revision，旧 head 不被部分推进。
-
-需求状态：候选。实施状态：未授权。下一步：完成全局架构选型、宿主/仓库边界及恢复/冲突策略，展示整体范围供本模块完整性审核。
+Issue #24 候选扩展（后移）：此前在本文件草拟的 REQ-ISSUE23-RI-14..16 / AT-ISSUE23-RI-13..16 现由独立 Issue #24 Spec/Plan/Task 承接；这些候选不属于 Issue #23 已批准/已交付的本地 archive slice，也不转移审批。当前权威范围与实施证据见 [Issue #24 Spec](issue-24-efficiency-spec.md)、[Plan](issue-24-efficiency-plan.md) 与 [Task](issue-24-efficiency-task.md)。

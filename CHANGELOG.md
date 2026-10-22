@@ -1,3 +1,9 @@
+# 1.10.0 / Unreleased
+
+- Add an optional manifest-backed workflow state CLI that preserves completed, superseded/obsolete, deferred and unverified records in a rebuildable index; reads exact document snapshots with source hashes; and supports dry-run plus idempotent hash/archive-head guarded batch updates with conflict detection and recovery through the existing local archive.
+- Preserve the existing 1.8 workflow stages, approval meanings, required checks, command timeouts and migration boundaries. The new CLI adds no required gate, automatic migration or host API integration; host cwd launch failures remain unsupported.
+- Set the existing required TEST timeout to the user-approved 240 seconds to accommodate the full suite's measured near-boundary runtime; keep the same unittest command, all 260 test cases/assertions, COMPILE/GUIDANCE-COMPILE 30-second timeouts and workflow/approval stages unchanged.
+
 # 1.9.0 / Unreleased
 
 - Add an optional local task archive command for manifest-declared engineering records: immutable SQLite revisions outside the project root, drift detection, expected-head checkpoints, history, and restore-as-new-revision.

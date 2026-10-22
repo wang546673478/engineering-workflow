@@ -20,15 +20,19 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 `scripts/task_archive.py` snapshots manifest-declared engineering documents to an explicitly selected local SQLite file outside the project root. It owns archive revisions/checkpoints/history/restore; workspace Markdown/JSON remains readable and the 1.8 workflow/checker remains the approval and validation owner. The command is opt-in and is not integrated into existing check gates. The host currently does not block direct shell/editor writes, so drift detection and restore are supported but enforcement is unsupported. See the [archive contract](../references/checker.md#本地工程记录归档与恢复) and [RI Task](../planning/issue-23-record-integrity-task.md).
 
+## Optional workflow state CLI / 1.10.0 Unreleased
+
+`scripts/workflow_state.py` is a standalone opt-in owner of manifest-backed index, document snapshot and exact batch operations; it consumes the existing checker safe-path/strict JSON helpers and task_archive immutable revisions, but does not add a checker mode or required check. It lists manifest records plus unregistered planning Markdown as unknown/unverified, exposes approval/task/lifecycle fields separately, and rejects stale heads, conflicts or protected workflow targets before writes. Ordinary replacement errors attempt rollback; rollback failure is reported as potentially partial with the recovery command. It cannot recover a host process that failed before script startup. No business database/API changes. Twenty-nine focused behavior tests cover CLI/index, lifecycle, snapshots, duplicate JSON/IDs, conflict/CAS, archive replay, BOM/newline preservation, rollback and recovery; all 29 pass. Current implementation and full-gate evidence belong to [Issue #24 Task](../planning/issue-24-efficiency-task.md).
+
 ## Module: instructions
 
 - Issue 22 current guidance (1.7.2): implementation-workflow owns defect evidence, baseline-linked-artifacts owns delivery discrepancy classification and routing, requirements-interview owns optional EARS/Given–When–Then examples. SKILL/README route to these original owners; the two existing templates offer optional prompts. Task/impact/Spec remain project-owned records. No new module, executable dependency or automatic migration is added; current evidence is in [Task](../planning/issue-22-task.md).
 
-- Responsibility and owner: Agent workflow instructions, references, templates, public usage guide and managed project-guidance installation; owned by this repository.
-- Entrypoints/public interfaces: `SKILL.md`, `README.md`, `AGENTS.md`, `VERSION`, `CHANGELOG.md`, `LICENSE`, `agents/openai.yaml`, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, `scripts/adopt_project.py`, referenced Markdown files, JSON templates, hook templates.
+- Responsibility and owner: Agent workflow instructions, references, templates, public usage guide, managed project-guidance installation and optional state navigation/update helper; owned by this repository.
+- Entrypoints/public interfaces: `SKILL.md`, `README.md`, `AGENTS.md`, `VERSION`, `CHANGELOG.md`, `LICENSE`, `agents/openai.yaml`, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, `scripts/adopt_project.py`, `scripts/workflow_state.py`, referenced Markdown files, JSON templates, hook templates.
 - Callers: Skill selection, feature-change discussions and engineering tasks using the skill, including follow-up answers in an adopted project's active task; maintainers explicitly invoke the installer for a project. Other agents can follow a thin native-entry reference to `AGENTS.md` when the host loads that entry.
 - Direct dependencies and reason: The instructions route to references and templates; the installer renders the managed template, and adoption calls the bundled checker for read-only diagnostics.
-- Dependents: `checker` uses manifest and task conventions defined here; `tests` verifies the installer.
+- Dependents: `checker` and `workflow-state` use manifest/task conventions defined here; `tests` verifies the public state CLI and installer.
 - Files read or written: The installer reads its template and project instruction files, then updates only its managed section in `AGENTS.md` and any explicitly selected thin adapter files. Plans and task state are maintained separately in project files. No database access.
 - Current state: Skill guidance and the persistence installer are implemented. The 1.5.0 linked-artifact implementation adds an explicit Baseline → Spec → Plan → Task chain, revision pointers, and evidence-driven Baseline correction; current scope and verification belong to [TASK-LINKED-ARTIFACTS-01](../planning/linked-artifact-model-task.md).
 - Evidence: `SKILL.md`, `AGENTS.md`, references, templates, `scripts/install_agents_guidance.py`, `scripts/init_manifest.py`, README.
@@ -37,7 +41,7 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 ## Module: checker
 
 - Responsibility and owner: Validate project manifests, inventories, task gates, documentation impact, staged commits, and committed trees.
-- Entrypoints/public interfaces: `scripts/check_project.py`; `discovery`, `baseline`, `change`, `handoff`, `commit`, and `committed` modes.
+- Entrypoints/public interfaces: `scripts/check_project.py`; `discovery`, `baseline`, `change`, `handoff`, `commit`, and `committed` modes. `scripts/workflow_state.py` is an independent opt-in navigation/snapshot/batch CLI and does not add a checker mode.
 - Callers: Project hooks, CI, and maintainers.
 - Direct dependencies and reason: Python standard library, manifest documents, and adapter metadata validators.
 - Dependents: Project-specific hook and CI templates.
@@ -82,7 +86,7 @@ Persistence history: [TASK-PERSISTENCE-01](../planning/persistence-task.md)
 
 ## Dependency rules
 
-Allowed direction: `instructions -> checker -> adapters` for read-only adoption diagnostics; tests may exercise checker, adapters and the installer in `instructions`. The installer reads the maintained guidance template. Project-specific state stays in the project, while governance documents describe this repository.
+Allowed direction: `instructions -> checker -> adapters` for read-only adoption diagnostics; the independent `workflow-state -> checker` helper reuses safe path/strict JSON functions and uses `task_archive` for immutable recovery revisions; `tests -> workflow-state` exercises its public CLI. Existing tests may also exercise checker/adapters/instructions. The installer reads the maintained guidance template. Project-specific state stays in the project, while governance documents describe this repository.
 
 Forbidden or risky dependencies: adapters must not read business rows; checker must not silently connect to remote databases; instructions must not override project rules.
 

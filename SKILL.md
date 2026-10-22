@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.9.0
+  version: 1.10.0
 ---
 
 # 代码工程工作流
@@ -30,6 +30,8 @@ metadata:
 详细记录字段、状态和审核方式见 [requirements-interview.md](references/requirements-interview.md)；复用项目状态体系和文件，不另建重复台账。上述要求是行为指令，现有检查器不能自动发现尚未写入文件的聊天需求或证明用户理解与批准。
 
 需要本地恢复能力的项目可选择使用 [task archive](scripts/task_archive.py)：对 manifest 声明的工程文档建立工作区外快照、检查工作区漂移、列出历史及恢复旧版本。它不是必经门禁，不自动迁移，也不增加审核节点。当前宿主若允许任意 shell/editor 写入，它只能事后检测和恢复，不能拦截写操作；存储路径和保留策略由采用项目负责。使用方式见[Checker reference](references/checker.md#本地工程记录归档与恢复)。
+
+项目文档很多或需要同步多个权威记录时，可选择 [workflow state](scripts/workflow_state.py) CLI：从 manifest/task 和明确的 lifecycle 元数据生成可重建目录，批读精确章节/hash，或 dry-run/apply hash 保护的精确批次。目录也保留 planning 下未登记 Markdown 并标记 unknown/unverified；不从年龄或非当前状态推断过时。批量 apply 需显式初始化的本地 archive、预期 head 和 --apply，不能改审批、stage、task status、checks 或 timeout。该 CLI 不参与原检查器门禁；缺失 cwd/workspace host API 时报告 unsupported，不能修复宿主启动错误。合同见 [Checker reference](references/checker.md#可选文档目录快照与精确批量更新)。
 
 ## 选择工作流程
 

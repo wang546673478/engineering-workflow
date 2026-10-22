@@ -13,6 +13,10 @@ Read original user decision and presented proposal -> preserve reviewed Spec/Pla
 
 Project owner explicitly initializes a local archive -> ordinary engineering discussion/edits continue under existing rules -> optional drift check/checkpoint uses expected archive head -> on a recovery request, inspect history and resolve or checkpoint workspace drift -> restore records a new event then reconstructs the document view -> existing Spec/Plan/Task approval and required validation gates run at their original points. Archive revisions do not count as user reviews or implementation authorization; automatic migration and remote sync are off. If projection restore stops midway, `restore --project-head` reconstructs from the current archived head. Arbitrary direct-write blocking is unsupported by the current host.
 
+## Optional directory and batch side flow / 1.10.0 Unreleased
+
+Read current manifest/Task -> render stdout index (retain completed, explicit superseded/obsolete/deferred and unknown planning files) or request exact document content/section snapshot with SHA-256 -> prepare strict operation-ID JSON and expected source/archive hashes -> inspect full dry-run diff -> explicitly apply -> archive one immutable batch revision and replace exact views -> on interruption inspect archive drift and restore its project head. Stale content, pointer/REQ/AT conflicts or protected approval/stage/check targets reject the whole batch. The operation does not approve requirements, alter the active pointer, authorize implementation or invoke any required checker command. Host failures before the CLI starts remain outside the local tool boundary. Ordinary file-write errors attempt per-file rollback; multi-file writes are not atomically visible and interruption can leave a recoverable partial projection.
+
 ## Issue 22 guidance through the existing flow
 
 1. During the existing requirement discussion, optionally use the examples in requirements-interview; preserve source, IDs, candidate/confirmed/deferred state and module review.
