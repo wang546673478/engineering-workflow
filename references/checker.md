@@ -96,16 +96,17 @@ python C:/path/to/engineering-workflow/scripts/task_archive.py --root C:/path/to
 
 ## 可选文档目录、快照与精确批量更新
 
-workflow_state.py 是可选 CLI，不改变 check_project.py 的 mode、required checks 或 timeout。index 从 manifest、Task 与显式 lifecycle 元数据生成 JSON（默认）或 Markdown；输出为 stdout，不另建权威文件。所有 manifest 文档都入索引；planning/ 下其他 Markdown 也显示为 unknown/unverified。active pointer 标 current；Task 的显式状态另列。非 active、文件较旧不等于 obsolete。completed 需显式 Task 状态；明确 obsolete/superseded 应提供 reason、replacement document ID 和 evidence document ID/path；deferred 应提供 module、结论、问题及恢复条件。元数据无效或和 active pointer 冲突时不替用户挑选，标记 unknown/conflict 或直接返回清单错误。
+workflow_state.py 是可选 CLI，不改变 check_project.py 的 mode、required checks 或 timeout。对新 manifest 可声明 workflow.policy_version=delta-v1、task.scale、gate_policy/applies_to、task.after 和带 source task 与 artifact_path 的 depends_on；旧 manifest 不要求迁移，继续采用旧依赖与 required 语义。after 只供顺序提示，不阻塞；structured depends_on 只在其项目内技术文件不存在时阻止消费者。非 required 命令只有在适用规模内才执行；required_checks 和安全/控制面保护优先，不能用 scale 将它们跳过。query 子命令是只读按需事实查询入口，可用稳定 ID 查询 manifest 声明的模块依赖、checkpointed SQLite 表/字段，以及可选的 module:<id> --relations 静态源码引用；它从当前输入重算，并返回 SHA-256、adapter 版本、证据位置和明确的支持/排除范围，不维护手工同步副本。相同输入且无新证据冲突时调用方可复用结果；输入变化后重新 query 返回新切片。源码引用范围受模块声明路径、ignore policy、扫描上限和本地 parser/runtime 限制，结果可为 partial/unsupported，且不是运行时调用图。路由、request/response、权限、活动 SQLite WAL 和未声明来源当前返回 unsupported/unknown，不能当成不存在或完整。index 从 manifest、Task 与显式 lifecycle 元数据生成 JSON（默认）或 Markdown；输出为 stdout，不另建权威文件。所有 manifest 文档都入索引；planning/ 下其他 Markdown 也显示为 unknown/unverified。active pointer 标 current；Task 的显式状态另列。非 active、文件较旧不等于 obsolete。completed 需显式 Task 状态；明确 obsolete/superseded 应提供 reason、replacement document ID 和 evidence document ID/path；deferred 应提供 module、结论、问题及恢复条件。元数据无效或和 active pointer 冲突时不替用户挑选，标记 unknown/conflict 或直接返回清单错误。
 
 只读目录与批量读取示例：
 
     python C:/path/to/engineering-workflow/scripts/workflow_state.py --root C:/path/to/project index --format markdown
     python C:/path/to/engineering-workflow/scripts/workflow_state.py --root C:/path/to/project snapshot --document-id TASK-01 --section "当前状态"
+    python C:/path/to/engineering-workflow/scripts/workflow_state.py --root C:/path/to/project query --id db:main.accounts --id field:main.accounts.email --id module:billing --relations
 
 Snapshot 返回活动 Baseline/Spec/Plan/Task 摘要、显式 deferred 项，以及被请求的精确文件章节、语义 revision 和源字节 SHA-256。每次命令重新读源文件；不保留跨调用缓存。标题必须唯一；缺失/歧义 ID、标题或引用都报错。
 
-批量写入只接受 JSON request：唯一 operation_id、expected_archive_head 及操作数组。Markdown 操作 replace-section 按唯一精确标题替换标题下正文；JSON 操作 set-json-pointer 只支持清单 documents[*].lifecycle 元数据。每个目标带当前文件 expected_sha256。目标文件仅能命中一次；整批先验证、输出一个 unified diff。任何预期 hash/head、JSON/REQ/AT/revision、anchor、lifecycle 引用冲突都会拒绝整批。
+批量写入只接受 JSON request：唯一 operation_id、expected_archive_head 及操作数组。所有 replace-section 变更需给出 task_id 和 authority（baseline/spec/plan/task/impact/traceability），目标必须等于该 Task 对应 artifact_link 或 impact_document；权威类型与链接不匹配时写入前整批拒绝。Markdown 操作 replace-section 按唯一精确标题替换标题下正文；JSON 操作 set-json-pointer 只支持清单 documents[*].lifecycle 元数据。每个目标带当前文件 expected_sha256。目标文件仅能命中一次；整批先验证、输出一个 unified diff。任何预期 hash/head、JSON/REQ/AT/revision、anchor、lifecycle 引用冲突都会拒绝整批。
 
 先在 JSON 文档里使用 init 初始化现有 task archive（见上一节），取得 head 后创建 request 并预览：
 
@@ -119,7 +120,7 @@ Snapshot 返回活动 Baseline/Spec/Plan/Task 摘要、显式 deferred 项，以
 
 从 [清单示例](../assets/templates/project-manifest.example.json) 调整实际路径；示例状态为 planned，直接复制不会被视为已完成。
 
-接入时先核对来源与适配能力。示例和full初始化均将数据库/接口源清单默认为可选，数据库字典、接口文档和agent语义核验仍按基线范围要求完成；只有真实来源有受支持、可达的验证路径并经项目审阅时才设置required。manual永远partial，当前没有通用接口/路由源码适配器；将它直接设为required会产生无法通过的门槛。既有项目的required不能自行删除或降级：先完成独立调查，准备具体适配器或验收范围调整方案，再按该项目控制面规则审阅。用户接受基线范围不会使partial变成pass，重复无关全量测试也不能解决适配能力冲突。
+接入时先核对来源与适配能力。示例和full初始化均将数据库/接口源清单默认为可选，数据库字典、接口文档和agent语义核验仍按基线范围要求完成；只有真实来源有受支持、可达的验证路径并经项目审阅时才设置required。manual 来源在声明来源/范围可定位且 mapping 与所列条目一致时沿用现有 pass，并以 limitation 说明不证明声明范围内绝无遗漏；这不替代完整语义调查。当前没有通用接口/路由源码适配器。既有项目的required不能自行删除或降级：先完成独立调查，准备具体适配器或验收范围调整方案，再按该项目控制面规则审阅。用户接受基线范围不会使partial变成pass，重复无关全量测试也不能解决适配能力冲突。
 
 | 字段 | 含义及关联 |
 | --- | --- |
@@ -175,7 +176,7 @@ full/lite 都要求已链接的基线视图和追踪文档存在；不适用视�
 源清单参见 [示例](../assets/templates/inventory.example.json)。包含 `kind`、`provenance` 和 `items`：
 
 - kind：清单种类，例如 database、contract。
-- provenance.type/scope/complete/evidence：提取方法、明确范围、布尔完整性与证据；manual 永远只能报告已声明范围 partial，不能自行声明完整。
+- provenance.type/scope/complete/evidence：提取方法、明确范围、布尔完整性与证据；manual 来源可在范围/mapping 可核对时沿用 pass，但 limitation 必须说明不证明声明边界内绝无遗漏。
 - provenance.source_files：`{path, sha256}` 列表，核对来源新鲜度；来源路径须在项目根内。
 - items：`{id, fields:[字段名]}` 列表。数据库 id 表示表/视图，接口可用稳定的 method+path 标识；禁止重复条目和字段。
 

@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "workflow": {
+    "policy_version": "delta-v1",
     "active_baseline": "BASELINE",
     "active_spec": "SPEC",
     "active_plan": "PLAN",
@@ -165,13 +166,20 @@
       ],
       "required": true,
       "timeout_seconds": 120,
-      "working_directory": "."
+      "working_directory": ".",
+      "applies_to": [
+        "hotfix",
+        "minor",
+        "feature",
+        "takeover"
+      ]
     }
   ],
   "tasks": [
     {
       "id": "TASK-01",
       "batch_id": "TASK-01-BATCH-01",
+      "scale": "feature",
       "requirement_ids": [
         "REQ-01"
       ],
@@ -184,6 +192,8 @@
         "governance"
       ],
       "depends_on": [],
+      "after": [],
+      "gate_policy": {},
       "status": "planned",
       "impact_document": "IMPACT",
       "required_checks": [
@@ -257,7 +267,8 @@
         "plan_revision": null,
         "task_id": "TASK-01",
         "evidence": "planning/approval.md"
-      }
+      },
+      "implementation_task": true
     }
   ],
   "baseline": {

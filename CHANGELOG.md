@@ -1,3 +1,10 @@
+# 1.11.0 / Unreleased
+
+- Rework engineering guidance around a dynamic, queryable Baseline and in-work correction: reuse fresh context, correct affected facts before dependent edits, and keep Baseline/Spec/Plan/Task as distinct single-authority views.
+- Add read-only workflow_state.py query by stable ID for declared checkpointed SQLite schema, manifest module summaries, and optional bounded JS/TS/Rust source references with fingerprints and explicit support limits.
+- Add actionable checker findings, a reachable manual-inventory pass path with scope limitations, task-scale applicability, nonblocking after, scoped artifact dependencies, read-only-task authorization handling, and narrow temporary-file reporting. Preserve legacy manifest behavior and required command definitions.
+- Constrain change-set document writes to the selected Task and matching authority link while preserving archive CAS/hash validation and approval immutability.
+
 # 1.10.0 / Unreleased
 
 - Add an optional manifest-backed workflow state CLI that preserves completed, superseded/obsolete, deferred and unverified records in a rebuildable index; reads exact document snapshots with source hashes; and supports dry-run plus idempotent hash/archive-head guarded batch updates with conflict detection and recovery through the existing local archive.

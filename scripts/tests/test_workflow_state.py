@@ -2,11 +2,13 @@ import json
 import contextlib
 import codecs
 import ctypes
+from contextlib import closing
 import os
 import subprocess
 import sys
 import tempfile
 import unittest
+import sqlite3
 from unittest import mock
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,7 +32,7 @@ Old decision
 Later
 ''', encoding='utf-8')
         (self.root / 'planning/spec.md').write_text('# Spec\nREQ-1\n', encoding='utf-8')
-        manifest = {'workflow': {'active_task': 'TASK-1'}, 'modules': [{'id': 'instructions'}], 'documents': [{'id': 'TASK_DOC', 'path': 'planning/task.md', 'kind': 'task'}, {'id': 'SPEC_DOC', 'path': 'planning/spec.md', 'kind': 'spec'}], 'tasks': [{'id': 'TASK-1', 'status': 'in_progress', 'artifact_links': {'spec': 'SPEC_DOC'}, 'artifact_revisions': {'spec': 'SPEC-1'}}]}
+        manifest = {'workflow': {'active_task': 'TASK-1'}, 'modules': [{'id': 'instructions'}], 'documents': [{'id': 'TASK_DOC', 'path': 'planning/task.md', 'kind': 'task'}, {'id': 'SPEC_DOC', 'path': 'planning/spec.md', 'kind': 'spec'}], 'tasks': [{'id': 'TASK-1', 'status': 'in_progress', 'impact_document': 'TASK_DOC', 'artifact_links': {'spec': 'SPEC_DOC'}, 'artifact_revisions': {'spec': 'SPEC-1'}}]}
         (self.root / 'engineering-manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
         self.request = self.root / 'request.json'
         self.store = Path(self.tmp.name) / 'host' / 'archive.sqlite3'
@@ -87,13 +89,127 @@ Later
     def test_snapshot_includes_full_content_when_no_sections_are_requested(self):
         result = workflow_state.snapshot(*self.context(), ['TASK_DOC'])
         self.assertIn('Old decision', result['documents'][0]['content'])
+    def test_table_query_reads_current_declared_sqlite_schema_and_fingerprint(self):
+        database = self.root / 'planning/schema.sqlite'
+        with closing(sqlite3.connect(database)) as db:
+            db.execute('CREATE TABLE accounts (id INTEGER, name TEXT)')
+            db.commit()
+        manifest = json.loads((self.root / 'engineering-manifest.json').read_text(encoding='utf-8'))
+        inventory = self.root / 'planning/database.json'
+        inventory.write_text(json.dumps({'kind':'database','provenance':{'type':'sqlite-metadata','source_files':[{'path':'planning/schema.sqlite'}]},'items':[]}),encoding='utf-8')
+        manifest['inventories']=[{'id':'db','kind':'database','path':'planning/database.json','documentation':'planning/task.md','required':False}]
+        (self.root / 'engineering-manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+        root,_,loaded,_=workflow_state.load_project(self.root,'engineering-manifest.json')
+        result=workflow_state.query(root,loaded,['db:accounts'])
+        item=result['items'][0]
+        self.assertEqual(item['status'],'pass')
+        self.assertEqual([f['name'] for f in item['value']['field_details']],['id','name'])
+        self.assertEqual(item['evidence'][0]['path'],'engineering-manifest.json')
+        self.assertEqual(item['evidence'][1]['path'],'planning/database.json')
+        self.assertEqual(item['evidence'][2]['path'],'planning/schema.sqlite')
+        self.assertRegex(item['source_fingerprint'],r'^[0-9a-f]{64}$')
+    def test_table_query_recomputes_after_source_schema_changes(self):
+        database = self.root / 'planning/schema.sqlite'
+        with closing(sqlite3.connect(database)) as db:
+            db.execute('CREATE TABLE accounts (id INTEGER)')
+            db.commit()
+        manifest = json.loads((self.root / 'engineering-manifest.json').read_text(encoding='utf-8'))
+        (self.root/'planning/database.json').write_text(json.dumps({'kind':'database','provenance':{'type':'sqlite-metadata','source_files':[{'path':'planning/schema.sqlite'}]},'items':[]}),encoding='utf-8')
+        manifest['inventories']=[{'id':'db','kind':'database','path':'planning/database.json','documentation':'planning/task.md','required':False}]
+        (self.root/'engineering-manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+        root,_,loaded,_=workflow_state.load_project(self.root,'engineering-manifest.json')
+        first=workflow_state.query(root,loaded,['db:accounts'])['items'][0]
+        with closing(sqlite3.connect(database)) as db:
+            db.execute('ALTER TABLE accounts ADD COLUMN email TEXT')
+            db.commit()
+        second=workflow_state.query(root,loaded,['db:accounts'])['items'][0]
+        self.assertNotEqual(first['source_fingerprint'],second['source_fingerprint'])
+        self.assertEqual([f['name'] for f in second['value']['field_details']],['id','email'])
+    def test_unsupported_route_query_does_not_claim_absence(self):
+        result=workflow_state.query(*self.context()[::2],['route:GET:/users'])
+        item=result['items'][0]
+        self.assertEqual(item['status'],'unsupported')
+        self.assertIn('permissions',item['coverage']['excluded'])
+        self.assertIn('does not mean',item['coverage']['limitations'][0])
+    def test_query_cli_reads_stable_ids(self):
+        result=subprocess.run([sys.executable,str(SCRIPTS/'workflow_state.py'),'--root',str(self.root),'--manifest','engineering-manifest.json','query','--id','route:GET:/users'],capture_output=True,text=True)
+        self.assertEqual(result.returncode,1)
+        payload=json.loads(result.stdout)
+        self.assertEqual(payload['items'][0]['status'],'unsupported')
+    def test_query_marks_manual_inventory_as_non_derived_not_complete(self):
+        manifest=json.loads((self.root/'engineering-manifest.json').read_text(encoding='utf-8'))
+        (self.root/'planning/manual-db.json').write_text(json.dumps({'kind':'database','provenance':{'type':'manual','scope':'declared test scope','evidence':'planning/task.md','source_files':[]},'items':[]}),encoding='utf-8')
+        manifest['inventories']=[{'id':'manual-db','kind':'database','path':'planning/manual-db.json','documentation':'planning/task.md','required':False}]
+        (self.root/'engineering-manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+        root,_,loaded,_=workflow_state.load_project(self.root,'engineering-manifest.json')
+        result=workflow_state.query(root,loaded,['db:accounts'])
+        self.assertEqual(result['items'][0]['status'],'unknown')
+        self.assertEqual(result['inventory_problems'][0]['status'],'manual_source_not_derived')
+    def test_source_derived_receipt_query_returns_database_slice_and_detects_staleness(self):
+        source=self.root/'planning/model.go'
+        source.write_text('type Account struct { Email string }',encoding='utf-8')
+        adapter=self.root/'planning/adapter.py'
+        adapter.write_text('adapter fixture',encoding='utf-8')
+        source_files=[{'path':'planning/model.go','sha256':workflow_state.digest(source.read_bytes())}]
+        row={'id':'accounts','fields':['email'],'detail':[{'column':'email','go_name':'Email','source':'planning/model.go'}],'model':'Account','source':'planning/model.go:1'}
+        receipt={'schema_version':1,'kind':'database','adapter':'gorm-source-v1','adapter_version':1,'adapter_path':'planning/adapter.py','adapter_sha256':workflow_state.digest(adapter.read_bytes()),'items':[row],'models':[{'id':'accounts','model':'Account','source':'planning/model.go','dictionary_mappings':[{'column':'email','go_name':'Email'}]}],'source_files':source_files}
+        receipt['snapshot_sha256']=workflow_state.source_snapshot_digest(receipt['items'])
+        receipt['evidence_sha256']=workflow_state.digest(workflow_state.canonical_json({k:v for k,v in receipt.items() if k!='evidence_sha256'}))
+        receipt_path=self.root/'planning/database-receipt.json'
+        receipt_path.write_text(json.dumps(receipt),encoding='utf-8')
+        inventory={'kind':'database','items':[row],'provenance':{'type':'source-derived','adapter':'gorm-source-v1','scope':'fixed model fixture','complete':True,'evidence':['receipt fixture'],'source_files':source_files,'adapter_sha256':receipt['adapter_sha256'],'source_evidence':{'path':'planning/database-receipt.json','sha256':workflow_state.digest(receipt_path.read_bytes()),'adapter_version':1},'snapshot_sha256':receipt['snapshot_sha256']}}
+        (self.root/'planning/database.json').write_text(json.dumps(inventory),encoding='utf-8')
+        manifest=json.loads((self.root/'engineering-manifest.json').read_text(encoding='utf-8'))
+        manifest['inventories']=[{'id':'db-derived','kind':'database','path':'planning/database.json','documentation':'planning/task.md','required':False}]
+        (self.root/'engineering-manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+        root,_,loaded,_=workflow_state.load_project(self.root,'engineering-manifest.json')
+        debug=workflow_state.query(root,loaded,['db:accounts'])
+        result=debug['items'][0]
+        self.assertEqual(debug['inventory_problems'],[])
+        self.assertEqual(result['status'],'pass',debug)
+        self.assertEqual(result['adapter'],'gorm-source-v1')
+        self.assertEqual(result['value']['field_details'][0]['go_name'],'Email')
+        source.write_text('type Account struct { Email string; Phone string }',encoding='utf-8')
+        stale=workflow_state.query(root,loaded,['db:accounts'])['items'][0]
+        self.assertEqual(stale['status'],'stale')
+    def test_source_derived_route_receipt_query_returns_permission_limit(self):
+        manifest=json.loads((self.root/'engineering-manifest.json').read_text(encoding='utf-8'))
+        row={'id':'GET /api/accounts','method':'GET','path':'/api/accounts','fields':['response.data'],'permission':'authz.AccountRead','authorization_review':'route-table reviewed; runtime not tested','limitations':[]}
+        source=self.root/'planning/router.go';source.write_text('route fixture',encoding='utf-8')
+        adapter=self.root/'planning/adapter.py';adapter.write_text('route adapter fixture',encoding='utf-8')
+        sources=[{'path':'planning/router.go','sha256':workflow_state.digest(source.read_bytes())}]
+        receipt={'schema_version':1,'kind':'contract','adapter':'gin-routes-v1','adapter_version':1,'adapter_path':'planning/adapter.py','adapter_sha256':workflow_state.digest(adapter.read_bytes()),'items':[row],'source_files':sources}
+        receipt['snapshot_sha256']=workflow_state.source_snapshot_digest(receipt['items'])
+        receipt['evidence_sha256']=workflow_state.digest(workflow_state.canonical_json({k:v for k,v in receipt.items() if k!='evidence_sha256'}))
+        receipt_path=self.root/'planning/route-receipt.json';receipt_path.write_text(json.dumps(receipt),encoding='utf-8')
+        inventory={'kind':'contract','items':[row],'provenance':{'type':'source-derived','adapter':'gin-routes-v1','scope':'fixed route fixture','complete':True,'evidence':['receipt fixture'],'source_files':sources,'adapter_sha256':receipt['adapter_sha256'],'source_evidence':{'path':'planning/route-receipt.json','sha256':workflow_state.digest(receipt_path.read_bytes()),'adapter_version':1},'snapshot_sha256':receipt['snapshot_sha256']}}
+        (self.root/'planning/routes.json').write_text(json.dumps(inventory),encoding='utf-8')
+        manifest['inventories']=[{'id':'routes','kind':'contract','path':'planning/routes.json','documentation':'planning/task.md','required':False}]
+        (self.root/'engineering-manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+        root,_,loaded,_=workflow_state.load_project(self.root,'engineering-manifest.json')
+        result=workflow_state.query(root,loaded,['route:GET:/api/accounts'])['items'][0]
+        self.assertEqual(result['status'],'pass')
+        self.assertEqual(result['value']['permission'],'authz.AccountRead')
+        self.assertIn('deployed authorization',result['coverage']['limitations'][0])
+        source.write_text('route fixture changed',encoding='utf-8')
+        stale=workflow_state.query(root,loaded,['route:GET:/api/accounts'])['items'][0]
+        self.assertEqual(stale['status'],'stale')
+    def test_relation_query_reports_explicit_adapter_limits(self):
+        source_root=self.root/'src'
+        source_root.mkdir()
+        (source_root/'a.ts').write_text("import {b} from './b'; export const a=b;",encoding='utf-8')
+        (source_root/'b.ts').write_text('export const b=1;',encoding='utf-8')
+        result=workflow_state.query_relations(self.root,'module:test',['src'])
+        self.assertIn(result['status'],('pass','partial','unsupported'))
+        self.assertEqual(result['adapter'],'source-context-references')
+        self.assertIn('runtime calls',result['coverage']['excluded'])
     def test_batch_section_replace_preserves_utf8_bom_and_normalizes_source_newlines(self):
         root, manifest_path, manifest = self.context()
         path = self.root / 'planning/task.md'
         path.write_bytes(codecs.BOM_UTF8 + b'# Current\r\n\r\n## Decisions\r\nOld\r\n')
         head = self.init_archive()
         digest = workflow_state.digest(path.read_bytes())
-        request = {'operation_id': 'bom-crlf-1', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': digest, 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'New\nLine'}]}
+        request = {'operation_id': 'bom-crlf-1', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': digest, 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'New\nLine'}]}
         self.request.write_text(json.dumps(request), encoding='utf-8')
         applied = workflow_state.apply_batch(root, manifest_path, manifest, self.request, self.store, 'state-test', apply=True)
         self.assertEqual(applied['status'], 'applied')
@@ -115,7 +231,7 @@ Later
         head = self.init_archive()
         task = next(row for row in workflow_state.build_index(*self.context()) if row['id'] == 'TASK_DOC')
         spec_hash = workflow_state.digest((self.root / 'planning/spec.md').read_bytes())
-        request = {'operation_id': 'update-1', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'New decision'}, {'document_id': 'SPEC_DOC', 'expected_sha256': spec_hash, 'type': 'replace-section', 'section_id': 'Spec', 'content': 'Updated spec'}]}
+        request = {'operation_id': 'update-1', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'New decision'}, {'document_id': 'SPEC_DOC', 'expected_sha256': spec_hash, 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'spec', 'section_id': 'Spec', 'content': 'Updated spec'}]}
         self.request.write_text(json.dumps(request), encoding='utf-8')
         dry = workflow_state.apply_batch(*self.context(), self.request, self.store, 'state-test', apply=False)
         self.assertEqual(dry['status'], 'dry-run')
@@ -127,10 +243,18 @@ Later
         with contextlib.closing(task_archive.open_archive(self.store, 'state-test')) as db:
             self.assertEqual(task_archive.head(db), applied['archive_revision'])
             self.assertEqual(db.execute('SELECT COUNT(*) FROM revisions').fetchone()[0], 2)
+    def test_change_set_rejects_authority_mismatch_before_write(self):
+        head=self.init_archive()
+        spec=next(row for row in workflow_state.build_index(*self.context()) if row['id']=='SPEC_DOC')
+        request={'operation_id':'wrong-authority','expected_archive_head':head,'operations':[{'document_id':'SPEC_DOC','expected_sha256':spec['sha256'],'type':'replace-section','task_id':'TASK-1','authority':'task','section_id':'Spec','content':'Must not write'}]}
+        self.request.write_text(json.dumps(request),encoding='utf-8')
+        with self.assertRaisesRegex(workflow_state.WorkflowStateError,'authority'):
+            workflow_state.apply_batch(*self.context(),self.request,self.store,'state-test',apply=True)
+        self.assertIn('REQ-1',(self.root/'planning/spec.md').read_text(encoding='utf-8'))
     def test_operation_id_reuse_with_different_request_is_rejected(self):
         head = self.init_archive()
         task = next(row for row in workflow_state.build_index(*self.context()) if row['id'] == 'TASK_DOC')
-        request = {'operation_id': 'same-id', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'First'}]}
+        request = {'operation_id': 'same-id', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'First'}]}
         self.request.write_text(json.dumps(request), encoding='utf-8')
         workflow_state.apply_batch(*self.context(), self.request, self.store, 'state-test', apply=True)
         request['operations'][0]['content'] = 'Different request'
@@ -141,7 +265,7 @@ Later
     def test_stale_archive_head_is_rejected_before_target_write(self):
         head = self.init_archive()
         task = next(row for row in workflow_state.build_index(*self.context()) if row['id'] == 'TASK_DOC')
-        request = {'operation_id': 'stale-head', 'expected_archive_head': 'stale', 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'Never written'}]}
+        request = {'operation_id': 'stale-head', 'expected_archive_head': 'stale', 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'Never written'}]}
         self.request.write_text(json.dumps(request), encoding='utf-8')
         original = (self.root / 'planning/task.md').read_bytes()
         with self.assertRaises(workflow_state.BatchConflict):
@@ -152,7 +276,7 @@ Later
     def test_conflict_refuses_whole_batch(self):
         head = self.init_archive()
         original = (self.root / 'planning/task.md').read_bytes()
-        request = {'operation_id': 'conflict-1', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': '0' * 64, 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'x'}]}
+        request = {'operation_id': 'conflict-1', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': '0' * 64, 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'x'}]}
         self.request.write_text(json.dumps(request), encoding='utf-8')
         with self.assertRaises(workflow_state.BatchConflict):
             workflow_state.apply_batch(*self.context(), self.request, self.store, 'state-test', apply=True)
@@ -178,7 +302,7 @@ Later
     def test_batch_rejects_request_inside_mutable_manifest_documents(self):
         head = self.init_archive()
         task = next(row for row in workflow_state.build_index(*self.context()) if row['id'] == 'TASK_DOC')
-        request = {'operation_id': 'self-target', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'No'}]}
+        request = {'operation_id': 'self-target', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'No'}]}
         request_path = self.root / 'planning/task.md'
         request_path.write_text(json.dumps(request), encoding='utf-8')
         with self.assertRaisesRegex(workflow_state.WorkflowStateError, 'must not be one of'):
@@ -222,8 +346,8 @@ Later
         task = next(row for row in workflow_state.build_index(*self.context()) if row['id'] == 'TASK_DOC')
         spec = next(row for row in workflow_state.build_index(*self.context()) if row['id'] == 'SPEC_DOC')
         request = {'operation_id': 'rollback-1', 'expected_archive_head': head, 'operations': [
-            {'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'Changed'},
-            {'document_id': 'SPEC_DOC', 'expected_sha256': spec['sha256'], 'type': 'replace-section', 'section_id': 'Spec', 'content': 'Changed'},
+            {'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'Changed'},
+            {'document_id': 'SPEC_DOC', 'expected_sha256': spec['sha256'], 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'spec', 'section_id': 'Spec', 'content': 'Changed'},
         ]}
         self.request.write_text(json.dumps(request), encoding='utf-8')
         original = (self.root / 'planning/task.md').read_bytes()
@@ -244,7 +368,7 @@ Later
     def test_unrelated_workspace_drift_rejects_batch_before_any_write(self):
         head = self.init_archive()
         task = next(row for row in workflow_state.build_index(*self.context()) if row['id'] == 'TASK_DOC')
-        request = {'operation_id': 'drift-1', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'Changed'}]}
+        request = {'operation_id': 'drift-1', 'expected_archive_head': head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': task['sha256'], 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'Changed'}]}
         self.request.write_text(json.dumps(request), encoding='utf-8')
         original = (self.root / 'planning/task.md').read_bytes()
         (self.root / 'planning/spec.md').write_text('concurrent edit', encoding='utf-8')
@@ -267,7 +391,7 @@ Later
                 outside = Path(tmp) / 'outside'
                 outside.mkdir()
                 (outside / 'secret.md').write_text('outside', encoding='utf-8')
-                manifest = {'workflow': {'active_task': 'TASK-1'}, 'modules': [{'id': 'instructions'}], 'documents': [{'id': 'TASK_DOC', 'path': 'planning/task.md', 'kind': 'task'}, {'id': 'SPEC_DOC', 'path': 'planning/spec.md', 'kind': 'spec'}], 'tasks': [{'id': 'TASK-1', 'status': 'in_progress'}]}
+                manifest = {'workflow': {'active_task': 'TASK-1'}, 'modules': [{'id': 'instructions'}], 'documents': [{'id': 'TASK_DOC', 'path': 'planning/task.md', 'kind': 'task'}, {'id': 'SPEC_DOC', 'path': 'planning/spec.md', 'kind': 'spec'}], 'tasks': [{'id': 'TASK-1', 'status': 'in_progress', 'impact_document': 'TASK_DOC'}]}
                 (root / 'engineering-manifest.json').write_text(json.dumps(manifest), encoding='utf-8')
                 buffer = ctypes.create_unicode_buffer(32768)
                 get_short = ctypes.windll.kernel32.GetShortPathNameW
@@ -287,7 +411,7 @@ Later
                 self.assertEqual(result, 0)
                 with contextlib.closing(task_archive.open_archive(store, 'short-alias')) as db:
                     archive_head = task_archive.head(db)
-                request = {'operation_id': 'short-alias-1', 'expected_archive_head': archive_head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': workflow_state.digest(task_path.read_bytes()), 'type': 'replace-section', 'section_id': 'Decisions', 'content': 'Updated'}]}
+                request = {'operation_id': 'short-alias-1', 'expected_archive_head': archive_head, 'operations': [{'document_id': 'TASK_DOC', 'expected_sha256': workflow_state.digest(task_path.read_bytes()), 'type': 'replace-section', 'task_id': 'TASK-1', 'authority': 'impact', 'section_id': 'Decisions', 'content': 'Updated'}]}
                 request_path.write_text(json.dumps(request), encoding='utf-8')
                 result = workflow_state.apply_batch(*workflow_state.load_project(alias, 'engineering-manifest.json')[:3], request_path, store, 'short-alias', apply=True)
                 self.assertEqual(result['status'], 'applied')
@@ -306,12 +430,18 @@ Later
         (self.root / 'engineering-manifest.json').write_text(json.dumps(manifest), encoding='utf-8')
         with self.assertRaisesRegex(workflow_state.WorkflowStateError, 'active_spec references unknown'):
             self.context()
-    def test_manifest_index_rejects_duplicate_task_and_document_id(self):
+    def test_manifest_index_namespaces_document_and_task_ids(self):
         manifest = json.loads((self.root / 'engineering-manifest.json').read_text())
         manifest['tasks'][0]['id'] = 'TASK_DOC'
+        manifest['workflow']['active_task']='TASK_DOC'
         (self.root / 'engineering-manifest.json').write_text(json.dumps(manifest), encoding='utf-8')
-        with self.assertRaisesRegex(workflow_state.WorkflowStateError, 'task ID duplicates a document ID'):
-            self.context()
+        rows=workflow_state.build_index(*self.context())
+        self.assertEqual({row['entry_type'] for row in rows if row['id']=='TASK_DOC'},{'document','task'})
+    def test_manifest_preserves_named_revision_basis_outside_link_roles(self):
+        manifest=json.loads((self.root/'engineering-manifest.json').read_text(encoding='utf-8'))
+        manifest['tasks'][0]['artifact_revisions']['approved_design_baseline']='B2026-10-01'
+        (self.root/'engineering-manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+        self.context()
     def test_nonstandard_unicode_line_separator_is_not_treated_as_json_whitespace(self):
         raw = b'{"ok":true}\xe2\x80\xa8{"second":true}'
         with self.assertRaises(workflow_state.WorkflowStateError):

@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.10.0
+  version: 1.11.0
 ---
 
 # 代码工程工作流
@@ -31,7 +31,7 @@ metadata:
 
 需要本地恢复能力的项目可选择使用 [task archive](scripts/task_archive.py)：对 manifest 声明的工程文档建立工作区外快照、检查工作区漂移、列出历史及恢复旧版本。它不是必经门禁，不自动迁移，也不增加审核节点。当前宿主若允许任意 shell/editor 写入，它只能事后检测和恢复，不能拦截写操作；存储路径和保留策略由采用项目负责。使用方式见[Checker reference](references/checker.md#本地工程记录归档与恢复)。
 
-项目文档很多或需要同步多个权威记录时，可选择 [workflow state](scripts/workflow_state.py) CLI：从 manifest/task 和明确的 lifecycle 元数据生成可重建目录，批读精确章节/hash，或 dry-run/apply hash 保护的精确批次。目录也保留 planning 下未登记 Markdown 并标记 unknown/unverified；不从年龄或非当前状态推断过时。批量 apply 需显式初始化的本地 archive、预期 head 和 --apply，不能改审批、stage、task status、checks 或 timeout。该 CLI 不参与原检查器门禁；缺失 cwd/workspace host API 时报告 unsupported，不能修复宿主启动错误。合同见 [Checker reference](references/checker.md#可选文档目录快照与精确批量更新)。
+项目文档很多或需要同步多个权威记录时，可选择 [workflow state](scripts/workflow_state.py) CLI：从 manifest/task 生成可重建目录、批读精确章节/hash、按稳定 ID 查询声明的 schema/module/source-reference 切片，或通过单一 change-set 入口 dry-run/apply hash 保护的精确批次。目录保留 planning 下未登记 Markdown 并标记 unknown/unverified；不从年龄或非当前状态推断过时。文档写操作要求 Task 和 authority 类型匹配其 impact/linked artifact。CLI 不改审批/stage/task status/checks/timeout，也不参与 checker 门禁；缺少 parser/runtime 时如实标 partial/unsupported。合同见 [Checker reference](references/checker.md#可选文档目录快照与精确批量更新)。
 
 ## 选择工作流程
 
@@ -55,13 +55,13 @@ Global Baseline、Spec、Technical Plan 和 Task 是一组有版本边界的联�
 
 `Baseline（现在是什么） → Spec（要构建什么） → Plan（如何构建） → Task（执行什么） → Code/Evidence（实际结果）`。
 
-- Baseline 绑定源码/工作树 revision、调查范围和证据；模块地图、前后端契约、数据库字典、业务流、配置/缓存/任务和运行限制属于 Baseline 视图。每个已审阅 revision 冻结，代码或证据变化后生成新的当前修订。
-- Spec 在用户确认后冻结为本批实施边界。新业务目标、权限、范围或验收必须创建新 revision 或变更请求；不能在实施中静默改写已批准边界。
-- Plan 必须引用它所依据的 Baseline 和 Spec revision，明确复用、扩展、替换、迁移、兼容、恢复和验证。技术细节可在不改变用户行为的前提下调整，但要同步当前 Plan 和决策历史。
-- Task 必须引用 Plan 项、需求/验收 ID 和受影响 Baseline 视图；Task 状态可以变化，但需求确认、方案批准和实施完成分别记录。
-- 测试、运行或源码调查发现事实错误时，先校正 Baseline，并沿影响链更新 Plan、Task、契约、数据库和业务流；只有推翻用户目标或关键业务前提时才重开 Spec。保留旧结论、证据、批准和受影响范围。
+- Baseline 是当前事实的唯一权威，绑定相关源码/工作树输入、调查范围和证据；模块地图、前后端契约、数据库字典、业务流、配置/缓存/任务和运行限制属于其可查询视图。历史审阅绑定当时 revision 和范围；代码/证据变化后在当前视图校正，不把旧审阅自动转移。
+- Spec 在用户确认后冻结为本批实施边界和需求正文唯一权威。新业务目标、权限、范围或验收必须创建新 revision 或变更请求；不能在实施中静默改写已批准边界。
+- Plan 必须引用它所依据的 Baseline 和 Spec，作为技术路径与决定的唯一权威，明确复用、扩展、替换、迁移、兼容、恢复和验证。技术路径可据证据在不改变已批准用户行为的前提下调整，并更新受影响 Plan/Task。
+- Task 必须引用 Plan 项、需求/验收 ID 和受影响 Baseline 视图，是进度、阻塞、验证和下一步的唯一权威；需求确认、方案批准和实施完成分别记录。
+- 测试、运行或源码调查发现 Baseline 事实错误时，先核实并校正 Baseline，再更正受影响 Plan 假设、Task 状态及必要引用，然后继续依赖该结论的动作。代码若违反 Spec，记录为缺陷而不改写需求；证据冲突时只暂停会依赖该事实而可能做错的动作，独立工作继续。只有用户目标/权限/验收边界改变才重开 Spec。
 
-新项目记录空实现起点；开源项目接管和旧项目恢复核对或调查已有 Baseline。代码完成后必须刷新受影响 Baseline 视图，不能只更新 Task。升级流程时还要按[既有文档整理规则](references/baseline-linked-artifacts.md#既有文档整理)核对当前权威文档、链接和状态，保留历史与原审阅范围；详细字段、状态、revision 和 manifest 链接见[基线与工件联动模型](references/baseline-linked-artifacts.md)。
+新项目记录空实现起点；开源项目接管和旧项目恢复核对或调查已有 Baseline。代码变化或新证据出现后，在再次依赖受影响事实前核验并刷新对应 Baseline 视图，不能只更新 Task；未受影响切片可复用。升级流程时还要按[既有文档整理规则](references/baseline-linked-artifacts.md#既有文档整理)核对当前权威文档、链接和状态，保留历史与原审阅范围；详细字段、状态、revision 和 manifest 链接见[基线与工件联动模型](references/baseline-linked-artifacts.md)。
 
 ### 自主调查与可审阅结果
 
@@ -93,11 +93,11 @@ Global Baseline、Spec、Technical Plan 和 Task 是一组有版本边界的联�
 
 ## 持续基线校正与文档闭环
 
-基线随程序和已证实认知持续维护，首次审阅针对当时版本与范围。测试、运行、代码调查或功能修改发现文档与证据冲突时，立即标记受影响结论并查证；证实后主动修正当前权威文档及上下游关联，即使源码未改也执行。保留旧结论、纠正依据、源码/工作树版本、验证与影响，不将猜测写成事实，不把程序缺陷改写成已确认需求。
+基线随程序和已证实认知持续维护，首次审阅针对当时版本与范围。Agent 可复用同一任务/工作树下来源未变且没有新证据反例的已读切片；相关输入变化或测试/运行证据冲突时，只重查受影响切片。若发现事实错误，先查证并修正当前 Baseline 及必要引用，再继续依赖该事实的动作；不要求每个微操作重复读取。保留旧结论、纠正依据、源码/工作树版本、验证与影响，不将猜测写成事实，不把程序缺陷改写成已确认需求。
 
-事实更正直接完成；若推翻已批准需求或方案的重要依据，告知用户并标记受影响批准需复核，暂停依赖错误结论的实施，只重审受影响内容，独立有效工作继续。原审阅记录保留为历史，不能自动转移到修正版。恢复时核对当前修订及其仍有效的批准；细则见[基线文档](references/project-documentation.md)。
+Baseline 拥有当前事实，Spec 拥有需求正文，Plan 拥有技术决定，Task 拥有进度/阻塞/下一步；其他工件链接权威记录，不维护重复事实。经证实的既有业务描述错误可依据证据修正；新增业务规则、权限选择或用户目标仍须按既有规则确认。一般待补证据列为pending，不停止无关工作；只暂停继续依赖已反证或不可判定事实且可能做错的具体动作。若纠正推翻已批准需求或方案的重要依据，告知用户并标记受影响批准需复核，只重审受影响部分，独立有效工作继续。原审阅记录保留为历史，不能自动转移到修正版。恢复时核对当前修订及其仍有效的批准；细则见[基线文档](references/project-documentation.md)。
 
-代码改完后，不能只更新改动文件所在模块的说明；要按实际影响重新核对调用链、模块关系和数据结构，并在同一任务中刷新受影响 Baseline、Spec/Plan/Task 引用和验证状态。将变更归类后执行对应门槛：
+代码变化或新证据出现后，在再次依赖相关结论前重新查询/校准受影响切片；不能只更新改动文件所在模块的说明。按实际影响检查调用链、模块关系和数据结构，并更新唯一权威 Baseline/Spec/Plan/Task 视图及必要引用。hotfix/minor 不要求重建全局基线，但受影响事实错误仍须纠正。将变更归类后执行对应门槛：
 
 - 模块边界、依赖方向、入口/调用方、事件或消费者变化：更新模块地图、业务流和受影响的前后端契约；同步契约或路由清单。
 - 路由、请求/响应类型、权限、事件、缓存或后台任务变化：更新前后端契约和业务流；若改变模块连接或消费者，再更新模块地图。

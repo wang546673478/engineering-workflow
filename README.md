@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.10.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.11.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -97,6 +97,12 @@ Agent负责源码和字段语义核验，用户审核具体版本、调查范围
 
 后续测试、调查或模块修改发现基线错误时，即使源码未改，也立即标记并查证，证实后主动修正所有受影响的权威文档，保留旧结论、依据和原审阅范围。事实更正自主完成；若推翻已批准需求或方案依据，只暂停与重审依赖该结论的部分。细则见[基线文档](references/project-documentation.md)；本批范围与验证见[TASK-BASELINE-01](planning/baseline-workflow-task.md)。
 
+### 实测：一次读取多个基线事实
+
+在一个真实工程资料的只读试测中，`workflow_state.py query` 用一条 CLI 命令按对象 ID 返回 6 个基线切片，覆盖数据库结构和固定路由来源；单次查询耗时 **0.8965 秒**，同一查询重复运行 10 次的中位耗时为 **0.9205 秒**。查询读取了项目清单、带哈希的源码回执和仅含结构的 SQLite 快照；没有读取业务数据行、执行线上 handler 或验证部署环境的权限。去标识后的测量数据和完整统计限制见[试点记录](planning/real-session-efficiency-pilot.md)。
+
+这表明在项目已接入、对象受支持时，Agent 可以一次取得一组带来源的当前事实。它**不能证明整场工程会话节省了多少时间或工具调用**：历史会话的命令统计覆盖需求讨论、实现和门禁，按文本匹配的类别会重叠，也不等于实际文件读取；本试测没有用同一功能配对重跑新旧流程，且没有可信的逐项耗时。因此不报告整体节省分钟数或百分比。
+
 ## 持续需求记录与模块审核
 
 涉及功能变化的新信息在讨论过程中写入项目已有权威需求和 Task，不等到开始编码或模块结束。纯事实答复没有新增变化信息时复用已有记录。需求状态与实施状态分开维护；记录不等于确认，确认也不自动授权实施。阶段或范围变化时刷新当前摘要、下一步和依赖，历史原话另行保留，避免旧状态继续冒充现状。
@@ -181,12 +187,13 @@ python scripts/extract_database.py redis --url-env ENGINEERING_DATABASE_URL --ou
 
 ## 可选目录与批量状态工具
 
-文档/任务较多时，可运行 scripts/workflow_state.py 从现有工程清单和 Task 生成 JSON/Markdown 目录，或按 document ID 与精确标题批量读取正文、章节和 SHA-256：
+文档/任务较多时，可运行 scripts/workflow_state.py 从现有工程清单和 Task 生成 JSON/Markdown 目录、按 document ID 与精确标题读取正文/章节和 SHA-256，或按稳定对象 ID 查询当前声明事实：
 
     python scripts/workflow_state.py --root <project> index --format markdown
     python scripts/workflow_state.py --root <project> snapshot --document-id TASK-01 --section "当前状态"
+    python scripts/workflow_state.py --root <project> query --id db:main.accounts --id field:main.accounts.email --id module:billing --relations
 
-目录保留已完成、明确 superseded/obsolete、deferred 项及其证据；planning 下未登记的 Markdown 显示为 unknown/unverified。缺少状态证据时不根据时间或非当前状态猜测。apply-batch 支持精确章节/JSON lifecycle 字段更新；默认只给完整 diff，必须同时提供 archive head、所有目标的 expected hash、已初始化 task archive 并显式加 --apply 才会写入。工具拒绝改审批、工作阶段、task status、门禁或超时，不增加 required checks，也不代替语义审查。宿主命令因无效 cwd 无法启动时，本地脚本无法介入；无可验证 host file API 时保持 unsupported。完整接口、安全和恢复边界见 [Checker reference](references/checker.md#可选文档目录快照与精确批量更新)。
+目录保留已完成、明确 superseded/obsolete、deferred 项及其证据；planning 下未登记的 Markdown 显示为 unknown/unverified。缺少状态证据时不根据时间或非当前状态猜测。apply-batch 支持按 Task 和 authority 精确路由的文档章节 change set 及 JSON lifecycle 更新；默认只给完整 diff，必须同时提供 archive head、所有目标的 expected hash、已初始化 task archive 并显式加 --apply 才会写入。文档操作必须匹配 Task 链接和 authority 类型；工具拒绝改审批、工作阶段、task status、门禁或超时，不增加 required checks，也不代替语义审查。宿主命令因无效 cwd 无法启动时，本地脚本无法介入；无可验证 host file API 时保持 unsupported。完整接口、安全和恢复边界见 [Checker reference](references/checker.md#可选文档目录快照与精确批量更新)。
 
 该工具读取记录时遵守工程清单的安全路径与严格 JSON 检查；批量 request 文件应放在 manifest 管理文件之外。它用同目录原子替换单个文件，但多文件更新不提供整体原子可见性；中断或回滚失败时检查 archive drift，并按已保存 head 恢复。
 
@@ -199,7 +206,7 @@ assets/templates/                项目清单、文档和 hook 模板
 assets/templates/AGENTS.engineering.md  跨 agent 持久化接入片段
 references/                      分阶段工作流说明
 scripts/check_project.py         项目清单与提交门禁检查器
-scripts/workflow_state.py        可选目录、批量快照和显式 hash-guarded 更新工具
+scripts/workflow_state.py        可选目录、快照、稳定 ID 事实查询和显式 hash-guarded 更新工具
 scripts/install_agents_guidance.py  幂等更新 AGENTS.md 管理区
 scripts/init_manifest.py             生成 full/lite 清单骨架
 scripts/adopt_project.py             安装 managed guidance 与生命周期清单

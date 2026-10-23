@@ -2,9 +2,10 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "ISSUE24_SPEC",
-    "active_plan": "ISSUE24_PLAN",
-    "active_task": "TASK-ISSUE24-EFFICIENCY-01"
+    "active_spec": "SKILL_REDESIGN_SPEC",
+    "active_plan": "SKILL_REDESIGN_PLAN",
+    "active_task": "TASK-SKILL-REDESIGN-01",
+    "policy_version": "delta-v1"
   },
   "documents": [
     {
@@ -358,6 +359,54 @@
     {
       "id": "WORKFLOW_STATE_TEST",
       "path": "scripts/tests/test_workflow_state.py",
+      "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "SKILL_REDESIGN_ASSESSMENT",
+      "path": "planning/skill-redesign-assessment.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "SKILL_REDESIGN_REVIEW_PLAN",
+      "path": "planning/skill-redesign-plan.md",
+      "kind": "reviewed-plan",
+      "required": true
+    },
+    {
+      "id": "SKILL_REDESIGN_SPEC",
+      "path": "planning/skill-redesign-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "SKILL_REDESIGN_PLAN",
+      "path": "planning/skill-redesign-implementation-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "SKILL_REDESIGN_TASK",
+      "path": "planning/skill-redesign-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "REAL_SESSION_EFFICIENCY_PILOT",
+      "path": "planning/real-session-efficiency-pilot.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "CHECKER_SCRIPT",
+      "path": "scripts/check_project.py",
+      "kind": "source",
+      "required": true
+    },
+    {
+      "id": "CHECKER_TEST",
+      "path": "scripts/tests/test_checker.py",
       "kind": "verification",
       "required": true
     }
@@ -839,6 +888,51 @@
     {
       "id": "REQ-ISSUE24-E10",
       "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-01",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-02",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-03",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-04",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-05",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-06",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-07",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-08",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-SR-09",
+      "document": "SKILL_REDESIGN_SPEC",
       "index": "TRACE"
     }
   ],
@@ -1364,6 +1458,56 @@
     {
       "id": "AT-ISSUE24-E10",
       "document": "ISSUE24_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-01",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-02",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-03",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-04",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-05",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-06",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-07",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-08",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-09",
+      "document": "SKILL_REDESIGN_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-SR-10",
+      "document": "SKILL_REDESIGN_SPEC",
       "index": "TRACE"
     }
   ],
@@ -5939,6 +6083,272 @@
       "verification_status": "Windows path and test-collection fix: POSIX TEST 260/121.078s no skips; Windows direct TEST 262/122.091s; COMPILE 0.204s; GUIDANCE-COMPILE 0.203s; baseline required_checks_satisfied=true",
       "verification_evidence": "work/issue24-windows-path-no-skips-final.json; work/issue24-windows-path-no-skips-final.log; focused Windows alias tests; checker suite 119 pass",
       "delivery_status": "platform correction ready for final staged/committed gates; push pending"
+    },
+    {
+      "id": "TASK-SKILL-REDESIGN-01",
+      "requirement_ids": [
+        "REQ-SR-01",
+        "REQ-SR-02",
+        "REQ-SR-03",
+        "REQ-SR-04",
+        "REQ-SR-05",
+        "REQ-SR-06",
+        "REQ-SR-07",
+        "REQ-SR-08",
+        "REQ-SR-09"
+      ],
+      "acceptance_ids": [
+        "AT-SR-01",
+        "AT-SR-02",
+        "AT-SR-03",
+        "AT-SR-04",
+        "AT-SR-05",
+        "AT-SR-06",
+        "AT-SR-07",
+        "AT-SR-08",
+        "AT-SR-09",
+        "AT-SR-10"
+      ],
+      "module_ids": [
+        "instructions",
+        "checker",
+        "workflow-state",
+        "adapters",
+        "source-context",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "in_progress",
+      "impact_document": "IMPACT",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/skill-redesign-task.md",
+        "user_statement": "可以开始实施了吗?",
+        "approved_at": "2026-10-23T20:17:18+08:00",
+        "scope": "Implement the user-reviewed engineering-workflow redesign in this repository under SPEC-SKILL-REDESIGN-01 and PLAN-SKILL-REDESIGN-01; preserve existing required checks and timeouts; no external-project migration or GitHub upload.",
+        "task_id": "TASK-SKILL-REDESIGN-01",
+        "plan_revision": "PLAN-SKILL-REDESIGN-01 r1"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "SKILL_REDESIGN_SPEC",
+        "plan": "SKILL_REDESIGN_PLAN",
+        "task": "SKILL_REDESIGN_TASK",
+        "traceability": "TRACE",
+        "assessment": "SKILL_REDESIGN_ASSESSMENT",
+        "reviewed_plan": "SKILL_REDESIGN_REVIEW_PLAN"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE-ISSUE23-02 + Issue24 current factual scope",
+        "spec": "SPEC-SKILL-REDESIGN-01 r1",
+        "plan": "PLAN-SKILL-REDESIGN-01 r1",
+        "task": "TASK-SKILL-REDESIGN-01 current"
+      },
+      "requirement_state": "REQ-SR-01..09 accepted within user-reviewed redesign scope",
+      "implementation_status": "local implementation complete; latest required TEST failed 4 of 283 in fresh 2026-10-24 run; investigation/fix required before verification completion",
+      "proposal_status": "approved",
+      "user_decisions": [
+        {
+          "date": "2026-10-23 20:17 Asia/Shanghai",
+          "statement": "可以开始实施了吗?",
+          "scope": "Implement the reviewed engineering-workflow redesign locally in this repository; no external project migration or GitHub upload.",
+          "spec_revision": "SPEC-SKILL-REDESIGN-01 r1",
+          "plan_revision": "PLAN-SKILL-REDESIGN-01 r1"
+        },
+        {
+          "date": "2026-10-24 Asia/Shanghai",
+          "statement": "更新readme这样的文档,然后上传github",
+          "scope": "Update README and linked real-session efficiency pilot documentation; commit and upload this repository's reviewed batch after required checks and existing protected control-plane review pass. Do not migrate external projects.",
+          "spec_revision": "SPEC-SKILL-REDESIGN-01 r1; documentation/publication follow-up",
+          "plan_revision": "PLAN-SKILL-REDESIGN-01 r1; scope extended for documentation and upload"
+        }
+      ],
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog",
+        "checked_at": "2026-10-23 Asia/Shanghai",
+        "scope": "Implement the locally reviewed engineering-workflow redesign; no external project migration or remote publication",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "repository SKILL.md and linked references",
+            "version_or_release_date": "1.10.0",
+            "decision": "adopted",
+            "reason": "Authoritative workflow and affected product under revision."
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Keep updated skill focused, progressively disclosed and validated."
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Use observable regression tests for checker/query contracts."
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Use repository manifest and linked Spec/Plan/Task as sole authoritative task state."
+          }
+        ],
+        "recheck": "Recheck if task scope changes or host integration/external migration becomes proposed."
+      },
+      "documentation_impact": {
+        "workflow-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "README.md",
+            "references/checker.md",
+            "references/baseline-linked-artifacts.md",
+            "references/implementation-workflow.md",
+            "references/project-documentation.md",
+            "agents/openai.yaml"
+          ],
+          "document_ids": [
+            "SKILL_REDESIGN_SPEC",
+            "SKILL_REDESIGN_PLAN",
+            "SKILL_REDESIGN_TASK",
+            "SKILL_REDESIGN_REVIEW_PLAN",
+            "TRACE",
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "IMPACT",
+            "CHECKER_SCRIPT",
+            "CHECKER_TEST"
+          ]
+        },
+        "checker-and-tools": {
+          "when_paths": [
+            "scripts/check_project.py",
+            "scripts/workflow_state.py",
+            "scripts/tests/test_checker.py",
+            "scripts/tests/test_workflow_state.py"
+          ],
+          "document_ids": [
+            "SKILL_REDESIGN_SPEC",
+            "SKILL_REDESIGN_PLAN",
+            "SKILL_REDESIGN_TASK",
+            "IMPACT",
+            "MAP",
+            "CONTRACT",
+            "TRACE",
+            "CHECKER_SCRIPT",
+            "CHECKER_TEST"
+          ]
+        },
+        "governance-and-release": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/skill-redesign-spec.md",
+            "planning/skill-redesign-implementation-plan.md",
+            "planning/skill-redesign-task.md",
+            "planning/traceability.md",
+            "planning/change-impact.md",
+            "planning/baseline-review.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "docs/module-map.md",
+            "docs/contracts.md",
+            "docs/business-flow.md",
+            "scripts/check_project.py",
+            "scripts/workflow_state.py",
+            "scripts/tests/test_checker.py",
+            "scripts/tests/test_workflow_state.py",
+            "assets/templates/project-manifest.example.json",
+            "README.md",
+            "agents/openai.yaml",
+            "planning/skill-redesign-plan.md",
+            "planning/real-session-efficiency-pilot.md"
+          ],
+          "document_ids": [
+            "SKILL_REDESIGN_ASSESSMENT",
+            "SKILL_REDESIGN_REVIEW_PLAN",
+            "SKILL_REDESIGN_SPEC",
+            "SKILL_REDESIGN_PLAN",
+            "SKILL_REDESIGN_TASK",
+            "REAL_SESSION_EFFICIENCY_PILOT",
+            "IMPACT",
+            "TRACE",
+            "BASELINE",
+            "MAP",
+            "CONTRACT",
+            "FLOW",
+            "CHECKER_SCRIPT",
+            "CHECKER_TEST",
+            "WORKFLOW_STATE_SCRIPT",
+            "WORKFLOW_STATE_TEST"
+          ]
+        }
+      },
+      "scale": "feature",
+      "implementation_task": true,
+      "after": [],
+      "gate_policy": {},
+      "verification_status": "PASS: fresh 2026-10-24 baseline checker required_checks_satisfied=true; TEST 283 pass (173.675s), COMPILE pass (0.301s), GUIDANCE-COMPILE pass (0.297s); git diff --check and manifest JSON parse pass. Earlier 283-run/4-failure result remains historical; real-session efficiency percentage unverified. Staged/exact-commit gates pending.",
+      "verification_evidence": "work/TASK-SKILL-REDESIGN-01-baseline-docs.json (local verification evidence); fresh python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline --task TASK-SKILL-REDESIGN-01 --run-checks: 283 tests pass, COMPILE/GUIDANCE-COMPILE pass; git diff --check and python -m json.tool engineering-manifest.json pass.",
+      "release_impact": {
+        "previous_version": "1.10.0",
+        "current_version": "1.11.0",
+        "proposed_implementation_version": "1.11.0 / Unreleased",
+        "bump_required_this_batch": true,
+        "reason": "Backward-compatible optional stable-ID query and dynamic Baseline/task-gate capabilities plus corrective guidance; existing required gates preserved.",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ],
+        "publication_status": "local_unpublished"
+      },
+      "execution_steps": [
+        {
+          "id": "B0",
+          "status": "complete",
+          "detail": "New task chain and active pointers registered; independent from Issue24."
+        },
+        {
+          "id": "B1",
+          "status": "complete",
+          "detail": "Stable-ID query for declared SQLite table/field, manifest module, optional source-context references; fingerprints and support limits returned; query regression tests pass."
+        },
+        {
+          "id": "B2",
+          "status": "complete",
+          "detail": "Manual inventory has a reachable pass path only with locatable evidence/scope and matching listed mapping; limitation disclaims proof of no omissions. Generic actionable findings added."
+        },
+        {
+          "id": "B3",
+          "status": "complete",
+          "detail": "delta-v1 scale/applies_to, after, artifact_path dependencies, read-only Task lifecycle and temporary scope behavior implemented with regression tests; commit-scope remains staged behavior as before and needs final full task-scope review."
+        },
+        {
+          "id": "B4",
+          "status": "complete",
+          "detail": "Section change-set writes require Task/authority and exact linked target; guidance, references, manifest template, README, module/contract/flow/baseline and changelog synced."
+        },
+        {
+          "id": "B5",
+          "status": "complete",
+          "detail": "Latest required baseline check passes: full unittest 283, COMPILE and GUIDANCE-COMPILE; source-derived current receipt hashes and fixed-route unknown/unsupported distinctions are covered. Earlier same-day 4-test run is retained as historical and was superseded by this passing run. Staged/exact-commit publication gates remain pending."
+        }
+      ],
+      "delivery_status": "documentation_updated; local changes; fresh baseline required checks pass; staged/exact-commit gates and control-plane review pending before push. User explicitly authorized GitHub upload on 2026-10-24, contingent on those checks."
     }
   ],
   "control_plane": {
@@ -5968,8 +6378,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "e1abcacefdf62647e1a743435780ed40e4aaf86d + Issue24 Windows path-alias fix; current report work/issue24-windows-path-final4.json",
-    "scope": "BASELINE-ISSUE23-02 plus Issue24: optional workflow-state index/snapshot/batch helper and shared Windows long/8.3 alias containment fix; 1.8 workflow/approval semantics preserved; TEST timeout 240s by explicit user decision; all required checks retained."
+    "source_revision": "6de2cbbc90b53a23a401a395780e9e676d51012d + TASK-SKILL-REDESIGN-01 working-tree factual/documentation update (uncommitted)",
+    "scope": "BASELINE-ISSUE23-02 plus Issue24: optional workflow-state index/snapshot/batch helper and shared Windows long/8.3 alias containment fix; 1.8 workflow/approval semantics preserved; TEST timeout 240s by explicit user decision; all required checks retained.; 1.11.0 candidate: dynamic queryable baseline, correction during implementation, checker task applicability and authority-routed change sets; final local current report is work/TASK-SKILL-REDESIGN-01-baseline-current.json."
   },
   "exclude_paths": [
     ".git",

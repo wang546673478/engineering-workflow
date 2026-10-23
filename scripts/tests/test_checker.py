@@ -753,11 +753,23 @@ class CheckerTests(unittest.TestCase):
         proc,result=self.cli("--mode","baseline","--run-checks")
         self.assertEqual(proc.returncode,1)
         self.assertIn("stale",json.dumps(result))
-    def test_manual_claim_complete_is_still_partial(self):
+    def test_manual_inventory_can_pass_with_declared_scope_limitation(self):
         self.source["provenance"]["type"]="manual"
+        self.source["provenance"]["evidence"]="docs/db.md"
         proc,result=self.cli("--mode","baseline","--run-checks")
-        self.assertEqual(proc.returncode,1)
-        self.assertIn("partial",[x["status"] for x in result["checks"]])
+        self.assertEqual(proc.returncode,0,result)
+        inventory=next(x for x in result["checks"] if x["rule_id"]=="inventory:db")
+        self.assertEqual(inventory["status"],"pass")
+        self.assertIn("does not prove there are no omissions",inventory["limitations"][0])
+    def test_manual_inventory_without_locatable_source_cannot_pass(self):
+        self.source["provenance"]["type"]="manual"
+        self.source["provenance"]["source_files"]=[]
+        self.source["provenance"]["evidence"]="missing/evidence.md"
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,1,result)
+        inventory=next(x for x in result["checks"] if x["rule_id"]=="inventory:db")
+        self.assertEqual(inventory["status"],"fail")
+        self.assertIn("evidence path",json.dumps(inventory))
     def test_unknown_extractor_is_unsupported(self):
         self.source["provenance"]["type"]="magical"
         proc,result=self.cli("--mode","baseline","--run-checks")
@@ -784,6 +796,106 @@ class CheckerTests(unittest.TestCase):
         self.manifest["tasks"].append(previous);self.manifest["tasks"][0]["depends_on"]=["TASK-0"]
         proc,result=self.cli("--mode","handoff","--task","TASK-1","--run-checks")
         self.assertEqual(proc.returncode,1)
+    def test_after_dependency_never_blocks_started_task(self):
+        previous=copy.deepcopy(self.manifest["tasks"][0]);previous["id"]="TASK-0";previous["status"]="planned";previous["depends_on"]=[]
+        self.manifest["tasks"].append(previous)
+        self.manifest["tasks"][0]["after"]=["TASK-0"]
+        proc,result=self.cli("--mode","handoff","--task","TASK-1","--run-checks")
+        gate=next(item for item in result["checks"] if item["rule_id"]=="task-gate")
+        self.assertEqual(gate["status"],"pass")
+    def test_read_only_task_does_not_require_implementation_approval(self):
+        self.manifest["workflow"]={"stage":"implementation","active_task":"TASK-1"}
+        self.manifest["tasks"][0]["implementation_task"]=False
+        self.manifest["tasks"][0]["approval"]={"status":"pending"}
+        proc,result=self.cli("--mode","change","--task","TASK-1","--base","HEAD","--run-checks")
+        gate=next(item for item in result["checks"] if item["rule_id"]=="task-gate")
+        self.assertEqual(gate["status"],"pass")
+    def test_read_only_discovery_task_in_global_implementation_stage_is_not_gated(self):
+        self.manifest["workflow"]={
+            "active_task":"TASK-1","stage":"implementation","implementation_paths":["src"],
+            "baseline_review":{"status":"pending","evidence":None},
+            "proposal_approval":{"status":"pending","evidence":None},
+        }
+        self.manifest["baseline"].update(status="partial",origin="existing",reason="diagnosis",source_revision="fixture",scope="src",implementation_paths=["src"])
+        self.manifest["tasks"][0]["implementation_task"]=False
+        self.manifest["tasks"][0]["implementation_authorization"]={"status":"pending","task_id":"TASK-1"}
+        self.manifest["tasks"][0]["approval_required"]=False
+        self.manifest["tasks"][0]["status"]="in_progress"
+        self.write()
+        results,_,_,_,_=checker.validate(self.root,self.manifest,"change","TASK-1")
+        life=next(x for x in results if x["rule_id"]=="workflow-lifecycle")
+        self.assertEqual(life["status"],"pass")
+    def test_temporary_untracked_file_is_reported_but_nonblocking(self):
+        (self.root/"src"/"preview.tmp").write_text("temporary",encoding="utf-8")
+        paths,check=checker.change_check(self.root,self.manifest,{d["id"]:d for d in self.manifest["documents"]},{m["id"]:m for m in self.manifest["modules"]},{t["id"]:t for t in self.manifest["tasks"]},"TASK-1",paths=["src/preview.tmp"])
+        self.assertEqual(check["status"],"pass")
+        self.assertEqual(check["evidence"]["temporary_nonblocking"],["src/preview.tmp"])
+    def test_change_scope_automatically_upscales_declared_hotfix(self):
+        self.manifest["tasks"][0]["scale"]="hotfix"
+        self.manifest["tasks"][0]["module_ids"]=["core"]
+        (self.root/"other").mkdir()
+        self.manifest["modules"].append({"id":"web","source_paths":["other"],"document":"module","depends_on":[],"allowed_dependencies":[]})
+        paths,check=checker.change_check(self.root,self.manifest,{d["id"]:d for d in self.manifest["documents"]},{m["id"]:m for m in self.manifest["modules"]},{t["id"]:t for t in self.manifest["tasks"]},"TASK-1",paths=["src/app.py","other/app.ts"])
+        self.assertEqual(check["evidence"]["task_scale"]["declared"],"hotfix")
+        self.assertEqual(check["evidence"]["task_scale"]["effective"],"feature")
+        self.assertTrue(check["evidence"]["task_scale"]["inference_reasons"])
+    def test_cross_module_auto_upscale_keeps_feature_applies_to_gate(self):
+        self.manifest["workflow"]={"active_task":"TASK-1","policy_version":"delta-v1"}
+        self.manifest["tasks"][0].update(scale="hotfix",required_checks=[])
+        self.manifest["checks"][0]["required"]=False
+        self.manifest["checks"][0]["applies_to"]=["feature","takeover"]
+        (self.root/"other").mkdir(exist_ok=True)
+        (self.root/"other/app.ts").write_text("export const x = 1",encoding="utf-8")
+        self.manifest["modules"].append({"id":"web","source_paths":["other"],"document":"module","depends_on":[],"allowed_dependencies":[]})
+        self.write()
+        proc,result=self.cli("--mode","change","--task","TASK-1","--base","HEAD","--run-checks")
+        scope=next(x for x in result["checks"] if x["rule_id"]=="change-scope")
+        check=next(x for x in result["checks"] if x["rule_id"]=="unit")
+        self.assertEqual(scope["evidence"]["task_scale"]["effective"],"feature")
+        self.assertEqual(check["status"],"pass")
+    def test_new_task_fields_require_declared_scale_and_compatibility(self):
+        self.manifest["workflow"]={"policy_version":"delta-v1","active_task":"TASK-1"}
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,1)
+        self.assertIn("scale",json.dumps(result))
+        self.manifest["tasks"][0]["scale"]="minor"
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,0,result)
+    def test_check_applies_to_skips_only_nonapplicable_nonforced_gate(self):
+        self.manifest["workflow"]={"active_task":"TASK-1","policy_version":"delta-v1"}
+        task=self.manifest["tasks"][0];task["scale"]="hotfix"
+        task["required_checks"]=[]
+        self.manifest["checks"][0]["required"]=False
+        self.manifest["checks"][0]["applies_to"]=["feature","takeover"]
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,0,result)
+        check=next(x for x in result["checks"] if x["rule_id"]=="unit")
+        self.assertEqual(check["status"],"skipped")
+        self.assertFalse(check["required"])
+        task["required_checks"]=["unit"]
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,0,result)
+        check=next(x for x in result["checks"] if x["rule_id"]=="unit")
+        self.assertEqual(check["status"],"pass")
+        self.manifest["checks"][0]["required"]=True
+        task["required_checks"]=[]
+        proc,result=self.cli("--mode","baseline","--run-checks")
+        self.assertEqual(proc.returncode,0,result)
+        check=next(x for x in result["checks"] if x["rule_id"]=="unit")
+        self.assertEqual(check["status"],"pass")
+    def test_structured_artifact_dependency_blocks_only_missing_consumer_artifact(self):
+        source=copy.deepcopy(self.manifest["tasks"][0]);source.update(id="TASK-0",status="planned",module_ids=["core"],depends_on=[])
+        self.manifest["tasks"].append(source)
+        consumer=self.manifest["tasks"][0]
+        consumer.update(scale="feature",depends_on=[{"task_id":"TASK-0","artifact_path":"src/schema.sql"}])
+        self.manifest["workflow"]={"policy_version":"delta-v1","active_task":"TASK-1"}
+        proc,result=self.cli("--mode","change","--task","TASK-1","--base","HEAD","--run-checks")
+        gate=next(x for x in result["checks"] if x["rule_id"]=="task-gate")
+        self.assertEqual(gate["status"],"fail")
+        (self.root/"src/schema.sql").write_text("CREATE TABLE x(id int);",encoding="utf-8")
+        proc,result=self.cli("--mode","change","--task","TASK-1","--base","HEAD","--run-checks")
+        gate=next(x for x in result["checks"] if x["rule_id"]=="task-gate")
+        self.assertEqual(gate["status"],"pass")
     def test_module_dependency_rules_and_cycles(self):
         self.manifest["modules"][0]["depends_on"]=["core"]
         proc,result=self.cli("--mode","baseline","--run-checks")
@@ -925,6 +1037,9 @@ class CheckerTests(unittest.TestCase):
         proc,result=self.cli("--mode","change","--task","TASK-1","--base","HEAD","--run-checks")
         self.assertEqual(proc.returncode,1)
         self.assertIn("src/app.py",result["changed_paths"]);self.assertIn("uncovered.txt",result["changed_paths"])
+        scope=next(item for item in result["checks"] if item["rule_id"]=="change-scope")
+        self.assertTrue(scope["evidence"]["findings"])
+        self.assertIn("action",scope["evidence"]["findings"][0])
         self.manifest["exclude_paths"].append("uncovered.txt")
         proc,result=self.cli("--mode","change","--task","TASK-1","--base","HEAD","--run-checks")
         self.assertEqual(proc.returncode,0,result)
@@ -939,6 +1054,14 @@ class CheckerTests(unittest.TestCase):
         self.assertEqual(proc.returncode,2)
         self.assertEqual((self.root/"manifest.json").read_bytes(),before)
         self.assertFalse(result["required_checks_satisfied"])
+    def test_current_report_replaces_only_the_exact_work_slot(self):
+        report=checker.write_report(self.root,"work/TASK-1-baseline-current.json",{"version":1},"TASK-1","baseline")
+        self.assertEqual(json.loads(report.read_text(encoding="utf-8")),{"version":1})
+        checker.write_report(self.root,"work/TASK-1-baseline-current.json",{"version":2},"TASK-1","baseline")
+        self.assertEqual(json.loads(report.read_text(encoding="utf-8")),{"version":2})
+        rerun=self.root/"work/TASK-1-baseline-rerun2.json"
+        checker.write_report(self.root,"work/TASK-1-baseline-rerun2.json",{"version":3},"TASK-1","baseline")
+        self.assertEqual(json.loads(rerun.read_text(encoding="utf-8")),{"version":3})
     def test_report_new_file_and_escape(self):
         proc,result=self.cli("--mode","baseline","--run-checks","--report","report.json")
         self.assertEqual(proc.returncode,0)

@@ -28,6 +28,8 @@ WORKFLOW_STAGES = ("takeover_discovery", "baseline_review", "requirements_interv
 EARLY_WORKFLOW_STAGES = {"takeover_discovery", "baseline_review"}
 IMPLEMENTATION_WORKFLOW_STAGES = {"implementation", "verification"}
 WORKFLOW_APPROVALS = ("baseline_review", "proposal_approval")
+TASK_SCALES = {"hotfix", "minor", "feature", "takeover"}
+TEMPORARY_BASENAME = re.compile(r"(?:~|\.(?:swp|swo|tmp|bak))$", re.IGNORECASE)
 
 class ConfigError(ValueError):
     pass
@@ -78,6 +80,28 @@ def safe_root(raw):
     if not original.is_dir():
         raise ConfigError("root must be an existing directory")
     return original.resolve()
+
+def write_report(root, raw_path, payload, task_id, mode):
+    """Write a new ad-hoc report, or replace only the exact stable current slot."""
+    normalized = normalize_manifest_path(raw_path).replace(chr(92), "/")
+    current = "work/" + (task_id or "unselected") + "-" + mode + "-current.json"
+    target = safe_path(root, normalized)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    data = json.dumps(payload, ensure_ascii=False, indent=2) + chr(10)
+    if normalized == current:
+        temporary = target.with_name("." + target.name + ".tmp")
+        try:
+            with temporary.open("w", encoding="utf-8") as output:
+                output.write(data)
+                output.flush()
+                os.fsync(output.fileno())
+            os.replace(temporary, target)
+        finally:
+            temporary.unlink(missing_ok=True)
+    else:
+        with target.open("x", encoding="utf-8") as output:
+            output.write(data)
+    return target
 
 def normalize_manifest_path(raw):
     if isinstance(raw, os.PathLike):
@@ -800,8 +824,18 @@ def cycle(graph):
     return any(visit(node) for node in graph)
 
 def output_check(rule, status, scope, evidence, required=True, limitations=None):
-    return {"rule_id": rule, "status": status, "required": required,
-            "checked_scope": scope, "evidence": evidence, "limitations": limitations or []}
+    result = {"rule_id": rule, "status": status, "required": required,
+              "checked_scope": scope, "evidence": evidence, "limitations": limitations or []}
+    if status in {"fail", "error", "unsupported"}:
+        result["actionable_finding"] = {
+            "object": rule,
+            "current": evidence,
+            "expected_or_missing": "satisfy the declared requirement or provide the missing supported evidence",
+            "evidence": evidence,
+            "affected_action": "only actions that depend on this check result",
+            "resolution": "correct the reported delta, obtain supported evidence, or record the applicable boundary",
+        }
+    return result
 
 
 def workflow_lifecycle_gaps(root, workflow, baseline, selected_task, task_id, mode):
@@ -851,6 +885,7 @@ def workflow_lifecycle_gaps(root, workflow, baseline, selected_task, task_id, mo
                     gaps.append("workflow." + key + " approval evidence path is unsafe")
         approvals[key] = record
 
+    read_only_task = isinstance(selected_task, dict) and selected_task.get("implementation_task") is False
     baseline_status = baseline.get("status") if isinstance(baseline, dict) else None
     baseline_review = approvals.get("baseline_review")
     baseline_approved = isinstance(baseline_review, dict) and baseline_review.get("status") == "approved"
@@ -869,7 +904,7 @@ def workflow_lifecycle_gaps(root, workflow, baseline, selected_task, task_id, mo
         gaps.append("proposal not_applicable requires an evidenced small_fix under established requirements")
     if stage == "baseline_review" and not baseline_reviewable:
         gaps.append("baseline_review stage requires a complete factual baseline before user review")
-    if stage in {"requirements_interview", "plan_confirmation", "implementation", "verification", "complete"}:
+    if not read_only_task and stage in {"requirements_interview", "plan_confirmation", "implementation", "verification", "complete"}:
         if not (baseline_approved or (baseline_exempt and greenfield_progress)):
             gaps.append("later stages require valid baseline review or the evidenced greenfield exception")
         if stage in {"requirements_interview", "plan_confirmation"} and not baseline_reviewable:
@@ -877,7 +912,7 @@ def workflow_lifecycle_gaps(root, workflow, baseline, selected_task, task_id, mo
         # A factual revision is maintained throughout implementation. Reusing a
         # still-valid prior review does not require approving every new revision.
         # Mark invalidated reviews explicitly; a checker cannot infer semantics.
-    if stage in IMPLEMENTATION_WORKFLOW_STAGES | {"complete"}:
+    if not read_only_task and stage in IMPLEMENTATION_WORKFLOW_STAGES | {"complete"}:
         proposal = approvals.get("proposal_approval")
         if not isinstance(proposal, dict) or proposal.get("status") not in ("approved", "not_applicable"):
             gaps.append("implementation requires recorded Spec/Plan approval or evidenced small-fix scope")
@@ -1199,6 +1234,10 @@ def validate(root, manifest, mode, task_id):
         fault("module dependency cycle")
     for ident, item in declared_checks.items():
         boolean(item.get("required"), "check.required")
+        if "applies_to" in item:
+            applies_to = array(item.get("applies_to"), "check.applies_to")
+            if not applies_to or any(scale not in TASK_SCALES for scale in applies_to):
+                raise ConfigError("check.applies_to must list one or more supported task scales: " + ident)
         argv = item.get("command")
         if not isinstance(argv, list) or not argv or not all(isinstance(x, str) and x for x in argv):
             raise ConfigError("check command must be a non-empty argv array: " + ident)
@@ -1223,10 +1262,64 @@ def validate(root, manifest, mode, task_id):
         if not task["requirement_ids"] or not task["acceptance_ids"] or not task["module_ids"]:
             fault("task trace is empty: " + ident)
         deps = array(task.get("depends_on"), "task.depends_on")
-        task_graph[ident] = deps
+        after = array(task.get("after", []), "task.after")
+        policy_version = workflow.get("policy_version") if isinstance(workflow, dict) else None
+        if policy_version not in (None, "delta-v1"):
+            raise ConfigError("workflow.policy_version is unsupported: " + str(policy_version))
+        task_scale = task.get("scale")
+        if task_scale is not None and task_scale not in TASK_SCALES:
+            raise ConfigError("task.scale must be one of: " + ", ".join(sorted(TASK_SCALES)))
+        task_gate_policy = task.get("gate_policy", {})
+        if task_gate_policy is not None and not isinstance(task_gate_policy, dict):
+            raise ConfigError("task.gate_policy must be an object")
+        for gate, applies in (task_gate_policy or {}).items():
+            if not isinstance(gate, str) or not gate:
+                raise ConfigError("task.gate_policy keys must be non-empty strings")
+            values = array(applies, "task.gate_policy." + gate)
+            if not values or any(value not in TASK_SCALES for value in values):
+                raise ConfigError("task.gate_policy values must list supported task scales: " + gate)
+        if policy_version == "delta-v1":
+            required_ids = set(task.get("required_checks", []))
+            task_paths = [relative_scope(root, raw) for module_id in task.get("module_ids", []) if module_id in modules for raw in modules[module_id].get("source_paths", [])]
+            for gate, applies in (task_gate_policy or {}).items():
+                if gate not in required_ids or task_scale in applies:
+                    continue
+                declared = declared_checks.get(gate)
+                gate_cwd = relative_scope(root, declared.get("working_directory", ".")) if declared else "."
+                if not any(covered(gate_cwd, task_path) or covered(task_path, gate_cwd) for task_path in task_paths):
+                    fault("task " + ident + " required gate conflicts with gate_policy scale: " + gate)
+        # Only the selected Task consumes delta-v1 scale semantics; historical
+        # and unrelated tasks remain readable without a backfill migration.
+        if policy_version == "delta-v1" and ident == task_id and task_scale is None:
+            fault("selected task " + ident + " must declare scale under delta-v1")
+        task_graph[ident] = [dep if isinstance(dep, str) else (dep.get("task_id") if isinstance(dep, dict) else str(dep)) for dep in deps] + after
         for dep in deps:
-            if dep not in tasks:
-                fault("task has unknown dependency: " + ident)
+            if isinstance(dep, str):
+                if dep not in tasks:
+                    fault("task has unknown dependency: " + ident)
+            elif isinstance(dep, dict):
+                if policy_version != "delta-v1":
+                    raise ConfigError("structured task.depends_on requires workflow.policy_version=delta-v1")
+                if set(dep) != {"task_id", "artifact_path"} or not all(isinstance(dep.get(key), str) and dep[key] for key in ("task_id", "artifact_path")):
+                    raise ConfigError("structured depends_on requires task_id and artifact_path")
+                if dep["task_id"] not in tasks:
+                    fault("task has unknown artifact dependency source: " + ident)
+                try:
+                    relative_scope(root, dep["artifact_path"])
+                except (ConfigError, TypeError):
+                    raise ConfigError("structured dependency artifact_path must stay within the project")
+                if dep["task_id"] in tasks:
+                    source_task = tasks[dep["task_id"]]
+                    source_module_paths = [raw for module_id in source_task.get("module_ids", []) if module_id in modules for raw in modules[module_id].get("source_paths", [])]
+                    artifact_scope = relative_scope(root, dep["artifact_path"])
+                    exact_declared_source = any(artifact_scope == relative_scope(root, scope) for scope in source_module_paths)
+                    if not exact_declared_source and not any(covered(artifact_scope, relative_scope(root, scope)) for scope in source_module_paths):
+                        fault("task " + ident + " artifact dependency path is outside source task scope: " + dep["artifact_path"])
+            else:
+                raise ConfigError("task.depends_on entries must be task IDs or artifact dependency objects")
+        for predecessor in after:
+            if predecessor not in tasks:
+                fault("task has unknown after task: " + ident + " -> " + str(predecessor))
         if task.get("impact_document") not in docs:
             fault("task impact_document is unknown: " + ident)
         elif not safe_path(root, docs[task["impact_document"]]["path"]).is_file():
@@ -1279,6 +1372,10 @@ def validate(root, manifest, mode, task_id):
                 elif not any(covered(normalized, allowed) for allowed in legal_trigger_scopes) and not common_parent:
                     fault("documentation_impact.when_paths is outside module/document scopes: " + raw)
         boolean(task.get("approval_required"), "task.approval_required")
+        if "implementation_task" in task and type(task.get("implementation_task")) is not bool:
+            raise ConfigError("task.implementation_task must be boolean")
+        if "available_artifacts" in task:
+            array(task.get("available_artifacts"), "task.available_artifacts")
         if task.get("status") not in ("planned", "in_progress", "blocked", "complete"):
             raise ConfigError("invalid task status: " + ident)
     if cycle(task_graph):
@@ -1366,8 +1463,9 @@ def validate(root, manifest, mode, task_id):
             raise ConfigError("a known --task is required")
         task = tasks[task_id]
         gating = []
-        approval_required_now = mode in ("handoff", "commit", "committed") or (
-            mode == "change" and (workflow_stage is None or workflow_stage in IMPLEMENTATION_WORKFLOW_STAGES | {"complete"}))
+        writes_implementation = task.get("implementation_task", True) is not False
+        approval_required_now = (mode in ("handoff", "commit", "committed") and writes_implementation) or (
+            mode == "change" and writes_implementation and (workflow_stage is None or workflow_stage in IMPLEMENTATION_WORKFLOW_STAGES | {"complete"}))
         if task["approval_required"] and approval_required_now:
             approval = task.get("approval")
             if not isinstance(approval, dict) or approval.get("status") != "approved":
@@ -1377,8 +1475,18 @@ def validate(root, manifest, mode, task_id):
                 if not path.is_file():
                     gating.append("approval evidence missing")
         for dep in task["depends_on"]:
-            if dep in tasks and tasks[dep]["status"] != "complete":
-                gating.append("dependency not complete: " + dep)
+            if isinstance(dep, str):
+                # Legacy dependencies remain source-task completion gates.
+                if dep in tasks and tasks[dep]["status"] != "complete":
+                    gating.append("dependency not complete: " + dep)
+            elif isinstance(dep, dict):
+                try:
+                    artifact = safe_path(root, dep.get("artifact_path"), file_only=False)
+                    available = artifact.exists()
+                except ConfigError:
+                    available = False
+                if not available:
+                    gating.append("required technical artifact unavailable: " + dep.get("artifact_path", "unknown") + " from " + dep.get("task_id", "unknown"))
         if mode == "handoff":
             if task["status"] != "complete":
                 gating.append("handoff task status must be complete")
@@ -1452,6 +1560,17 @@ def validate_inventory(root, ident, entry):
     boolean(provenance.get("complete"), "provenance.complete")
     if not isinstance(provenance.get("scope"), str) or not provenance["scope"] or not provenance.get("evidence"):
         raise ConfigError("inventory scope and evidence required")
+    if provenance.get("type") == "manual":
+        evidence = provenance.get("evidence")
+        if not isinstance(evidence, str) or not evidence.strip():
+            problems.append("manual inventory must identify a locatable source/evidence boundary before it can pass")
+        else:
+            try:
+                evidence_path = safe_path(root, evidence)
+                if not evidence_path.is_file():
+                    problems.append("manual inventory evidence path is not a readable project file: " + evidence)
+            except ConfigError:
+                problems.append("manual inventory evidence path is unsafe or not project-relative: " + evidence)
     sources = array(provenance.get("source_files"), "provenance.source_files")
     for source in sources:
         if not isinstance(source, dict) or not isinstance(source.get("sha256"), str) or not re.fullmatch("[a-fA-F0-9]{64}", source["sha256"]):
@@ -1461,7 +1580,9 @@ def validate_inventory(root, ident, entry):
             problems.append("source metadata stale or missing: " + source["path"])
     if problems:
         status = "fail"
-    elif provenance.get("type") == "manual" or not provenance["complete"]:
+    elif provenance.get("type") == "manual":
+        status = "pass"
+    elif not provenance["complete"]:
         status = "partial"
     elif provenance.get("type") == "sqlite-metadata" and entry["kind"] == "database" and len(sources) == 1:
         try:
@@ -1505,7 +1626,7 @@ def validate_inventory(root, ident, entry):
     else:
         status = "unsupported"
     return output_check("inventory:" + ident, status, provenance["scope"], {"provenance": provenance, "coverage": problems or ["items and fields match"], "item_count": len(source_items)}, required,
-                        ["Manual/unknown sources cannot prove full coverage. SQLite completeness covers the declared metadata scope only. Remote adapter snapshots prove internal integrity and declared metadata shape, not live database truth; field semantics and real usage require code review."])
+                        ["Manual source pass validates only the declared source/scope and listed mapping; it does not prove there are no omissions within that boundary. SQLite completeness covers the declared metadata scope only. Remote adapter snapshots prove internal integrity and declared metadata shape, not live database truth; field semantics and real usage require code review."])
 
 def git_paths(root, base):
     if not isinstance(base, str) or not base or base.startswith("-"):
@@ -1641,10 +1762,12 @@ def change_check(root, manifest, docs, modules, tasks, task_id, base=None, paths
                 raise ConfigError("documentation_impact references unknown document: " + str(doc_id))
             allowed.append(docs[doc_id]["path"])
     allowed = [relative_scope(root, raw) for raw in allowed]
-    uncovered = [p for p in paths if not excluded_path(root, p, exclude_specs) and not any(covered(p, raw) for raw in allowed)]
+    temporary = [p for p in paths if is_recognized_temporary_path(p)]
     excluded = [p for p in paths if excluded_path(root, p, exclude_specs)]
+    blocking_paths = [p for p in paths if p not in temporary and not excluded_path(root, p, exclude_specs)]
+    uncovered = [p for p in blocking_paths if not any(covered(p, raw) for raw in allowed)]
     documentation_gaps = []
-    changed = [p for p in paths if not excluded_path(root, p, exclude_specs)]
+    changed = blocking_paths
     document_scopes = {doc_id: relative_scope(root, doc["path"]) for doc_id, doc in docs.items()}
     changed_docs = {scope for scope in document_scopes.values() if any(covered(p, scope) for p in changed)}
     for kind, rule in (impact or {}).items():
@@ -1663,11 +1786,50 @@ def change_check(root, manifest, docs, modules, tasks, task_id, base=None, paths
                 continue
             if not any(covered(path, scope) for scope in trigger_scopes):
                 documentation_gaps.append("source change has no documentation_impact rule: " + path)
-    details = {"uncovered": uncovered, "excluded": excluded, "allowed": allowed, "documentation_gaps": documentation_gaps}
+    scale_order = {"hotfix": 0, "minor": 1, "feature": 2, "takeover": 3}
+    declared_scale = selected.get("scale")
+    effective_scale = declared_scale
+    inference_reasons = []
+    if declared_scale in TASK_SCALES:
+        if selected.get("workflow_kind") == "takeover":
+            effective_scale = "takeover"
+            inference_reasons.append("selected Task is explicitly a takeover")
+        else:
+            touched_modules = [ident for ident, module in modules.items() if any(
+                not is_recognized_temporary_path(path) and any(covered(path, relative_scope(root, raw)) for raw in module.get("source_paths", []))
+                for path in paths
+            )]
+            selected_modules = set(selected.get("module_ids", []))
+            if len(set(touched_modules) - selected_modules) > 0 or len(set(touched_modules)) > 1:
+                effective_scale = "feature"
+                inference_reasons.append("changed paths touch multiple or undeclared modules")
+            if any(path in {"engineering-manifest.json", "SKILL.md", "references", "assets", "VERSION", "CHANGELOG.md"} or path.startswith(("references/", "assets/")) for path in paths):
+                effective_scale = "feature"
+                inference_reasons.append("change touches workflow/control/contract guidance")
+        if scale_order.get(effective_scale, 0) < scale_order.get(declared_scale, 0):
+            effective_scale = declared_scale
+    details = {"uncovered": uncovered, "excluded": excluded, "temporary_nonblocking": temporary, "allowed": allowed, "documentation_gaps": documentation_gaps,
+               "task_scale": {"declared": declared_scale, "effective": effective_scale, "inference_reasons": sorted(set(inference_reasons))}}
+    if uncovered:
+        details["findings"] = [{"path": path, "current": "changed path is outside declared Task/module/document scope", "expected": allowed, "evidence": {"path": path, "scope": scope_label or rule_id}, "action": "add the real affected scope/documentation rule or remove the unrelated file from this task", "blocking": True} for path in uncovered]
+    if documentation_gaps:
+        details.setdefault("findings", []).extend({"path": gap.rsplit(": ", 1)[-1], "current": "required affected document was not changed", "expected": gap.rsplit(": ", 1)[-1], "evidence": gap, "action": "update the authoritative affected view or record evidence-backed not-applicable impact", "blocking": True} for gap in documentation_gaps)
     status = "fail" if uncovered or documentation_gaps else "pass"
     scope = scope_label or ("Git staged index including deletions and rename endpoints" if base is None else "Git base diff including deletions, untracked paths and declared documentation impact")
     return paths, output_check(rule_id, status, scope, details,
-                               limitations=["Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes."])
+                               limitations=["Explicit path coverage is not proof of undocumented transitive semantic impact; rules depend on the task's declared path scopes.", "Recognized editor swap, temporary, backup and report files are shown as temporary_nonblocking and do not enter blocking scope."])
+
+def is_recognized_temporary_path(path):
+    """Narrow file-name recognition; never exclude a directory tree by suffix."""
+    normalized = path.replace("\\", "/")
+    name = normalized.rsplit("/", 1)[-1]
+    if name.startswith(".~") or name.endswith("~"):
+        return True
+    if TEMPORARY_BASENAME.search(name):
+        return True
+    if "/work/" in "/" + normalized and name.endswith(".json"):
+        return True
+    return False
 
 def verification_snapshot(root):
     prefix = ["git", "-c", "safe.directory=" + str(root)]
@@ -1948,10 +2110,19 @@ def run_declared_command(command, cwd, timeout_seconds):
     }
 
 
-def run_checks(root, checks, enabled, forced, blocked_reason=None):
+def run_checks(root, checks, enabled, forced, blocked_reason=None, task_scale=None, task=None):
     results = []
     for ident, check in checks.items():
         required = check["required"] or ident in forced
+        applies_to = check.get("applies_to")
+        task_gate_policy = task.get("gate_policy", {}) if isinstance(task, dict) else {}
+        task_applies = task_gate_policy.get(ident) if isinstance(task_gate_policy, dict) else None
+        effective_applies = task_applies if isinstance(task_applies, list) else applies_to
+        if not required and task_scale in TASK_SCALES and isinstance(effective_applies, list) and task_scale not in effective_applies:
+            results.append(output_check(ident, "skipped", "not applicable to task scale " + task_scale,
+                                        {"task_scale": task_scale, "applies_to": effective_applies}, False,
+                                        ["This check is not applicable to the selected task scale; safety and user-declared decisions are evaluated separately."]))
+            continue
         if not enabled:
             results.append(output_check(ident, "skipped", "declared command", blocked_reason or "not run; use --run-checks", required))
             continue
@@ -2028,6 +2199,11 @@ def main(argv=None):
             try:
                 report["changed_paths"], check = change_check(root, manifest, docs, modules, tasks, task_id, args.base)
                 report["checks"].append(check)
+                selected_task = tasks.get(task_id, {})
+                if isinstance(selected_task, dict) and check.get("evidence", {}).get("task_scale", {}).get("effective"):
+                    selected_task = dict(selected_task)
+                    selected_task["scale"] = check["evidence"]["task_scale"]["effective"]
+                    tasks[task_id] = selected_task
                 gate = implementation_gate(root, manifest, report["changed_paths"], task_id)
                 if gate is not None:
                     report["checks"].append(gate)
@@ -2037,6 +2213,11 @@ def main(argv=None):
             try:
                 report["changed_paths"], check = change_check(root, manifest, docs, modules, tasks, task_id,
                                                                paths=staged_git_paths(root), rule_id="commit-scope")
+                selected_task = tasks.get(task_id, {})
+                if isinstance(selected_task, dict) and check.get("evidence", {}).get("task_scale", {}).get("effective"):
+                    selected_task = dict(selected_task)
+                    selected_task["scale"] = check["evidence"]["task_scale"]["effective"]
+                    tasks[task_id] = selected_task
                 control_check = control_plane_check(root, manifest, args.manifest, args.mode,
                                                     report["changed_paths"], allow=args.allow_control_plane_change,
                                                     submission_baseline=submission_baseline)
@@ -2069,6 +2250,11 @@ def main(argv=None):
                 report["changed_paths"], check = change_check(root, manifest, docs, modules, tasks, task_id,
                                                                paths=committed_git_paths(root, args.commit_ref), rule_id="committed-scope",
                                                                scope_label="checked-out commit tree versus first parent")
+                selected_task = tasks.get(task_id, {})
+                if isinstance(selected_task, dict) and check.get("evidence", {}).get("task_scale", {}).get("effective"):
+                    selected_task = dict(selected_task)
+                    selected_task["scale"] = check["evidence"]["task_scale"]["effective"]
+                    tasks[task_id] = selected_task
                 control_check = control_plane_check(root, manifest, args.manifest, args.mode,
                                                     report["changed_paths"], commit_ref=args.commit_ref,
                                                     allow=args.allow_control_plane_change,
@@ -2092,6 +2278,15 @@ def main(argv=None):
             except (ConfigError, OSError, subprocess.TimeoutExpired) as exc:
                 report["checks"].append(output_check("committed-scope", "unsupported", "committed tree discovery", str(exc)))
         forced = set(tasks[task_id]["required_checks"]) if task_id and task_id in tasks else set()
+        selected_task = tasks.get(task_id) if task_id else None
+        task_scale = selected_task.get("scale") if isinstance(selected_task, dict) else None
+        applicable_required = {ident for ident, check in declared.items() if check["required"] or ident in forced}
+        if isinstance(selected_task, dict):
+            policy = selected_task.get("gate_policy", {})
+            if isinstance(policy, dict):
+                for ident, applies in policy.items():
+                    if task_scale in TASK_SCALES and task_scale not in applies:
+                        applicable_required.discard(ident)
         if args.mode in ("change", "handoff", "commit", "committed") and relative_scope(root, args.manifest) in report["changed_paths"] and not any(
                 item["required"] and item["status"] != "pass" for item in report["checks"]):
             try:
@@ -2106,7 +2301,7 @@ def main(argv=None):
             commands_allowed = False
         reason = None if commands_allowed else "not run; submitted-tree validation did not pass"
         with command_cancellation():
-            report["checks"].extend(run_checks(root, declared, args.run_checks and commands_allowed, forced, reason))
+            report["checks"].extend(run_checks(root, declared, args.run_checks and commands_allowed, forced, reason, task_scale, selected_task))
     except (CheckCancelled, KeyboardInterrupt) as exc:
         cancelled_exit = exc.exit_code if isinstance(exc, CheckCancelled) else 130
         report["checks"].append(output_check("interrupted", "fail", "verification cancelled",
@@ -2133,11 +2328,7 @@ def main(argv=None):
         report["summary"] = "required checks satisfied" if report["required_checks_satisfied"] else "required checks not satisfied"
     if args.report:
         try:
-            report_path = safe_path(safe_root(args.root), args.report)
-            if report_path.exists():
-                raise ConfigError("report output must be a new file; refusing overwrite")
-            with report_path.open("x", encoding="utf-8") as output:
-                output.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+            report_path = write_report(safe_root(args.root), args.report, report, task_id, args.mode)
         except (OSError, ConfigError) as exc:
             report["errors"].append(str(exc))
             report["required_checks_satisfied"] = False

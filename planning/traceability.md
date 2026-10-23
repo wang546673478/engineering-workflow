@@ -447,3 +447,24 @@ Historical task/requirement registrations remain in the manifest and their origi
 
 
 Publication evidence: 1.5.0 source `46d57a6cefd5cc80ae62e47099b782d4cb381504`, uploaded 2026-10-18; staged and exact-commit check reports plus the source-upload receipt are recorded in the current Task. The requirement/Plan/step mappings remain unchanged.
+
+## Current Skill redesign traceability
+
+Active chain (2026-10-23): [BASELINE](baseline-review.md) → [SPEC-SKILL-REDESIGN-01](skill-redesign-spec.md) → [PLAN-SKILL-REDESIGN-01](skill-redesign-implementation-plan.md) → [TASK-SKILL-REDESIGN-01](skill-redesign-task.md). The reviewed design is [here](skill-redesign-plan.md); assessment/evidence is [here](skill-redesign-assessment.md). This is a new task independent from Issue #24; approval is limited to local implementation under the new Spec/Plan.
+
+| Requirement / acceptance | Plan batch | Task / evidence |
+| --- | --- | --- |
+| REQ-SR-01 / AT-SR-01, AT-SR-09 | B1, B4, B5 | TASK-SKILL-REDESIGN-01 |
+| REQ-SR-02 / AT-SR-02 | B1, B5 | TASK-SKILL-REDESIGN-01 |
+| REQ-SR-03 / AT-SR-03 | B1, B2, B5 | TASK-SKILL-REDESIGN-01 |
+| REQ-SR-04 / AT-SR-04 | B4 | TASK-SKILL-REDESIGN-01 |
+| REQ-SR-05 / AT-SR-01 | B1 | TASK-SKILL-REDESIGN-01 |
+| REQ-SR-06 / AT-SR-05 | B2, B5 | TASK-SKILL-REDESIGN-01 |
+| REQ-SR-07 / AT-SR-06, AT-SR-07 | B3 | TASK-SKILL-REDESIGN-01 |
+| REQ-SR-08 / AT-SR-05, AT-SR-08 | B2–B5 | TASK-SKILL-REDESIGN-01 |
+| REQ-SR-09 / AT-SR-09 | B4, B5 | TASK-SKILL-REDESIGN-01 |
+| AT-SR-10 | B5 | TASK-SKILL-REDESIGN-01; paired pilot only if trusted logs/sample exist |
+
+The user approved starting implementation on 2026-10-23 after reviewing the complete design. On 2026-10-24, the user extended this task's scope by requesting README-style documentation updates and upload to GitHub. This supersedes the earlier local-only publication limit for this repository's reviewed batch; it does not authorize external project migration. Publication remains gated by passing required checks and the existing control-plane review.
+
+Implementation notes: workflow_state.py query supports declared checkpointed SQLite table/field facts, manifest module summaries and optional bounded source references. Fixed Gin route receipts are now queried by stable route ID after hash checks; dynamic route/request-response extraction and runtime authorization remain unsupported. The checker now allows a manual inventory to pass when its declared source/scope and listed mapping reconcile, with a limitation that it does not prove there are no omissions inside that boundary. Task scale/after/read-only-authorization/temp-path behaviors have focused regressions. The isolated schema/query/change-set round-trip passes in the regression fixture (6 CLI subprocesses / 1.2525s). The de-identified real-session query report records 6 slices in one 0.8965s invocation and a 10-run median of 0.9205s. This is a retrieval sample only; no same-feature legacy replay exists, so overall efficiency percentage is unverified. The latest baseline TEST 283, COMPILE and GUIDANCE-COMPILE checks passed; earlier failure remains historical. See [TASK-SKILL-REDESIGN-01](skill-redesign-task.md) before delivery.
