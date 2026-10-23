@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-- 阶段：implementation / delivery validation passed locally; staged and exact-commit publication gates pending. On 2026-10-24, the full required baseline run passed 283 tests, COMPILE and GUIDANCE-COMPILE; this supersedes the earlier same-day 4-failure run as the current verification while retaining it as history below. README summarizes the real-session baseline query pilot, with full scope/measurement limits in [pilot report](real-session-efficiency-pilot.md). User's 2026-10-24 request, “更新readme这样的文档,然后上传github”, extends the prior local-only authorization to update this repository's linked documentation and upload the reviewed delivery batch to its existing GitHub repository. The earlier no-upload scope is retained as historical evidence. Upload remains contingent on staged/exact-commit gates and repository control-plane review; no external project was edited.
+- 阶段：implementation / final local baseline passes TEST 285, COMPILE, and GUIDANCE-COMPILE; focused workflow_state suite passes 42. Skill validator passes with isolated PyYAML 6.0.3. Staged tree f24a3b3eb709928536f781313def8e8d9cc92204 retains feature scale and all documentation_impact groups. Exact-commit gate cannot proceed because this batch changes protected manifest/checker files and needs the external approval signal required by the repository. Prior remote commit 7612033 is on the feature branch, not main; its hosted Windows job failed with generic annotations and inaccessible artifact. No new push or merge has occurred.
 - 当前工件链：[Baseline](baseline-review.md) → [Spec](skill-redesign-spec.md) → [Plan](skill-redesign-implementation-plan.md) → 本 Task → 代码/测试证据。manifest active pointers now select this task, Spec and Plan; Issue #24 remains unchanged.
 - 实施基点：工作树包含此前本任务方案/评估两个未跟踪文件，以及原有 Issue #24 在途工作；动手前尚未修改代码。本 Task 记录开始后的 git 基点和差异。
 - 决策：首批以可验证 SQL 元数据和静态依赖按需切片为主；route/契约/权限能力按现有适配器证据决定，不支持的视图明确标示。
@@ -45,7 +45,7 @@
 | B2 | complete | manual inventory locatable-boundary pass/fail and actionable finding tests pass; checker suite 129 pass; final full suite 280 pass | 结构化 delta、manual inventory pass reachability |
 | B3 | complete for first batch | policy_version/scale/applies_to, nonblocking after, structured artifact dependency, read-only Task lifecycle, temporary handling and legacy compatibility covered; staged commit scope policy unchanged |
 | B4 | complete | apply-batch authority routing and guidance/template/docs/version synchronization; focused changeset and skill validator pass |
-| B5 | complete | Fresh full suite exposed four regressions: unsupported route queries returned `unknown`; source-derived receipts did not recheck source-file hashes; the GORM fixture omitted the model mapping required by the receipt contract. Fixed route classification and live receipt source hash checking, corrected the fixture, and reran the required baseline and staged commit checks: TEST 283 pass, COMPILE pass, GUIDANCE-COMPILE pass; exact staged commit-scope check passes.
+| B5 | local checks pass; hosted Windows follow-up open | Prior query/receipt regressions were corrected. Current local full TEST 285, COMPILE, GUIDANCE-COMPILE and focused workflow_state 42 all pass. GitHub run 40008142044 for commit 7612033 failed in reviewed Windows; detailed logs are unavailable. A narrow extended-path normalization fix and Windows-only regression test are prepared. Retain feature scale and all original documentation gates. |
 
 ## 影响分析
 
@@ -60,6 +60,6 @@
 1. complete：登记 Spec/Plan/Task 与活动指针；Issue24 approval unchanged.
 2. complete：确认 SQLite main schema extractor 支持 checkpointed DB；静态 JS/TS/Rust source-context adapter 已接入 query 的可选 `--relations`，结果保留 partial/unsupported 与证据限制；checker 原行为基线已复核。
 3. B1-B4 首批能力与权威 guidance/模板已更新；synthetic schema round-trip pilot pass。route/permission adapters 不在首批支持范围；真实效率配对指标仍 unverified。发现事实冲突先修 Baseline/Plan/Task。
-4. 历史验证：280 项 TEST 曾通过；2026-10-24 后续 283 项 TEST 曾失败 4 项（unsupported/unknown 预期差异、source-derived receipt 边界）。保留该失败证据，不以它覆盖后续新运行。
-5. 最新验证：`python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline --task TASK-SKILL-REDESIGN-01 --run-checks` 于 2026-10-24 通过，`required_checks_satisfied=true`，TEST 283 项通过（173.675s），COMPILE 通过（0.301s），GUIDANCE-COMPILE 通过（0.297s）；报告 `work/TASK-SKILL-REDESIGN-01-baseline-docs.json`。`git diff --check` 与 JSON 解析也通过。
-6. 2026-10-24 用户补充交付授权：“更新readme这样的文档,然后上传github”。已更新 README 并建立[真实会话试点报告](real-session-efficiency-pilot.md)；staged `commit` 门禁于同日通过，`verified_tree=0ee94e8ac1166309f9b2b88d632524e957e54414`，提交 SHA 与提交后门禁待记录。当前 efficiency paired percentage 仍 unverified。
+4. 历史验证：280 项 TEST 曾通过；2026-10-24 一次中间全量运行中 283 项有 4 项失败，修正后本地 283 项通过。GitHub Actions 对精确提交 7612033 的 Windows reviewed job 失败，见 run 40008142044；公开注释只显示通用退出码，日志 artifact 无法下载，故具体失败项未知。
+5. 最新验证：独立全量 `python -m unittest discover -s scripts/tests -q` 于 2026-10-24 通过，285 项 / 159.116s；`workflow_state` 聚焦套件 42 项通过，COMPILE 与 GUIDANCE-COMPILE 通过。更新后的 baseline checker 报告 `work/TASK-SKILL-REDESIGN-01-baseline-windows-fix.json` 也通过，包含 TEST 285、COMPILE、GUIDANCE-COMPILE。当前扩展路径 follow-up 还需以未降级的 feature documentation_impact 通过 staged/exact-commit，再由 GitHub Windows CI 验证。
+6. 2026-10-24 用户授权更新相关文档并上传本仓库。README 与[去标识试点报告](real-session-efficiency-pilot.md)已准备。本地 required 与 exact-commit 检查通过；GitHub Actions 在 reviewed Windows job 失败，运行 `40008142044`，页面注释只有进程退出码，artifact 下载不可用。新发现的 extended-path 根路径差异需要通过 Windows-only regression 和完整 TEST/commit/committed 检查验证。发布仍需保留 `feature` 规模和原有 documentation_impact，当前分支未合并 main。整体效率比例仍未验证。

@@ -617,6 +617,14 @@ class CheckerTests(unittest.TestCase):
             with self.assertRaisesRegex(checker.ConfigError, "path escapes project root"):
                 checker.safe_path(root, alias.parent / "outside.txt")
 
+        def test_relative_to_root_accepts_extended_source_path(self):
+            root = checker.safe_root(self.root)
+            source = root / "source with spaces" / "module.ts"
+            source.parent.mkdir(parents=True)
+            source.write_text("export const value = 1;", encoding="utf-8")
+            extended = Path(chr(92) + chr(92) + "?" + chr(92) + str(source))
+            self.assertEqual(checker._relative_to_root(extended, root), Path("source with spaces") / "module.ts")
+
     def test_foreign_drive_and_unc_paths_are_rejected(self):
         for raw in ("C:/outside/spec.md", "//server/share/spec.md"):
             with self.subTest(raw=raw):

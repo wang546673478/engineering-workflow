@@ -203,6 +203,37 @@ Later
         self.assertIn(result['status'],('pass','partial','unsupported'))
         self.assertEqual(result['adapter'],'source-context-references')
         self.assertIn('runtime calls',result['coverage']['excluded'])
+    @unittest.skipUnless(os.name == 'nt', 'Windows extended-path regression')
+    def test_relation_query_accepts_extended_source_path_under_plain_root(self):
+        source_root=self.root/'src'
+        source_root.mkdir()
+        (source_root/'a.ts').write_text("import {b} from './b'; export const a=b;",encoding='utf-8')
+        (source_root/'b.ts').write_text('export const b=1;',encoding='utf-8')
+        extended_source=Path('\\\\?\\'+str(source_root))
+        with mock.patch.object(check_project,'safe_path',side_effect=lambda root,raw,file_only=True: source_root if raw=='src' else Path(root)/raw):
+            result=workflow_state.query_relations(self.root,'module:test',['src'])
+        self.assertIn(result['status'],('pass','partial','unsupported'))
+        self.assertEqual(result['adapter'],'source-context-references')
+        self.assertTrue(result['evidence'])
+    @unittest.skipUnless(os.name == 'nt', 'Windows path alias regression')
+    def test_relation_query_accepts_windows_short_root_alias(self):
+        source_root=self.root/'src'
+        source_root.mkdir()
+        (source_root/'a.ts').write_text("import {b} from './b'; export const a=b;",encoding='utf-8')
+        (source_root/'b.ts').write_text('export const b=1;',encoding='utf-8')
+        buffer=ctypes.create_unicode_buffer(32768)
+        get_short=ctypes.windll.kernel32.GetShortPathNameW
+        get_short.argtypes=(ctypes.c_wchar_p,ctypes.c_wchar_p,ctypes.c_uint)
+        get_short.restype=ctypes.c_uint
+        written=get_short(str(self.root),buffer,len(buffer))
+        self.assertGreater(written,0)
+        short_root=Path(buffer.value)
+        if str(short_root).casefold()==str(self.root).casefold():
+            self.skipTest('This volume does not generate a short-path alias for the fixture')
+        result=workflow_state.query_relations(short_root,'module:test',['src'])
+        self.assertIn(result['status'],('pass','partial','unsupported'))
+        self.assertEqual(result['adapter'],'source-context-references')
+        self.assertTrue(result['evidence'])
     def test_batch_section_replace_preserves_utf8_bom_and_normalizes_source_newlines(self):
         root, manifest_path, manifest = self.context()
         path = self.root / 'planning/task.md'

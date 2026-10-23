@@ -1,13 +1,13 @@
 # Engineering Workflow Skill 改造需求评估
 
-状态：`assessment / implementation_not_authorized`。这是 2026-10-23 收到的全新需求，不能复用 `TASK-ISSUE24-EFFICIENCY-01` 的 Spec、Plan、Task 或批准。当前文件只记录现状核实和差异，不批准代码修改。
+状态：历史评估记录。该文档在实施前描述为 `assessment / implementation_not_authorized`；后续用户于 2026-10-23 审核方案并授权实施，当前状态见 `planning/skill-redesign-task.md` 与 `engineering-manifest.json`。
 
 ## 来源与范围
 
-- 来源：用户附件 `C:/Users/54667/.codex/attachments/6211c25c-f4cd-4774-aafe-e7db9d1a28d1/已粘贴的文本.txt`。
+- 来源：用户提供的需求附件（原始附件位置为本机私有路径，不作为仓库发布内容）。
 - 需求主题：改造 `engineering-workflow` skill，使基线分为派生事实、判断、状态三层；把完整性门槛改为代码与基线的 delta 纠偏；增加稳定锚点、任务规模分级、技术依赖与顺序依赖拆分，并降低临时文件、手工 inventory 和同步仪式造成的阻塞。
 - 明确保留：Baseline / Spec / Plan / Task 纠偏链、必要护栏、业务正确性与程序检查的区分。
-- 本轮未授权范围：修改本仓库代码、修改 checker/模板/manifest 规则、迁移外部项目、把旧 Issue24 的批准扩展到新需求。
+- 当时未授权范围：修改本仓库代码、修改 checker/模板/manifest 规则、迁移外部项目、把旧 Issue24 的批准扩展到新需求。后续实施及发布授权见当前 Task。
 
 ## 当前基线
 
@@ -89,4 +89,4 @@
 
 ## 下一步
 
-2026-10-23 已根据该评估和用户附件形成 [完整改造方案审阅稿](skill-redesign-plan.md)；用户随后审核了方案方向并补充了上下文复用与实施中纠偏原则。方案自检已完成，后续用户批准已触发本仓库本地实施。新 Spec/Plan/Task 和活动指针已建立；首批代码与指导改造完成，原 required checks 与 validator 通过，当前报告见 [TASK-SKILL-REDESIGN-01](skill-redesign-task.md) 和固定 current 报告。未完成项是效率配对 pilot（缺可信日志）与 route/permission adapters（本批明确 unsupported）。不把授权扩展到 Issue24 旧范围、外部迁移或发布。
+2026-10-23 已根据该评估和用户附件形成 [完整改造方案审阅稿](skill-redesign-plan.md)；用户随后审核了方案方向并补充了上下文复用与实施中纠偏原则。方案自检已完成，后续用户批准已触发本仓库本地实施。新 Spec/Plan/Task 和活动指针已建立；首批代码与指导改造完成，原 required checks 与 validator 通过，当前报告见 [TASK-SKILL-REDESIGN-01](skill-redesign-task.md) 和固定 current 报告。未完成项是效率配对 pilot（缺可信日志）与 route/permission adapters（本批明确 unsupported）。不把授权扩展到 Issue24 旧范围或外部项目迁移。

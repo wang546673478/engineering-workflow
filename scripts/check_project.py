@@ -41,8 +41,17 @@ def is_link(path):
     return path.is_symlink() or bool(getattr(path, "is_junction", lambda: False)())
 
 def _comparison_path(path):
-    """Expand existing Win32 8.3 aliases without resolving link targets."""
+    """Normalize equivalent Win32 extended/8.3 spellings without resolving links."""
     absolute = Path(path).absolute()
+    if os.name == "nt":
+        spelling = str(absolute)
+        extended_prefix = chr(92) + chr(92) + "?" + chr(92)
+        if spelling.startswith(extended_prefix):
+            plain = spelling[len(extended_prefix):]
+            if plain[:4].casefold() == "unc\\":
+                absolute = Path(chr(92) + chr(92) + plain[4:])
+            elif re.match(r"^[A-Za-z]:[\\/]", plain):
+                absolute = Path(plain)
     if os.name != "nt" or not any(re.search(r"~[0-9]", part) for part in absolute.parts):
         return absolute
     try:

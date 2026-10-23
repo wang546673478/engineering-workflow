@@ -10,6 +10,14 @@
 - 继续遵守当前 manifest 中 required `TEST`、`COMPILE`、`GUIDANCE-COMPILE` 的原命令、覆盖和 timeout；本任务不改门槛以求通过。
 - 本仓库 checker 可自改，但每次控制面改动需先通过原保护及独立回归；不得以待修改版使自身变绿。
 
+## Hosted Windows follow-up (2026-10-24)
+
+The push for commit 7612033 passed local exact-commit checks but GitHub Actions run 40008142044 failed in the reviewed Windows job. The public annotation shows only a generic exit code; its artifact log was not accessible, so the exact failing test cannot be claimed. Inspection found a concrete likely boundary: `query_relations` passed `safe_path`'s extended-length `\?` spelling into `.relative_to()` against a normal root. The correction first uses the existing canonical path comparator, then retries only with the original declared project-relative path through `safe_path`. A Windows-only regression exercises that case. Local TEST 285, focused workflow_state 42, COMPILE and GUIDANCE-COMPILE pass. The new focused case is not executed on Windows here; hosted validation remains required. All original `feature` scale and `documentation_impact` gates stay in force.
+
+## Windows extended-path follow-up (2026-10-24)
+
+Hosted reviewed run `40008142044` for commit `7612033` failed in the Windows job; public annotations reported only process exit code and artifact logs were unavailable. Source inspection found a concrete cross-platform edge: a Windows extended-length source path can be returned as `\?...` by `safe_path`, while `query_relations` later attempted `.relative_to(root)` against the ordinary root path. The narrow correction uses the checker's existing path canonicalizer and falls back to a plain validated spelling when an extended prefix remains. A Windows-only regression covers the extended spelling. Local full TEST 285, focused workflow_state 42, COMPILE and GUIDANCE-COMPILE pass; actual Windows runner revalidation remains required. Task scale and all original documentation-impact gates remain unchanged.
+
 ## B0–B5 执行项
 
 | 批次 | 实施内容 | 主要验证 | 状态 |

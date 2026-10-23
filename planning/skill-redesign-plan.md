@@ -323,3 +323,7 @@ feature/takeover 接管已有实现时，若没有可复用且可信的完整 Ba
 - 检查报告同一 task/session/mode 槽位重跑覆盖 current；只清理本次运行创建的临时文件，不自动删除历史报告、用户文档或 archive。没有可信配对日志时成本目标标 unverified。
 
 用户已审核改造方向；后续 Spec/Plan/Task 只固化实现接口、影响、验收与验证，不重新审核已确认目标。方案审阅与实施授权分开；不沿用 Issue24 实施批准。
+
+## Windows source-path follow-up
+
+The hosted reviewed Windows failure on commit `7612033` led to a path audit in the bounded `--relations` query. An extended-length Windows source spelling may be accepted by `safe_path` but fail a later plain `Path.relative_to` against the normal root. The follow-up uses the checker's canonical root-relative helper first and a safe retry against the original declared relative path only. It does not broaden scanning or relax source boundaries. Local tests cover the correction; the Windows runner result remains pending. This correction preserves the approved `feature` task scale and its declared documentation impact gates.

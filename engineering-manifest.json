@@ -6152,13 +6152,13 @@
         "task": "TASK-SKILL-REDESIGN-01 current"
       },
       "requirement_state": "REQ-SR-01..09 accepted within user-reviewed redesign scope",
-      "implementation_status": "local implementation complete; latest required TEST failed 4 of 283 in fresh 2026-10-24 run; investigation/fix required before verification completion",
+      "implementation_status": "workflow and documentation batch complete; local Windows path follow-up fix prepared and full local verification passes; hosted Windows validation pending.",
       "proposal_status": "approved",
       "user_decisions": [
         {
           "date": "2026-10-23 20:17 Asia/Shanghai",
           "statement": "可以开始实施了吗?",
-          "scope": "Implement the reviewed engineering-workflow redesign locally in this repository; no external project migration or GitHub upload.",
+          "scope": "Implement the reviewed engineering-workflow redesign locally in this repository; no external project migration or GitHub upload. Superseded by the 2026-10-24 user authorization to publish this repository batch.",
           "spec_revision": "SPEC-SKILL-REDESIGN-01 r1",
           "plan_revision": "PLAN-SKILL-REDESIGN-01 r1"
         },
@@ -6299,8 +6299,8 @@
       "implementation_task": true,
       "after": [],
       "gate_policy": {},
-      "verification_status": "PASS: fresh 2026-10-24 baseline checker required_checks_satisfied=true; TEST 283 pass (173.675s), COMPILE pass (0.301s), GUIDANCE-COMPILE pass (0.297s); git diff --check and manifest JSON parse pass. Earlier 283-run/4-failure result remains historical; real-session efficiency percentage unverified. Staged/exact-commit gates pending.",
-      "verification_evidence": "work/TASK-SKILL-REDESIGN-01-baseline-docs.json (local verification evidence); fresh python scripts/check_project.py --root . --manifest engineering-manifest.json --mode baseline --task TASK-SKILL-REDESIGN-01 --run-checks: 283 tests pass, COMPILE/GUIDANCE-COMPILE pass; git diff --check and python -m json.tool engineering-manifest.json pass.",
+      "verification_status": "Local final candidate baseline passes: TEST 285, COMPILE and GUIDANCE-COMPILE; workflow_state focused suite 42; Windows-only extended-path regression exercises the boundary and passes on this Windows host. Existing hosted run 40008142044 for earlier commit 7612033 failed Windows with details unavailable. Staged commit gate fails only at protected control-plane approval because external approval signal is absent; all original feature-scale documentation impact groups are retained. No new hosted run or main merge.",
+      "verification_evidence": "work/TASK-SKILL-REDESIGN-01-baseline-final2.json; full TEST 285/165.003s; focused workflow_state 42; focused extended path tests 2 pass; COMPILE/GUIDANCE-COMPILE pass. work/TASK-SKILL-REDESIGN-01-commit-windows-fix-final-v3.json: feature path/documentation scope reconciles; required commit checks stop at control-plane because ENGINEERING_CONTROL_PLANE_APPROVED external signal is absent.",
       "release_impact": {
         "previous_version": "1.10.0",
         "current_version": "1.11.0",
@@ -6314,7 +6314,7 @@
           "agents/openai.yaml",
           "CHANGELOG.md"
         ],
-        "publication_status": "local_unpublished"
+        "publication_status": "uploaded_to_feature_branch; main_unmerged; hosted_windows_failure_pending"
       },
       "execution_steps": [
         {
@@ -6344,11 +6344,11 @@
         },
         {
           "id": "B5",
-          "status": "complete",
-          "detail": "Latest required baseline check passes: full unittest 283, COMPILE and GUIDANCE-COMPILE; source-derived current receipt hashes and fixed-route unknown/unsupported distinctions are covered. Earlier same-day 4-test run is retained as historical and was superseded by this passing run. Staged/exact-commit publication gates remain pending."
+          "status": "local_baseline_pass_commit_control_plane_approval_pending_hosted_windows_pending",
+          "detail": "Final candidate baseline TEST 285, COMPILE, GUIDANCE-COMPILE and focused workflow_state 42 pass; focused extended-path tests pass on this Windows host. Feature-scale change paths and required documentation impact are complete. Staged commit gate is blocked only because protected control-plane approval signal is absent. Prior hosted Windows run failed on commit 7612033; detailed artifact is inaccessible, and this follow-up has no hosted result. No control-plane gate was bypassed."
         }
       ],
-      "delivery_status": "documentation_updated; local changes; fresh baseline required checks pass; staged/exact-commit gates and control-plane review pending before push. User explicitly authorized GitHub upload on 2026-10-24, contingent on those checks."
+      "delivery_status": "README and de-identified pilot report prepared; branch codex/dynamic-baseline-workflow has prior commit 7612033 on remote, main unchanged and no PR. Current follow-up source/docs are staged; local required baseline passes 285 and compile gates. Commit gate is blocked only by existing protected control-plane approval (external signal absent). Prior hosted Windows run failed; this follow-up has not been pushed or hosted-verified. No merge to main until control-plane review is supplied and Windows CI passes."
     }
   ],
   "control_plane": {

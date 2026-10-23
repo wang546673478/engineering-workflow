@@ -474,7 +474,17 @@ def query_relations(root, module_id, source_paths):
             source = check_project.safe_path(root, raw, file_only=False)
         except check_project.ConfigError:
             continue
-        relative = source.relative_to(root).as_posix()
+        try:
+            relative = check_project._relative_to_root(source,root).as_posix()
+        except (OSError,ValueError):
+            try:
+                # Validate a Windows extended-length source path by its plain
+                # spelling so safe_path and the source collector agree on root.
+                plain_source = check_project.safe_path(root, raw, file_only=False)
+                relative = plain_source.relative_to(root).as_posix()
+                source = plain_source
+            except (check_project.ConfigError, ValueError):
+                continue
         if source.is_dir():
             for suffix in supported_suffixes:
                 includes.append(relative.rstrip("/") + "/**/*" + suffix)
