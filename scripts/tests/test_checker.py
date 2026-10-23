@@ -617,7 +617,7 @@ class CheckerTests(unittest.TestCase):
             with self.assertRaisesRegex(checker.ConfigError, "path escapes project root"):
                 checker.safe_path(root, alias.parent / "outside.txt")
 
-        def test_relative_to_root_accepts_extended_source_path(self):
+        def test_relative_to_root_accepts_extended_and_short_source_path(self):
             root = checker.safe_root(self.root)
             source = root / "source with spaces" / "module.ts"
             source.parent.mkdir(parents=True)

@@ -74,7 +74,7 @@ def _comparison_path(path):
         return absolute
 
 def _relative_to_root(path, root):
-    """Compare paths after resolving Windows long/short aliases consistently."""
+    """Compare equivalent Windows path spellings without resolving link targets."""
     candidate = _comparison_path(path)
     canonical_root = _comparison_path(root)
     return candidate.relative_to(canonical_root)

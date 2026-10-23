@@ -6299,8 +6299,8 @@
       "implementation_task": true,
       "after": [],
       "gate_policy": {},
-      "verification_status": "Local final candidate baseline passes: TEST 285, COMPILE and GUIDANCE-COMPILE; workflow_state focused suite 42; Windows-only extended-path regression exercises the boundary and passes on this Windows host. Existing hosted run 40008142044 for earlier commit 7612033 failed Windows with details unavailable. Staged commit gate fails only at protected control-plane approval because external approval signal is absent; all original feature-scale documentation impact groups are retained. No new hosted run or main merge.",
-      "verification_evidence": "work/TASK-SKILL-REDESIGN-01-baseline-final2.json; full TEST 285/165.003s; focused workflow_state 42; focused extended path tests 2 pass; COMPILE/GUIDANCE-COMPILE pass. work/TASK-SKILL-REDESIGN-01-commit-windows-fix-final-v3.json: feature path/documentation scope reconciles; required commit checks stop at control-plane because ENGINEERING_CONTROL_PLANE_APPROVED external signal is absent.",
+      "verification_status": "Local final baseline passes: TEST 286 (155.305s), COMPILE (0.290s), GUIDANCE-COMPILE (0.296s), workflow_state focused 42, skill validator. Hosted run 40019503239 Windows passes; Ubuntu checker passes but diagnostic assertion failed because Windows-only methods used skipUnless, making Unix TEST summary partial. Fixed by conditional Windows-only method registration; latest local baseline is green. Push and fresh hosted run pending.",
+      "verification_evidence": "work/TASK-SKILL-REDESIGN-01-baseline-no-skips-final.json; full unittest 286/162.412s; baseline checker TEST 286/155.305s, COMPILE, GUIDANCE-COMPILE; workflow_state 42; skill validator pass. GitHub run 40019503239: Windows reviewed success, Ubuntu failed at diagnostic assertion after TEST partial from skip summary; latest local full suite after conditional registration passes with no Unix skip summary.",
       "release_impact": {
         "previous_version": "1.10.0",
         "current_version": "1.11.0",
@@ -6344,11 +6344,11 @@
         },
         {
           "id": "B5",
-          "status": "local_baseline_pass_commit_control_plane_approval_pending_hosted_windows_pending",
-          "detail": "Final candidate baseline TEST 285, COMPILE, GUIDANCE-COMPILE and focused workflow_state 42 pass; focused extended-path tests pass on this Windows host. Feature-scale change paths and required documentation impact are complete. Staged commit gate is blocked only because protected control-plane approval signal is absent. Prior hosted Windows run failed on commit 7612033; detailed artifact is inaccessible, and this follow-up has no hosted result. No control-plane gate was bypassed."
+          "status": "local_baseline_pass_next_hosted_run_pending",
+          "detail": "Local full TEST 286 and all required compile gates pass. Windows reviewed passed in run 40019503239; Ubuntu checker passed but diagnostic assertion failed because platform-specific tests registered with skipUnless caused TEST summary partial. Changed to conditional Windows-only registration; new baseline TEST 286 has no skip summary. Fresh staged/exact-commit gates and hosted two-platform rerun remain."
         }
       ],
-      "delivery_status": "README and de-identified pilot report prepared; branch codex/dynamic-baseline-workflow has prior commit 7612033 on remote, main unchanged and no PR. Current follow-up source/docs are staged; local required baseline passes 285 and compile gates. Commit gate is blocked only by existing protected control-plane approval (external signal absent). Prior hosted Windows run failed; this follow-up has not been pushed or hosted-verified. No merge to main until control-plane review is supplied and Windows CI passes."
+      "delivery_status": "Commit de74171 is on remote codex/dynamic-baseline-workflow, main unchanged. Follow-up conditional Windows-test registration is staged with Task/manifest verification updates. Local TEST 286 and all declared checks pass; control-plane external approval for the new staged manifest/checker batch has been provided by the user and applied one-shot during commit gate. After gate pass, push the new follow-up to the same feature branch and verify a fresh Ubuntu/Windows GitHub run; do not merge main until both pass. Efficiency remains unverified."
     }
   ],
   "control_plane": {

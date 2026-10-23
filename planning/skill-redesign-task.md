@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-- 阶段：implementation / final local baseline passes TEST 285, COMPILE, and GUIDANCE-COMPILE; focused workflow_state suite passes 42. Skill validator passes with isolated PyYAML 6.0.3. Staged tree f24a3b3eb709928536f781313def8e8d9cc92204 retains feature scale and all documentation_impact groups. Exact-commit gate cannot proceed because this batch changes protected manifest/checker files and needs the external approval signal required by the repository. Prior remote commit 7612033 is on the feature branch, not main; its hosted Windows job failed with generic annotations and inaccessible artifact. No new push or merge has occurred.
+- 阶段：conditional Windows-only test registration correction passes local full TEST 286, latest project baseline, COMPILE/GUIDANCE-COMPILE, focused workflow_state 42, and skill validator. The correction is documented and staged under original feature impact gates. Local commit gate still needs a fresh report; the user has already approved the protected batch, and prior one-time signal can be reused for the same reviewed scope. The previous push de74171 passed Windows but Ubuntu diagnostic failed on TEST partial from skip summary. A new dual-platform run is pending after follow-up push; main remains unchanged.
 - 当前工件链：[Baseline](baseline-review.md) → [Spec](skill-redesign-spec.md) → [Plan](skill-redesign-implementation-plan.md) → 本 Task → 代码/测试证据。manifest active pointers now select this task, Spec and Plan; Issue #24 remains unchanged.
 - 实施基点：工作树包含此前本任务方案/评估两个未跟踪文件，以及原有 Issue #24 在途工作；动手前尚未修改代码。本 Task 记录开始后的 git 基点和差异。
 - 决策：首批以可验证 SQL 元数据和静态依赖按需切片为主；route/契约/权限能力按现有适配器证据决定，不支持的视图明确标示。
@@ -45,7 +45,7 @@
 | B2 | complete | manual inventory locatable-boundary pass/fail and actionable finding tests pass; checker suite 129 pass; final full suite 280 pass | 结构化 delta、manual inventory pass reachability |
 | B3 | complete for first batch | policy_version/scale/applies_to, nonblocking after, structured artifact dependency, read-only Task lifecycle, temporary handling and legacy compatibility covered; staged commit scope policy unchanged |
 | B4 | complete | apply-batch authority routing and guidance/template/docs/version synchronization; focused changeset and skill validator pass |
-| B5 | local checks pass; hosted Windows follow-up open | Prior query/receipt regressions were corrected. Current local full TEST 285, COMPILE, GUIDANCE-COMPILE and focused workflow_state 42 all pass. GitHub run 40008142044 for commit 7612033 failed in reviewed Windows; detailed logs are unavailable. A narrow extended-path normalization fix and Windows-only regression test are prepared. Retain feature scale and all original documentation gates. |
+| B5 | 本地通过；staged/exact gate 与 hosted rerun 待完成 | Run 40019503239 Windows passed, while Ubuntu diagnostic precondition failed because skipUnless produced TEST partial. Test methods are now conditionally registered only on Windows. Local full TEST 286, latest baseline, compile gates, focused workflow_state 42 and validator pass. Feature scale and original impact groups are intact. |
 
 ## 影响分析
 
@@ -60,6 +60,6 @@
 1. complete：登记 Spec/Plan/Task 与活动指针；Issue24 approval unchanged.
 2. complete：确认 SQLite main schema extractor 支持 checkpointed DB；静态 JS/TS/Rust source-context adapter 已接入 query 的可选 `--relations`，结果保留 partial/unsupported 与证据限制；checker 原行为基线已复核。
 3. B1-B4 首批能力与权威 guidance/模板已更新；synthetic schema round-trip pilot pass。route/permission adapters 不在首批支持范围；真实效率配对指标仍 unverified。发现事实冲突先修 Baseline/Plan/Task。
-4. 历史验证：280 项 TEST 曾通过；2026-10-24 一次中间全量运行中 283 项有 4 项失败，修正后本地 283 项通过。GitHub Actions 对精确提交 7612033 的 Windows reviewed job 失败，见 run 40008142044；公开注释只显示通用退出码，日志 artifact 无法下载，故具体失败项未知。
-5. 最新验证：独立全量 `python -m unittest discover -s scripts/tests -q` 于 2026-10-24 通过，285 项 / 159.116s；`workflow_state` 聚焦套件 42 项通过，COMPILE 与 GUIDANCE-COMPILE 通过。更新后的 baseline checker 报告 `work/TASK-SKILL-REDESIGN-01-baseline-windows-fix.json` 也通过，包含 TEST 285、COMPILE、GUIDANCE-COMPILE。当前扩展路径 follow-up 还需以未降级的 feature documentation_impact 通过 staged/exact-commit，再由 GitHub Windows CI 验证。
-6. 2026-10-24 用户授权更新相关文档并上传本仓库。README 与[去标识试点报告](real-session-efficiency-pilot.md)已准备。本地 required 与 exact-commit 检查通过；GitHub Actions 在 reviewed Windows job 失败，运行 `40008142044`，页面注释只有进程退出码，artifact 下载不可用。新发现的 extended-path 根路径差异需要通过 Windows-only regression 和完整 TEST/commit/committed 检查验证。发布仍需保留 `feature` 规模和原有 documentation_impact，当前分支未合并 main。整体效率比例仍未验证。
+4. Hosted verification：run 40008142044 曾在 Windows 失败；run 40019503239 的 Windows 通过，Ubuntu 的 checker 通过但诊断 assertion 发现 TEST=partial（Windows-only cases 被 skipUnless 报成跳过）。改为仅 Windows 条件注册后，本地 286 项通过；新 hosted run 待验证。
+5. 最新本地验证：baseline report `work/TASK-SKILL-REDESIGN-01-baseline-zero-skip-final2.json` passes TEST 286/162.946s, COMPILE 0.309s and GUIDANCE-COMPILE 0.296s; full standalone TEST 286, workflow_state focused 42 and skill validator pass. Staged/exact commit recheck on this updated tree remains to run.
+6. 用户已授权文档更新及本仓库发布，并明确审阅通过受保护变更。Commit de74171 已推送至 feature branch；Windows hosted passed, Ubuntu hosted diagnostic failed on skip summary. Conditional Windows registration correction is staged, local full TEST 286 passes, latest baseline is green. Rerun staged/exact gates and push the correction to the same feature branch, then verify fresh hosted CI. main is unchanged; efficiency benefit remains unverified.

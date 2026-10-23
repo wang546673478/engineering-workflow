@@ -10,13 +10,11 @@
 - 继续遵守当前 manifest 中 required `TEST`、`COMPILE`、`GUIDANCE-COMPILE` 的原命令、覆盖和 timeout；本任务不改门槛以求通过。
 - 本仓库 checker 可自改，但每次控制面改动需先通过原保护及独立回归；不得以待修改版使自身变绿。
 
-## Hosted Windows follow-up (2026-10-24)
+## Windows/Unix hosted follow-up (2026-10-24)
 
-The push for commit 7612033 passed local exact-commit checks but GitHub Actions run 40008142044 failed in the reviewed Windows job. The public annotation shows only a generic exit code; its artifact log was not accessible, so the exact failing test cannot be claimed. Inspection found a concrete likely boundary: `query_relations` passed `safe_path`'s extended-length `\?` spelling into `.relative_to()` against a normal root. The correction first uses the existing canonical path comparator, then retries only with the original declared project-relative path through `safe_path`. A Windows-only regression exercises that case. Local TEST 285, focused workflow_state 42, COMPILE and GUIDANCE-COMPILE pass. The new focused case is not executed on Windows here; hosted validation remains required. All original `feature` scale and `documentation_impact` gates stay in force.
+The push for commit `7612033` failed in the reviewed Windows job; public annotations and unavailable artifacts did not expose a specific test. Source inspection identified an extended-length source path that `safe_path` accepted but `Path.relative_to()` could not compare to the ordinary root. The correction canonicalizes with the checker helper and, if needed, retries only the declared project-relative path through `safe_path`; it does not broaden scope. A Windows-only regression covers the path.
 
-## Windows extended-path follow-up (2026-10-24)
-
-Hosted reviewed run `40008142044` for commit `7612033` failed in the Windows job; public annotations reported only process exit code and artifact logs were unavailable. Source inspection found a concrete cross-platform edge: a Windows extended-length source path can be returned as `\?...` by `safe_path`, while `query_relations` later attempted `.relative_to(root)` against the ordinary root path. The narrow correction uses the checker's existing path canonicalizer and falls back to a plain validated spelling when an extended prefix remains. A Windows-only regression covers the extended spelling. Local full TEST 285, focused workflow_state 42, COMPILE and GUIDANCE-COMPILE pass; actual Windows runner revalidation remains required. Task scale and all original documentation-impact gates remain unchanged.
+The next push, `de74171`, passed Windows. Ubuntu's checker TEST result was `partial`, because Windows-only test methods decorated with `skipUnless` emitted a skip marker. The diagnostic script expects TEST alone to fail before verbose rerun, so its precondition assertion exited before rerunning tests. The test methods now register only when `os.name == 'nt'`, matching existing platform-specific tests and leaving Unix TEST with zero Windows skips. The resulting full 286-test suite and baseline gate pass locally; `skill-creator` validation also passes. A fresh hosted run is still required. Required checks, task scale `feature`, original documentation-impact rules and protected review boundaries remain unchanged.
 
 ## B0–B5 执行项
 

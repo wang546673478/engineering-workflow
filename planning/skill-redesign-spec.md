@@ -40,3 +40,5 @@
 ## 2026-10-24 验证事实补充（不改变需求范围）
 
 已发布分支提交 `7612033` 的本地 TEST 283 通过；随后 GitHub reviewed Windows job 失败（run `40008142044`），公开注释未提供具体失败用例，artifact 不可访问。源码核对发现 Windows extended-length source path 经 `safe_path` 返回带 `\?` 前缀的绝对路径，直接与普通 root 做相对路径换算会失败。此事实影响 REQ-SR-02/05 的 Windows 查询可靠性和 AT-SR-09 的发布验证，不改变业务目标或验收边界。修正、跨平台回归和当前验证以本 Task 为准；整场效率收益仍未验证。
+
+同日 CI follow-up：commit `de74171` 的 Windows job 通过；Ubuntu job 的 TEST 结果为 partial，因为 Windows-only 回归用例使用 `skipUnless` 注册，产生 skip summary，后续诊断断言因此退出。现已改为仅在 Windows 注册这些用例，Unix 不收集为 skipped；本地 TEST 286 项通过。此修正不改变需求或验收范围。

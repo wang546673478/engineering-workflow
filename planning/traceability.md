@@ -465,6 +465,7 @@ Active chain (2026-10-23): [BASELINE](baseline-review.md) → [SPEC-SKILL-REDESI
 | REQ-SR-09 / AT-SR-09 | B4, B5 | TASK-SKILL-REDESIGN-01 |
 | AT-SR-10 | B5 | TASK-SKILL-REDESIGN-01; paired pilot only if trusted logs/sample exist |
 | Windows extended-path reliability follow-up / AT-SR-09 | B5 correction | TASK-SKILL-REDESIGN-01; run 40008142044 failed on Windows with no detailed public annotation; added a Windows-only regression and bounded path normalization, local TEST 285/focused 42/compile pass; hosted rerun pending |
+| Unix no-skip platform-test registration / AT-SR-09 | B5 correction | TASK-SKILL-REDESIGN-01; run 40019503239 Windows passes; Ubuntu diagnostic assertion fails on skipUnless-produced TEST partial; conditional registration local TEST 286 passes, fresh hosted rerun pending |
 
 The user approved starting implementation on 2026-10-23 after reviewing the complete design. On 2026-10-24, the user extended this task's scope by requesting README-style documentation updates and upload to GitHub. This supersedes the earlier local-only publication limit for this repository's reviewed batch; it does not authorize external project migration. Publication remains gated by passing required checks and the existing control-plane review.
 

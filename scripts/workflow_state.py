@@ -478,8 +478,8 @@ def query_relations(root, module_id, source_paths):
             relative = check_project._relative_to_root(source,root).as_posix()
         except (OSError,ValueError):
             try:
-                # Validate a Windows extended-length source path by its plain
-                # spelling so safe_path and the source collector agree on root.
+                # Validate the declared relative source so safe_path and the
+                # source collector agree on the ordinary project root spelling.
                 plain_source = check_project.safe_path(root, raw, file_only=False)
                 relative = plain_source.relative_to(root).as_posix()
                 source = plain_source

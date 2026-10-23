@@ -50,4 +50,6 @@
 - 真实对象查询结果：本试点的去标识测量记录（原始工作日志留在本地排除目录）。
 - 重复计时、旧会话日志摘要和口径限制：本试点的去标识测量记录（原始工作日志留在本地排除目录）。
 - 一次 schema 变化后重新查询、更新 Baseline/Plan/Task 的合成项目闭环：有隔离合成样例测试；此结果验证流程行为，不是目标项目的真实代码功能实施。
-- 当前 `engineering-workflow` 代码回归：以 [TASK-SKILL-REDESIGN-01](skill-redesign-task.md) 的最新验证记录为准；首次完整复测发现 4 项失败，修复并重跑后 283 项全部通过。
+- 当前 `engineering-workflow` 代码回归：以 [TASK-SKILL-REDESIGN-01](skill-redesign-task.md) 的最新验证记录为准；修正查询/receipt 回归及跨平台测试收集后，本地完整 TEST 286 项通过。
+
+- 文档与查询效率结论不随平台测试状态改变；当前提交、CI 与验证状态以 [TASK-SKILL-REDESIGN-01](skill-redesign-task.md) 的最新记录为准。

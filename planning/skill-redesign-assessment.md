@@ -87,6 +87,8 @@
 
 本附件是独立新需求。完整方案已审核并于 2026-10-23 授权开始实施。本地首批改造已完成，当前实现与验证状态以新任务 TASK-SKILL-REDESIGN-01、Spec/Plan 和 manifest 活动指针为准。本需求不沿用 Issue24 批准，不含外部项目迁移或远程发布。
 
+2026-10-24：用户另外授权更新文档并上传本仓库；该决定与上文记录的初始“本轮不含发布”范围不同，当前有效状态以 TASK-SKILL-REDESIGN-01 与 manifest 为准。新 CI follow-up 的 Ubuntu 诊断失败源于 skipUnless 测试注册造成 partial TEST；条件注册后本地 TEST 286 与 baseline 通过。
+
 ## 下一步
 
 2026-10-23 已根据该评估和用户附件形成 [完整改造方案审阅稿](skill-redesign-plan.md)；用户随后审核了方案方向并补充了上下文复用与实施中纠偏原则。方案自检已完成，后续用户批准已触发本仓库本地实施。新 Spec/Plan/Task 和活动指针已建立；首批代码与指导改造完成，原 required checks 与 validator 通过，当前报告见 [TASK-SKILL-REDESIGN-01](skill-redesign-task.md) 和固定 current 报告。未完成项是效率配对 pilot（缺可信日志）与 route/permission adapters（本批明确 unsupported）。不把授权扩展到 Issue24 旧范围或外部项目迁移。
