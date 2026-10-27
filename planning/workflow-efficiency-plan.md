@@ -2,6 +2,8 @@
 
 Status: approved implementation path. User approval recorded in [Task](workflow-efficiency-task.md); this Plan remains the technical approach for the current batch.
 
+Delivery status: the reviewed implementation was pushed as commit `6a0c4d56b89c17dbe94395b446df5ce81406c04e` to `origin/codex/workflow-efficiency-1.12.0` after the user authorized GitHub upload. This receipt does not change the approved technical path; merge and GitHub Release remain outside scope.
+
 ## Basis
 
 - Baseline: current repository at `4b2a5065037acb9c92e17d72f44a226663b3d145`; related views are the engineering workflow instructions, implementation guidance, baseline linkage, and existing efficiency pilot.

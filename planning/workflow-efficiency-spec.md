@@ -2,6 +2,8 @@
 
 Status: approved for this implementation batch. The user approved this Spec and linked Plan on 2026-10-28 with “通过,开始实施”. Scope remains limited to the engineering-workflow repository.
 
+Delivery status: the user later authorized uploading this reviewed batch. Commit `6a0c4d56b89c17dbe94395b446df5ce81406c04e` is pushed to `origin/codex/workflow-efficiency-1.12.0`; this receipt does not change the approved requirements or authorize merge/GitHub Release.
+
 ## Goal
 
 Reduce avoidable waiting, repeated investigation, and unclear progress reporting when an agent carries out an engineering task, while preserving correctness, project policy, user approval, and final verification.

@@ -6599,7 +6599,7 @@
           "agents/openai.yaml",
           "CHANGELOG.md"
         ],
-        "publication_status": "branch_publication_authorized; awaiting_commit_gate"
+        "publication_status": "pushed_to_codex/workflow-efficiency-1.12.0; awaiting_independent_review"
       },
       "execution_steps": [
         {
@@ -6638,9 +6638,9 @@
           "detail": "No matched old/new full-task sample exists. Measure a naturally comparable task later; overall savings remain unverified meanwhile."
         }
       ],
-      "verification_status": "Isolated final commit gate passed with required_checks_satisfied=true: TEST 162.725s, COMPILE 0.304s, GUIDANCE-COMPILE 0.324s; control-plane and commit-scope checks pass with one-time user authorization. Skill validator and version synchronization pass. Non-required approval-evidence is partial because no structured approval contract is enabled.",
-      "verification_evidence": "work/TASK-WORKFLOW-EFFICIENCY-01-commit-20261028-r3.json; includes verification-state for tree 3a35aa5f69281b1e65551351c691329a97530401 at HEAD 4b2a5065037acb9c92e17d72f44a226663b3d145; TEST 162.725s, COMPILE 0.304s, GUIDANCE-COMPILE 0.324s; skill-creator quick_validate pass; version 1.12.0 synchronized; planning/skill-review.md included per impact declaration.",
-      "delivery_status": "Commit gate passed. Authorized commit and push to codex/workflow-efficiency-1.12.0 are in progress. Merge, GitHub Release and Liantong project changes remain outside scope."
+      "verification_status": "Final content commit and publication-receipt commit gates pass with required_checks_satisfied=true. Content commit gate: TEST 185.015s, COMPILE 0.311s, GUIDANCE-COMPILE 0.317s. Content committed gate on SHA 6a0c4d56b89c17dbe94395b446df5ce81406c04e: TEST 171.521s, COMPILE 0.348s, GUIDANCE-COMPILE 0.326s. Publication-receipt commit gate: TEST 181.703s, COMPILE 0.326s, GUIDANCE-COMPILE 0.327s. Control-plane approval and impact-scope checks pass. Skill validator and version synchronization pass. Non-required approval-evidence is partial because no structured approval contract is enabled.",
+      "verification_evidence": "work/TASK-WORKFLOW-EFFICIENCY-01-commit-20261028-final.json; work/TASK-WORKFLOW-EFFICIENCY-01-committed-20261028.json; work/TASK-WORKFLOW-EFFICIENCY-01-publication-commit-r3.json; content committed verification-state binds tree ff30c712fd5ee48e4562215b4a8b7df58a8fecde to SHA 6a0c4d56b89c17dbe94395b446df5ce81406c04e; skill-creator quick_validate pass; version 1.12.0 synchronized; planning/skill-review.md included per impact declaration.",
+      "delivery_status": "Commit 6a0c4d56b89c17dbe94395b446df5ce81406c04e was pushed to origin/codex/workflow-efficiency-1.12.0 and the remote ref was verified. Merge, GitHub Release and Liantong project changes remain outside scope."
     }
   ],
   "control_plane": {

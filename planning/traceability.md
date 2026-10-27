@@ -473,7 +473,7 @@ Implementation notes: workflow_state.py query supports declared checkpointed SQL
 
 ## Current workflow efficiency implementation traceability / 2026-10-28
 
-Active chain: [BASELINE](baseline-review.md) → [SPEC-WORKFLOW-EFFICIENCY-01 r1 approved](workflow-efficiency-spec.md) → [PLAN-WORKFLOW-EFFICIENCY-01 r1 approved](workflow-efficiency-plan.md) → [TASK-WORKFLOW-EFFICIENCY-01](workflow-efficiency-task.md). Assessment and measured input limits are in [workflow efficiency assessment](workflow-efficiency-assessment.md). The user approved this scope on 2026-10-28 with “通过,开始实施”; implementation and verification evidence are owned by the Task, whose required checks now pass.
+Active chain: [BASELINE](baseline-review.md) → [SPEC-WORKFLOW-EFFICIENCY-01 r1 approved](workflow-efficiency-spec.md) → [PLAN-WORKFLOW-EFFICIENCY-01 r1 approved](workflow-efficiency-plan.md) → [TASK-WORKFLOW-EFFICIENCY-01](workflow-efficiency-task.md). Assessment and measured input limits are in [workflow efficiency assessment](workflow-efficiency-assessment.md). The user approved implementation on 2026-10-28 with “通过,开始实施” and later authorized upload with “上传到github吧”. Commit `6a0c4d56b89c17dbe94395b446df5ce81406c04e` is verified on `origin/codex/workflow-efficiency-1.12.0`; no merge or GitHub Release is included.
 
 | Requirement / acceptance | Plan item | Task / evidence |
 | --- | --- | --- |

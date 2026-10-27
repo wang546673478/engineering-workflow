@@ -1,10 +1,10 @@
 # Engineering Workflow Efficiency Assessment / 2026-10-28
 
-Status: assessment complete. The user approved SPEC-WORKFLOW-EFFICIENCY-01 r1 and PLAN-WORKFLOW-EFFICIENCY-01 r1 on 2026-10-28; implementation and validation progress are tracked in [Task](workflow-efficiency-task.md).
+Status: assessment complete. The user approved SPEC-WORKFLOW-EFFICIENCY-01 r1 and PLAN-WORKFLOW-EFFICIENCY-01 r1 on 2026-10-28; implementation, validation and publication evidence are tracked in [Task](workflow-efficiency-task.md).
 
 ## User request and boundary
 
-The user asked which parts of the engineering workflow should be improved based on the current Liantong project summaries, then said: “按照这个改吧,需要写spec/plan/task吗?” After being told the complete proposal should be prepared for review before implementation, the user instructed: “按照这个改吧”. The user then reviewed the summaries and explicitly approved implementation with: “通过,开始实施”. That approval covers the current linked Spec/Plan for this repository only. It does not authorize changing the Liantong project, reducing its checks, or publishing this repository.
+The user asked which parts of the engineering workflow should be improved based on the current Liantong project summaries, then said: “按照这个改吧,需要写spec/plan/task吗?” After being told the complete proposal should be prepared for review before implementation, the user instructed: “按照这个改吧”. The user then reviewed the summaries and explicitly approved implementation with: “通过,开始实施”. That approval covers the current linked Spec/Plan for this repository only and did not authorize changing the Liantong project or reducing its checks. The user later authorized uploading this reviewed batch to GitHub; commit `6a0c4d56b89c17dbe94395b446df5ce81406c04e` is on `origin/codex/workflow-efficiency-1.12.0`. No merge or GitHub Release is included.
 
 ## Evidence reviewed
 
