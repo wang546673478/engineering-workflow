@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.12.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.13.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -81,7 +81,7 @@ Skill 会引导 Agent：
 5. 分析页面、接口、业务逻辑、数据库、事件和消费者之间的影响链，在实现后刷新受影响 Baseline，并同步 Spec/Plan/Task 的引用和状态。
 6. 运行项目检查，并记录通过、失败、跳过、未支持和未验证状态。
 
-开发阶段按实现切片运行相关检查以缩短反馈时间；交付前仍须运行项目声明的全部必需检查。只有输入和资源隔离的检查才适合并行。可复用未变化的基线切片，但已确认的事实错误要及时修正；实现稳定后完整核对受影响视图。进度按验收项分别报告实现、验证和交付，ETA 仅依据可比的实测耗时，证据不足时标为未知。详见[实施节奏与进度口径](references/implementation-workflow.md#feedback-verification-and-progress)。
+开发阶段按实现切片运行相关检查以缩短反馈时间；交付前仍须运行项目声明的全部必需检查。只有输入和资源隔离的检查才适合并行。可复用未变化的基线切片，但已确认的事实错误要及时修正；实现稳定后完整核对受影响视图，并冻结待验证树。验证报告绑定精确提交/树；门禁后改动跟踪文件仍须按项目规则重验。结果回执可按项目规则留在忽略目录、CI产物或交付说明中，避免只为回写结果另建提交；若项目要求跟踪回执，则在该回执提交上完成必需检查。进度按验收项分别报告实现、验证和交付，ETA 仅依据可比的实测耗时，证据不足时标为未知。详见[实施节奏与进度口径](references/implementation-workflow.md#feedback-verification-and-progress)。
 
 已批准项目可按需启用结构化批准证据合同，核对批准记录和已审方案/本批范围绑定；新项目初始化为diagnostic，旧项目不自动迁移，strict需明确选择。它只强化审批相关检查，不替代原需求访谈、项目门禁、验证命令或文档同步。旧版本行为增强说明见 [Issue 23 Task](planning/issue-23-task.md)。
 

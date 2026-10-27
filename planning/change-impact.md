@@ -1,5 +1,15 @@
 # Current Impact Analysis Entry
 
+## Current verification-closure guidance impact
+
+Task: [TASK-VERIFICATION-CLOSURE-01](verification-closure-task.md); input revision `72c75f9b37b7669619d7dceca821de5ba90c3024`; Spec/Plan: `SPEC-VERIFICATION-CLOSURE-01 r1` / `PLAN-VERIFICATION-CLOSURE-01 r1`.
+
+- Evidence: the 1.12.0 task records three successful full required-check gates across distinct content and publication-receipt trees, plus incomplete/failed attempts. This supports a narrow missing-guidance finding; it does not show that all reruns or all elapsed time were avoidable.
+- Impact: instructions (`SKILL.md`, `references/implementation-workflow.md`, README) and governance (manifest, Baseline, impact, skill review, traceability, this Task chain, release metadata).
+- Change: freeze the candidate tree after all known tracked edits; bind reports to exact commit/tree; use project-approved ignored/CI/final-response evidence for post-gate values where permitted; rerun existing checks for any later tracked tree.
+- Guardrails: no checker/CI changes, new command, reduced timeout/coverage, approval change, Liantong project edit, merge, or GitHub Release. Version 1.12.0 → 1.13.0 / Unreleased.
+- Status: implementation and required verification are tracked in the linked Task; the exact pushed SHA is reported in the delivery response rather than a receipt-only tracked commit.
+
 ## Current workflow efficiency implementation impact
 
 Task: [TASK-WORKFLOW-EFFICIENCY-01](workflow-efficiency-task.md); input source revision `4b2a5065037acb9c92e17d72f44a226663b3d145`; approved `SPEC-WORKFLOW-EFFICIENCY-01 r1` and `PLAN-WORKFLOW-EFFICIENCY-01 r1`.

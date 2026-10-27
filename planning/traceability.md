@@ -1,3 +1,12 @@
+# Verification closure guidance / 1.13.0
+
+| Requirement | Acceptance | Plan / Task | Current evidence / status |
+| --- | --- | --- | --- |
+| REQ-VFC-01 | AT-VFC-01 | PL-VFC-01 / VFC-02 | Candidate-tree freeze and exact commit/tree binding are in implementation guidance; final reports are predeclared in the Task. |
+| REQ-VFC-02 | AT-VFC-02 | PL-VFC-01 / VFC-02 | Later tracked changes are explicitly new candidates requiring the existing checks. |
+| REQ-VFC-03 | AT-VFC-03 | PL-VFC-02 / VFC-02 | Approved nontracked evidence path and tracked-receipt fallback are consistent in README and reference. |
+| REQ-VFC-04 | AT-VFC-04 | PL-VFC-04,05 / VFC-03,04 | Manifest retains the existing commands, timeouts, approval contract, and CI policy; final gate report records execution. |
+
 # Issue 22 enhancement Spec traceability (current)
 
 Source upload receipt (2026-10-20T17:52:35.783179+08:00): REQ/AT-ISSUE22-E01..E10 local implementation 5b8013c9b67debff0b080da563781a39f6e69f74 is uploaded and exact-tree local checks pass. Full SOURCE audit remains incomplete/deferred; receipt-only updates do not extend semantic or hosted-validation scope.

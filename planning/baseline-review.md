@@ -1,3 +1,11 @@
+# Current verification-closure baseline / 2026-10-28
+
+Source revision: `72c75f9b37b7669619d7dceca821de5ba90c3024`; current Task: [TASK-VERIFICATION-CLOSURE-01](verification-closure-task.md).
+
+The 1.12.0 implementation guidance already requires one affected-view convergence after stabilization followed by the final required checks. The completed workflow-efficiency Task records separate successful full gates for its content commit (`6a0c4d56b89c17dbe94395b446df5ce81406c04e`) and a later publication-receipt tree (`72c75f9b37b7669619d7dceca821de5ba90c3024`). It also records failed/incomplete attempts caused by an omitted impact document, a preview without `--run-checks`, and reuse of a report path. These results are distinct by tree and attempt; they do not prove all elapsed time was avoidable.
+
+Confirmed guidance gap: 1.12.0 did not explicitly freeze the candidate tree or explain where to put results and publication SHAs learned after a gate. The current correction adds exact commit/tree binding, permits an approved nontracked receipt where project policy allows it, and requires the existing checks for any later tracked tree. Existing checks, commands, timeouts, coverage, approvals, and CI policy are unchanged.
+
 # Current factual baseline: BASELINE-ISSUE23-02
 
 ## Issue #24 workflow-state implementation supplement / 2026-10-22

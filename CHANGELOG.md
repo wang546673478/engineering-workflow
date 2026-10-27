@@ -1,3 +1,7 @@
+# 1.13.0 / Unreleased
+
+- Close the final verification loop: freeze the candidate tree after known tracked changes, bind results to its exact commit/tree, and avoid receipt-only commits when project policy permits external verification evidence. If tracked receipts are required, verify the resulting tree under the unchanged project gates.
+
 # 1.12.0 / Unreleased
 
 - Add a bounded implementation feedback cadence: run relevant focused checks during development and retain the full existing required-check set for delivery.

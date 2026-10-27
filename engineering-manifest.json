@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "WORKFLOW_EFFICIENCY_SPEC",
-    "active_plan": "WORKFLOW_EFFICIENCY_PLAN",
-    "active_task": "TASK-WORKFLOW-EFFICIENCY-01",
+    "active_spec": "VERIFICATION_CLOSURE_SPEC",
+    "active_plan": "VERIFICATION_CLOSURE_PLAN",
+    "active_task": "TASK-VERIFICATION-CLOSURE-01",
     "policy_version": "delta-v1"
   },
   "documents": [
@@ -419,6 +419,30 @@
     {
       "id": "WORKFLOW_EFFICIENCY_TASK",
       "path": "planning/workflow-efficiency-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "VERIFICATION_CLOSURE_ASSESSMENT",
+      "path": "planning/verification-closure-assessment.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "VERIFICATION_CLOSURE_SPEC",
+      "path": "planning/verification-closure-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "VERIFICATION_CLOSURE_PLAN",
+      "path": "planning/verification-closure-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "VERIFICATION_CLOSURE_TASK",
+      "path": "planning/verification-closure-task.md",
       "kind": "task",
       "required": true
     },
@@ -990,6 +1014,26 @@
     {
       "id": "REQ-WFE-08",
       "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "REQ-VFC-01",
+      "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-VFC-02",
+      "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-VFC-03",
+      "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-VFC-04",
+      "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
     }
   ],
   "acceptance": [
@@ -1593,6 +1637,26 @@
     {
       "id": "AT-WFE-07",
       "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "AT-VFC-01",
+      "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-VFC-02",
+      "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-VFC-03",
+      "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-VFC-04",
+      "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
     }
   ],
   "modules": [
@@ -6476,14 +6540,6 @@
         "task_id": "TASK-WORKFLOW-EFFICIENCY-01",
         "plan_revision": "PLAN-WORKFLOW-EFFICIENCY-01 r1"
       },
-      "user_decisions": [
-        {
-          "date": "2026-10-28 Asia/Shanghai",
-          "statement": "上传到github吧",
-          "scope": "Commit the reviewed TASK-WORKFLOW-EFFICIENCY-01 batch and push it to a dedicated branch in this repository. No merge, GitHub Release, or Liantong project change.",
-          "task_id": "TASK-WORKFLOW-EFFICIENCY-01"
-        }
-      ],
       "artifact_links": {
         "baseline": "BASELINE",
         "spec": "WORKFLOW_EFFICIENCY_SPEC",
@@ -6508,6 +6564,12 @@
           "scope": "Implement the reviewed Spec/Plan r1 in this repository; preserve all existing approvals, required commands/timeouts/coverage, checker and CI policies; no Liantong project changes or commit/push/merge/release.",
           "spec_revision": "SPEC-WORKFLOW-EFFICIENCY-01 r1",
           "plan_revision": "PLAN-WORKFLOW-EFFICIENCY-01 r1"
+        },
+        {
+          "date": "2026-10-28 Asia/Shanghai",
+          "statement": "上传到github吧",
+          "scope": "Commit the reviewed TASK-WORKFLOW-EFFICIENCY-01 batch and push it to a dedicated branch in this repository. No merge, GitHub Release, or Liantong project change.",
+          "task_id": "TASK-WORKFLOW-EFFICIENCY-01"
         }
       ],
       "skill_review": {
@@ -6584,8 +6646,6 @@
       "implementation_task": true,
       "after": [],
       "gate_policy": {},
-      "verification_status": "Isolated final baseline checker passed with required_checks_satisfied=true: TEST 193.539s, COMPILE 0.311s, GUIDANCE-COMPILE 0.190s; manifest/document declarations pass. Skill quick_validate passed with task-local PyYAML 6.0.3 and UTF-8 mode; workflow_state index pass; version surfaces and git diff checks pass. approval-evidence is non-required partial because no structured approval contract is enabled.",
-      "verification_evidence": "work/TASK-WORKFLOW-EFFICIENCY-01-final-checks-rerun-20261028.json; workflow_state.py index --format json status pass; skill-creator quick_validate.py: Skill is valid; task-local PyYAML 6.0.3; VERSION/SKILL/README/agents.openai.yaml/CHANGELOG all 1.12.0; unchanged manifest check definitions; focused lifecycle 6 pass, source relations 16 pass, short-path relation 1 pass. Initial and post-convergence failed attempts plus the isolated successful rerun are documented in planning/workflow-efficiency-task.md.",
       "release_impact": {
         "previous_version": "1.11.0",
         "current_version": "1.12.0",
@@ -6638,9 +6698,197 @@
           "detail": "No matched old/new full-task sample exists. Measure a naturally comparable task later; overall savings remain unverified meanwhile."
         }
       ],
-      "verification_status": "Final content commit and publication-receipt commit gates pass with required_checks_satisfied=true. Content commit gate: TEST 185.015s, COMPILE 0.311s, GUIDANCE-COMPILE 0.317s. Content committed gate on SHA 6a0c4d56b89c17dbe94395b446df5ce81406c04e: TEST 171.521s, COMPILE 0.348s, GUIDANCE-COMPILE 0.326s. Publication-receipt commit gate: TEST 181.703s, COMPILE 0.326s, GUIDANCE-COMPILE 0.327s. Control-plane approval and impact-scope checks pass. Skill validator and version synchronization pass. Non-required approval-evidence is partial because no structured approval contract is enabled.",
-      "verification_evidence": "work/TASK-WORKFLOW-EFFICIENCY-01-commit-20261028-final.json; work/TASK-WORKFLOW-EFFICIENCY-01-committed-20261028.json; work/TASK-WORKFLOW-EFFICIENCY-01-publication-commit-r3.json; content committed verification-state binds tree ff30c712fd5ee48e4562215b4a8b7df58a8fecde to SHA 6a0c4d56b89c17dbe94395b446df5ce81406c04e; skill-creator quick_validate pass; version 1.12.0 synchronized; planning/skill-review.md included per impact declaration.",
+      "verification_status": "Baseline report, content commit gate, committed content gate and publication-receipt commit gate all passed with required_checks_satisfied=true. Content commit: TEST 185.015s, COMPILE 0.311s, GUIDANCE-COMPILE 0.317s. Committed SHA 6a0c4d56b89c17dbe94395b446df5ce81406c04e: TEST 171.521s, COMPILE 0.348s, GUIDANCE-COMPILE 0.326s. Receipt commit: TEST 181.703s, COMPILE 0.326s, GUIDANCE-COMPILE 0.327s. Control-plane approval, impact scope, skill validation and version sync pass; approval-evidence remains non-required partial because no structured approval contract is enabled.",
+      "verification_evidence": "work/TASK-WORKFLOW-EFFICIENCY-01-final-checks-rerun-20261028.json; work/TASK-WORKFLOW-EFFICIENCY-01-commit-20261028-final.json; work/TASK-WORKFLOW-EFFICIENCY-01-committed-20261028.json; work/TASK-WORKFLOW-EFFICIENCY-01-publication-commit-r3.json; committed verification-state binds tree ff30c712fd5ee48e4562215b4a8b7df58a8fecde to SHA 6a0c4d56b89c17dbe94395b446df5ce81406c04e. Workflow-state index, skill validator, version synchronization, focused lifecycle 6, source relations 16, short-path relation 1, and manifest declarations passed. Initial and post-convergence failed attempts remain documented in planning/workflow-efficiency-task.md.",
       "delivery_status": "Commit 6a0c4d56b89c17dbe94395b446df5ce81406c04e was pushed to origin/codex/workflow-efficiency-1.12.0 and the remote ref was verified. Merge, GitHub Release and Liantong project changes remain outside scope."
+    },
+    {
+      "id": "TASK-VERIFICATION-CLOSURE-01",
+      "requirement_ids": [
+        "REQ-VFC-01",
+        "REQ-VFC-02",
+        "REQ-VFC-03",
+        "REQ-VFC-04"
+      ],
+      "acceptance_ids": [
+        "AT-VFC-01",
+        "AT-VFC-02",
+        "AT-VFC-03",
+        "AT-VFC-04"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "in_progress",
+      "impact_document": "IMPACT",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/verification-closure-task.md",
+        "user_statement": "那你看看是不是需要再次修改skill,然后重新上传github进行试验",
+        "scope": "Assess and, if warranted, make a focused engineering-workflow guidance correction; synchronize linked governance and version records; run the existing required checks; and push a dedicated GitHub trial branch. No Liantong project changes, merge, Release, checker/CI policy, gate, command, timeout, or coverage changes.",
+        "task_id": "TASK-VERIFICATION-CLOSURE-01",
+        "plan_revision": "PLAN-VERIFICATION-CLOSURE-01 r1"
+      },
+      "user_decisions": [
+        {
+          "date": "2026-10-28 Asia/Shanghai",
+          "statement": "那你看看是不是需要再次修改skill,然后重新上传github进行试验",
+          "scope": "Assess the 1.12.0 guidance against the repeated-check evidence; implement the focused correction if warranted and upload it to GitHub for trial. No merge, GitHub Release, or Liantong project change."
+        }
+      ],
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "assessment": "VERIFICATION_CLOSURE_ASSESSMENT",
+        "spec": "VERIFICATION_CLOSURE_SPEC",
+        "plan": "VERIFICATION_CLOSURE_PLAN",
+        "task": "VERIFICATION_CLOSURE_TASK",
+        "traceability": "TRACE"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE source 72c75f9b37b7669619d7dceca821de5ba90c3024; verification-closure finding 2026-10-28",
+        "spec": "SPEC-VERIFICATION-CLOSURE-01 r1",
+        "plan": "PLAN-VERIFICATION-CLOSURE-01 r1",
+        "task": "TASK-VERIFICATION-CLOSURE-01 current"
+      },
+      "requirement_state": "REQ-VFC-01..04 and AT-VFC-01..04 authorized for this focused task",
+      "implementation_status": "complete",
+      "proposal_status": "authorized by direct user request",
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and repository AGENTS.md",
+        "checked_at": "2026-10-28 Asia/Shanghai",
+        "scope": "Focused workflow guidance and linked release/governance records; no checker, CI, external project, or installation changes",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "repository SKILL.md and linked references",
+            "version_or_release_date": "1.12.0",
+            "decision": "adopted",
+            "reason": "Authoritative workflow, task linkage, and validation policy."
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Guides a narrow update to an existing skill."
+          },
+          {
+            "id": "write-a-skill",
+            "source": "C:/Users/54667/.agents/skills/write-a-skill/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Its catalog scope is creating a new skill; this task updates the existing repository skill."
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No executable behavior or interface is added."
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Manifest-linked project records are authoritative."
+          }
+        ],
+        "recheck": "Recheck if scope adds checker code, CI behavior, installation, or external project changes."
+      },
+      "documentation_impact": {
+        "workflow-verification-closure": {
+          "when_paths": [
+            "SKILL.md",
+            "references/implementation-workflow.md",
+            "README.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents/openai.yaml",
+            "engineering-manifest.json",
+            "planning/verification-closure-assessment.md",
+            "planning/verification-closure-spec.md",
+            "planning/verification-closure-plan.md",
+            "planning/verification-closure-task.md",
+            "planning/baseline-review.md",
+            "planning/change-impact.md",
+            "planning/skill-review.md",
+            "planning/traceability.md"
+          ],
+          "document_ids": [
+            "VERIFICATION_CLOSURE_ASSESSMENT",
+            "VERIFICATION_CLOSURE_SPEC",
+            "VERIFICATION_CLOSURE_PLAN",
+            "VERIFICATION_CLOSURE_TASK",
+            "BASELINE",
+            "IMPACT",
+            "SKILL_REVIEW",
+            "TRACE"
+          ]
+        }
+      },
+      "scale": "minor",
+      "implementation_task": true,
+      "after": [],
+      "gate_policy": {},
+      "verification_status": "The initial commit-gate attempt stopped at the missing AT-VFC-03 traceability mapping and skipped required commands; the mapping is corrected. The r2 candidate passed in 178.199s; r3 TEST timed out at 240.018s while another project's migration check was observed active. A separate diagnostic replay hit a fixture-replacement denial and was stopped. These observations do not prove the cause. Final exact-tree outcomes are recorded in work/TASK-VERIFICATION-CLOSURE-01-commit-r4.json and work/TASK-VERIFICATION-CLOSURE-01-committed.json; the delivery response records the pushed SHA and hosted-check status.",
+      "verification_evidence": "work/TASK-VERIFICATION-CLOSURE-01-commit.json (scope failure, commands skipped); work/TASK-VERIFICATION-CLOSURE-01-commit-r2.json (prior candidate pass); work/TASK-VERIFICATION-CLOSURE-01-commit-r3.json (TEST timeout); planned final reports work/TASK-VERIFICATION-CLOSURE-01-commit-r4.json and work/TASK-VERIFICATION-CLOSURE-01-committed.json, all excluded from the tracked tree; final pushed SHA is reported in the delivery response",
+      "release_impact": {
+        "previous_version": "1.12.0",
+        "current_version": "1.13.0",
+        "proposed_implementation_version": "1.13.0 / Unreleased",
+        "bump_required_this_batch": true,
+        "reason": "Additive guidance closes exact-tree verification and post-gate receipt handling.",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ],
+        "publication_status": "trial-branch publication; exact SHA reported outside the tracked tree"
+      },
+      "execution_steps": [
+        {
+          "id": "VFC-00",
+          "status": "complete",
+          "detail": "Assessed the 1.12.0 gap against the prior task's exact-tree verification and publication receipt records."
+        },
+        {
+          "id": "VFC-01",
+          "status": "complete",
+          "detail": "Prepared focused Spec/Plan and linked records under the user's direct request."
+        },
+        {
+          "id": "VFC-02",
+          "status": "complete",
+          "detail": "Implemented final-tree freeze and result-receipt guidance; synchronized metadata and governance records."
+        },
+        {
+          "id": "VFC-03",
+          "status": "complete",
+          "detail": "The initial attempt skipped tests because AT-VFC-03 was missing from TRACE; the corrected final checks are in the predeclared r2/committed reports, with the failed attempt retained separately."
+        },
+        {
+          "id": "VFC-04",
+          "status": "pending",
+          "detail": "The corrected mapping passed in 178.199s on r2; the r3 TEST timed out at 240.018s while another project check was active. Rerun once after that observed check ended; do not weaken checks or infer cause from timing alone."
+        },
+        {
+          "id": "VFC-05",
+          "status": "pending",
+          "detail": "Push the checked commit to the dedicated trial branch and report its exact SHA outside tracked files."
+        }
+      ],
+      "delivery_status": "Pending exact-tree commit/committed checks and push to codex/workflow-verification-closure-1.13.0; report exact SHA and hosted-check status in the delivery response. No merge or Release."
     }
   ],
   "control_plane": {
@@ -6670,8 +6918,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "4b2a5065037acb9c92e17d72f44a226663b3d145 + TASK-WORKFLOW-EFFICIENCY-01 approved guidance/release worktree changes",
-    "scope": "BASELINE-ISSUE23-02 plus Issue24: optional workflow-state index/snapshot/batch helper and shared Windows long/8.3 alias containment fix; 1.8 workflow/approval semantics preserved; TEST timeout 240s by explicit user decision; all required checks retained. 1.11.0: dynamic queryable baseline, correction during implementation, checker task applicability and authority-routed change sets; exact-SHA hosted success is recorded in TASK-SKILL-REDESIGN-01. Approved 1.12.0 guidance changes cover validation cadence, bounded safe parallelism, unchanged-slice reuse, immediate factual correction, stable implementation convergence and evidence-based progress/ETA. No Liantong files or checker/CI policy are changed."
+    "source_revision": "72c75f9b37b7669619d7dceca821de5ba90c3024 + TASK-VERIFICATION-CLOSURE-01 guidance/governance update",
+    "scope": "BASELINE-ISSUE23-02 plus Issue24 and the approved 1.12.0 workflow-efficiency guidance. The 1.12.0 task records separate full gates for content, committed content and a later publication-receipt tree. The source guidance required final convergence but did not explain candidate-tree freeze or post-gate receipt storage. This correction adds exact commit/tree binding and a policy-aware receipt path while preserving all prior approval, command, timeout, coverage, checker and CI requirements. No Liantong files are changed."
   },
   "exclude_paths": [
     ".git",

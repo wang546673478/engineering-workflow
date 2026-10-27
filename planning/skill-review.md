@@ -1,5 +1,9 @@
 # Current Skill Applicability Review Entry
 
+## Current verification-closure task review
+
+On 2026-10-28 (Asia/Shanghai), rechecked the session Skills catalog, repository `AGENTS.md`, active manifest and references for TASK-VERIFICATION-CLOSURE-01. Adopted this repository's engineering-workflow 1.12.0 and system skill-creator (visible version not provided). The `write-a-skill` catalog entry targets creation of new skills and is not adopted for this narrow update to the existing repository skill; TDD is not adopted because no executable behavior changes, and planning-with-files is not adopted because the manifest-linked task records are authoritative. The user's direct request authorizes the focused correction and a trial-branch push; merge, Release and Liantong changes remain excluded. Duplicate `user_decisions`, `verification_status`, and `verification_evidence` keys in the completed 1.12.0 Task object were normalized into single fields/arrays while preserving every decision and recorded result so strict manifest readers can consume the active project state.
+
 ## Current workflow efficiency implementation review
 
 On 2026-10-28 (Asia/Shanghai), rechecked the current Skills catalog, repository AGENTS.md and the active TASK-WORKFLOW-EFFICIENCY-01 scope before implementation. Adopted this repository's engineering-workflow 1.11.0 and the system skill-creator (visible version not provided); did not adopt TDD because the approved batch changes guidance and documents without executable behavior, or planning-with-files because this repository already has manifest-linked planning authorities. The same review and sources are recorded in the active Task and manifest. Publication review covers the authorized 1.12.0 branch upload: commit `6a0c4d56b89c17dbe94395b446df5ce81406c04e` was pushed to `origin/codex/workflow-efficiency-1.12.0`; no merge or GitHub Release is authorized.
