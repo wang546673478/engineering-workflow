@@ -1,5 +1,15 @@
 # Current Impact Analysis Entry
 
+## Current workflow efficiency implementation impact
+
+Task: [TASK-WORKFLOW-EFFICIENCY-01](workflow-efficiency-task.md); input source revision `4b2a5065037acb9c92e17d72f44a226663b3d145`; approved `SPEC-WORKFLOW-EFFICIENCY-01 r1` and `PLAN-WORKFLOW-EFFICIENCY-01 r1`.
+
+- Evidence: read-only review of Liantong `ORG-BALANCE-01` current state and `planning/org-balance-validation-20261028.json`; 39 checks (31 pass, 7 fail, 1 partial), 699.49 seconds recorded command time. This report is a snapshot and does not prove the workflow alone caused the duration or establish a comparable savings percentage.
+- Implemented modules and paths: instructions (`SKILL.md`, implementation-workflow and baseline-linked-artifacts references, README) and governance (manifest, baseline, traceability, change impact, version/changelog, linked task). The existing optional `workflow_state.py` and pilot are reused; no new state store or helper was added.
+- Implemented behavior: rapid relevant checks during implementation, complete existing required checks before delivery, bounded resource-safe parallelism, reuse of unchanged evidence, immediate correction of confirmed factual errors, final affected-view convergence after implementation stabilizes, and approximate progress/ETA reporting grounded in acceptance criteria and measured comparable history.
+- Guardrails and exclusions: all current approval/review meanings, required commands, timeouts, coverage, protected-path checks, and delivery gates remain. No checker/CI changes, product API/database changes or Liantong project edits. Commit, push, merge and release remain unauthorized.
+- Status: guidance implementation, affected-view reconciliation, and required verification are complete for this local batch. Version is 1.12.0 / Unreleased. Efficiency percentage remains unverified pending a comparable pilot.
+
 ## Current Issue #24 approved implementation impact
 
 Task: [TASK-ISSUE24-EFFICIENCY-01](issue-24-efficiency-task.md); input `BASELINE-ISSUE23-02`; approved `SPEC-ISSUE24-EFFICIENCY-01 r1` / `PLAN-ISSUE24-EFFICIENCY-01 r1`.
@@ -107,6 +117,10 @@ Task: [TASK-SKILL-REDESIGN-01](skill-redesign-task.md); input `6de2cbbc90b53a23a
 - Write boundary: apply-batch section updates require active Task and authority label; targets must be its impact or linked docs. Existing strict hash, archive head, dry-run diff and recovery behavior stays. No automatic approval.
 - Current local validation: full TEST 285, COMPILE, GUIDANCE-COMPILE and workflow_state focused tests 42 pass. The original hosted run for commit 7612033 failed in the Windows reviewed job; public annotations show only a generic exit code, and its report artifact was inaccessible. A Windows extended-path follow-up was reproduced via the path-normalization code path and now has a Windows-only regression fixture. This new fixture has not run on Windows in this environment. The attempted follow-up commit check is blocked by feature-level documentation_impact, as expected; no task-scale or documentation gate was relaxed. The commit remains on the feature branch, separate from main.
 - 2026-10-24 hosted follow-up: run 40019503239 Windows passed; Ubuntu TEST was partial because Windows-only regression methods used `skipUnless`, creating a skip summary and causing the diagnostic precondition to fail. The methods are now conditionally registered only on Windows. Local TEST 286 and fresh baseline pass with no Unix skip summary. Follow-up remains at feature scale and preserves the full impact map.
+
+### Skill redesign delivery receipt correction / 2026-10-28
+
+The 2026-10-24 hosted-follow-up status above is historical. The conditional test-registration correction is included in SHA `4b2a5065037acb9c92e17d72f44a226663b3d145`; GitHub Actions runs 40027043521 on main and 40025624097 on the feature branch both succeeded for that exact SHA. Current delivery state is complete and recorded in [TASK-SKILL-REDESIGN-01](skill-redesign-task.md). This receipt does not expand the original implementation/publication scope.
 
 ## Real-session efficiency pilot documentation and publication scope (2026-10-24)
 

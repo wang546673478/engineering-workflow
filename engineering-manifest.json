@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "SKILL_REDESIGN_SPEC",
-    "active_plan": "SKILL_REDESIGN_PLAN",
-    "active_task": "TASK-SKILL-REDESIGN-01",
+    "active_spec": "WORKFLOW_EFFICIENCY_SPEC",
+    "active_plan": "WORKFLOW_EFFICIENCY_PLAN",
+    "active_task": "TASK-WORKFLOW-EFFICIENCY-01",
     "policy_version": "delta-v1"
   },
   "documents": [
@@ -396,6 +396,30 @@
       "id": "REAL_SESSION_EFFICIENCY_PILOT",
       "path": "planning/real-session-efficiency-pilot.md",
       "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "WORKFLOW_EFFICIENCY_ASSESSMENT",
+      "path": "planning/workflow-efficiency-assessment.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "WORKFLOW_EFFICIENCY_SPEC",
+      "path": "planning/workflow-efficiency-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "WORKFLOW_EFFICIENCY_PLAN",
+      "path": "planning/workflow-efficiency-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "WORKFLOW_EFFICIENCY_TASK",
+      "path": "planning/workflow-efficiency-task.md",
+      "kind": "task",
       "required": true
     },
     {
@@ -934,6 +958,38 @@
       "id": "REQ-SR-09",
       "document": "SKILL_REDESIGN_SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "REQ-WFE-01",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "REQ-WFE-02",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "REQ-WFE-03",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "REQ-WFE-04",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "REQ-WFE-05",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "REQ-WFE-06",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "REQ-WFE-07",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "REQ-WFE-08",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
     }
   ],
   "acceptance": [
@@ -1509,6 +1565,34 @@
       "id": "AT-SR-10",
       "document": "SKILL_REDESIGN_SPEC",
       "index": "TRACE"
+    },
+    {
+      "id": "AT-WFE-01",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "AT-WFE-02",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "AT-WFE-03",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "AT-WFE-04",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "AT-WFE-05",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "AT-WFE-06",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
+    },
+    {
+      "id": "AT-WFE-07",
+      "document": "WORKFLOW_EFFICIENCY_SPEC"
     }
   ],
   "modules": [
@@ -6119,7 +6203,7 @@
         "governance"
       ],
       "depends_on": [],
-      "status": "in_progress",
+      "status": "complete",
       "impact_document": "IMPACT",
       "required_checks": [
         "TEST",
@@ -6152,7 +6236,7 @@
         "task": "TASK-SKILL-REDESIGN-01 current"
       },
       "requirement_state": "REQ-SR-01..09 accepted within user-reviewed redesign scope",
-      "implementation_status": "workflow and documentation batch complete; local Windows path follow-up fix prepared and full local verification passes; hosted Windows validation pending.",
+      "implementation_status": "complete; conditional Windows-only test registration is included in main SHA 4b2a5065037acb9c92e17d72f44a226663b3d145; exact-SHA hosted runs on main and feature branch succeeded.",
       "proposal_status": "approved",
       "user_decisions": [
         {
@@ -6299,8 +6383,8 @@
       "implementation_task": true,
       "after": [],
       "gate_policy": {},
-      "verification_status": "Local final baseline passes: TEST 286 (155.305s), COMPILE (0.290s), GUIDANCE-COMPILE (0.296s), workflow_state focused 42, skill validator. Hosted run 40019503239 Windows passes; Ubuntu checker passes but diagnostic assertion failed because Windows-only methods used skipUnless, making Unix TEST summary partial. Fixed by conditional Windows-only method registration; latest local baseline is green. Push and fresh hosted run pending.",
-      "verification_evidence": "work/TASK-SKILL-REDESIGN-01-baseline-no-skips-final.json; full unittest 286/162.412s; baseline checker TEST 286/155.305s, COMPILE, GUIDANCE-COMPILE; workflow_state 42; skill validator pass. GitHub run 40019503239: Windows reviewed success, Ubuntu failed at diagnostic assertion after TEST partial from skip summary; latest local full suite after conditional registration passes with no Unix skip summary.",
+      "verification_status": "Local final baseline passes: TEST 286 (155.305s), COMPILE (0.290s), GUIDANCE-COMPILE (0.296s), workflow_state focused 42, skill validator. Exact-SHA hosted run 40027043521 on main and 40025624097 on codex/dynamic-baseline-workflow both completed successfully for 4b2a5065037acb9c92e17d72f44a226663b3d145. Earlier run 40019503239 Ubuntu partial remains historical.",
+      "verification_evidence": "work/TASK-SKILL-REDESIGN-01-baseline-no-skips-final.json; full unittest 286/162.412s; baseline checker TEST 286/155.305s, COMPILE, GUIDANCE-COMPILE; workflow_state 42; skill validator pass. GitHub Actions exact-SHA receipts: run 40027043521 (main, success) and 40025624097 (feature branch, success), both head 4b2a5065037acb9c92e17d72f44a226663b3d145. Run 40019503239 is retained as historical Ubuntu TEST partial evidence.",
       "release_impact": {
         "previous_version": "1.10.0",
         "current_version": "1.11.0",
@@ -6314,7 +6398,7 @@
           "agents/openai.yaml",
           "CHANGELOG.md"
         ],
-        "publication_status": "uploaded_to_feature_branch; main_unmerged; hosted_windows_failure_pending"
+        "publication_status": "uploaded_to_main; exact_sha_hosted_ci_passed"
       },
       "execution_steps": [
         {
@@ -6344,11 +6428,219 @@
         },
         {
           "id": "B5",
-          "status": "local_baseline_pass_next_hosted_run_pending",
-          "detail": "Local full TEST 286 and all required compile gates pass. Windows reviewed passed in run 40019503239; Ubuntu checker passed but diagnostic assertion failed because platform-specific tests registered with skipUnless caused TEST summary partial. Changed to conditional Windows-only registration; new baseline TEST 286 has no skip summary. Fresh staged/exact-commit gates and hosted two-platform rerun remain."
+          "status": "complete",
+          "detail": "Conditional Windows-only test registration passed local full TEST 286 and the required compile gates. The resulting exact SHA 4b2a5065037acb9c92e17d72f44a226663b3d145 is on main; GitHub Actions runs 40027043521 (main) and 40025624097 (feature branch) both succeeded. Run 40019503239 remains historical failure evidence."
         }
       ],
-      "delivery_status": "Commit de74171 is on remote codex/dynamic-baseline-workflow, main unchanged. Follow-up conditional Windows-test registration is staged with Task/manifest verification updates. Local TEST 286 and all declared checks pass; control-plane external approval for the new staged manifest/checker batch has been provided by the user and applied one-shot during commit gate. After gate pass, push the new follow-up to the same feature branch and verify a fresh Ubuntu/Windows GitHub run; do not merge main until both pass. Efficiency remains unverified."
+      "delivery_status": "Complete: commit 4b2a5065037acb9c92e17d72f44a226663b3d145 is the current origin/main SHA. Exact-SHA GitHub Actions runs 40027043521 (main) and 40025624097 (codex/dynamic-baseline-workflow) succeeded. The earlier feature-branch-only and hosted-pending statements are historical. Efficiency remains unverified."
+    },
+    {
+      "id": "TASK-WORKFLOW-EFFICIENCY-01",
+      "requirement_ids": [
+        "REQ-WFE-01",
+        "REQ-WFE-02",
+        "REQ-WFE-03",
+        "REQ-WFE-04",
+        "REQ-WFE-05",
+        "REQ-WFE-06",
+        "REQ-WFE-07",
+        "REQ-WFE-08"
+      ],
+      "acceptance_ids": [
+        "AT-WFE-01",
+        "AT-WFE-02",
+        "AT-WFE-03",
+        "AT-WFE-04",
+        "AT-WFE-05",
+        "AT-WFE-06",
+        "AT-WFE-07"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "complete",
+      "impact_document": "IMPACT",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/workflow-efficiency-task.md",
+        "user_statement": "通过,开始实施",
+        "scope": "Implement SPEC-WORKFLOW-EFFICIENCY-01 r1 and PLAN-WORKFLOW-EFFICIENCY-01 r1 in this repository only, including workflow guidance, README, pilot-status and linked release/governance documentation. Preserve all approvals, required commands, timeouts, test coverage, checker/CI policy and delivery gates. No Liantong project changes, commit, push, merge or release.",
+        "task_id": "TASK-WORKFLOW-EFFICIENCY-01",
+        "plan_revision": "PLAN-WORKFLOW-EFFICIENCY-01 r1"
+      },
+      "user_decisions": [
+        {
+          "date": "2026-10-28 Asia/Shanghai",
+          "statement": "上传到github吧",
+          "scope": "Commit the reviewed TASK-WORKFLOW-EFFICIENCY-01 batch and push it to a dedicated branch in this repository. No merge, GitHub Release, or Liantong project change.",
+          "task_id": "TASK-WORKFLOW-EFFICIENCY-01"
+        }
+      ],
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "spec": "WORKFLOW_EFFICIENCY_SPEC",
+        "plan": "WORKFLOW_EFFICIENCY_PLAN",
+        "task": "WORKFLOW_EFFICIENCY_TASK",
+        "traceability": "TRACE",
+        "assessment": "WORKFLOW_EFFICIENCY_ASSESSMENT"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE source 4b2a5065037acb9c92e17d72f44a226663b3d145; current factual correction 2026-10-28",
+        "spec": "SPEC-WORKFLOW-EFFICIENCY-01 r1 approved",
+        "plan": "PLAN-WORKFLOW-EFFICIENCY-01 r1 approved",
+        "task": "TASK-WORKFLOW-EFFICIENCY-01 current"
+      },
+      "requirement_state": "REQ-WFE-01..08 and AT-WFE-01..07 approved in Spec/Plan r1",
+      "implementation_status": "complete; approved guidance and linked release documentation implemented and required checks passed",
+      "proposal_status": "approved",
+      "user_decisions": [
+        {
+          "date": "2026-10-28 Asia/Shanghai",
+          "statement": "通过,开始实施",
+          "scope": "Implement the reviewed Spec/Plan r1 in this repository; preserve all existing approvals, required commands/timeouts/coverage, checker and CI policies; no Liantong project changes or commit/push/merge/release.",
+          "spec_revision": "SPEC-WORKFLOW-EFFICIENCY-01 r1",
+          "plan_revision": "PLAN-WORKFLOW-EFFICIENCY-01 r1"
+        }
+      ],
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and repository AGENTS.md",
+        "checked_at": "2026-10-28 Asia/Shanghai",
+        "scope": "Implement approved guidance and release-document updates for faster feedback, safe parallelism, incremental baseline convergence, progress/ETA reporting and honest efficiency-pilot status; no external project, checker or CI changes",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "repository SKILL.md and linked references",
+            "version_or_release_date": "1.11.0",
+            "decision": "adopted",
+            "reason": "Authoritative task lifecycle, linked-artifact and approval policy."
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Keep any approved future guidance focused and progressively disclosed."
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "Approved scope remains documentation and guidance; it adds no executable code or interface."
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The project already has manifest-linked authoritative planning artifacts."
+          }
+        ],
+        "recheck": "Recheck if user-approved scope adds scripts, checker behavior, CI, host integration, or external project changes."
+      },
+      "documentation_impact": {
+        "workflow-guidance-and-governance": {
+          "when_paths": [
+            "SKILL.md",
+            "references/implementation-workflow.md",
+            "references/baseline-linked-artifacts.md",
+            "README.md",
+            "planning/workflow-efficiency-assessment.md",
+            "planning/workflow-efficiency-spec.md",
+            "planning/workflow-efficiency-plan.md",
+            "planning/workflow-efficiency-task.md",
+            "planning/skill-review.md",
+            "planning/traceability.md",
+            "planning/change-impact.md",
+            "planning/baseline-review.md",
+            "engineering-manifest.json",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents/openai.yaml",
+            "planning/real-session-efficiency-pilot.md"
+          ],
+          "document_ids": [
+            "WORKFLOW_EFFICIENCY_ASSESSMENT",
+            "WORKFLOW_EFFICIENCY_SPEC",
+            "WORKFLOW_EFFICIENCY_PLAN",
+            "WORKFLOW_EFFICIENCY_TASK",
+            "REAL_SESSION_EFFICIENCY_PILOT",
+            "BASELINE",
+            "IMPACT",
+            "TRACE",
+            "SKILL_REVIEW"
+          ]
+        }
+      },
+      "scale": "minor",
+      "implementation_task": true,
+      "after": [],
+      "gate_policy": {},
+      "verification_status": "Isolated final baseline checker passed with required_checks_satisfied=true: TEST 193.539s, COMPILE 0.311s, GUIDANCE-COMPILE 0.190s; manifest/document declarations pass. Skill quick_validate passed with task-local PyYAML 6.0.3 and UTF-8 mode; workflow_state index pass; version surfaces and git diff checks pass. approval-evidence is non-required partial because no structured approval contract is enabled.",
+      "verification_evidence": "work/TASK-WORKFLOW-EFFICIENCY-01-final-checks-rerun-20261028.json; workflow_state.py index --format json status pass; skill-creator quick_validate.py: Skill is valid; task-local PyYAML 6.0.3; VERSION/SKILL/README/agents.openai.yaml/CHANGELOG all 1.12.0; unchanged manifest check definitions; focused lifecycle 6 pass, source relations 16 pass, short-path relation 1 pass. Initial and post-convergence failed attempts plus the isolated successful rerun are documented in planning/workflow-efficiency-task.md.",
+      "release_impact": {
+        "previous_version": "1.11.0",
+        "current_version": "1.12.0",
+        "proposed_implementation_version": "1.12.0 / Unreleased",
+        "bump_required_this_batch": true,
+        "reason": "Backward-compatible new workflow guidance for validation cadence, safe parallel execution, progress and evidence-based ETA.",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ],
+        "publication_status": "branch_publication_authorized; awaiting_commit_gate"
+      },
+      "execution_steps": [
+        {
+          "id": "WFE-00",
+          "status": "complete",
+          "detail": "Reconciled prior task delivery with GitHub: exact SHA 4b2a5065037acb9c92e17d72f44a226663b3d145 is on main; runs 40027043521 and 40025624097 succeeded."
+        },
+        {
+          "id": "WFE-01",
+          "status": "complete",
+          "detail": "Assessed Liantong change report: 39 checks, 31 pass, 7 fail, 1 partial, 699.49 seconds recorded command duration; causal efficiency and savings remain unverified."
+        },
+        {
+          "id": "WFE-02",
+          "status": "complete",
+          "detail": "Prepared linked assessment, Spec, Plan and Task; user approved Spec/Plan r1 on 2026-10-28 with the statement recorded in this Task."
+        },
+        {
+          "id": "WFE-03",
+          "status": "complete",
+          "detail": "User approved SPEC-WORKFLOW-EFFICIENCY-01 r1 and PLAN-WORKFLOW-EFFICIENCY-01 r1 with '通过,开始实施'."
+        },
+        {
+          "id": "WFE-04",
+          "status": "complete",
+          "detail": "Approved workflow guidance, README, pilot-status and version/changelog documentation are written; no executable tool, checker, CI or Liantong change was made."
+        },
+        {
+          "id": "WFE-05",
+          "status": "complete",
+          "detail": "Isolated final baseline checker report work/TASK-WORKFLOW-EFFICIENCY-01-final-checks-rerun-20261028.json passed required_checks_satisfied=true: TEST 193.539s, COMPILE 0.311s, GUIDANCE-COMPILE 0.190s. Skill validator, workflow_state index, manifest JSON, version sync and diff check passed; non-required legacy approval-evidence partial is documented."
+        },
+        {
+          "id": "WFE-06",
+          "status": "deferred",
+          "detail": "No matched old/new full-task sample exists. Measure a naturally comparable task later; overall savings remain unverified meanwhile."
+        }
+      ],
+      "verification_status": "Isolated final commit gate passed with required_checks_satisfied=true: TEST 162.725s, COMPILE 0.304s, GUIDANCE-COMPILE 0.324s; control-plane and commit-scope checks pass with one-time user authorization. Skill validator and version synchronization pass. Non-required approval-evidence is partial because no structured approval contract is enabled.",
+      "verification_evidence": "work/TASK-WORKFLOW-EFFICIENCY-01-commit-20261028-r3.json; includes verification-state for tree 3a35aa5f69281b1e65551351c691329a97530401 at HEAD 4b2a5065037acb9c92e17d72f44a226663b3d145; TEST 162.725s, COMPILE 0.304s, GUIDANCE-COMPILE 0.324s; skill-creator quick_validate pass; version 1.12.0 synchronized; planning/skill-review.md included per impact declaration.",
+      "delivery_status": "Commit gate passed. Authorized commit and push to codex/workflow-efficiency-1.12.0 are in progress. Merge, GitHub Release and Liantong project changes remain outside scope."
     }
   ],
   "control_plane": {
@@ -6378,8 +6670,8 @@
       "CONTRACT",
       "FLOW"
     ],
-    "source_revision": "6de2cbbc90b53a23a401a395780e9e676d51012d + TASK-SKILL-REDESIGN-01 working-tree factual/documentation update (uncommitted)",
-    "scope": "BASELINE-ISSUE23-02 plus Issue24: optional workflow-state index/snapshot/batch helper and shared Windows long/8.3 alias containment fix; 1.8 workflow/approval semantics preserved; TEST timeout 240s by explicit user decision; all required checks retained.; 1.11.0 candidate: dynamic queryable baseline, correction during implementation, checker task applicability and authority-routed change sets; final local current report is work/TASK-SKILL-REDESIGN-01-baseline-current.json."
+    "source_revision": "4b2a5065037acb9c92e17d72f44a226663b3d145 + TASK-WORKFLOW-EFFICIENCY-01 approved guidance/release worktree changes",
+    "scope": "BASELINE-ISSUE23-02 plus Issue24: optional workflow-state index/snapshot/batch helper and shared Windows long/8.3 alias containment fix; 1.8 workflow/approval semantics preserved; TEST timeout 240s by explicit user decision; all required checks retained. 1.11.0: dynamic queryable baseline, correction during implementation, checker task applicability and authority-routed change sets; exact-SHA hosted success is recorded in TASK-SKILL-REDESIGN-01. Approved 1.12.0 guidance changes cover validation cadence, bounded safe parallelism, unchanged-slice reuse, immediate factual correction, stable implementation convergence and evidence-based progress/ETA. No Liantong files or checker/CI policy are changed."
   },
   "exclude_paths": [
     ".git",

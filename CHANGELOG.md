@@ -1,3 +1,10 @@
+# 1.12.0 / Unreleased
+
+- Add a bounded implementation feedback cadence: run relevant focused checks during development and retain the full existing required-check set for delivery.
+- Clarify when independent checks may run concurrently, how individual failures remain visible, and how unchanged baseline evidence may be reused before final affected-view convergence.
+- Add acceptance-based implementation/verification/delivery progress reporting and measured-evidence ETA guidance; unmatched efficiency samples remain unverified.
+- Preserve all approval meanings, required commands, timeouts, coverage, checker/CI policy and delivery gates. No new tool or mandatory report is added.
+
 # 1.11.0 / Unreleased
 
 - Rework engineering guidance around a dynamic, queryable Baseline and in-work correction: reuse fresh context, correct affected facts before dependent edits, and keep Baseline/Spec/Plan/Task as distinct single-authority views.

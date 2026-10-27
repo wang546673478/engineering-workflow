@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-- 阶段：conditional Windows-only test registration correction passes local full TEST 286, latest project baseline, COMPILE/GUIDANCE-COMPILE, focused workflow_state 42, and skill validator. The correction is documented and staged under original feature impact gates. Local commit gate still needs a fresh report; the user has already approved the protected batch, and prior one-time signal can be reused for the same reviewed scope. The previous push de74171 passed Windows but Ubuntu diagnostic failed on TEST partial from skip summary. A new dual-platform run is pending after follow-up push; main remains unchanged.
+- 阶段：已完成并发布到 `main`。当前 `main` 为 `4b2a5065037acb9c92e17d72f44a226663b3d145`；GitHub Actions run `40027043521` 在该精确 SHA 上成功，原 feature branch 同 SHA 的 run `40025624097` 也成功。此前 run `40019503239` 的 Ubuntu partial 和“新 CI 待跑”均为历史状态；效率收益仍未验证。
 - 当前工件链：[Baseline](baseline-review.md) → [Spec](skill-redesign-spec.md) → [Plan](skill-redesign-implementation-plan.md) → 本 Task → 代码/测试证据。manifest active pointers now select this task, Spec and Plan; Issue #24 remains unchanged.
 - 实施基点：工作树包含此前本任务方案/评估两个未跟踪文件，以及原有 Issue #24 在途工作；动手前尚未修改代码。本 Task 记录开始后的 git 基点和差异。
 - 决策：首批以可验证 SQL 元数据和静态依赖按需切片为主；route/契约/权限能力按现有适配器证据决定，不支持的视图明确标示。
@@ -45,7 +45,7 @@
 | B2 | complete | manual inventory locatable-boundary pass/fail and actionable finding tests pass; checker suite 129 pass; final full suite 280 pass | 结构化 delta、manual inventory pass reachability |
 | B3 | complete for first batch | policy_version/scale/applies_to, nonblocking after, structured artifact dependency, read-only Task lifecycle, temporary handling and legacy compatibility covered; staged commit scope policy unchanged |
 | B4 | complete | apply-batch authority routing and guidance/template/docs/version synchronization; focused changeset and skill validator pass |
-| B5 | 本地通过；staged/exact gate 与 hosted rerun 待完成 | Run 40019503239 Windows passed, while Ubuntu diagnostic precondition failed because skipUnless produced TEST partial. Test methods are now conditionally registered only on Windows. Local full TEST 286, latest baseline, compile gates, focused workflow_state 42 and validator pass. Feature scale and original impact groups are intact. |
+| B5 | complete | Conditional Windows-only registration is included in `4b2a506`; exact-SHA GitHub Actions runs 40027043521 (`main`) and 40025624097 (feature branch) both succeeded. Earlier run 40019503239 remains historical failure evidence. |
 
 ## 影响分析
 
@@ -60,6 +60,10 @@
 1. complete：登记 Spec/Plan/Task 与活动指针；Issue24 approval unchanged.
 2. complete：确认 SQLite main schema extractor 支持 checkpointed DB；静态 JS/TS/Rust source-context adapter 已接入 query 的可选 `--relations`，结果保留 partial/unsupported 与证据限制；checker 原行为基线已复核。
 3. B1-B4 首批能力与权威 guidance/模板已更新；synthetic schema round-trip pilot pass。route/permission adapters 不在首批支持范围；真实效率配对指标仍 unverified。发现事实冲突先修 Baseline/Plan/Task。
-4. Hosted verification：run 40008142044 曾在 Windows 失败；run 40019503239 的 Windows 通过，Ubuntu 的 checker 通过但诊断 assertion 发现 TEST=partial（Windows-only cases 被 skipUnless 报成跳过）。改为仅 Windows 条件注册后，本地 286 项通过；新 hosted run 待验证。
-5. 最新本地验证：baseline report `work/TASK-SKILL-REDESIGN-01-baseline-zero-skip-final2.json` passes TEST 286/162.946s, COMPILE 0.309s and GUIDANCE-COMPILE 0.296s; full standalone TEST 286, workflow_state focused 42 and skill validator pass. Staged/exact commit recheck on this updated tree remains to run.
-6. 用户已授权文档更新及本仓库发布，并明确审阅通过受保护变更。Commit de74171 已推送至 feature branch；Windows hosted passed, Ubuntu hosted diagnostic failed on skip summary. Conditional Windows registration correction is staged, local full TEST 286 passes, latest baseline is green. Rerun staged/exact gates and push the correction to the same feature branch, then verify fresh hosted CI. main is unchanged; efficiency benefit remains unverified.
+4. Hosted verification：run 40008142044 曾在 Windows 失败；run 40019503239 的 Windows 通过，Ubuntu 的 checker 通过但诊断 assertion 发现 TEST=partial（Windows-only cases 被 skipUnless 报成跳过）。后续改为仅 Windows 条件注册；该修正随 SHA `4b2a5065037acb9c92e17d72f44a226663b3d145` 通过 main run 40027043521 和 feature run 40025624097。
+5. 最新本地验证报告 `work/TASK-SKILL-REDESIGN-01-baseline-zero-skip-final2.json` 记录 TEST 286/162.946s、COMPILE 0.309s、GUIDANCE-COMPILE 0.296s；focused workflow_state 42 与 skill validator 通过。托管 run 对当前精确 SHA 的结果以上述 Actions 记录为准。
+6. 用户已授权文档更新及本仓库发布，并明确审阅通过受保护变更。Commit de74171 及条件注册修正均已进入 `main`；当前 `4b2a506` 的 main 与 feature hosted run 均成功。此前“跟进尚未 push / main 未更新 / 新 CI pending”的文字是阶段历史，不再代表当前状态。效率收益仍未验证。
+
+## 2026-10-28 交付事实校正
+
+GitHub API 核实 `main` 当前 SHA 为 `4b2a5065037acb9c92e17d72f44a226663b3d145`；该 SHA 的 Actions run 40027043521（main）与 40025624097（codex/dynamic-baseline-workflow）均为 completed/success。旧的 40019503239 Ubuntu partial 保留作历史缺陷证据，不再作为当前待办。原实施与发布授权范围没有扩大；本记录仅校正交付状态。

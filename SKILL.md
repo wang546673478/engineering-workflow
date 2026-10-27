@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.11.0
+  version: 1.12.0
 ---
 
 # 代码工程工作流
@@ -125,7 +125,7 @@ CHANGELOG 说明本批新增、修复、行为变化及适用的兼容/迁移影
 - 访谈与准备标准，以及可选 EARS / Given–When–Then 示例：[requirements-interview.md](references/requirements-interview.md)。
 - 全局文档、前后端联动、逐表逐字段与现状/目标区分：[project-documentation.md](references/project-documentation.md)。
 - 全局基线与 Spec/Plan/Task 版本、引用、回流，以及本批差异的收敛核对：[baseline-linked-artifacts.md](references/baseline-linked-artifacts.md)。
-- 修改、恢复、变更、迁移与交付：[implementation-workflow.md](references/implementation-workflow.md)。
+- 修改与恢复、开发期反馈和并行边界、进度/ETA、变更迁移与交付：[implementation-workflow.md](references/implementation-workflow.md)。
 - 项目必读规则及接入条款：[project-agents-clauses.md](references/project-agents-clauses.md)。
 - 清单、检查工具、结果与能力限制：[checker.md](references/checker.md)。
 - 接入工具、声明阶段及原流程例外映射：[adoption-lifecycle.md](references/adoption-lifecycle.md)。

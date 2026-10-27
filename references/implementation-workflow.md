@@ -44,6 +44,16 @@ Keep each capability in one cohesive owner. Depend on stable interfaces instead 
 
 Use real variability or a concrete coordination problem to justify interfaces and adapters; do not add a layer for every function. A same-purpose replacement names the old entrypoint and when it is disabled or removed. Preserve project money units, precision, tenant authorization and durable side-effect identities; take their values from the project rather than this skill.
 
+### Feedback, verification and progress
+
+After a meaningful implementation slice, run the narrowest relevant project check that can give useful feedback. Diagnose failures while their cause is local, and keep failed or partial results visible. Focused checks support development; they never replace the project's complete required-check set before delivery. Run each declared required check with its existing command, scope and timeout. If later code changes affect a verified result, rerun the affected checks and the required final set under the existing project policy.
+
+Independent checks may run concurrently only when their inputs and mutable resources are isolated. Shared databases, schemas, ports, generated files, build outputs, caches or test fixtures are reasons to serialize unless the project provides separate instances. Keep the exact result for each check; a failure, partial result, timeout or missing tool cannot be hidden by another check passing. Summarize aggregate results deterministically from those individual outcomes.
+
+Reuse same-task baseline slices while their source/worktree fingerprint is unchanged and no new evidence contradicts them. Correct a confirmed factual error as soon as it is established, before dependent work continues. Once implementation stabilizes, perform one complete reconciliation of affected Baseline views and their Spec/Plan/Task links, then run the final required checks. A needed factual correction is not deferred to that convergence.
+
+Report implementation, verification and delivery progress separately using the Task's acceptance items as the denominator. State the completed count, total count and relevant statuses; label the percentage approximate when acceptance items differ materially in effort. Elapsed time alone is not completion progress. Estimate remaining time from measured durations of comparable steps and the known remaining work, separating execution from user or external wait and giving a range or confidence when possible. When comparable evidence is missing, report the ETA as unknown. Treat efficiency measurements as directional unless tasks have comparable scope and equivalent acceptance results; state sample limits and do not claim a savings percentage from unmatched data.
+
 ## Change and migration control
 
 For data or contract changes, document forward migration, existing-data behavior, compatibility window, rollback or recovery, and cleanup of the old path. Update consumers in the same task unless a compatibility plan states otherwise. Treat route, response, schema, permission, and event changes as cross-layer changes even when the diff is small.
