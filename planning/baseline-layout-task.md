@@ -35,7 +35,7 @@ Requirements REQ-BL-01..12 and acceptance AT-BL-01..08 are defined in [Spec r1](
 | BL-03 | complete | User approved the complete Spec/Plan and the workflow-preservation constraint. |
 | BL-04 | complete | Implemented additive current/history guidance and templates; `adopt_project.py` and checker behavior remain unchanged. |
 | BL-05 | complete | Prepared the pinned TypeScript runtime with `npm ci --ignore-scripts --prefix scripts/context-runtime`; the unchanged required TEST, COMPILE and GUIDANCE-COMPILE now pass. |
-| BL-06 | in progress | Record the user's publication authorization, run protected commit/committed checks, commit the reviewed tree and push it to `origin/main`; then record the exact SHA and remote verification. |
+| BL-06 | complete | Protected `commit` and `committed` gates passed; reviewed commit `d9b42426c4577a984f17232332f092309d612cf1` was pushed to `origin/main`, and the remote branch was verified at the same SHA. |
 
 ## Verification
 
@@ -45,7 +45,7 @@ Requirements REQ-BL-01..12 and acceptance AT-BL-01..08 are defined in [Spec r1](
 - After local runtime setup, direct full TEST passed: 286 tests in 173.878s.
 - Final checker after local runtime setup passed with `required_checks_satisfied: true`: TEST 170.727s, COMPILE 0.316s and GUIDANCE-COMPILE 0.313s.
 - `python -m json.tool` for the manifest and template: passed. `git diff --check`: passed.
-- Publication verification is pending the protected commit/committed gates and remote SHA check.
+- Publication verification: staged `commit` gate passed with `TEST` 286 tests / 173.095s, `COMPILE` 0.308s and `GUIDANCE-COMPILE` 0.311s; committed gate passed with `TEST` 286 tests / 176.343s, `COMPILE` 0.352s and `GUIDANCE-COMPILE` 0.312s. Commit `d9b42426c4577a984f17232332f092309d612cf1` is present on `origin/main` (remote SHA verified with `git -c http.sslBackend=schannel ls-remote origin refs/heads/main`).
 
 ## Completion rule
 
