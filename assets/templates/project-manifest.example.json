@@ -78,6 +78,36 @@
       "required": true
     },
     {
+      "id": "BASELINE_HISTORY",
+      "path": "planning/baseline-history.md",
+      "kind": "baseline-history",
+      "required": true
+    },
+    {
+      "id": "MAP_HISTORY",
+      "path": "docs/module-map-history.md",
+      "kind": "module-map-history",
+      "required": true
+    },
+    {
+      "id": "DB_HISTORY",
+      "path": "docs/database-history.md",
+      "kind": "database-dictionary-history",
+      "required": true
+    },
+    {
+      "id": "CONTRACT_HISTORY",
+      "path": "docs/contracts-history.md",
+      "kind": "contract-history",
+      "required": true
+    },
+    {
+      "id": "FLOW_HISTORY",
+      "path": "docs/business-flow-history.md",
+      "kind": "business-flow-history",
+      "required": true
+    },
+    {
       "id": "IMPACT",
       "path": "planning/change-impact.md",
       "kind": "impact",
@@ -281,6 +311,14 @@
       "CONTRACT",
       "FLOW"
     ],
+    "history_document_ids": [
+      "BASELINE_HISTORY",
+      "MAP_HISTORY",
+      "DB_HISTORY",
+      "CONTRACT_HISTORY",
+      "FLOW_HISTORY"
+    ],
+    "history_document_note": "Optional role declarations for the current/history layout; legacy initializers do not create or map these files automatically.",
     "source_revision": "record-before-review",
     "scope": "record reviewed modules and limits",
     "origin": "existing",

@@ -22,7 +22,7 @@ legacy无stage继续使用原`--upgrade-legacy-manifest`显式迁移，保留已
 python <skill-dir>/scripts/adopt_project.py --root <project> --profile lite --skill-source <actual-skill-source>/SKILL.md --skill-version <actual-version>
 ```
 
-已有实现默认existing；无实现显式greenfield。重复`--implementation-path backend --implementation-path frontend`选择实际非根实现范围。`--document SPEC=docs/SPEC.md`等映射已有工件，ID支持BASELINE/SPEC/PLAN/TASK/MAP/DB/CONTRACT/FLOW/IMPACT/TRACE；不创建或覆盖业务文档。`--state-dir`和`--task-id`选择实际状态位置/任务。初始化的发现范围是候选，agent负责核验遗漏和原验证政策。
+已有实现默认existing；无实现显式greenfield。重复`--implementation-path backend --implementation-path frontend`选择实际非根实现范围。`--document SPEC=docs/SPEC.md`等映射已有工件，ID支持BASELINE/SPEC/PLAN/TASK/MAP/DB/CONTRACT/FLOW/IMPACT/TRACE；不创建或覆盖业务文档。`--state-dir`和`--task-id`选择实际状态位置/任务。初始化的发现范围是候选，agent负责核验遗漏和原验证政策。Baseline 的 current/history 拆分属于 skill 升级或接管时的一次性 agent 指导任务；本工具不检查、分类或迁移基线正文，也不因 history 文件缺失新增门禁。
 
 命令返回`initialized_incomplete`骨架，审批保持pending；bundled checker自动做只读bootstrap，不执行项目命令。外层exit 0表示骨架和入口已建立，实际检查结果见`bootstrap.exit_code/report`，文档缺失/项目检查未执行会明确不通过。后续用已记录checker执行`--mode discovery --run-checks`核查实际声明；成功不代表语义覆盖、基线批准或用户理解。
 

@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "VERIFICATION_CLOSURE_SPEC",
-    "active_plan": "VERIFICATION_CLOSURE_PLAN",
-    "active_task": "TASK-VERIFICATION-CLOSURE-01",
+    "active_spec": "BASELINE_LAYOUT_SPEC",
+    "active_plan": "BASELINE_LAYOUT_PLAN",
+    "active_task": "TASK-BASELINE-LAYOUT-01",
     "policy_version": "delta-v1"
   },
   "documents": [
@@ -456,6 +456,30 @@
       "id": "CHECKER_TEST",
       "path": "scripts/tests/test_checker.py",
       "kind": "verification",
+      "required": true
+    },
+    {
+      "id": "BASELINE_LAYOUT_ASSESSMENT",
+      "path": "planning/baseline-layout-assessment.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "BASELINE_LAYOUT_SPEC",
+      "path": "planning/baseline-layout-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "BASELINE_LAYOUT_PLAN",
+      "path": "planning/baseline-layout-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "BASELINE_LAYOUT_TASK",
+      "path": "planning/baseline-layout-task.md",
+      "kind": "task",
       "required": true
     }
   ],
@@ -1033,6 +1057,66 @@
     {
       "id": "REQ-VFC-04",
       "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-01",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-02",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-03",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-04",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-05",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-06",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-07",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-08",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-09",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-10",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-11",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-BL-12",
+      "document": "BASELINE_LAYOUT_SPEC",
       "index": "TRACE"
     }
   ],
@@ -1656,6 +1740,46 @@
     {
       "id": "AT-VFC-04",
       "document": "VERIFICATION_CLOSURE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-BL-01",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-BL-02",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-BL-03",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-BL-04",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-BL-05",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-BL-06",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-BL-07",
+      "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-BL-08",
+      "document": "BASELINE_LAYOUT_SPEC",
       "index": "TRACE"
     }
   ],
@@ -6889,6 +7013,199 @@
         }
       ],
       "delivery_status": "Pending exact-tree commit/committed checks and push to codex/workflow-verification-closure-1.13.0; report exact SHA and hosted-check status in the delivery response. No merge or Release."
+    },
+    {
+      "id": "TASK-BASELINE-LAYOUT-01",
+      "requirement_ids": [
+        "REQ-BL-01",
+        "REQ-BL-02",
+        "REQ-BL-03",
+        "REQ-BL-04",
+        "REQ-BL-05",
+        "REQ-BL-06",
+        "REQ-BL-07",
+        "REQ-BL-08",
+        "REQ-BL-09",
+        "REQ-BL-10",
+        "REQ-BL-11",
+        "REQ-BL-12"
+      ],
+      "acceptance_ids": [
+        "AT-BL-01",
+        "AT-BL-02",
+        "AT-BL-03",
+        "AT-BL-04",
+        "AT-BL-05",
+        "AT-BL-06",
+        "AT-BL-07",
+        "AT-BL-08"
+      ],
+      "module_ids": [
+        "instructions",
+        "governance"
+      ],
+      "depends_on": [],
+      "status": "in_progress",
+      "scale": "minor",
+      "impact_document": "BASELINE_LAYOUT_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/baseline-layout-task.md",
+        "user_statement": "可以的",
+        "scope": "Implement and publish the approved current/history baseline guidance while preserving the existing workflow; no recurring adoption diagnostic, strict layout gate, tag/Release/merge, or external project migration."
+      },
+      "user_decisions": [
+        {
+          "date": "2026-10-30 Asia/Shanghai",
+          "statement": "可以的,然后不能改变现在的流程",
+          "scope": "Accept current/history baseline separation with evidence/inventory separation; preserve existing workflow stages, approvals, checks, commands, timeouts, coverage, checker/CI policy, and delivery gates."
+        },
+        {
+          "date": "2026-10-30 Asia/Shanghai",
+          "statement": "上传到github",
+          "scope": "Authorize committing and pushing this repository's reviewed batch to origin/main after the existing protected commit/committed gates; no tag, GitHub Release, merge, or external project migration."
+        }
+      ],
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "assessment": "BASELINE_LAYOUT_ASSESSMENT",
+        "spec": "BASELINE_LAYOUT_SPEC",
+        "plan": "BASELINE_LAYOUT_PLAN",
+        "task": "BASELINE_LAYOUT_TASK",
+        "traceability": "TRACE"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE current 1.13.0 guidance; layout audit 2026-10-30",
+        "spec": "SPEC-BASELINE-LAYOUT-01 r1 approved",
+        "plan": "PLAN-BASELINE-LAYOUT-01 r1 approved",
+        "task": "TASK-BASELINE-LAYOUT-01 implementation current"
+      },
+      "requirement_state": "REQ-BL-01..12 and AT-BL-01..08 authorized for implementation; workflow-preservation constraint remains binding.",
+      "implementation_status": "complete",
+      "proposal_status": "authorized by direct user request",
+      "verification_status": "Local pinned TypeScript runtime prepared; full TEST 286/173.878s, COMPILE and GUIDANCE-COMPILE pass. Final baseline checker reports required_checks_satisfied=true; no failure points to the current/history guidance or adopt_project behavior.",
+      "verification_evidence": "Prepared scripts/context-runtime with npm ci --ignore-scripts --prefix scripts/context-runtime. Focused parser/path rerun: 18 tests passed in 1.814s. Direct full TEST: 286 tests passed in 173.878s. Final checker baseline: TEST 170.727s, COMPILE 0.316s, GUIDANCE-COMPILE 0.313s, required_checks_satisfied=true. Earlier parser-unavailable failures remain historical evidence.",
+      "release_impact": {
+        "previous_version": "1.13.0",
+        "current_version": "1.14.0",
+        "proposed_implementation_version": "1.14.0 / Unreleased",
+        "bump_required_this_batch": true,
+        "reason": "Additive current/history baseline guidance, templates, and one-time agent-guided upgrade procedure with no workflow or executable adoption/checker behavior change.",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ],
+      "publication_status": "publication authorized by direct user request; protected commit/committed gates and push to origin/main pending",
+      "publication_target": "origin/main",
+      "publication_constraints": "This repository only; no tag, GitHub Release, merge, or external project migration"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog, repository AGENTS.md, and applicable skill references",
+        "checked_at": "2026-10-30 Asia/Shanghai",
+      "scope": "Baseline current/history layout, one-time agent-guided upgrade guidance, templates, linked governance and repository publication; no adoption-script, checker, recurring diagnostic, tag/Release/merge, or external project migration",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "repository SKILL.md and linked references",
+            "version_or_release_date": "1.13.0",
+            "decision": "adopted",
+            "reason": "Authoritative workflow and required Baseline/Spec/Plan/Task linkage."
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "The proposed deliverable updates an existing skill and its supporting resources."
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The revised candidate scope is guidance/templates/governance only and preserves executable adoption/checker behavior."
+          },
+          {
+            "id": "planning-with-files",
+            "source": "C:/Users/54667/.agents/skills/planning-with-files/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "This repository already uses manifest-linked planning authorities."
+          }
+        ],
+      "recheck": "Publication scope rechecked on 2026-10-30 after the user's direct upload authorization; no additional skill adopted."
+      },
+      "documentation_impact": {
+        "baseline-layout": {
+          "when_paths": [
+            "SKILL.md",
+            "references",
+            "assets/templates",
+            "README.md",
+            "VERSION",
+            "CHANGELOG.md",
+            "agents/openai.yaml",
+            "engineering-manifest.json"
+          ],
+          "document_ids": [
+            "BASELINE_LAYOUT_ASSESSMENT",
+            "BASELINE_LAYOUT_SPEC",
+            "BASELINE_LAYOUT_PLAN",
+            "BASELINE_LAYOUT_TASK",
+            "BASELINE",
+            "IMPACT",
+            "SKILL_REVIEW",
+            "TRACE"
+          ]
+        }
+      },
+      "execution_steps": [
+        {
+          "id": "BL-00",
+          "status": "complete",
+          "detail": "Audited the generic baseline model, initializer, adoption helper, templates and the two external examples."
+        },
+        {
+          "id": "BL-01",
+          "status": "complete",
+          "detail": "Recorded the user's accepted current/history direction and workflow-preservation constraint."
+        },
+        {
+          "id": "BL-02",
+          "status": "complete",
+          "detail": "Prepared the Assessment, Spec r1, Plan r1 and Task records."
+        },
+        {
+          "id": "BL-03",
+          "status": "complete",
+          "detail": "User approved implementation of the current/history guidance with existing workflow preservation and no recurring adoption checks."
+        },
+        {
+          "id": "BL-04",
+          "status": "complete",
+          "detail": "Implemented additive current/history guidance and templates; adopt_project.py and checker behavior remain unchanged."
+        },
+        {
+          "id": "BL-05",
+          "status": "complete",
+          "detail": "Prepared the local pinned TypeScript runtime and reran the unchanged required checks; full TEST, COMPILE and GUIDANCE-COMPILE pass."
+        },
+        {
+          "id": "BL-06",
+          "status": "in_progress",
+          "detail": "Publication authorized for this repository; run protected commit/committed checks, commit the reviewed tree, push origin/main and verify the exact remote SHA."
+        }
+      ],
+      "delivery_status": "Local implementation and verification complete; publication to origin/main authorized and pending protected commit/committed gates. No external project migration, tag, Release or merge."
     }
   ],
   "control_plane": {

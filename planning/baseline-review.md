@@ -1,3 +1,11 @@
+# Current baseline layout finding / 2026-10-30
+
+The generic skill has one Global Baseline with five default linked factual views: Global Baseline, Module Map, Frontend/Backend Contract, Database Dictionary, and Business Flow. The initializer registers these views but does not create or populate their Markdown. The current rules preserve superseded conclusions but do not define separate current/history files. The Liantong frontend and database examples therefore expose a guidance/layout gap: current facts, historical corrections, target design, and evidence are mixed in long documents.
+
+Implemented correction in the 1.14.0 candidate: retain existing project paths as current authorities, add per-view history siblings, keep target design in Spec/Plan/Task, and link exhaustive inventories/receipts as evidence. It preserves stages, approvals, required checks, commands, timeouts, coverage, checker/CI policy, and delivery gates. No external project has been migrated and no prior approval is transferred.
+
+Implementation status: the 1.14.0 candidate now contains this guidance and the current/history templates. `adopt_project.py` and checker behavior remain unchanged; existing projects are upgraded once by the agent under an authorized Task. The local pinned TypeScript runtime was prepared, and the unchanged required checks pass. Publication to `origin/main` is authorized and pending protected commit/committed gates; no external project migration is claimed.
+
 # Current verification-closure baseline / 2026-10-28
 
 Source revision: `72c75f9b37b7669619d7dceca821de5ba90c3024`; current Task: [TASK-VERIFICATION-CLOSURE-01](verification-closure-task.md).

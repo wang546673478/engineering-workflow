@@ -1,3 +1,18 @@
+# Baseline layout candidate / 2026-10-30
+
+| Requirement | Acceptance | Plan / Task | Current evidence / status |
+| --- | --- | --- | --- |
+| REQ-BL-01..03 | AT-BL-01 | PL-BL-01,02 / BL-02,04 | Current/history roles and the five default views are documented and templated. |
+| REQ-BL-04..05 | AT-BL-04 | PL-BL-01,03 / BL-02,04 | Evidence/inventory and target-design boundaries are documented; focused guidance tests pass. |
+| REQ-BL-06..07 | AT-BL-02,03 | PL-BL-02,03,04 / BL-03,04 | Optional history links and one-time agent-guided upgrade preserve legacy paths; no automatic migration is added. |
+| REQ-BL-08..09 | AT-BL-05 | PL-BL-01,06 / BL-01..04 | Workflow, approval, gate, and historical-review preservation remain unchanged. |
+| REQ-BL-10..12 | AT-BL-06..08 | PL-BL-03,04 / BL-02a,04 | New-project empty history guidance is present; `adopt_project.py` keeps its behavior and does not add recurring checks. |
+| REQ-BL-10 | AT-BL-06 | PL-BL-03 / BL-02a | New-project initialization creates empty history files with a no-history-yet marker. |
+| REQ-BL-11 | AT-BL-07 | PL-BL-04 / BL-02a | Existing-project separation is completed once by the agent and recorded in the existing Task. |
+| REQ-BL-12 | AT-BL-08 | PL-BL-04 / BL-02a | `adopt_project.py` keeps current behavior and does not add recurring baseline-content checks or implicit writes. |
+
+Index IDs: REQ-BL-01, REQ-BL-02, REQ-BL-03, REQ-BL-04, REQ-BL-05, REQ-BL-06, REQ-BL-07, REQ-BL-08, REQ-BL-09, REQ-BL-10, REQ-BL-11, REQ-BL-12; AT-BL-01, AT-BL-02, AT-BL-03, AT-BL-04, AT-BL-05, AT-BL-06, AT-BL-07, AT-BL-08.
+
 # Verification closure guidance / 1.13.0
 
 | Requirement | Acceptance | Plan / Task | Current evidence / status |

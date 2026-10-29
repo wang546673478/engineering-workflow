@@ -26,6 +26,14 @@
 
 建议在 manifest 的 `workflow` 中记录 `active_baseline`、`active_spec`、`active_plan`、`active_task`。每个任务可用 `artifact_links` 指向同一组文档；没有这些字段的旧清单继续按旧兼容路径运行，但新清单应声明它们。
 
+### 当前视图与历史视图
+
+Baseline 视图可按 `current` 与 `history` 物理分开。`current` 是唯一的最新事实权威；`history` 是非权威的变更和审阅追踪。默认视图包括 Global Baseline、Module Map、Frontend/Backend Contract、Database Dictionary 和 Business Flow；项目扩展视图（例如 Billing）沿用同一规则。
+
+当前文件必须带有 as-of revision、范围、来源、证据边界和限制，并链接对应 history 文件。当前文件不保留已经被替代的完整段落，不把目标设计或运行回执复制为事实。历史条目至少记录：旧结论、新结论、触发原因、证据、源码/工作树 revision、影响范围、受影响的批准或 Plan 假设、supersedes 关系和下一步。
+
+新项目在首次建立基线时创建空 history 文件，并写入 `No history yet`；这不是历史审阅证据。已有项目只在 skill 升级或接管整理时由 agent 执行一次性迁移：分类当前/历史/目标/证据、建立 sibling history、更新当前链接并在现有 Task 留下范围和证据。日常接入不重复运行内容诊断，`adopt_project.py` 保持既有清单、AGENTS 和 bootstrap 职责，不新增严格布局门禁。
+
 ## 首次接管已有实现
 
 1. 读取项目规则和现有资料，先判断是否有有效 Baseline。
@@ -106,6 +114,7 @@ manifest 至少应能表达：
     "status": "approved",
     "evidence": "planning/baseline-review.md",
     "document_ids": ["BASELINE", "MAP", "DB", "CONTRACT", "FLOW"],
+    "history_document_ids": ["BASELINE_HISTORY", "MAP_HISTORY", "DB_HISTORY", "CONTRACT_HISTORY", "FLOW_HISTORY"],
     "source_revision": "<git-or-worktree-revision>",
     "scope": "<reviewed scope>"
   },

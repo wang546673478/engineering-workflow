@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.13.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.14.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -87,11 +87,11 @@ Skill 会引导 Agent：
 
 本地工程文档可按项目选择使用 [task_archive.py](scripts/task_archive.py) 建立版本快照、检查漂移、查看历史和恢复。它不加入原检查门禁或审核流程；SQLite archive 文件不加密，宿主未提供文件权限隔离时，只能检测并恢复，不能阻止 shell/editor 直接写入。备份位置/清理由采用项目负责。详见[归档合同与命令](references/checker.md#本地工程记录归档与恢复)。
 
-三项指引在这些原节点中使用：[缺陷证据](references/implementation-workflow.md#defect-evidence-within-the-existing-task)连接原复现、根因、修复前后结果与回归；[交付前收敛](references/baseline-linked-artifacts.md#交付前收敛)具体核对本批缺失、部分、矛盾、无归属实现和过期证据；[可选需求/验收示例](references/requirements-interview.md#optional-requirement-and-acceptance-examples)提供 EARS 中文等价句式及 Given–When–Then。沿用原记录与格式，不增加阶段、审批轮次或验证命令，也不要求旧项目迁移历史文档。
+三项指引在这些原节点中使用：[缺陷证据](references/implementation-workflow.md#defect-evidence-within-the-existing-task)连接原复现、根因、修复前后结果与回归；[交付前收敛](references/baseline-linked-artifacts.md#交付前收敛)具体核对本批缺失、部分、矛盾、无归属实现和过期证据；[可选需求/验收示例](references/requirements-interview.md#optional-requirement-and-acceptance-examples)提供 EARS 中文等价句式及 Given–When–Then。沿用原记录与格式，不增加阶段、审批轮次或验证命令；旧项目的 current/history 整理只在升级或接管任务中由 agent 执行，不由每次接入自动迁移。
 
 ## 自主调查与动态基线
 
-基线不是功能需求的附录，而是 Spec/Plan/Task 的输入和实现后的回写目标。推荐链路为 `Baseline → Spec → Plan → Task → Code/Evidence → Baseline`：批准的 Spec 在本批次内冻结，技术变化更新 Plan，执行变化更新 Task，源码或测试发现的事实错误先校正 Baseline。新增业务目标才创建新的 Spec revision。升级工作流后，应核对当前权威文档、清理过时的当前状态、补齐引用并保留历史与原审批范围；更新 skill 不会自动迁移外部项目。详细规则见[基线与工件联动模型](references/baseline-linked-artifacts.md)。
+基线不是功能需求的附录，而是 Spec/Plan/Task 的输入和实现后的回写目标。推荐链路为 `Baseline → Spec → Plan → Task → Code/Evidence → Baseline`：批准的 Spec 在本批次内冻结，技术变化更新 Plan，执行变化更新 Task，源码或测试发现的事实错误先校正 Baseline。新增业务目标才创建新的 Spec revision。每个已声明基线视图都有当前文件和历史文件：当前文件承载最新事实，历史文件承载旧/新结论和更正原因；详细枚举和运行回执作为 evidence/inventory 链接。新项目初始化时创建空 history 文件，已有项目升级时由 agent 一次性整理并记录在 Task；`adopt_project.py` 不检查或搬运基线正文。升级工作流后，应核对当前权威文档、清理过时的当前状态、补齐引用并保留历史与原审批范围；更新 skill 不会自动迁移外部项目。详细规则见[基线与工件联动模型](references/baseline-linked-artifacts.md)。
 
 基线调查获得授权后，Agent持续调查、验证并保存记录，进度汇报后继续，不要求用户反复说“继续”。需要运行依赖、数据库或缓存时，在已有授权内自主准备局部隔离环境并测试；有真实权限、凭据、工具或业务决定阻塞时，说明证据并先完成独立工作。
 

@@ -1,5 +1,14 @@
 # Current Impact Analysis Entry
 
+## Proposed baseline layout impact / 2026-10-30
+
+Task: [TASK-BASELINE-LAYOUT-01](baseline-layout-task.md); Assessment/Spec/Plan: [Assessment](baseline-layout-assessment.md) / [Spec r1](baseline-layout-spec.md) / [Plan r1](baseline-layout-plan.md).
+
+- Finding: the generic skill defines one Global Baseline with five default factual views but no physical current/history layout; existing projects can therefore mix current facts, historical corrections, target design, and evidence.
+- Proposed change: add explicit current/history role guidance, templates, and a one-time agent-guided upgrade procedure. Preserve existing paths as current where possible; leave `adopt_project.py`, checker behavior, and recurring diagnostics unchanged.
+- Guardrails: no workflow stage, approval meaning, required check, command, timeout, coverage, checker/CI policy, delivery gate, product code, or external project migration changes. The prior verification-closure task remains preserved as historical work; the manifest-selected baseline-layout task is current for this change.
+- Status: Guidance/template implementation and the unchanged required checks are complete under the approved Task. The local pinned TypeScript runtime was prepared; full TEST, COMPILE and GUIDANCE-COMPILE pass. The user has authorized publishing this repository batch to `origin/main` after the protected commit/committed gates; no external project migration is included.
+
 ## Current verification-closure guidance impact
 
 Task: [TASK-VERIFICATION-CLOSURE-01](verification-closure-task.md); input revision `72c75f9b37b7669619d7dceca821de5ba90c3024`; Spec/Plan: `SPEC-VERIFICATION-CLOSURE-01 r1` / `PLAN-VERIFICATION-CLOSURE-01 r1`.

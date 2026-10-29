@@ -1,3 +1,9 @@
+# 1.14.0 / Unreleased
+
+- Separate current baseline views from their non-authoritative history files while preserving existing paths, workflow stages, approvals, checks, commands, timeouts, coverage, checker/CI policy and delivery gates.
+- Add one-time agent-guided upgrade guidance for existing projects, empty history-file initialization guidance for new projects, and explicit evidence/inventory and target-design boundaries.
+- Keep `adopt_project.py` focused on manifest/AGENTS/bootstrap responsibilities; it does not inspect or migrate baseline prose and no recurring history-layout gate is added.
+
 # 1.13.0 / Unreleased
 
 - Close the final verification loop: freeze the candidate tree after known tracked changes, bind results to its exact commit/tree, and avoid receipt-only commits when project policy permits external verification evidence. If tracked receipts are required, verify the resulting tree under the unchanged project gates.

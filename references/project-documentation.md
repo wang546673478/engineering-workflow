@@ -10,6 +10,16 @@ For a project with no prior implementation, follow [the greenfield lifecycle](ba
 
 On workflow upgrades, [reconcile existing documents](baseline-linked-artifacts.md#既有文档整理) with source and decisions. Refresh current content, authority, revisions, traceability and next actions; preserve historical releases, superseded plans and actual review scope. Updating the skill does not migrate external projects automatically.
 
+### Current and historical baseline views
+
+Each declared baseline view has a current factual document and a separate history document. Keep the existing current path when upgrading an established project and add a sibling such as `frontend-baseline-history.md`; do not rename every existing document only to add a `-current` suffix.
+
+The current document is the only authority for the latest facts. Its header records the as-of revision, scope, source, evidence boundary, limitations, and a link to its history. It contains current implementation facts, verified behavior, known defects, and open unknowns. It does not retain dated superseded sections merely for narrative continuity.
+
+The history document is non-authoritative. Each entry records the old claim, new claim, trigger, evidence, source/worktree revisions, affected scope, affected approvals or Plan assumptions, supersedes links, and the next action. An empty history file for a new project must contain an explicit `No history yet` marker; that marker is not evidence that the system has been reviewed.
+
+Move target design and user decisions to Spec/Plan/Task. Keep exhaustive inventories, generated indexes, test/runtime receipts, and source extraction under evidence/inventory documents linked from the current view. This separation is a one-time agent-guided upgrade for an existing project, recorded in the existing Task; `adopt_project.py` does not inspect, classify, or migrate baseline prose on every run.
+
 ## Autonomous discovery and bounded review
 
 Bind discovery to the source revision and working-tree changes, applicable modules, validation environments and intended baseline scope. Follow entrypoints, consumers, migrations and tests through the whole system. The agent performs code and field-semantic review, reconciles contradictions and gathers runtime evidence; “manual review” means reasoning beyond the checker, not assigning technical investigation to the user.
