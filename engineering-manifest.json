@@ -7415,7 +7415,7 @@
       "skill_review": {
         "catalog_source": "Current session Skills catalog, repository SKILL.md, repository references, and skill-creator SKILL.md",
         "checked_at": "2026-11-01 Asia/Shanghai",
-        "scope": "Generic engineering-workflow guidance, environment/tool contracts, source-analysis boundaries, verification evidence and defect discipline; no fixed language, business domain, path or external project migration",
+        "scope": "Generic engineering-workflow guidance, environment/tool contracts, source-analysis boundaries, verification evidence and defect discipline; publication target changed to a direct main push; no fixed language, business domain, path or external project migration",
         "candidates": [
           {
             "id": "engineering-workflow",
@@ -7461,7 +7461,7 @@
             ]
           }
         ],
-        "recheck": "Scope changes to checker implementation, a project-specific adapter or external migration require another skill review. GitHub branch publication was reviewed against the repository checker and CI policy; no additional host skill applies."
+        "recheck": "Scope changes to checker implementation, a project-specific adapter or external migration require another skill review. The updated main publication target was reviewed against repository policy. Current read-only GitHub UI shows the owner as the only environment reviewer, self-review prevention off, admin bypass off and no main branch protection/ruleset. Protected-path approval remains required; no approval was submitted or bypass authorized. No additional host skill applies."
       },
       "documentation_impact": {
         "workflow-guidance": {
@@ -7562,26 +7562,26 @@
           "agents/openai.yaml",
           "CHANGELOG.md"
         ],
-        "publication_status": "user-authorized source branch upload; exact remote receipt is reported in the delivery response",
-        "publication_constraints": "Push only to the authorized review branch; no merge to main, external project migration, tag, Release or deployment is included."
+        "publication_status": "user-authorized direct fast-forward push to origin/main; exact remote receipt is reported in the delivery response",
+        "publication_constraints": "Push only the approved source to origin/main; preserve independent protected-path approval and required checks; no external project migration, tag, Release or deployment is included."
       },
       "publication_authorization": {
         "status": "approved",
-        "user_statement": "上传到github吧",
-        "recorded_at": "2026-11-01T15:14:01+08:00",
-        "scope": "Push the approved 1.15.0 changes to a review branch on origin; no merge to main, tag, Release, deployment or external project migration.",
+        "user_statement": "你想办法解决,我要推送到main上面",
+        "recorded_at": "2026-11-01T17:05:53+08:00",
+        "scope": "Push the approved 1.15.0 changes to origin/main using a normal fast-forward; supersedes the earlier review-branch-only target. Do not force-push, bypass protected-path approval, create a tag/Release, deploy or migrate an external project.",
         "target_remote": "origin",
-        "target_branch": "codex/engineering-workflow-report-1.15.0",
+        "target_branch": "main",
         "evidence": "planning/engineering-workflow-report-task.md#GitHub publication"
       },
       "publication_target": {
         "remote": "origin",
-        "branch": "codex/engineering-workflow-report-1.15.0",
-        "delivery": "source branch only; no merge, tag, Release or deployment"
+        "branch": "main",
+        "delivery": "normal fast-forward to refs/heads/main; no force-push, tag, Release or deployment"
       },
-      "verification_status": "historical baseline checks passed; exact staged-tree and committed-tree verification are required before branch upload",
-      "verification_evidence": "work/TASK-ENGINEERING-WORKFLOW-REPORT-01-final6.json (historical baseline); work/TASK-ENGINEERING-WORKFLOW-REPORT-01-commit-current.json and work/TASK-ENGINEERING-WORKFLOW-REPORT-01-committed-current.json (exact-tree publication gates)",
-      "delivery_status": "B0-B5 implementation complete; user authorized review-branch upload to origin; exact commit and remote receipt are reported in the delivery response; B6 project-specific tooling remains excluded."
+      "verification_status": "original exact-tree checks passed for commit 17abcfa; publication-scope record changes require the unchanged commit and committed gates to pass on the updated tree before main push; hosted environment approval remains separate",
+      "verification_evidence": "work/TASK-ENGINEERING-WORKFLOW-REPORT-01-final6.json (historical baseline); work/TASK-ENGINEERING-WORKFLOW-REPORT-01-commit-current.json and work/TASK-ENGINEERING-WORKFLOW-REPORT-01-committed-current.json (historical review-branch receipts); work/TASK-ENGINEERING-WORKFLOW-REPORT-01-commit-main-publication-r3.json and work/TASK-ENGINEERING-WORKFLOW-REPORT-01-committed-main-publication-r3.json (exact-tree main-publication receipts)",
+      "delivery_status": "B0-B5 implementation complete; review branch upload at 17abcfa confirmed. User reauthorized a normal fast-forward to origin/main; current repository and environment settings were checked read-only. Approval is available to the owner after selecting the environment in the dialog; agent has not submitted it. Exact-tree gates precede the main push; B6 project-specific tooling remains excluded."
     }
   ],
   "control_plane": {

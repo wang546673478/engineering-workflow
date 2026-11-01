@@ -523,3 +523,5 @@ Current revision: `ENGINEERING_WORKFLOW_REPORT-01`.
 | RPT-08 / AT-RPT-08 | B5 / RPT-04 | Related-counterexample diagnosis is added without a fixed form or new approval. |
 | RPT-09 / AT-RPT-09 | B5 / RPT-06 | Existing workflow, approvals and required checks remain unchanged; historical baseline and publication commit gates provide separate evidence. |
 | RPT-10 | B0-B5 / RPT-06 | Credential rules, external migration and project-specific tooling remain out of scope. |
+
+Publication target update (2026-11-01): the user superseded the original review-branch-only destination and authorized a normal fast-forward to `origin/main`. The original review-branch receipt and the current main target, exact-tree gates, and outstanding independent environment approval are recorded in [the active Task](engineering-workflow-report-task.md#github-publication). Requirement and acceptance mappings are unchanged.
