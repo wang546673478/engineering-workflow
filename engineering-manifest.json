@@ -2,10 +2,25 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "BASELINE_LAYOUT_SPEC",
-    "active_plan": "BASELINE_LAYOUT_PLAN",
-    "active_task": "TASK-BASELINE-LAYOUT-01",
+    "active_spec": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+    "active_plan": "ENGINEERING_WORKFLOW_REPORT_PLAN",
+    "active_task": "TASK-ENGINEERING-WORKFLOW-REPORT-01",
     "policy_version": "delta-v1"
+  },
+  "environment": {
+    "tools": [
+      {
+        "tool_id": "python-runtime",
+        "version": "3.14.7",
+        "purpose": "required checks and guidance validation",
+        "locator": "host PATH; resolved path recorded in Task evidence",
+        "identity_check": "Task evidence records version probe and checksum when available",
+        "cache_policy": "task-local caches only",
+        "isolation": "workspace and task-local virtual environment",
+        "status": "available"
+      }
+    ],
+    "evidence": "planning/engineering-workflow-report-task.md#Environment evidence"
   },
   "documents": [
     {
@@ -479,6 +494,30 @@
     {
       "id": "BASELINE_LAYOUT_TASK",
       "path": "planning/baseline-layout-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "ENGINEERING_WORKFLOW_REPORT_ASSESSMENT",
+      "path": "planning/engineering-workflow-report-assessment.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "path": "planning/engineering-workflow-report-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "ENGINEERING_WORKFLOW_REPORT_PLAN",
+      "path": "planning/engineering-workflow-report-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "ENGINEERING_WORKFLOW_REPORT_TASK",
+      "path": "planning/engineering-workflow-report-task.md",
       "kind": "task",
       "required": true
     }
@@ -1117,6 +1156,56 @@
     {
       "id": "REQ-BL-12",
       "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-01",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-02",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-03",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-04",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-05",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-06",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-07",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-08",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-09",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "RPT-10",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
       "index": "TRACE"
     }
   ],
@@ -1780,6 +1869,51 @@
     {
       "id": "AT-BL-08",
       "document": "BASELINE_LAYOUT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-01",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-02",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-03",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-04",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-05",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-06",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-07",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-08",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-RPT-09",
+      "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
       "index": "TRACE"
     }
   ],
@@ -7206,6 +7340,248 @@
         }
       ],
       "delivery_status": "Local implementation and verification complete; publication to origin/main authorized and pending protected commit/committed gates. No external project migration, tag, Release or merge."
+    },
+    {
+      "id": "TASK-ENGINEERING-WORKFLOW-REPORT-01",
+      "batch_id": "TASK-ENGINEERING-WORKFLOW-REPORT-01-BATCH-01",
+      "scale": "feature",
+      "requirement_ids": [
+        "RPT-01",
+        "RPT-02",
+        "RPT-03",
+        "RPT-04",
+        "RPT-05",
+        "RPT-06",
+        "RPT-07",
+        "RPT-08",
+        "RPT-09",
+        "RPT-10"
+      ],
+      "acceptance_ids": [
+        "AT-RPT-01",
+        "AT-RPT-02",
+        "AT-RPT-03",
+        "AT-RPT-04",
+        "AT-RPT-05",
+        "AT-RPT-06",
+        "AT-RPT-07",
+        "AT-RPT-08",
+        "AT-RPT-09"
+      ],
+      "module_ids": [
+        "instructions",
+        "source-context",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [],
+      "after": [],
+      "gate_policy": {},
+      "status": "complete",
+      "impact_document": "IMPACT",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/engineering-workflow-report-task.md",
+        "user_statement": "同时可以开始实施了,我在想,你现在是不是就可以按照方案去进行这样的实施?",
+        "approved_at": "2026-11-01T00:00:00+08:00",
+        "scope": "Implement the approved generic engineering-workflow report improvements in this repository; preserve workflow stages, approvals, required checks, commands, timeouts and coverage; no external project migration, credential-rule addition or project-specific tool implementation.",
+        "task_id": "TASK-ENGINEERING-WORKFLOW-REPORT-01",
+        "plan_revision": "PLAN-ENGINEERING-WORKFLOW-REPORT-01 approved"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "assessment": "ENGINEERING_WORKFLOW_REPORT_ASSESSMENT",
+        "spec": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+        "plan": "ENGINEERING_WORKFLOW_REPORT_PLAN",
+        "task": "ENGINEERING_WORKFLOW_REPORT_TASK",
+        "traceability": "TRACE"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE current",
+        "assessment": "ENGINEERING_WORKFLOW_REPORT_ASSESSMENT approved 2026-11-01",
+        "spec": "SPEC-ENGINEERING-WORKFLOW-REPORT-01 approved",
+        "plan": "PLAN-ENGINEERING-WORKFLOW-REPORT-01 approved",
+        "task": "TASK-ENGINEERING-WORKFLOW-REPORT-01 implementation current"
+      },
+      "requirement_state": "RPT-01..RPT-10 confirmed within the approved generic skill-improvement scope.",
+      "implementation_status": "complete; B0-B5 guidance, manifest, fixtures and governance updates implemented; B6 project-specific tooling excluded.",
+      "proposal_status": "approved",
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog, repository SKILL.md, repository references, and skill-creator SKILL.md",
+        "checked_at": "2026-11-01 Asia/Shanghai",
+        "scope": "Generic engineering-workflow guidance, environment/tool contracts, source-analysis boundaries, verification evidence and defect discipline; no fixed language, business domain, path or external project migration",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "repository SKILL.md and linked references",
+            "version_or_release_date": "1.14.0",
+            "decision": "adopted",
+            "reason": "Authoritative workflow and task record for this change.",
+            "evidence": [
+              "SKILL.md",
+              "references/requirements-interview.md",
+              "references/source-context.md",
+              "references/implementation-workflow.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "The task updates an existing skill and supporting references.",
+            "evidence": [
+              "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "C:/Users/54667/.agents/skills/tdd/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "Guidance and manifest fixtures require observable regression checks.",
+            "evidence": [
+              "scripts/tests/test_guidance.py"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "Current session Skills catalog",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "This repository already uses the manifest-linked Assessment/Spec/Plan/Task authorities.",
+            "evidence": [
+              "engineering-manifest.json"
+            ]
+          }
+        ],
+        "recheck": "Scope changes to checker implementation, a project-specific adapter or external migration require another skill review. GitHub branch publication was reviewed against the repository checker and CI policy; no additional host skill applies."
+      },
+      "documentation_impact": {
+        "workflow-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "references",
+            "assets/templates/project-manifest.example.json",
+          "assets/templates/source-analysis-evidence.example.json",
+            "README.md",
+          "agents/openai.yaml",
+            "VERSION",
+            "CHANGELOG.md"
+          ],
+          "document_ids": [
+            "ENGINEERING_WORKFLOW_REPORT_ASSESSMENT",
+            "ENGINEERING_WORKFLOW_REPORT_SPEC",
+            "ENGINEERING_WORKFLOW_REPORT_PLAN",
+            "ENGINEERING_WORKFLOW_REPORT_TASK",
+            "TRACE",
+            "IMPACT"
+          ]
+        },
+        "guidance-tests": {
+          "when_paths": [
+            "scripts/tests/test_guidance.py"
+          ],
+          "document_ids": [
+            "ENGINEERING_WORKFLOW_REPORT_SPEC",
+            "ENGINEERING_WORKFLOW_REPORT_TASK"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/traceability.md",
+            "planning/change-impact.md"
+          ],
+          "document_ids": [
+            "ENGINEERING_WORKFLOW_REPORT_TASK",
+            "TRACE",
+            "IMPACT"
+          ]
+        }
+      },
+      "execution_steps": [
+        {
+          "id": "RPT-00",
+          "status": "complete",
+          "detail": "Recorded the external report boundary, independent verification limits and approved scope."
+        },
+        {
+          "id": "RPT-01",
+          "status": "complete",
+          "detail": "User approved the complete Assessment/Spec/Plan/Task scope on 2026-11-01."
+        },
+        {
+          "id": "RPT-02",
+          "status": "complete",
+          "detail": "Registered the candidate documents, requirements, acceptance IDs and active pointers in the manifest."
+        },
+        {
+          "id": "RPT-03",
+          "status": "complete",
+          "detail": "Added question-state, environment, tool-selection and source-analysis guidance without fixed project definitions."
+        },
+        {
+          "id": "RPT-04",
+          "status": "complete",
+          "detail": "Clarified verification evidence, impact dimensions and related-counterexample diagnosis."
+        },
+        {
+          "id": "RPT-05",
+          "status": "complete",
+          "detail": "Focused guidance fixtures, skill validation and the unchanged required checks passed."
+        },
+        {
+          "id": "RPT-06",
+          "status": "complete",
+          "detail": "Genericity audit, release metadata and delivery convergence completed; B6 remains separate."
+        }
+      ],
+      "implementation_authorization": {
+        "status": "approved",
+        "plan_revision": "PLAN-ENGINEERING-WORKFLOW-REPORT-01 approved",
+        "task_id": "TASK-ENGINEERING-WORKFLOW-REPORT-01",
+        "evidence": "planning/engineering-workflow-report-task.md"
+      },
+      "release_impact": {
+        "previous_version": "1.14.0",
+        "current_version": "1.14.0",
+        "proposed_implementation_version": "1.15.0 / Unreleased",
+        "bump_required_this_batch": true,
+        "reason": "Backward-compatible generic guidance and evidence-contract capability additions.",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ],
+        "publication_status": "user-authorized source branch upload; exact remote receipt is reported in the delivery response",
+        "publication_constraints": "Push only to the authorized review branch; no merge to main, external project migration, tag, Release or deployment is included."
+      },
+      "publication_authorization": {
+        "status": "approved",
+        "user_statement": "上传到github吧",
+        "recorded_at": "2026-11-01T15:14:01+08:00",
+        "scope": "Push the approved 1.15.0 changes to a review branch on origin; no merge to main, tag, Release, deployment or external project migration.",
+        "target_remote": "origin",
+        "target_branch": "codex/engineering-workflow-report-1.15.0",
+        "evidence": "planning/engineering-workflow-report-task.md#GitHub publication"
+      },
+      "publication_target": {
+        "remote": "origin",
+        "branch": "codex/engineering-workflow-report-1.15.0",
+        "delivery": "source branch only; no merge, tag, Release or deployment"
+      },
+      "verification_status": "historical baseline checks passed; exact staged-tree and committed-tree verification are required before branch upload",
+      "verification_evidence": "work/TASK-ENGINEERING-WORKFLOW-REPORT-01-final6.json (historical baseline); work/TASK-ENGINEERING-WORKFLOW-REPORT-01-commit-current.json and work/TASK-ENGINEERING-WORKFLOW-REPORT-01-committed-current.json (exact-tree publication gates)",
+      "delivery_status": "B0-B5 implementation complete; user authorized review-branch upload to origin; exact commit and remote receipt are reported in the delivery response; B6 project-specific tooling remains excluded."
     }
   ],
   "control_plane": {

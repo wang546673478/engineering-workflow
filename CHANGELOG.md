@@ -1,3 +1,10 @@
+# 1.15.0 / Unreleased
+
+- Add structured question state for recovery so recorded answers, deferred items and resume conditions are reused without repeating questions.
+- Define generic environment contracts, existing-tool-first discovery and project-specific adapter fallback without fixing a language, tool, path or business domain.
+- Clarify precise full-source analysis as final evidence, incremental results as development previews, explicit `unknown/unsupported` relations, deterministic analysis evidence, and exact-tree validation binding.
+- Preserve workflow stages, approvals, required checks, command timeouts, coverage, control-plane policy and credential constraints.
+
 # 1.14.0 / Unreleased
 
 - Separate current baseline views from their non-authoritative history files while preserving existing paths, workflow stages, approvals, checks, commands, timeouts, coverage, checker/CI policy and delivery gates.

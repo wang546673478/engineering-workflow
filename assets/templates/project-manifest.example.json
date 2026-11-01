@@ -28,6 +28,21 @@
       "evidence": null
     }
   },
+  "environment": {
+    "tools": [
+      {
+        "tool_id": "<logical-tool-id>",
+        "version": "<declared-or-detected-version>",
+        "purpose": "<checks-or-analysis-purpose>",
+        "locator": "<project-declared-locator-or-discovery-rule>",
+        "identity_check": "<checksum-or-other-identity-policy>",
+        "cache_policy": "<cache-key-and-retention-policy>",
+        "isolation": "<task-local-or-project-declared-isolation>",
+        "status": "available"
+      }
+    ],
+    "evidence": "planning/task-environment.json"
+  },
   "documents": [
     {
       "id": "BASELINE",

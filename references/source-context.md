@@ -1,6 +1,14 @@
 # Local source-context pilot
 
-Use this optional helper inside the existing discovery/impact/recovery work when inventory/packing/references help. It changes no workflow stage, approval, required check or baseline completion rule. It neither runs project code nor calls models. The tool contains no token estimator, Notebook conversion or incremental cache.
+Use this optional helper inside the existing discovery/impact/recovery work when inventory/packing/references help. It changes no workflow stage, approval, required check or baseline completion rule. It neither runs project code nor calls models. The tool contains no token estimator, Notebook conversion or persistent incremental cache.
+
+## Tool selection and analysis precision
+
+Use an existing project or host tool when it meets the required scope. If no suitable tool exists, or its coverage is insufficient, the adopting project may maintain a project-specific adapter or helper under its own Task. Record the source, version, owner, supported inputs, precision, exclusions, source fingerprint and verification result; do not turn one project's helper into a universal requirement.
+
+Adapters should expose the relations they can prove, including forward and reverse references, calls, type or interface implementation, build/version metadata, generated or filtered index entries, and explicit dynamic or unresolved states when applicable. The exact relation set is adapter-defined. Final delivery evidence uses the applicable precise full analysis; an incremental scan or cache is a development preview only. A source, configuration, tool-version or worktree change invalidates affected results. Deterministic parser/compiler/tool evidence is required for the analysis; model explanations cannot replace it. Unsupported or unknown relations remain visible and are never treated as an empty result.
+
+An illustrative evidence record is available at [source-analysis-evidence.example.json](../assets/templates/source-analysis-evidence.example.json). It defines a generic contract shape, not output from a particular analyzer; adapters must provide real evidence for their declared scope.
 
 ## 什么时候启用引用分析
 

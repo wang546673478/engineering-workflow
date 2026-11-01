@@ -14,6 +14,21 @@ In an enabled project, follow-up answers and short confirmations continue the ac
 
 Distinguish repository facts (with source evidence), candidates (not yet agreed), confirmed decisions (with the user's statement, date and scope), and deferred discussion. Recording a candidate does not confirm it. For a deferred item, retain its module, conclusions already reached, remaining questions, effects/dependencies and the condition for resuming discussion; do not invent a date or treat deferral as cancellation. Revisit it before dependent design or implementation. A deferred high-impact dependency remains unresolved for the affected work.
 
+## Question state for recovery
+
+For each question that may be revisited, keep one structured entry in the existing Task or requirements record:
+
+| Field | Meaning |
+| --- | --- |
+| `question_id` | Stable identifier reused when the same question is resumed |
+| `status` | Project vocabulary for `asked`, `answered`, `deferred`, `blocked`, `closed` or equivalent |
+| `asked_at` | First or latest asking time, according to the project's record convention |
+| `answer_ref` | Link to the confirmed answer, decision, evidence or an explicit unanswered marker |
+| `scope` | Module, requirement, acceptance or task scope affected by the question |
+| `resume_condition` | Evidence or decision needed before asking again |
+
+On recovery or handoff, read these entries before composing a question. Reuse an `answered` entry and its answer reference; retain `deferred` or `blocked` entries until their resume condition is met; only ask an entry whose current status and condition allow a follow-up. A missing answer is not permission to repeat an already recorded question. This state prevents interaction loss and does not add an approval round or a required check.
+
 Track requirement state separately from implementation state using the project's vocabulary. A confirmed requirement may still be unimplemented; requirement confirmation or a module review does not itself authorize implementation. Keep the current summary, open items and next action up to date when decisions change, and mark superseded statements as history instead of leaving conflicting current instructions. If saving fails, report the failure and what remains unsaved; do not claim the record was updated.
 
 ## Explain plainly

@@ -32,6 +32,10 @@ A completed template, matching documentation and code, a larger test count or un
 
 ## Isolated investigation environments
 
+### Environment contract and startup diagnostics
+
+When a project declares an environment contract, record logical tool identifiers, versions, purpose, locator, checksum or other identity check, cache policy, isolation strategy and status in the manifest or its linked evidence. Put actual resolved paths, version probes and checksum results in the current Task environment evidence. A missing tool, version mismatch or unsupported capability is `unavailable`, `unsupported` or `unverified`; it is not a passing result and does not authorize weakening required checks. The contract describes the adopting project and must not hard-code a tool name or path for unrelated projects.
+
 Within the authorized investigation and project rules, prepare necessary runtimes, locked dependencies, databases and caches autonomously. Inspect available project tooling first, then choose a task-local installation, portable instance, virtual environment or already available container runtime. Install missing local dependencies, start isolated instances and run applicable migrations and tests; absence from PATH is an investigation step, not by itself a user task.
 
 Use dedicated data directories/databases/namespaces, local ports and synthetic fixtures appropriate to the service; a Redis logical DB alone is not isolation from shared-instance commands. Record versions, setup method, relevant commands/results and teardown. Keep credentials out of records and clean up only task-owned processes, databases and test keys; do not treat this as permission to flush a shared service. Preserve any retained environment's purpose and restart/cleanup instructions for resumption.
@@ -53,6 +57,8 @@ Independent checks may run concurrently only when their inputs and mutable resou
 Reuse same-task baseline slices while their source/worktree fingerprint is unchanged and no new evidence contradicts them. Correct a confirmed factual error as soon as it is established, before dependent work continues. Once implementation stabilizes, perform one complete reconciliation of affected Baseline views and their Spec/Plan/Task links, then run the final required checks. A needed factual correction is not deferred to that convergence.
 
 Before the final required-check set, include all currently known implementation, test, tracked-document, manifest, and version changes in one candidate tree. Decide in advance where results learned from the checks and later publication will be recorded, then freeze that tree. A report applies only to the exact commit/tree it names; any later tracked-file change requires the project's existing checks to run against the new tree. Documentation-only changes do not inherit a report for an earlier tree.
+
+Reports are never portable across worktrees or source revisions. A result from another tree is rejected or marked not applicable even when the changed files appear unrelated; reuse is allowed only when the project has declared the exact tree, source fingerprints, environment and evidence scope that remain unchanged.
 
 When project policy permits, keep generated validation reports in its approved ignored/artifact location and report the pushed SHA in the delivery response, rather than creating a tracked receipt-only commit after the checks. Link the planned evidence location from the Task before the final run. If policy requires tracked receipts, collect them into one update and run the required checks on that receipt-bearing tree; retain earlier results as historical evidence, not as verification of the new tree.
 

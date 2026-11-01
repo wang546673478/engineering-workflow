@@ -146,3 +146,13 @@ The 2026-10-24 hosted-follow-up status above is historical. The conditional test
 - README adds a concise explanation of the supported finding: one stable-ID query returned six supported baseline slices from the user-named project in 0.8965s; repeated query median was 0.9205s. The full [pilot report](real-session-efficiency-pilot.md) explains old-session log counts, overlap and limits. No full-session time/call savings percentage is claimed because there was no matched old/new replay.
 - Evidence: de-identified query and timing results in [the pilot report](real-session-efficiency-pilot.md); private raw session logs remain outside the tracked documentation. This repository is the only modified code/documentation target.
 - Validation: latest required staged commit report passes commit-scope, TEST 283, COMPILE and GUIDANCE-COMPILE with verified tree `0ee94e8ac1166309f9b2b88d632524e957e54414`. The earlier same-day 4-test failure remains historical evidence. Exact-commit gate and protected control-plane review remain required before push.
+# Current Engineering Workflow Report Improvement Impact / 1.15.0
+
+Task: [TASK-ENGINEERING-WORKFLOW-REPORT-01](engineering-workflow-report-task.md); Spec/Plan: [Spec](engineering-workflow-report-spec.md) / [Plan](engineering-workflow-report-plan.md).
+
+- Modules: instructions, source-context guidance, tests and governance records. No product API, application database or external project is changed.
+- Guidance contracts: structured question state, logical environment declaration, existing-tool-first discovery, project-specific adapter boundary, precise full analysis, incremental preview, unknown/unsupported states and exact-tree evidence binding.
+- Preserved behavior: Baseline/Spec/Plan/Task stages, user approvals, required commands, timeouts, coverage, checker/CI policy, control-plane protection and existing credential constraints.
+- Non-goals: fixed language/tool/path/business definitions, concrete project-tool implementation, credential-policy redesign, automatic code replacement and required-gate reduction.
+- Verification: focused guidance/manifest and adapter-evidence fixtures plus the unchanged TEST, COMPILE and GUIDANCE-COMPILE checks. Historical baseline report `work/TASK-ENGINEERING-WORKFLOW-REPORT-01-final6.json` records the required checks passing but does not bind a staged/committed tree; publication uses the original exact-tree `commit` and `committed` gates.
+- Publication: user-authorized source branch `origin/codex/engineering-workflow-report-1.15.0`; no merge to `main`, tag, Release, deployment or external project migration.

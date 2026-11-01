@@ -507,3 +507,19 @@ Active chain: [BASELINE](baseline-review.md) → [SPEC-WORKFLOW-EFFICIENCY-01 r1
 | REQ-WFE-05..06 / AT-WFE-04..05 | PL-WFE-03 | TASK-WORKFLOW-EFFICIENCY-01; acceptance denominator and evidence-based ETA guidance in implementation-workflow.md |
 | REQ-WFE-07 / AT-WFE-06 | PL-WFE-04 | Existing real-session pilot; savings result deferred until comparable evidence exists |
 | REQ-WFE-08 / AT-WFE-07 | PL-WFE-05 | TASK-WORKFLOW-EFFICIENCY-01; required-check definitions, timeouts, approvals and control-plane paths |
+# Engineering Workflow Report Improvement Traceability / 1.15.0
+
+Current revision: `ENGINEERING_WORKFLOW_REPORT-01`.
+
+| Requirement / acceptance | Plan / execution | Current evidence / status |
+| --- | --- | --- |
+| RPT-01 / AT-RPT-01 | B1 / RPT-03 | Structured question state and recovery behavior are documented; guidance fixture checks required state fields. Program checks cannot prove future conversational behavior. |
+| RPT-02 / AT-RPT-02 | B1 / RPT-03 | Generic environment contract and Task evidence boundary are documented; manifest example fixture checks the declared logical-tool fields. |
+| RPT-03 / AT-RPT-03 | B2 / RPT-03 | Existing-tool-first and project-specific fallback policy are documented and covered by the guidance fixture. |
+| RPT-04 / AT-RPT-04 | B3 / RPT-03 | Generic adapter-evidence fixture binds deterministic tool/version, input fingerprint, declared scope, supported relations, unknown/unsupported relations and limitations; existing JS/TS and Rust fixtures verify exact in-scope references and explicit uncertainty. No universal call graph or fixed-language implementation is claimed. |
+| RPT-05 / AT-RPT-05 | B3 / RPT-03 | Adapter-evidence fixture marks an incremental preview with a stale input fingerprint as ineligible for final evidence; the current source-context collector has no persistent incremental cache, and existing reuse tests compare against fresh collection and reject scope mismatch. |
+| RPT-06 / AT-RPT-06 | B4 / RPT-04 | Exact-tree and cross-worktree validation binding is documented; publication is gated by original `commit` and `committed` checks. |
+| RPT-07 / AT-RPT-07 | B4 / RPT-04 | Gate applicability is delegated to project Baseline/manifest/Task impact dimensions. |
+| RPT-08 / AT-RPT-08 | B5 / RPT-04 | Related-counterexample diagnosis is added without a fixed form or new approval. |
+| RPT-09 / AT-RPT-09 | B5 / RPT-06 | Existing workflow, approvals and required checks remain unchanged; historical baseline and publication commit gates provide separate evidence. |
+| RPT-10 | B0-B5 / RPT-06 | Credential rules, external migration and project-specific tooling remain out of scope. |

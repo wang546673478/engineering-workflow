@@ -2,7 +2,7 @@
 name: engineering-workflow
 description: Guide discussions and changes to software features and modules, including follow-up requirement decisions, deferred topics, project takeover, implementation and documentation. Use whenever functionality, permissions, billing or data relationships may change; continue an adopted project's active workflow without another skill mention.
 metadata:
-  version: 1.14.0
+  version: 1.15.0
 ---
 
 # 代码工程工作流
@@ -25,11 +25,15 @@ metadata:
 
 延后事项同样入文档，保存所属功能、已有结论、待决问题、影响/依赖和恢复讨论条件；进入依赖它的设计或实施前重新讨论。延后不等于取消，也不等于问题已解决。需求状态与实施状态分别维护，记录、确认需求与批准实施是不同动作；用户审核需求不自动授权编码。
 
+为每个需要用户回答的问题保留结构化状态：`question_id`、`status`、`asked_at`、`answer_ref`、`scope` 和 `resume_condition`。恢复、交接或上下文压缩后先读取这些状态：已回答的问题直接复用，尚未满足恢复条件的问题保持原状态，只对允许继续询问的问题追问；不得因为恢复而重复发出同一个问题。该状态只防止重复提问，不新增审批、阶段或 required check。
+
 每个功能模块讨论收敛后，集中核对本模块需求、变更、遗漏、待定/延后及关联影响，再用通俗语言提交用户审核并保存所审版本、原话和范围。集中核对与用户审核合并在这个节点，不每轮另设集中门禁或反复请求审核；讨论中的记录持续进行。未通过则继续调整该模块，后续变化只重审受影响内容；实施前的完整方案批准和首次接管的基线审阅仍须满足。
 
 详细记录字段、状态和审核方式见 [requirements-interview.md](references/requirements-interview.md)；复用项目状态体系和文件，不另建重复台账。上述要求是行为指令，现有检查器不能自动发现尚未写入文件的聊天需求或证明用户理解与批准。
 
 需要本地恢复能力的项目可选择使用 [task archive](scripts/task_archive.py)：对 manifest 声明的工程文档建立工作区外快照、检查工作区漂移、列出历史及恢复旧版本。它不是必经门禁，不自动迁移，也不增加审核节点。当前宿主若允许任意 shell/editor 写入，它只能事后检测和恢复，不能拦截写操作；存储路径和保留策略由采用项目负责。使用方式见[Checker reference](references/checker.md#本地工程记录归档与恢复)。
+
+工具选择遵循“现成工具优先；没有适用工具或能力不足时，允许维护项目专用工具”。先检查项目已有工具和宿主可用工具，再决定是否新增适配器或维护专用工具；记录来源、版本、覆盖范围、维护责任和验证方式。项目专用工具不自动成为其他项目的必需依赖，也不自动替换已有实现。
 
 项目文档很多或需要同步多个权威记录时，可选择 [workflow state](scripts/workflow_state.py) CLI：从 manifest/task 生成可重建目录、批读精确章节/hash、按稳定 ID 查询声明的 schema/module/source-reference 切片，或通过单一 change-set 入口 dry-run/apply hash 保护的精确批次。目录保留 planning 下未登记 Markdown 并标记 unknown/unverified；不从年龄或非当前状态推断过时。文档写操作要求 Task 和 authority 类型匹配其 impact/linked artifact。CLI 不改审批/stage/task status/checks/timeout，也不参与 checker 门禁；缺少 parser/runtime 时如实标 partial/unsupported。合同见 [Checker reference](references/checker.md#可选文档目录快照与精确批量更新)。
 
@@ -83,6 +87,8 @@ Global Baseline、Spec、Technical Plan 和 Task 是一组有版本边界的联�
 7. **实现并验证。** 保持职责集中、依赖方向清楚，避免重复状态与业务规则，接口抽象须解决真实问题。替换实现时登记旧入口退役。稳定后先收敛本批已知改动并冻结待验证树；验证报告绑定精确提交/树，后续跟踪文件变更仍按项目门禁验证。验证结果和推送回执如何记录见[实施流程](references/implementation-workflow.md#feedback-verification-and-progress)。
 
 需要梳理源码清单、跨文件引用或审阅模块关系时，按[源码辅助工具的触发与展示规则](references/source-context.md)选择采集、引用分析和视图；小修可直接搜索读取，工具结果继续按现有流程核验。
+
+源码关系的最终交付证据默认来自适用适配器的精确全量分析。增量扫描或缓存只用于开发阶段的快速反馈，不能替代最终全量结果；源指纹、配置、工具版本或工作树变化后必须重新计算受影响范围。适配器不能可靠观察的静态或动态关系保持 `unknown/unsupported`，不能以空结果表示不存在。核心分析使用确定性工具，模型解释不能替代源码、编译器或解析器证据。
 
 采用结构化批准合同的项目按[批准证据合同](references/checker.md#结构化批准证据合同)核验声明的证据、审阅内容和本批范围。新清单默认为非阻断诊断；旧项目保持兼容，只有显式启用 strict 才阻断。它不新增用户审核轮次，也不改变既有检查命令、影响分析和文档同步门槛。
 

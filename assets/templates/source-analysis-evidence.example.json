@@ -1,0 +1,110 @@
+{
+  "contract_version": 1,
+  "adapter": {
+    "id": "example-static-reference-adapter",
+    "version": "1.0.0",
+    "method": "deterministic-parser",
+    "deterministic": true,
+    "model_required": false
+  },
+  "scope": {
+    "source_set": [
+      "module-a/source-a",
+      "module-b/source-b"
+    ],
+    "configuration_set": [
+      "project-analysis-config"
+    ],
+    "complete_for_declared_scope": true,
+    "limitations": [
+      "Completeness applies to the declared static-reference scope only.",
+      "Runtime dispatch and relations absent from the declared supported set are not inferred."
+    ]
+  },
+  "current_input_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "final_analysis": {
+    "mode": "precise-full",
+    "precision": "exact-for-declared-scope",
+    "eligible_as_final_evidence": true,
+    "input_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source_fingerprints": [
+      {
+        "path": "module-a/source-a",
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      {
+        "path": "module-b/source-b",
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+      }
+    ],
+    "supported_relations": [
+      "module-reference.forward",
+      "module-reference.reverse",
+      "type-reference.forward"
+    ],
+    "relations": [
+      {
+        "from": "module-a/source-a",
+        "to": "module-b/source-b",
+        "kind": "module-reference",
+        "direction": "forward",
+        "status": "resolved",
+        "evidence": {
+          "path": "module-a/source-a",
+          "line": 12,
+          "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      },
+      {
+        "from": "module-b/source-b",
+        "to": "module-a/source-a",
+        "kind": "module-reference",
+        "direction": "reverse",
+        "status": "resolved",
+        "derived_from": "module-reference.forward",
+        "evidence": {
+          "path": "module-a/source-a",
+          "line": 12,
+          "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      },
+      {
+        "from": "module-a/source-a",
+        "to": "module-b/source-b",
+        "kind": "type-reference",
+        "direction": "forward",
+        "status": "resolved",
+        "evidence": {
+          "path": "module-a/source-a",
+          "line": 18,
+          "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      }
+    ],
+    "unknown_relations": [
+      {
+        "kind": "runtime-dispatch",
+        "status": "unknown",
+        "reason": "The target depends on a runtime value not statically resolvable in this scope."
+      }
+    ],
+    "unsupported_relations": [
+      {
+        "kind": "interface-implementation",
+        "status": "unsupported",
+        "reason": "This adapter does not analyze implementation relationships."
+      },
+      {
+        "kind": "generated-source-index",
+        "status": "unsupported",
+        "reason": "Generated sources are outside this adapter's declared inputs."
+      }
+    ]
+  },
+  "development_preview": {
+    "mode": "incremental-preview",
+    "eligible_as_final_evidence": false,
+    "input_fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "reason": "This preview predates the current source/configuration fingerprint; rerun precise full analysis before delivery."
+  }
+}

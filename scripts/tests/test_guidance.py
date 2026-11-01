@@ -14,6 +14,61 @@ spec.loader.exec_module(guidance)
 
 
 class GuidanceTests(unittest.TestCase):
+    def test_generic_workflow_contracts_are_documented(self):
+        root = SCRIPTS.parent
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        requirements = (root / "references" / "requirements-interview.md").read_text(encoding="utf-8")
+        source_context = (root / "references" / "source-context.md").read_text(encoding="utf-8")
+        implementation = (root / "references" / "implementation-workflow.md").read_text(encoding="utf-8")
+
+        for field in ("question_id", "status", "asked_at", "answer_ref", "scope", "resume_condition"):
+            self.assertIn(field, requirements)
+        self.assertIn("现成工具优先", skill)
+        self.assertIn("精确全量分析", skill)
+        self.assertIn("unknown/unsupported", source_context)
+        self.assertIn("Environment contract and startup diagnostics", implementation)
+        self.assertIn("Reports are never portable across worktrees", implementation)
+
+    def test_manifest_template_declares_logical_environment_contract(self):
+        root = SCRIPTS.parent
+        manifest = json.loads((root / "assets" / "templates" / "project-manifest.example.json").read_text(encoding="utf-8"))
+        tool = manifest["environment"]["tools"][0]
+        for key in ("tool_id", "version", "purpose", "locator", "identity_check", "cache_policy", "isolation", "status"):
+            self.assertIn(key, tool)
+        self.assertEqual(manifest["environment"]["evidence"], "planning/task-environment.json")
+
+    def test_source_analysis_fixture_binds_precise_full_evidence(self):
+        root = SCRIPTS.parent
+        fixture = json.loads((root / "assets" / "templates" / "source-analysis-evidence.example.json").read_text(encoding="utf-8"))
+        final = fixture["final_analysis"]
+        preview = fixture["development_preview"]
+
+        self.assertEqual(final["mode"], "precise-full")
+        self.assertTrue(final["eligible_as_final_evidence"])
+        self.assertTrue(fixture["adapter"]["deterministic"])
+        self.assertFalse(fixture["adapter"]["model_required"])
+        self.assertRegex(final["input_fingerprint"], r"^[0-9a-f]{64}$")
+        self.assertEqual(final["input_fingerprint"], fixture["current_input_fingerprint"])
+        self.assertTrue(final["supported_relations"])
+        self.assertTrue(final["unknown_relations"])
+        self.assertTrue(final["unsupported_relations"])
+        self.assertTrue(fixture["scope"]["limitations"])
+        self.assertEqual(preview["mode"], "incremental-preview")
+        self.assertFalse(preview["eligible_as_final_evidence"])
+        self.assertNotEqual(preview["input_fingerprint"], fixture["current_input_fingerprint"])
+
+    def test_generic_plan_has_no_project_specific_source_or_business_definition(self):
+        root = SCRIPTS.parent
+        text = "\n".join(
+            (root / "planning" / name).read_text(encoding="utf-8")
+            for name in (
+                "engineering-workflow-report-spec.md",
+                "engineering-workflow-report-plan.md",
+            )
+        )
+        for forbidden in ("PostgreSQL", ".review", "192.168.", "extract-contract-ast"):
+            self.assertNotIn(forbidden, text)
+
     def write_manifest(self, root):
         (root / "engineering-manifest.json").write_text(json.dumps({
             "schema_version": 1,
