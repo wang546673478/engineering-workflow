@@ -1,6 +1,6 @@
 # Engineering Workflow
 
-Version: `1.15.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
+Version: `1.16.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELOG.md)
 
 一个面向软件工程与持续需求讨论的 Codex skill。它帮助 Agent 从功能变化的讨论开始，维护需求、模块关系、接口契约、业务流程、数据库字典和验证证据。
 
@@ -9,7 +9,7 @@ Version: `1.15.0` · License: [MIT](LICENSE) · Changes: [CHANGELOG.md](CHANGELO
 - 接管缺少文档的陌生项目
 - 功能模块新增、修改、删除，以及行为、权限、计费或数据关系变化的持续讨论
 - 跨前端、后端、数据库或后台任务的功能变更
-- 影响范围不明确的缺陷定位
+- 缺陷复现、根因定位与影响范围不明确的修复
 - 需要迁移、接口兼容、回滚和恢复记录的改动
 - 需要在 Git 提交时确认代码与关联文档同步的项目
 
@@ -83,13 +83,13 @@ Skill 会引导 Agent：
 
 恢复任务时先读取问题状态（问题 ID、状态、提问时间、回答引用、范围和恢复条件），只继续真正需要追问的问题。工具选择遵循现成工具优先；没有合适工具时，采用项目可以维护自己的适配器，并记录来源、版本、覆盖范围和验证。最终源码证据使用适用适配器的精确全量分析，增量结果只用于开发预览，无法观察的关系保留 `unknown/unsupported`。环境契约记录逻辑工具和隔离策略，实际路径与探测结果进入 Task 证据。
 
-开发阶段按实现切片运行相关检查以缩短反馈时间；交付前仍须运行项目声明的全部必需检查。只有输入和资源隔离的检查才适合并行。可复用未变化的基线切片，但已确认的事实错误要及时修正；实现稳定后完整核对受影响视图，并冻结待验证树。验证报告绑定精确提交/树；门禁后改动跟踪文件仍须按项目规则重验。结果回执可按项目规则留在忽略目录、CI产物或交付说明中，避免只为回写结果另建提交；若项目要求跟踪回执，则在该回执提交上完成必需检查。进度按验收项分别报告实现、验证和交付，ETA 仅依据可比的实测耗时，证据不足时标为未知。详见[实施节奏与进度口径](references/implementation-workflow.md#feedback-verification-and-progress)。
+开发阶段按实现切片运行相关检查以缩短反馈时间；规划 Task 时按实际影响确定该 Task 的 required checks，并保留项目要求所有 Task 都运行的检查，交付前完整运行所选集合。独立的小范围后续任务不默认继承无关功能的整套检查，失败的检查也不得事后删除。只有输入和资源隔离的检查才适合并行。可复用未变化的基线切片，但已确认的事实错误要及时修正；实现稳定后完整核对受影响视图，并冻结待验证树。验证报告绑定精确提交/树；门禁后改动跟踪文件仍须按项目规则重验。结果回执可按项目规则留在忽略目录、CI产物或交付说明中；若项目要求跟踪回执，则建立适用的独立 Task 并对结果树执行项目要求的精确树检查。进度按验收项分别报告实现、验证和交付，ETA 仅依据可比的实测耗时，证据不足时标为未知。详见[实施节奏与进度口径](references/implementation-workflow.md#feedback-verification-and-progress)。
 
 已批准项目可按需启用结构化批准证据合同，核对批准记录和已审方案/本批范围绑定；新项目初始化为diagnostic，旧项目不自动迁移，strict需明确选择。它只强化审批相关检查，不替代原需求访谈、项目门禁、验证命令或文档同步。旧版本行为增强说明见 [Issue 23 Task](planning/issue-23-task.md)。
 
 本地工程文档可按项目选择使用 [task_archive.py](scripts/task_archive.py) 建立版本快照、检查漂移、查看历史和恢复。它不加入原检查门禁或审核流程；SQLite archive 文件不加密，宿主未提供文件权限隔离时，只能检测并恢复，不能阻止 shell/editor 直接写入。备份位置/清理由采用项目负责。详见[归档合同与命令](references/checker.md#本地工程记录归档与恢复)。
 
-三项指引在这些原节点中使用：[缺陷证据](references/implementation-workflow.md#defect-evidence-within-the-existing-task)连接原复现、根因、修复前后结果与回归；[交付前收敛](references/baseline-linked-artifacts.md#交付前收敛)具体核对本批缺失、部分、矛盾、无归属实现和过期证据；[可选需求/验收示例](references/requirements-interview.md#optional-requirement-and-acceptance-examples)提供 EARS 中文等价句式及 Given–When–Then。沿用原记录与格式，不增加阶段、审批轮次或验证命令；旧项目的 current/history 整理只在升级或接管任务中由 agent 执行，不由每次接入自动迁移。
+三项指引在这些原节点中使用：[缺陷证据](references/implementation-workflow.md#defect-evidence-within-the-existing-task)连接原复现、根因、最小完整修复或明确标记的症状缓解、修复前后结果与回归；[交付前收敛](references/baseline-linked-artifacts.md#交付前收敛)具体核对本批缺失、部分、矛盾、无归属实现和过期证据；[可选需求/验收示例](references/requirements-interview.md#optional-requirement-and-acceptance-examples)提供 EARS 中文等价句式及 Given–When–Then。沿用原记录与格式，不增加阶段、审批轮次或验证命令；旧项目的 current/history 整理只在升级或接管任务中由 agent 执行，不由每次接入自动迁移。
 
 ## 自主调查与动态基线
 

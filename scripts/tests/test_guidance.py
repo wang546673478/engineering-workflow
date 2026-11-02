@@ -29,6 +29,42 @@ class GuidanceTests(unittest.TestCase):
         self.assertIn("Environment contract and startup diagnostics", implementation)
         self.assertIn("Reports are never portable across worktrees", implementation)
 
+    def test_defect_guidance_defaults_to_cause_correction_or_tracks_mitigation(self):
+        root = SCRIPTS.parent
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        implementation = (root / "references" / "implementation-workflow.md").read_text(encoding="utf-8")
+        defect = implementation.split("## Defect evidence within the existing task", 1)[1].split("## Isolated investigation environments", 1)[0]
+
+        self.assertIn("只有恢复或强制诊断出的不变量的 guard 才算修复", skill)
+        self.assertIn("仅隐藏症状的兜底须在明确延期根因修复时标为缓解", skill)
+        self.assertIn("smallest complete correction that removes it", defect)
+        self.assertIn("restores or enforces the violated invariant", defect)
+        for mitigation_record in (
+            "label containment as a mitigation",
+            "why correction is deferred",
+            "residual risk",
+            "could mask",
+            "owner or trigger for revisiting the cause",
+            "validation that checks the mitigation",
+        ):
+            with self.subTest(mitigation_record=mitigation_record):
+                self.assertIn(mitigation_record, defect)
+
+    def test_task_check_sets_preserve_policy_and_exact_tree_receipts(self):
+        root = SCRIPTS.parent
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        implementation = (root / "references" / "implementation-workflow.md").read_text(encoding="utf-8")
+        feedback = implementation.split("### Feedback, verification and progress", 1)[1].split("\n## During editing", 1)[0]
+
+        self.assertIn("按其实际影响确定适用检查集", skill)
+        self.assertIn("At Task planning, choose its `required_checks` from the Task's actual impact", feedback)
+        self.assertIn("Preserve every check the project requires for all Tasks", feedback)
+        self.assertIn("instead of inheriting unrelated checks", feedback)
+        self.assertIn("does not justify removing or weakening a declared check", feedback)
+        self.assertIn("Do not rerun unaffected product suites unless the project policy requires them or their inputs changed", feedback)
+        self.assertIn("earlier code or deployment reports remain evidence only for the exact tree they verified", feedback)
+        self.assertIn("exact-tree `commit`/`committed` checks", feedback)
+
     def test_manifest_template_declares_logical_environment_contract(self):
         root = SCRIPTS.parent
         manifest = json.loads((root / "assets" / "templates" / "project-manifest.example.json").read_text(encoding="utf-8"))

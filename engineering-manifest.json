@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workflow": {
     "active_baseline": "BASELINE",
-    "active_spec": "ENGINEERING_WORKFLOW_REPORT_SPEC",
-    "active_plan": "ENGINEERING_WORKFLOW_REPORT_PLAN",
-    "active_task": "TASK-ENGINEERING-WORKFLOW-REPORT-01",
+    "active_spec": "DEFECT_GATE_SPEC",
+    "active_plan": "DEFECT_GATE_PLAN",
+    "active_task": "TASK-DEFECT-GATE-GUIDANCE-01",
     "policy_version": "delta-v1"
   },
   "environment": {
@@ -518,6 +518,30 @@
     {
       "id": "ENGINEERING_WORKFLOW_REPORT_TASK",
       "path": "planning/engineering-workflow-report-task.md",
+      "kind": "task",
+      "required": true
+    },
+    {
+      "id": "DEFECT_GATE_ASSESSMENT",
+      "path": "planning/defect-gate-guidance-assessment.md",
+      "kind": "assessment",
+      "required": true
+    },
+    {
+      "id": "DEFECT_GATE_SPEC",
+      "path": "planning/defect-gate-guidance-spec.md",
+      "kind": "spec",
+      "required": true
+    },
+    {
+      "id": "DEFECT_GATE_PLAN",
+      "path": "planning/defect-gate-guidance-plan.md",
+      "kind": "plan",
+      "required": true
+    },
+    {
+      "id": "DEFECT_GATE_TASK",
+      "path": "planning/defect-gate-guidance-task.md",
       "kind": "task",
       "required": true
     }
@@ -1201,6 +1225,26 @@
     {
       "id": "RPT-09",
       "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-DGF-01",
+      "document": "DEFECT_GATE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-DGF-02",
+      "document": "DEFECT_GATE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-DGF-03",
+      "document": "DEFECT_GATE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "REQ-DGF-04",
+      "document": "DEFECT_GATE_SPEC",
       "index": "TRACE"
     },
     {
@@ -1914,6 +1958,31 @@
     {
       "id": "AT-RPT-09",
       "document": "ENGINEERING_WORKFLOW_REPORT_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-DGF-01",
+      "document": "DEFECT_GATE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-DGF-02",
+      "document": "DEFECT_GATE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-DGF-03",
+      "document": "DEFECT_GATE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-DGF-04",
+      "document": "DEFECT_GATE_SPEC",
+      "index": "TRACE"
+    },
+    {
+      "id": "AT-DGF-05",
+      "document": "DEFECT_GATE_SPEC",
       "index": "TRACE"
     }
   ],
@@ -7582,6 +7651,237 @@
       "verification_status": "original exact-tree checks passed for commit 17abcfa; publication-scope record changes require the unchanged commit and committed gates to pass on the updated tree before main push; hosted environment approval remains separate",
       "verification_evidence": "work/TASK-ENGINEERING-WORKFLOW-REPORT-01-final6.json (historical baseline); work/TASK-ENGINEERING-WORKFLOW-REPORT-01-commit-current.json and work/TASK-ENGINEERING-WORKFLOW-REPORT-01-committed-current.json (historical review-branch receipts); work/TASK-ENGINEERING-WORKFLOW-REPORT-01-commit-main-publication-r3.json and work/TASK-ENGINEERING-WORKFLOW-REPORT-01-committed-main-publication-r3.json (exact-tree main-publication receipts)",
       "delivery_status": "B0-B5 implementation complete; review branch upload at 17abcfa confirmed. User reauthorized a normal fast-forward to origin/main; current repository and environment settings were checked read-only. Approval is available to the owner after selecting the environment in the dialog; agent has not submitted it. Exact-tree gates precede the main push; B6 project-specific tooling remains excluded."
+    },
+    {
+      "id": "TASK-DEFECT-GATE-GUIDANCE-01",
+      "batch_id": "TASK-DEFECT-GATE-GUIDANCE-01-BATCH-01",
+      "scale": "feature",
+      "requirement_ids": [
+        "REQ-DGF-01",
+        "REQ-DGF-02",
+        "REQ-DGF-03",
+        "REQ-DGF-04"
+      ],
+      "acceptance_ids": [
+        "AT-DGF-01",
+        "AT-DGF-02",
+        "AT-DGF-03",
+        "AT-DGF-04",
+        "AT-DGF-05"
+      ],
+      "module_ids": [
+        "instructions",
+        "tests",
+        "governance"
+      ],
+      "depends_on": [],
+      "after": [
+        "TASK-ENGINEERING-WORKFLOW-REPORT-01"
+      ],
+      "gate_policy": {},
+      "status": "in_progress",
+      "impact_document": "DEFECT_GATE_TASK",
+      "required_checks": [
+        "TEST",
+        "COMPILE",
+        "GUIDANCE-COMPILE"
+      ],
+      "approval_required": true,
+      "approval": {
+        "status": "approved",
+        "evidence": "planning/defect-gate-guidance-task.md",
+        "user_statement": "按照这个现状和得出的结论开始改吧",
+        "approved_at": "2026-11-03",
+        "scope": "Update this repository's engineering-workflow guidance so defect fixes default to correcting confirmed causes and symptom containment is explicitly tracked as mitigation; scope required checks to independently defined Tasks while preserving project-wide required checks and exact-tree commit/committed verification. No checker, CI, gate-definition, external-project or publication changes.",
+        "task_id": "TASK-DEFECT-GATE-GUIDANCE-01",
+        "plan_revision": "PLAN-DEFECT-GATE-GUIDANCE-01 r1"
+      },
+      "artifact_links": {
+        "baseline": "BASELINE",
+        "assessment": "DEFECT_GATE_ASSESSMENT",
+        "spec": "DEFECT_GATE_SPEC",
+        "plan": "DEFECT_GATE_PLAN",
+        "task": "DEFECT_GATE_TASK",
+        "traceability": "TRACE"
+      },
+      "artifact_revisions": {
+        "baseline": "BASELINE current",
+        "assessment": "DEFECT_GATE_ASSESSMENT 2026-11-03",
+        "spec": "SPEC-DEFECT-GATE-GUIDANCE-01 r1 authorized",
+        "plan": "PLAN-DEFECT-GATE-GUIDANCE-01 r2 publication extension",
+        "task": "TASK-DEFECT-GATE-GUIDANCE-01 publication in progress"
+      },
+      "requirement_state": "REQ-DGF-01..04 confirmed within the user-authorized scope.",
+      "implementation_status": "local guidance implementation and required checks complete; GitHub publication to origin/main is authorized and pending protected exact-tree gates.",
+      "proposal_status": "approved",
+      "implementation_authorization": {
+        "status": "approved",
+        "plan_revision": "PLAN-DEFECT-GATE-GUIDANCE-01 r1",
+        "task_id": "TASK-DEFECT-GATE-GUIDANCE-01",
+        "evidence": "planning/defect-gate-guidance-task.md"
+      },
+      "publication_authorization": {
+        "status": "approved",
+        "user_statement": "上传到github吧",
+        "recorded_at": "2026-11-03T01:50:11+08:00",
+        "plan_revision": "PLAN-DEFECT-GATE-GUIDANCE-01 r2 publication extension",
+        "scope": "Publish the completed 1.16.0 candidate to origin/main by normal fast-forward after human review of the exact protected-file diff and successful existing commit/committed gates. No force-push, tag, Release, deployment or external-project change.",
+        "target": {
+          "remote": "origin",
+          "branch": "main",
+          "basis": "Current worktree is based on the origin/main tracking SHA; this repository's immediately preceding publication decision selected origin/main."
+        },
+        "evidence": "planning/defect-gate-guidance-task.md#publication-authorization-and-target"
+      },
+      "skill_review": {
+        "catalog_source": "Current session Skills catalog and repository skill inventory",
+        "checked_at": "2026-11-03 Asia/Shanghai",
+        "scope": "Focused update to defect-repair and validation-scope guidance, related README/version records, guidance tests and authorized origin/main publication; no executable checker or CI changes.",
+        "candidates": [
+          {
+            "id": "engineering-workflow",
+            "source": "Repository SKILL.md and linked references",
+            "version_or_release_date": "1.15.0",
+            "decision": "adopted",
+            "reason": "Authoritative workflow being updated and used for this task.",
+            "evidence": [
+              "SKILL.md",
+              "references/implementation-workflow.md",
+              "references/checker.md",
+              "planning/engineering-workflow-report-task.md"
+            ]
+          },
+          {
+            "id": "skill-creator",
+            "source": "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md",
+            "version_or_release_date": "not provided",
+            "decision": "adopted",
+            "reason": "The task maintains an existing skill and its metadata.",
+            "evidence": [
+              "C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md"
+            ]
+          },
+          {
+            "id": "tdd",
+            "source": "Current session Skills catalog",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "No runtime feature or checker behavior is added; focused guidance contract checks will use the existing test framework.",
+            "evidence": [
+              "scripts/tests/test_guidance.py"
+            ]
+          },
+          {
+            "id": "planning-with-files",
+            "source": "Current session Skills catalog",
+            "version_or_release_date": "not provided",
+            "decision": "not-adopted",
+            "reason": "The repository's manifest-linked Assessment/Spec/Plan/Task and traceability records are authoritative.",
+            "evidence": [
+              "engineering-manifest.json"
+            ]
+          }
+        ],
+        "recheck": "Publication to origin/main is separately authorized; no scope change to checker implementation, CI or external project migration. Protected-path human review and exact-tree gates remain required."
+      },
+      "documentation_impact": {
+        "workflow-guidance": {
+          "when_paths": [
+            "SKILL.md",
+            "references/implementation-workflow.md",
+            "README.md",
+            "agents/openai.yaml",
+            "VERSION",
+            "CHANGELOG.md"
+          ],
+          "document_ids": [
+            "DEFECT_GATE_ASSESSMENT",
+            "DEFECT_GATE_SPEC",
+            "DEFECT_GATE_PLAN",
+            "DEFECT_GATE_TASK",
+            "BASELINE",
+            "TRACE",
+            "IMPACT",
+            "SKILL_REVIEW"
+          ]
+        },
+        "guidance-tests": {
+          "when_paths": [
+            "scripts/tests/test_guidance.py"
+          ],
+          "document_ids": [
+            "DEFECT_GATE_SPEC",
+            "DEFECT_GATE_TASK"
+          ]
+        },
+        "governance": {
+          "when_paths": [
+            "engineering-manifest.json",
+            "planning/traceability.md",
+            "planning/change-impact.md"
+          ],
+          "document_ids": [
+            "DEFECT_GATE_TASK",
+            "TRACE",
+            "IMPACT",
+            "SKILL_REVIEW"
+          ]
+        }
+      },
+      "execution_steps": [
+        {
+          "id": "DGF-00",
+          "status": "complete",
+          "detail": "Reviewed current defect, task-scope and exact-tree guidance against the session evidence."
+        },
+        {
+          "id": "DGF-01",
+          "status": "complete",
+          "detail": "Recorded the user-authorized scope, requirements, acceptance and skill review."
+        },
+        {
+          "id": "DGF-02",
+          "status": "complete",
+          "detail": "Defect guidance defaults to the smallest complete cause-removing correction and explicitly classifies symptom containment with bounded mitigation records."
+        },
+        {
+          "id": "DGF-03",
+          "status": "complete",
+          "detail": "Task-specific check selection and receipt-only handling preserve project-wide mandatory checks, failed-check integrity and exact-tree binding."
+        },
+        {
+          "id": "DGF-04",
+          "status": "complete",
+          "detail": "Focused guidance-contract tests and README, baseline, traceability, impact, skill-review and release metadata are synchronized."
+        },
+        {
+          "id": "DGF-05",
+          "status": "complete",
+          "detail": "Pre-publication TEST 292/203.876s, COMPILE, GUIDANCE-COMPILE, skill quick validator, manifest links, diff check and independent semantic review passed; exact-tree publication gates are tracked separately under DGF-06."
+        },
+        {
+          "id": "DGF-06",
+          "status": "in_progress",
+          "detail": "User authorized a normal fast-forward push to origin/main; stage and present exact diff for protected-path human review, then run the existing exact-tree commit/committed gates and verify the pushed SHA."
+        }
+      ],
+      "release_impact": {
+        "previous_version": "1.15.0",
+        "current_version": "1.16.0",
+        "proposed_implementation_version": "1.16.0 / Unreleased",
+        "bump_required_this_batch": true,
+        "reason": "Backward-compatible guidance capability additions for causal defect correction and task-scoped validation.",
+        "synchronization_paths": [
+          "VERSION",
+          "SKILL.md",
+          "README.md",
+          "agents/openai.yaml",
+          "CHANGELOG.md"
+        ]
+      },
+      "verification_status": "Local implementation verification passed before the publication-record update: focused guidance tests 33; TEST 292 tests/203.876s; COMPILE; GUIDANCE-COMPILE; skill-creator quick_validate; independent semantic review; manifest document paths and git diff --check. Initial TEST failure before lockfile-pinned TypeScript setup is recorded in the Task. Exact-tree commit/committed gates remain pending protected-path human review.",
+      "verification_evidence": "planning/defect-gate-guidance-task.md#environment-and-verification; publication status and gate evidence in #publication-authorization-and-target",
+      "delivery_status": "Publication to origin/main is authorized and pending exact protected-file review, unchanged commit/committed gates, commit, fast-forward push and remote-SHA verification. No deployment, tag, Release or external-project change."
     }
   ],
   "control_plane": {

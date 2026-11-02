@@ -525,3 +525,17 @@ Current revision: `ENGINEERING_WORKFLOW_REPORT-01`.
 | RPT-10 | B0-B5 / RPT-06 | Credential rules, external migration and project-specific tooling remain out of scope. |
 
 Publication target update (2026-11-01): the user superseded the original review-branch-only destination and authorized a normal fast-forward to `origin/main`. The original review-branch receipt and the current main target, exact-tree gates, and outstanding independent environment approval are recorded in [the active Task](engineering-workflow-report-task.md#github-publication). Requirement and acceptance mappings are unchanged.
+
+## Defect correction and Task-scoped verification traceability / 1.16.0
+
+Active chain: [Baseline](baseline-review.md) → [Assessment](defect-gate-guidance-assessment.md) → [SPEC-DEFECT-GATE-GUIDANCE-01 r1](defect-gate-guidance-spec.md) → [PLAN-DEFECT-GATE-GUIDANCE-01 r1](defect-gate-guidance-plan.md) → [TASK-DEFECT-GATE-GUIDANCE-01](defect-gate-guidance-task.md).
+
+Local implementation checks are complete; publication to `origin/main` is separately authorized. The active Task records the initial missing-runtime attempt, its environment-only resolution, the unchanged required-check results, and the pending protected-path review plus exact-tree commit/committed gates.
+
+| Requirement / acceptance | Plan / execution | Current evidence / status |
+| --- | --- | --- |
+| REQ-DGF-01 / AT-DGF-01 | PL-DGF-01 | Defect guidance defaults to a complete correction of the confirmed cause; a guard qualifies when it restores or enforces the diagnosed invariant. |
+| REQ-DGF-02 / AT-DGF-02 | PL-DGF-01 | Symptom containment is named mitigation and records deferral rationale, residual/masking risk, revisit owner/trigger and validation. |
+| REQ-DGF-03 / AT-DGF-03 | PL-DGF-02 | Each Task selects its check set by actual impact and explicit project-wide policy; failed checks cannot be dropped or weakened. |
+| REQ-DGF-04 / AT-DGF-04 | PL-DGF-02 | Reports remain bound to exact trees; receipt-only work uses applicable Task checks and preserves project-mandated exact-tree commit/committed verification. |
+| AT-DGF-05 | PL-DGF-03..05 | Workflow, approvals, existing gate definitions, commands, timeouts, coverage and CI remain unchanged; validation status is in the active Task. |

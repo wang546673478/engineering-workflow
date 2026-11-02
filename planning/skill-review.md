@@ -1,5 +1,13 @@
 # Current Skill Applicability Review Entry
 
+## Current defect and Task-gate guidance review
+
+On 2026-11-03 (Asia/Shanghai), rechecked the current Skills catalog, repository `AGENTS.md`, active manifest and Task, `SKILL.md`, the defect/verification sections of `references/implementation-workflow.md`, and the relevant session assessment. Adopted repository `engineering-workflow` 1.15.0 as the source being updated and system `skill-creator` (visible version not provided; `C:/Users/54667/.codex/skills/.system/skill-creator/SKILL.md`) for the narrow existing-skill update and package validation. `tdd` is not adopted because no runtime/checker behavior changes; focused guidance-contract tests use the existing suite. `planning-with-files` is not adopted because manifest-linked records are authoritative. Scope excludes checker/CI behavior, project check definitions, external migration, commit, push and publication.
+
+## Publication scope recheck / 2026-11-03
+
+After the user's separate request “上传到github吧”, reread the protected-check rules in `references/checker.md`, the active Task/manifest and the current git tracking state. Continue using `engineering-workflow` and `skill-creator`; no additional host skill applies. The delivery target is `origin/main` by normal fast-forward based on this repository's current tracking base and immediately preceding main-publication decision. The checker requires human review of this exact protected-file diff before the one-run local approval signal; exact-tree `commit` and `committed` gates remain mandatory. This scope update does not change implementation behavior or required-check definitions.
+
 ## Proposed baseline layout task review
 
 On 2026-10-30 (Asia/Shanghai), rechecked the current Skills catalog, repository `AGENTS.md`, active manifest, `SKILL.md`, baseline-linked/project-documentation/adoption references, initializer, adoption helper, templates, and current baseline examples for TASK-BASELINE-LAYOUT-01. Adopted repository `engineering-workflow` 1.13.0 for the workflow and artifact contract and system `skill-creator` for updating an existing skill. `tdd` is not adopted because the revised candidate scope preserves executable behavior and changes guidance/templates/governance plus publication only; `planning-with-files` is not adopted because manifest-linked planning records are authoritative. The user-authorized publication is a repository Git operation covered by the existing workflow/checker guidance; no additional skill is required. Scope excludes adoption-script/checker behavior, external migration, tag/Release/merge, and product changes.

@@ -1,5 +1,5 @@
 interface:
   display_name: "Engineering Workflow"
-  short_description: "Investigate, maintain baselines and verify feature changes"
-  default_prompt: "Use $engineering-workflow to investigate this project autonomously, maintain a current baseline, record feature requirements, and guide reviewed implementation and verification."
-  version: "1.15.0"
+  short_description: "Trace causes, maintain baselines and verify scoped changes"
+  default_prompt: "Use $engineering-workflow to trace confirmed defect causes, maintain a current baseline, and plan cause-directed fixes with task-scoped verification."
+  version: "1.16.0"

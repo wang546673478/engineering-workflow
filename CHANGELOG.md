@@ -1,3 +1,9 @@
+# 1.16.0 / Unreleased
+
+- Default defect plans to the smallest complete correction that removes a confirmed cause; classify symptom containment as mitigation with its deferral reason, residual/masking risk, revisit condition and validation.
+- Select required checks for each Task's actual impact while preserving project-wide mandatory checks, failed-gate integrity and exact-tree commit/committed evidence for tracked receipts.
+- Preserve workflow stages, approvals, existing required-check definitions, commands, timeouts, coverage, checker/CI policy and external-project boundaries.
+
 # 1.15.0 / Unreleased
 
 - Add structured question state for recovery so recorded answers, deferred items and resume conditions are reused without repeating questions.
